@@ -1,0 +1,64 @@
+@import '../../scss/main.scss';
+
+.simple-thumbnail-card {
+  position: relative;
+  border-radius: 8px;
+  border: 2px rgba($color: #fff, $alpha: 0.01) solid;
+
+  &.background-card {
+    width: 25rem;
+    height: 15rem;
+  }
+
+  &.ambient-card {
+    width: 15rem;
+    height: 5rem;
+  }
+
+  &:hover,
+  &.current-ambient {
+    cursor: pointer;
+    border: 2px $white solid;
+  }
+
+  &__image {
+    border-radius: 8px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__favourite-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+    z-index: 1;
+  }
+
+  &__overlay-name {
+    color: $white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #000, $alpha: 0.1);
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    @include flex-row-center;
+  }
+}
+
+.simple-thumbnail-placeholder {
+  &.background-placeholder {
+    width: 25rem;
+    height: 15rem;
+  }
+
+  &.ambient-placeholder {
+    width: 15rem;
+    height: 5rem;
+  }
+}

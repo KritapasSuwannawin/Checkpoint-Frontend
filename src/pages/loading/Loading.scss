@@ -1,0 +1,27 @@
+@import '../../scss/main.scss';
+
+.loading {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 1;
+  opacity: 1;
+  @include flex-row-center;
+  transition: all 1s ease;
+
+  &.not-current-page {
+    opacity: 0;
+    z-index: -3;
+  }
+
+  &__video {
+    opacity: 1;
+    transition: all 0.5s ease;
+
+    &.not-current-page {
+      opacity: 0;
+      z-index: -3;
+    }
+  }
+}

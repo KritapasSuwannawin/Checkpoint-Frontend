@@ -1,0 +1,9 @@
+@import '../../scss/main.scss';
+
+.ambient {
+  @include page-style;
+
+  &.current-page {
+    @include display-page;
+  }
+}

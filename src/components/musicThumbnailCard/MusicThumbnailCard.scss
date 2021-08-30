@@ -1,0 +1,53 @@
+@import '../../scss/main.scss';
+
+.music-thumbnail-card {
+  position: relative;
+  border-radius: 8px;
+  width: 125px;
+  height: 150px;
+  border: 2px rgba($color: #fff, $alpha: 0.01) solid;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    cursor: pointer;
+    border: 2px $white solid;
+  }
+
+  &__image {
+    border-radius: 8px 8px 0 0;
+    object-fit: cover;
+    width: 100%;
+    height: 75%;
+  }
+
+  &__description {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: rgba($color: #000, $alpha: 0.75);
+    width: 100%;
+    height: 25%;
+    border-radius: 0 0 8px 8px;
+    text-transform: capitalize;
+    position: relative;
+  }
+
+  &__music-name {
+    color: $white;
+    font-weight: bold;
+  }
+
+  &__artist-name {
+    font-size: 0.9rem;
+    color: $very-light-grey;
+  }
+
+  &__favourite-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+  }
+}

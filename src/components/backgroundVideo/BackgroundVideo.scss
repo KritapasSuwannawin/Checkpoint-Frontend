@@ -1,0 +1,8 @@
+@import '../../scss/main.scss';
+
+.video {
+  object-fit: cover;
+  @include fixed-whole-screen;
+  z-index: -2;
+  transition: all 1s ease;
+}
