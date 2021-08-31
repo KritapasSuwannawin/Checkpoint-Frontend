@@ -19,6 +19,10 @@
   padding: 0 2.5rem;
   @include flex-row-center;
   column-gap: 2rem;
+  row-gap: 2rem;
+  max-width: 100vw;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   transition: all 0.5s ease;
   z-index: -3;
   opacity: 0;

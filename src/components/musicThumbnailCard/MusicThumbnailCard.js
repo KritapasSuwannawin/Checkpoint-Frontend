@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { storageRef } from '../../firebase/storage';
+import { musicActions } from '../../store/musicSlice';
 import './MusicThumbnailCard.scss';
 
 import heartSvg15 from '../../svg/15px/Heart.svg';
@@ -10,6 +11,7 @@ import playSvg25 from '../../svg/25px/Circled Play.svg';
 import pauseSvg25 from '../../svg/25px/Pause Button.svg';
 
 function MusicThumbnailCard(props) {
+  const dispatch = useDispatch();
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
 
@@ -25,7 +27,15 @@ function MusicThumbnailCard(props) {
   }, [props.thumbnailFilePath]);
 
   function clickHandler() {
-    props.onClickHandler(props.id, props.musicName, props.artistName, props.filePath, props.thumbnailFilePath);
+    if (!(currentMusic.id === props.id) || !musicPlaying) {
+      props.onClickHandler(props.id, props.musicName, props.artistName, props.filePath, props.thumbnailFilePath);
+    }
+  }
+
+  function pauseMusicSpecificHandler() {
+    if (currentMusic.id === props.id && musicPlaying) {
+      dispatch(musicActions.setMusicPlaying(false));
+    }
   }
 
   if (!thumbnailURL) {
@@ -40,7 +50,12 @@ function MusicThumbnailCard(props) {
           <p className="music-thumbnail-card__music-name">{props.musicName}</p>
           <p className="music-thumbnail-card__artist-name">{props.artistName}</p>
         </div>
-        <img src={currentMusic.id === props.id && musicPlaying ? pauseSvg25 : playSvg25} alt=""></img>
+        <img
+          src={currentMusic.id === props.id && musicPlaying ? pauseSvg25 : playSvg25}
+          alt=""
+          onClick={pauseMusicSpecificHandler}
+          className="music-thumbnail-card__play-pause-btn"
+        ></img>
       </div>
       <img src={heartsSvg15} alt="" className="music-thumbnail-card__favourite-btn"></img>
     </div>

@@ -41,6 +41,7 @@ function Home() {
   const musicVolume = useSelector((store) => store.music.musicVolume);
   const shuffleMusic = useSelector((store) => store.music.shuffleMusic);
   const loopMusic = useSelector((store) => store.music.loopMusic);
+  const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
 
@@ -48,9 +49,7 @@ function Home() {
   const ambientVolumeSliderRef = useRef();
 
   const [musicThumbnailURL, setMusicThumbnailURL] = useState();
-  const [musicAndAmbientPlaying, setMusicAndAmbientPlaying] = useState(false);
   const [backgroundArr, setBackgroundArr] = useState([]);
-  const [music, setMusic] = useState();
   const [ambientArr, setAmbientArr] = useState([]);
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(0.5);
@@ -79,8 +78,6 @@ function Home() {
         setMusicThumbnailURL(url);
       });
 
-    setMusic(<MusicAudio filePath={currentmusic.filePath}></MusicAudio>);
-
     setAmbientArr(
       currentAmbientArr.map((ambient) => (
         <div key={ambient.id}>
@@ -99,9 +96,7 @@ function Home() {
     };
   }, [currentBackground, currentAmbientArr, currentmusic]);
 
-  function playPauseHandler() {
-    setMusicAndAmbientPlaying((val) => !val);
-    dispatch(ambientActions.toggleAmbientPlayPause());
+  function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
   }
 
@@ -179,7 +174,7 @@ function Home() {
     <div className="home">
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`} onClick={overlayClickHandler}></div>
       {backgroundArr}
-      {music}
+      <MusicAudio></MusicAudio>
       {ambientArr}
       <nav className="nav">
         <div className="nav__logo">
@@ -234,8 +229,8 @@ function Home() {
           ></img>
           <img src={backwardSvg25} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
           <img
-            src={musicAndAmbientPlaying ? pauseSvg50 : playSvg50}
-            onClick={playPauseHandler}
+            src={musicPlaying ? pauseSvg50 : playSvg50}
+            onClick={playPauseMusicHandler}
             alt=""
             className="player__music-control--play-pause"
           ></img>

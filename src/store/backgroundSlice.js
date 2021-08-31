@@ -11,10 +11,9 @@ const backgroundSlice = createSlice({
   },
   reducers: {
     changeBackgroundHandler(state, action) {
-      if (state.currentBackground.id === action.payload.id) {
-        return;
+      if (state.currentBackground.id !== action.payload.id) {
+        state.currentBackground = action.payload;
       }
-      state.currentBackground = action.payload;
     },
   },
 });

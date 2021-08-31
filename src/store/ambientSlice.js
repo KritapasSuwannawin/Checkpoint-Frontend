@@ -30,16 +30,16 @@ const ambientSlice = createSlice({
       },
     ],
     currentAmbientArr: [],
-    ambientPlaying: false,
+    ambientPlaying: true,
     ambientVolume: 0.5,
   },
   reducers: {
     ambientToggleHandler(state, action) {
       if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id) >= 0) {
         state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload.id);
-        return;
+      } else {
+        state.currentAmbientArr = [...state.currentAmbientArr, action.payload];
       }
-      state.currentAmbientArr = [...state.currentAmbientArr, action.payload];
     },
     toggleAmbientPlayPause(state, action) {
       state.ambientPlaying = !state.ambientPlaying;

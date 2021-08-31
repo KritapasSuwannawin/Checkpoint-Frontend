@@ -32,6 +32,34 @@ const musicSlice = createSlice({
         filePath: 'music/Music_test_#4_Sweetbitter.mp3',
         thumbnailFilePath: 'music/Music_tn_#4.jpg',
       },
+      {
+        id: '5',
+        musicName: 'music name',
+        artistName: 'artist name',
+        filePath: 'music/Davy Jones.mp3',
+        thumbnailFilePath: 'music/Davy Jones.jpg',
+      },
+      {
+        id: '6',
+        musicName: 'music name',
+        artistName: 'artist name',
+        filePath: 'music/Laputa.mp3',
+        thumbnailFilePath: 'music/Laputa.jpg',
+      },
+      {
+        id: '7',
+        musicName: 'music name',
+        artistName: 'artist name',
+        filePath: 'music/soma.mp3',
+        thumbnailFilePath: 'music/soma.jpg',
+      },
+      {
+        id: '8',
+        musicName: 'music name',
+        artistName: 'artist name',
+        filePath: 'music/Spirited Away.mp3',
+        thumbnailFilePath: 'music/Spirited Away.jpg',
+      },
     ],
     currentMusic: {
       id: '1',
@@ -48,10 +76,15 @@ const musicSlice = createSlice({
   },
   reducers: {
     changeMusicHandler(state, action) {
-      if (state.currentMusic.id === action.payload.id) {
-        return;
+      if (state.currentMusic.id !== action.payload.id) {
+        if (state.shuffleMusic) {
+          state.shuffledMusicArr = [];
+        }
+        state.currentMusic = action.payload;
+        state.musicPlaying = true;
+      } else {
+        state.musicPlaying = true;
       }
-      state.currentMusic = action.payload;
     },
     toggleMusicPlayPause(state, action) {
       state.musicPlaying = !state.musicPlaying;
@@ -65,9 +98,9 @@ const musicSlice = createSlice({
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex === 0) {
           state.currentMusic = availableMusicArr[availableMusicArr.length - 1];
-          return;
+        } else {
+          state.currentMusic = availableMusicArr[currentMusicIndex - 1];
         }
-        state.currentMusic = availableMusicArr[currentMusicIndex - 1];
       } else {
         if (state.shuffledMusicArr.length > 1) {
           const shuffledMusicArr = [...state.shuffledMusicArr];
@@ -76,14 +109,15 @@ const musicSlice = createSlice({
           shuffledMusicArr.push(previousMusic);
           state.currentMusic = previousMusic;
           state.shuffledMusicArr = shuffledMusicArr;
-          return;
+        } else {
+          const availableMusicArr = [...state.availableMusicArr];
+          const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
+          availableMusicArr.splice(currentMusicIndex, 1);
+          const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
+          state.currentMusic = randomMusic;
         }
-        const availableMusicArr = [...state.availableMusicArr];
-        const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
-        availableMusicArr.splice(currentMusicIndex, 1);
-        const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
-        state.currentMusic = randomMusic;
       }
+      state.musicPlaying = true;
     },
     nextMusicHandler(state, action) {
       if (!state.shuffleMusic) {
@@ -91,9 +125,9 @@ const musicSlice = createSlice({
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex < availableMusicArr.length - 1) {
           state.currentMusic = availableMusicArr[currentMusicIndex + 1];
-          return;
+        } else {
+          state.currentMusic = availableMusicArr[0];
         }
-        state.currentMusic = availableMusicArr[0];
       } else {
         let shuffledMusicArr = state.shuffledMusicArr;
         if (shuffledMusicArr.length === state.availableMusicArr.length) {
@@ -111,6 +145,7 @@ const musicSlice = createSlice({
         shuffledMusicArr.push(randomMusic);
         state.shuffledMusicArr = shuffledMusicArr;
       }
+      state.musicPlaying = true;
     },
     toggleShuffleMusic(state, action) {
       state.shuffleMusic = !state.shuffleMusic;
@@ -127,6 +162,9 @@ const musicSlice = createSlice({
         state.shuffleMusic = false;
         state.shuffledMusicArr = [];
       }
+    },
+    setMusicPlaying(state, action) {
+      state.musicPlaying = action.payload;
     },
   },
 });

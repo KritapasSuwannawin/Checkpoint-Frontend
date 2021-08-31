@@ -9,30 +9,57 @@ function MusicAudio(props) {
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const musicVolume = useSelector((store) => store.music.musicVolume);
   const loopMusic = useSelector((store) => store.music.loopMusic);
+  const currentMusic = useSelector((store) => store.music.currentMusic);
 
   const musicRef = useRef();
 
   const [musicURL, setMusicURL] = useState();
+  const [currentMusicFilePath, setCurrentMusicFilePath] = useState();
 
   useEffect(() => {
     storageRef
-      .child(props.filePath)
+      .child(currentMusic.filePath)
       .getDownloadURL()
       .then((url) => {
         setMusicURL(url);
+        setCurrentMusicFilePath(currentMusic.filePath);
+
+        if (musicPlaying) {
+          const playPromise = musicRef.current.play();
+          if (playPromise) {
+            playPromise.catch(() => {
+              return;
+            });
+          }
+        } else {
+          musicRef.current.pause();
+        }
       });
 
-    if (musicPlaying) {
-      musicRef.current.play();
-    } else {
-      musicRef.current.pause();
+    if (currentMusic.filePath === currentMusicFilePath) {
+      if (musicPlaying) {
+        const playPromise = musicRef.current.play();
+        if (playPromise) {
+          playPromise.catch(() => {
+            return;
+          });
+        }
+      } else {
+        musicRef.current.pause();
+      }
     }
 
     musicRef.current.volume = musicVolume;
-  }, [musicPlaying, musicVolume, props.filePath]);
+  }, [musicPlaying, musicVolume, currentMusic.filePath, currentMusicFilePath]);
 
   function audioEndedHandler() {
     dispatch(musicActions.nextMusicHandler());
+  }
+
+  function canplayHandler() {
+    if (musicPlaying) {
+      musicRef.current.play();
+    }
   }
 
   return (
@@ -40,7 +67,7 @@ function MusicAudio(props) {
       src={musicURL}
       preload="auto"
       loop={loopMusic}
-      autoPlay={musicPlaying}
+      onCanPlay={canplayHandler}
       onEnded={audioEndedHandler}
       ref={musicRef}
     ></audio>
