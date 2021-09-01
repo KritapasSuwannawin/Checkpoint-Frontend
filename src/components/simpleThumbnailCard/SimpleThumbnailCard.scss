@@ -8,17 +8,25 @@
   &.background-card {
     width: 25rem;
     height: 15rem;
+
+    &:hover {
+      cursor: pointer;
+      border: 2px $white solid;
+    }
   }
 
   &.ambient-card {
     width: 15rem;
     height: 5rem;
-  }
 
-  &:hover,
-  &.current-ambient {
-    cursor: pointer;
-    border: 2px $white solid;
+    &:hover {
+      cursor: pointer;
+      border: none;
+    }
+
+    &.current-ambient {
+      border: 2px $white solid;
+    }
   }
 
   &__image {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { pageActions } from '../../store/pageSlice';
+
 import './BackgroundVideo.scss';
 
 function BackgroundVideo(props) {
@@ -16,7 +17,6 @@ function BackgroundVideo(props) {
 
   return (
     <video
-      style={{ opacity: canPlay ? 1 : 0 }}
       onCanPlay={canPlayHandler}
       autoPlay
       loop

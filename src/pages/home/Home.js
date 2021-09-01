@@ -55,16 +55,16 @@ function Home() {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(0.5);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(0.5);
 
-  const [currentBackgroundFilePath, setCurrentBackgroundFilePath] = useState();
+  const currentBackgroundFilePath = useRef();
   const [currentMusicThumbnailFilePath, setCurrentMusicThumbnailFilePath] = useState();
 
   useEffect(() => {
-    if (currentBackgroundFilePath !== currentBackground.filePath) {
+    if (currentBackgroundFilePath.current !== currentBackground.filePath) {
       storageRef
         .child(currentBackground.filePath)
         .getDownloadURL()
         .then((url) => {
-          setCurrentBackgroundFilePath(currentBackground.filePath);
+          currentBackgroundFilePath.current = currentBackground.filePath;
           setBackgroundArr((backgroundArr) => {
             const poppedBackgroundArr = backgroundArr.filter((background) => background.key !== currentBackground.id);
             return [
@@ -97,8 +97,8 @@ function Home() {
 
     return () => {
       setBackgroundArr((backgroundArr) => {
-        if (backgroundArr.slice(1).length > 0) {
-          return backgroundArr.slice(1);
+        if (backgroundArr.slice(-1).length === 1) {
+          return backgroundArr.slice(-1);
         }
         return backgroundArr;
       });
@@ -174,10 +174,6 @@ function Home() {
   function overlayClickHandler() {
     dispatch(pageActions.closePageHandler());
   }
-
-  // if (!backgroundArr.length) {
-  //   return <></>;
-  // }
 
   return (
     <div className="home">
