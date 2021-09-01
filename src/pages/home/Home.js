@@ -55,28 +55,37 @@ function Home() {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(0.5);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(0.5);
 
-  useEffect(() => {
-    storageRef
-      .child(currentBackground.filePath)
-      .getDownloadURL()
-      .then((url) => {
-        setBackgroundArr((backgroundArr) => {
-          const poppedBackgroundArr = backgroundArr.filter((background) => background.key !== currentBackground.id);
-          return [
-            ...poppedBackgroundArr,
-            <div key={currentBackground.id}>
-              <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
-            </div>,
-          ];
-        });
-      });
+  const [currentBackgroundFilePath, setCurrentBackgroundFilePath] = useState();
+  const [currentMusicThumbnailFilePath, setCurrentMusicThumbnailFilePath] = useState();
 
-    storageRef
-      .child(currentmusic.thumbnailFilePath)
-      .getDownloadURL()
-      .then((url) => {
-        setMusicThumbnailURL(url);
-      });
+  useEffect(() => {
+    if (currentBackgroundFilePath !== currentBackground.filePath) {
+      storageRef
+        .child(currentBackground.filePath)
+        .getDownloadURL()
+        .then((url) => {
+          setCurrentBackgroundFilePath(currentBackground.filePath);
+          setBackgroundArr((backgroundArr) => {
+            const poppedBackgroundArr = backgroundArr.filter((background) => background.key !== currentBackground.id);
+            return [
+              ...poppedBackgroundArr,
+              <div key={currentBackground.id}>
+                <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
+              </div>,
+            ];
+          });
+        });
+    }
+
+    if (currentMusicThumbnailFilePath !== currentmusic.thumbnailFilePath) {
+      storageRef
+        .child(currentmusic.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setMusicThumbnailURL(url);
+          setCurrentMusicThumbnailFilePath(currentmusic.thumbnailFilePath);
+        });
+    }
 
     setAmbientArr(
       currentAmbientArr.map((ambient) => (
@@ -94,7 +103,7 @@ function Home() {
         return backgroundArr;
       });
     };
-  }, [currentBackground, currentAmbientArr, currentmusic]);
+  }, [currentBackground, currentAmbientArr, currentmusic, currentBackgroundFilePath, currentMusicThumbnailFilePath]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -166,9 +175,9 @@ function Home() {
     dispatch(pageActions.closePageHandler());
   }
 
-  if (!backgroundArr.length) {
-    return <></>;
-  }
+  // if (!backgroundArr.length) {
+  //   return <></>;
+  // }
 
   return (
     <div className="home">

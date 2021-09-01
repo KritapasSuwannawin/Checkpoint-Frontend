@@ -17,25 +17,6 @@ function MusicAudio(props) {
   const [currentMusicFilePath, setCurrentMusicFilePath] = useState();
 
   useEffect(() => {
-    storageRef
-      .child(currentMusic.filePath)
-      .getDownloadURL()
-      .then((url) => {
-        setMusicURL(url);
-        setCurrentMusicFilePath(currentMusic.filePath);
-
-        if (musicPlaying) {
-          const playPromise = musicRef.current.play();
-          if (playPromise) {
-            playPromise.catch(() => {
-              return;
-            });
-          }
-        } else {
-          musicRef.current.pause();
-        }
-      });
-
     if (currentMusic.filePath === currentMusicFilePath) {
       if (musicPlaying) {
         const playPromise = musicRef.current.play();
@@ -47,6 +28,25 @@ function MusicAudio(props) {
       } else {
         musicRef.current.pause();
       }
+    } else {
+      storageRef
+        .child(currentMusic.filePath)
+        .getDownloadURL()
+        .then((url) => {
+          setMusicURL(url);
+          setCurrentMusicFilePath(currentMusic.filePath);
+
+          if (musicPlaying) {
+            const playPromise = musicRef.current.play();
+            if (playPromise) {
+              playPromise.catch(() => {
+                return;
+              });
+            }
+          } else {
+            musicRef.current.pause();
+          }
+        });
     }
 
     musicRef.current.volume = musicVolume;

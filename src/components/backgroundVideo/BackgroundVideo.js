@@ -6,6 +6,7 @@ import './BackgroundVideo.scss';
 
 function BackgroundVideo(props) {
   const dispatch = useDispatch();
+
   const [canPlay, setCanPlay] = useState(false);
 
   function canPlayHandler() {

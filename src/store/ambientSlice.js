@@ -30,7 +30,6 @@ const ambientSlice = createSlice({
       },
     ],
     currentAmbientArr: [],
-    ambientPlaying: true,
     ambientVolume: 0.5,
   },
   reducers: {
@@ -40,9 +39,6 @@ const ambientSlice = createSlice({
       } else {
         state.currentAmbientArr = [...state.currentAmbientArr, action.payload];
       }
-    },
-    toggleAmbientPlayPause(state, action) {
-      state.ambientPlaying = !state.ambientPlaying;
     },
     setAmbientVolume(state, action) {
       state.ambientVolume = action.payload;
