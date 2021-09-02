@@ -43,6 +43,15 @@ const ambientSlice = createSlice({
     setAmbientVolume(state, action) {
       state.ambientVolume = action.payload;
     },
+    setAvailableAmbient(state, action) {
+      const availableAmbientArr = [...state.availableAmbientArr];
+      const existingAmbientIndex = availableAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
+      if (availableAmbientArr[existingAmbientIndex].url) {
+        return;
+      }
+      availableAmbientArr[existingAmbientIndex] = action.payload;
+      state.availableAmbientArr = availableAmbientArr;
+    },
   },
 });
 

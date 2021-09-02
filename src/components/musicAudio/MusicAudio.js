@@ -14,10 +14,10 @@ function MusicAudio(props) {
   const musicRef = useRef();
 
   const [musicURL, setMusicURL] = useState();
-  const [currentMusicFilePath, setCurrentMusicFilePath] = useState();
+  const currentMusicFilePath = useRef();
 
   useEffect(() => {
-    if (currentMusic.filePath === currentMusicFilePath) {
+    if (currentMusic.filePath === currentMusicFilePath.current) {
       if (musicPlaying) {
         const playPromise = musicRef.current.play();
         if (playPromise) {
@@ -29,28 +29,44 @@ function MusicAudio(props) {
         musicRef.current.pause();
       }
     } else {
-      storageRef
-        .child(currentMusic.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          setMusicURL(url);
-          setCurrentMusicFilePath(currentMusic.filePath);
+      if (currentMusic.url) {
+        setMusicURL(currentMusic.url);
+        currentMusicFilePath.current = currentMusic.filePath;
 
-          if (musicPlaying) {
-            const playPromise = musicRef.current.play();
-            if (playPromise) {
-              playPromise.catch(() => {
-                return;
-              });
-            }
-          } else {
-            musicRef.current.pause();
+        if (musicPlaying) {
+          const playPromise = musicRef.current.play();
+          if (playPromise) {
+            playPromise.catch(() => {
+              return;
+            });
           }
-        });
+        } else {
+          musicRef.current.pause();
+        }
+      } else {
+        storageRef
+          .child(currentMusic.filePath)
+          .getDownloadURL()
+          .then((url) => {
+            setMusicURL(url);
+            currentMusicFilePath.current = currentMusic.filePath;
+
+            if (musicPlaying) {
+              const playPromise = musicRef.current.play();
+              if (playPromise) {
+                playPromise.catch(() => {
+                  return;
+                });
+              }
+            } else {
+              musicRef.current.pause();
+            }
+          });
+      }
     }
 
     musicRef.current.volume = musicVolume;
-  }, [musicPlaying, musicVolume, currentMusic.filePath, currentMusicFilePath]);
+  }, [musicPlaying, musicVolume, currentMusic, currentMusicFilePath]);
 
   function audioEndedHandler() {
     dispatch(musicActions.nextMusicHandler());

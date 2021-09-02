@@ -37,7 +37,7 @@ function Home() {
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const currentBackground = useSelector((store) => store.background.currentBackground);
-  const currentmusic = useSelector((store) => store.music.currentMusic);
+  const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicVolume = useSelector((store) => store.music.musicVolume);
   const shuffleMusic = useSelector((store) => store.music.shuffleMusic);
   const loopMusic = useSelector((store) => store.music.loopMusic);
@@ -56,41 +56,62 @@ function Home() {
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(0.5);
 
   const currentBackgroundFilePath = useRef();
-  const [currentMusicThumbnailFilePath, setCurrentMusicThumbnailFilePath] = useState();
+  const currentMusicThumbnailFilePath = useRef();
 
   useEffect(() => {
     if (currentBackgroundFilePath.current !== currentBackground.filePath) {
-      storageRef
-        .child(currentBackground.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          currentBackgroundFilePath.current = currentBackground.filePath;
+      if (currentBackground.url) {
+        currentBackgroundFilePath.current = currentBackground.filePath;
+        setTimeout(() => {
           setBackgroundArr((backgroundArr) => {
-            const poppedBackgroundArr = backgroundArr.filter((background) => background.key !== currentBackground.id);
             return [
-              ...poppedBackgroundArr,
+              ...backgroundArr,
               <div key={currentBackground.id}>
-                <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
+                <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
               </div>,
             ];
           });
+        }, 0);
+        setBackgroundArr((backgroundArr) => {
+          return backgroundArr.filter((background) => background.key !== currentBackground.id);
         });
+      } else {
+        storageRef
+          .child(currentBackground.filePath)
+          .getDownloadURL()
+          .then((url) => {
+            currentBackgroundFilePath.current = currentBackground.filePath;
+            setTimeout(() => {
+              setBackgroundArr((backgroundArr) => {
+                return [
+                  ...backgroundArr,
+                  <div key={currentBackground.id}>
+                    <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
+                  </div>,
+                ];
+              });
+            }, 0);
+            setBackgroundArr((backgroundArr) => {
+              return backgroundArr.filter((background) => background.key !== currentBackground.id);
+            });
+          });
+      }
     }
 
-    if (currentMusicThumbnailFilePath !== currentmusic.thumbnailFilePath) {
+    if (currentMusicThumbnailFilePath.current !== currentMusic.thumbnailFilePath) {
       storageRef
-        .child(currentmusic.thumbnailFilePath)
+        .child(currentMusic.thumbnailFilePath)
         .getDownloadURL()
         .then((url) => {
           setMusicThumbnailURL(url);
-          setCurrentMusicThumbnailFilePath(currentmusic.thumbnailFilePath);
+          currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
         });
     }
 
     setAmbientArr(
       currentAmbientArr.map((ambient) => (
         <div key={ambient.id}>
-          <AmbientAudio filePath={ambient.filePath}></AmbientAudio>
+          <AmbientAudio filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
         </div>
       ))
     );
@@ -103,7 +124,7 @@ function Home() {
         return backgroundArr;
       });
     };
-  }, [currentBackground, currentAmbientArr, currentmusic, currentBackgroundFilePath, currentMusicThumbnailFilePath]);
+  }, [currentBackground, currentAmbientArr, currentMusic, currentBackgroundFilePath, currentMusicThumbnailFilePath]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());

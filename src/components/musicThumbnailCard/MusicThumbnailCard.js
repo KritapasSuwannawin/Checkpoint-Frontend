@@ -28,7 +28,14 @@ function MusicThumbnailCard(props) {
 
   function clickHandler() {
     if (!(currentMusic.id === props.id) || !musicPlaying) {
-      props.onClickHandler(props.id, props.musicName, props.artistName, props.filePath, props.thumbnailFilePath);
+      props.onClickHandler(
+        props.id,
+        props.musicName,
+        props.artistName,
+        props.filePath,
+        props.thumbnailFilePath,
+        props.url
+      );
     }
   }
 

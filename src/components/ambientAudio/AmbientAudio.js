@@ -9,21 +9,26 @@ function AmbientAudio(props) {
   const ambientRef = useRef();
 
   const [ambientURL, setAmbientURL] = useState();
-  const [currentAmbientFilePath, setCurrentAmbientFilePath] = useState();
+  const currentAmbientFilePath = useRef();
 
   useEffect(() => {
-    if (currentAmbientFilePath !== props.filePath) {
-      storageRef
-        .child(props.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          setAmbientURL(url);
-          setCurrentAmbientFilePath(props.filePath);
-        });
+    if (currentAmbientFilePath.current !== props.filePath) {
+      if (props.url) {
+        setAmbientURL(props.url);
+        currentAmbientFilePath.current = props.filePath;
+      } else {
+        storageRef
+          .child(props.filePath)
+          .getDownloadURL()
+          .then((url) => {
+            setAmbientURL(url);
+            currentAmbientFilePath.current = props.filePath;
+          });
+      }
     }
 
     ambientRef.current.volume = ambientVolume;
-  }, [ambientVolume, props.filePath, currentAmbientFilePath]);
+  }, [ambientVolume, props, currentAmbientFilePath]);
 
   return <audio src={ambientURL} preload="auto" loop={true} autoPlay={true} ref={ambientRef}></audio>;
 }

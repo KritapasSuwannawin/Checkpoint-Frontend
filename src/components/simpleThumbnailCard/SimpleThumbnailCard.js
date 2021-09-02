@@ -36,9 +36,9 @@ function SimpleThumbnailCard(props) {
 
   function clickHandler() {
     if (props.background) {
-      props.onClickHandler(props.id, props.filePath, props.thumbnailFilePath);
+      props.onClickHandler(props.id, props.filePath, props.thumbnailFilePath, props.url);
     } else if (props.ambient) {
-      props.onClickHandler(props.id, props.name, props.filePath, props.thumbnailFilePath);
+      props.onClickHandler(props.id, props.name, props.filePath, props.thumbnailFilePath, props.url);
     }
   }
 

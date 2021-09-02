@@ -15,6 +15,17 @@ const backgroundSlice = createSlice({
         state.currentBackground = action.payload;
       }
     },
+    setAvailableBackground(state, action) {
+      const availableBackgroundArr = [...state.availableBackgroundArr];
+      const existingBackgroundIndex = availableBackgroundArr.findIndex(
+        (background) => background.id === action.payload.id
+      );
+      if (availableBackgroundArr[existingBackgroundIndex].url) {
+        return;
+      }
+      availableBackgroundArr[existingBackgroundIndex] = action.payload;
+      state.availableBackgroundArr = availableBackgroundArr;
+    },
   },
 });
 

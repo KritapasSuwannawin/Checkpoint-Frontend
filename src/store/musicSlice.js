@@ -194,6 +194,15 @@ const musicSlice = createSlice({
     setMusicPlaying(state, action) {
       state.musicPlaying = action.payload;
     },
+    setAvailableMusic(state, action) {
+      const availableMusicArr = [...state.availableMusicArr];
+      const existingMusicIndex = availableMusicArr.findIndex((music) => music.id === action.payload.id);
+      if (availableMusicArr[existingMusicIndex].url) {
+        return;
+      }
+      availableMusicArr[existingMusicIndex] = action.payload;
+      state.availableMusicArr = availableMusicArr;
+    },
   },
 });
 

@@ -14,27 +14,31 @@ function Ambient() {
   const [thumbnailArr, setThumbnailArr] = useState([]);
 
   const ambientClickHandler = useCallback(
-    (id, name, filePath, thumbnailFilePath) => {
-      dispatch(ambientActions.ambientToggleHandler({ id, name, filePath, thumbnailFilePath }));
+    (id, name, filePath, thumbnailFilePath, url) => {
+      dispatch(ambientActions.ambientToggleHandler({ id, name, filePath, thumbnailFilePath, url }));
     },
     [dispatch]
   );
 
   useEffect(() => {
     availableAmbientArr.forEach((ambient) => {
-      setThumbnailArr((thumbnailArr) => [
-        ...thumbnailArr,
-        <div key={ambient.id}>
-          <SimpleThumbnailCard
-            id={ambient.id}
-            name={ambient.name}
-            filePath={ambient.filePath}
-            thumbnailFilePath={ambient.thumbnailFilePath}
-            onClickHandler={ambientClickHandler}
-            ambient
-          ></SimpleThumbnailCard>
-        </div>,
-      ]);
+      setThumbnailArr((thumbnailArr) => {
+        const filteredThumbnailArr = thumbnailArr.filter((thumbnail) => thumbnail.key !== ambient.id);
+        return [
+          ...filteredThumbnailArr,
+          <div key={ambient.id}>
+            <SimpleThumbnailCard
+              id={ambient.id}
+              name={ambient.name}
+              filePath={ambient.filePath}
+              thumbnailFilePath={ambient.thumbnailFilePath}
+              url={ambient.url}
+              onClickHandler={ambientClickHandler}
+              ambient
+            ></SimpleThumbnailCard>
+          </div>,
+        ];
+      });
     });
   }, [availableAmbientArr, ambientClickHandler]);
 
