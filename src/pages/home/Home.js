@@ -111,7 +111,7 @@ function Home() {
     setAmbientArr(
       currentAmbientArr.map((ambient) => (
         <div key={ambient.id}>
-          <AmbientAudio filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
+          <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
         </div>
       ))
     );
