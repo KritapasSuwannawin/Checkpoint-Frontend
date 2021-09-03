@@ -9,6 +9,7 @@ import heartsSvg15 from '../../svg/15px/Hearts.svg';
 
 function SimpleThumbnailCard(props) {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
+  const currentBackground = useSelector((store) => store.background.currentBackground);
 
   const [thumbnailURL, setThumbnailURL] = useState();
 
@@ -27,7 +28,7 @@ function SimpleThumbnailCard(props) {
           currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
         }`
       : ''
-  } ${props.background ? 'background-card' : ''}`;
+  } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''}`;
 
   const placeholderClassName =
     'simple-thumbnail-placeholder ' +

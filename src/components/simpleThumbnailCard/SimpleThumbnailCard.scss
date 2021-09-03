@@ -11,6 +11,10 @@
 
     &:hover {
       cursor: pointer;
+      border: none;
+    }
+
+    &.current-background {
       border: 2px $white solid;
     }
   }
