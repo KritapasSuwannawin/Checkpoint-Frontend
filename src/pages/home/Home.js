@@ -15,7 +15,6 @@ import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
 import profileSvg50 from '../../svg/50px/Test Account.svg';
-import moodSvg36 from '../../svg/36px/Frames-1.svg';
 import daySvg36 from '../../svg/36px/Sun.svg';
 import eveningSvg36 from '../../svg/36px/Sunset.svg';
 import nightSvg36 from '../../svg/36px/Moon Symbol.svg';
@@ -31,6 +30,7 @@ import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import ambientSvg25 from '../../svg/25px/Organic Food.svg';
 import musicSvg25 from '../../svg/25px/iTunes-1.svg';
+import addSvg20 from '../../svg/20px/Add20px.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
 
 function Home() {
@@ -49,8 +49,9 @@ function Home() {
   const ambientVolumeSliderRef = useRef();
 
   const [musicThumbnailURL, setMusicThumbnailURL] = useState();
-  const [backgroundArr, setBackgroundArr] = useState([]);
-  const [ambientArr, setAmbientArr] = useState([]);
+  const [backgroundThumbnailURL, setBackgroundThumbnailURL] = useState();
+  const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
+  const [ambientAudioArr, setAmbientAudioArr] = useState([]);
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(0.5);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(0.5);
@@ -63,17 +64,17 @@ function Home() {
       if (currentBackground.url) {
         currentBackgroundFilePath.current = currentBackground.filePath;
         setTimeout(() => {
-          setBackgroundArr((backgroundArr) => {
+          setBackgroundVideoArr((backgroundVideoArr) => {
             return [
-              ...backgroundArr,
+              ...backgroundVideoArr,
               <div key={currentBackground.id}>
                 <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
               </div>,
             ];
           });
         }, 0);
-        setBackgroundArr((backgroundArr) => {
-          return backgroundArr.filter((background) => background.key !== currentBackground.id);
+        setBackgroundVideoArr((backgroundVideoArr) => {
+          return backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
         });
       } else {
         storageRef
@@ -82,20 +83,27 @@ function Home() {
           .then((url) => {
             currentBackgroundFilePath.current = currentBackground.filePath;
             setTimeout(() => {
-              setBackgroundArr((backgroundArr) => {
+              setBackgroundVideoArr((backgroundVideoArr) => {
                 return [
-                  ...backgroundArr,
+                  ...backgroundVideoArr,
                   <div key={currentBackground.id}>
                     <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
                   </div>,
                 ];
               });
             }, 0);
-            setBackgroundArr((backgroundArr) => {
-              return backgroundArr.filter((background) => background.key !== currentBackground.id);
+            setBackgroundVideoArr((backgroundVideoArr) => {
+              return backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
             });
           });
       }
+
+      storageRef
+        .child(currentBackground.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setBackgroundThumbnailURL(url);
+        });
     }
 
     if (currentMusicThumbnailFilePath.current !== currentMusic.thumbnailFilePath) {
@@ -108,7 +116,7 @@ function Home() {
         });
     }
 
-    setAmbientArr(
+    setAmbientAudioArr(
       currentAmbientArr.map((ambient) => (
         <div key={ambient.id}>
           <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
@@ -116,12 +124,22 @@ function Home() {
       ))
     );
 
-    return () => {
-      setBackgroundArr((backgroundArr) => {
-        if (backgroundArr.slice(-1).length === 1) {
-          return backgroundArr.slice(-1);
+    const timeout = setTimeout(() => {
+      setBackgroundVideoArr((backgroundVideoArr) => {
+        if (backgroundVideoArr.slice(-1).length === 1) {
+          return backgroundVideoArr.slice(-1);
         }
-        return backgroundArr;
+        return backgroundVideoArr;
+      });
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeout);
+      setBackgroundVideoArr((backgroundVideoArr) => {
+        if (backgroundVideoArr.slice(-2).length === 2) {
+          return backgroundVideoArr.slice(-2);
+        }
+        return backgroundVideoArr;
       });
     };
   }, [currentBackground, currentAmbientArr, currentMusic, currentBackgroundFilePath, currentMusicThumbnailFilePath]);
@@ -181,15 +199,27 @@ function Home() {
   }
 
   function backgroundClickHander() {
+    if (currentPage === 'background' || currentPage === 'ambient') {
+      dispatch(pageActions.closePageHandler());
+      return;
+    }
     dispatch(pageActions.changePageHandler('background'));
   }
 
   function musicClickHander() {
+    if (currentPage === 'music') {
+      dispatch(pageActions.closePageHandler());
+      return;
+    }
     dispatch(pageActions.changePageHandler('music'));
   }
 
-  function ambientClickHander() {
+  function openAmbientPageHander() {
     dispatch(pageActions.changePageHandler('ambient'));
+  }
+
+  function openBackgroundPageHander() {
+    dispatch(pageActions.changePageHandler('background'));
   }
 
   function overlayClickHandler() {
@@ -198,39 +228,60 @@ function Home() {
 
   return (
     <div className="home">
-      <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`} onClick={overlayClickHandler}></div>
-      {backgroundArr}
+      <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
+        <div
+          className={`home__overlay--left ${currentPage === 'music' ? 'wide' : ''}`}
+          onClick={overlayClickHandler}
+        ></div>
+        <div className={`home__overlay--right ${currentPage === 'music' ? 'wide' : ''}`}></div>
+      </div>
+      {backgroundVideoArr}
       <MusicAudio></MusicAudio>
-      {ambientArr}
+      {ambientAudioArr}
       <nav className="nav">
-        <div className="nav__logo">
+        <div onClick={overlayClickHandler} className="nav__logo">
           <img src={logo50} alt=""></img>
         </div>
         <div className="nav__links">
-          <div onClick={backgroundClickHander} className="nav__links--link">
-            Background
-          </div>
-          <div onClick={musicClickHander} className="nav__links--link">
+          <div
+            onClick={musicClickHander}
+            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}
+          >
             Music
           </div>
-          <div onClick={ambientClickHander} className="nav__links--link">
-            Ambient
+          <div
+            onClick={backgroundClickHander}
+            className={`nav__links--link fixed-width ${
+              currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
+            }`}
+          >
+            Background
           </div>
-          <img src={heartSvg25} alt=""></img>
           <div className="nav__separator"></div>
           <img src={profileSvg50} alt=""></img>
         </div>
       </nav>
-      <div className="player__app-control">
-        <div className="player__app-control--section">
-          <img src={moodSvg36} alt=""></img>
+      {(currentPage === 'background' || currentPage === 'ambient') && (
+        <div className="background-control">
+          <img
+            src={backgroundThumbnailURL}
+            alt=""
+            onClick={openBackgroundPageHander}
+            className="background-control__thumbnail"
+          ></img>
+          <div onClick={openAmbientPageHander} className="background-control__add-ambient">
+            <img src={addSvg20} alt=""></img>
+          </div>
         </div>
-        <div className="player__app-control--section">
+      )}
+      {currentPage === 'music' && <div className="music-control">Comming soon...</div>}
+      <div className="mood">
+        <div className="mood--section">
           <img src={daySvg36} alt=""></img>
           <img src={eveningSvg36} alt=""></img>
           <img src={nightSvg36} alt=""></img>
         </div>
-        <div className="player__app-control--section">
+        <div className="mood--section">
           <img src={cloudySvg36} alt=""></img>
           <img src={rainySvg36} alt=""></img>
           <img src={thunderSvg36} alt=""></img>

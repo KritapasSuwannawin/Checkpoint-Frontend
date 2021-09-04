@@ -2,10 +2,32 @@
 
 .home__overlay {
   @include fixed-whole-screen;
+  display: flex;
+  transition: all 0.3s ease;
   z-index: -1;
-  background-color: rgba($color: #000000, $alpha: 0.15);
-  transition: all 0.5s ease;
   opacity: 0;
+
+  &--left {
+    width: calc(100vw - 33rem);
+    height: 100vh;
+    background-color: rgba($color: #000, $alpha: 0.15);
+    transition: all 0.3s ease;
+
+    &.wide {
+      width: calc(100vw - 45rem);
+    }
+  }
+
+  &--right {
+    width: 33rem;
+    height: 100vh;
+    background: linear-gradient(0.25turn, rgba($color: #000, $alpha: 0.15), 10%, rgba($color: #000, $alpha: 0.5));
+    transition: all 0.3s ease;
+
+    &.wide {
+      width: 45rem;
+    }
+  }
 
   &.show-overlay {
     opacity: 1;
@@ -20,15 +42,31 @@
 
   &__logo {
     @include flex-row-center;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &__links {
     @include flex-row-center;
     font-size: 1.6rem;
-    column-gap: 3rem;
+    column-gap: 6rem;
 
-    &--link:hover {
-      cursor: pointer;
+    &--link {
+      padding: 0.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.current-page {
+        font-weight: bold;
+      }
+
+      &.fixed-width {
+        width: 10rem;
+      }
     }
   }
 
@@ -36,6 +74,70 @@
     width: 0.2rem;
     height: 2rem;
     background-color: $white;
+  }
+}
+
+.background-control {
+  position: fixed;
+  top: 9rem;
+  right: 0;
+  width: 33rem;
+  padding: 0 2.5rem;
+  @include flex-column-center;
+  row-gap: 1rem;
+  animation: fade-in 0.3s ease;
+
+  &__thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__add-ambient {
+    width: 100%;
+    height: 5rem;
+    border-radius: 8px;
+    border: 2px solid $very-light-grey;
+    @include flex-row-center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.music-control {
+  position: fixed;
+  top: 10rem;
+  right: 0;
+  width: 45rem;
+  padding: 0 2.5rem;
+  @include flex-column-center;
+  row-gap: 1rem;
+  animation: fade-in 0.3s ease;
+  color: $very-light-grey;
+  font-size: 1.6rem;
+}
+
+.mood {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  transform: translateY(-7rem) translateX(calc(50vw - 50%));
+  @include flex-row-center;
+  column-gap: 2.5rem;
+  margin-bottom: 1rem;
+
+  &--section {
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    @include flex-row-center;
+    column-gap: 2.5rem;
   }
 }
 
@@ -64,7 +166,6 @@
       width: 5rem;
       height: 5rem;
       border-radius: 8px;
-      animation: fade-in 1s ease;
     }
 
     &--music-name {
@@ -121,24 +222,6 @@
     &--volume-slider {
       width: 8rem;
       margin-left: 0.5rem;
-    }
-  }
-
-  &__app-control {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    transform: translateY(-7rem) translateX(calc(50vw - 50%));
-    @include flex-row-center;
-    column-gap: 2rem;
-    margin-bottom: 1rem;
-
-    &--section {
-      backdrop-filter: blur(20px);
-      padding: 0.8rem 1.5rem;
-      border-radius: 8px;
-      @include flex-row-center;
-      column-gap: 2rem;
     }
   }
 }

@@ -4,9 +4,6 @@ import { useSelector } from 'react-redux';
 import { storageRef } from '../../firebase/storage';
 import './SimpleThumbnailCard.scss';
 
-import heartSvg15 from '../../svg/15px/Heart.svg';
-import heartsSvg15 from '../../svg/15px/Hearts.svg';
-
 function SimpleThumbnailCard(props) {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
@@ -50,7 +47,6 @@ function SimpleThumbnailCard(props) {
   return (
     <div className={className}>
       <img src={thumbnailURL} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
-      <img src={heartsSvg15} alt="" className="simple-thumbnail-card__favourite-btn"></img>
       {props.name && (
         <p onClick={clickHandler} className="simple-thumbnail-card__overlay-name">
           {props.name}

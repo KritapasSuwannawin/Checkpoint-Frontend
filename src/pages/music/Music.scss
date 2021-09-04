@@ -2,6 +2,7 @@
 
 .music {
   @include page-style;
+  max-width: calc(100vw - 44rem);
 
   &.current-page {
     @include display-page;

@@ -8,7 +8,7 @@
   z-index: 1;
   opacity: 1;
   @include flex-row-center;
-  transition: all 1s ease;
+  transition: all 0.5s ease;
 
   &.not-current-page {
     opacity: 0;
@@ -17,7 +17,7 @@
 
   &__video {
     opacity: 1;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
 
     &.not-current-page {
       opacity: 0;

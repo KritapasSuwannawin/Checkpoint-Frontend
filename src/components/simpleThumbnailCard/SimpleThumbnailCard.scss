@@ -40,14 +40,6 @@
     height: 100%;
   }
 
-  &__favourite-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5rem;
-    z-index: 1;
-  }
-
   &__overlay-name {
     color: $white;
     position: absolute;
