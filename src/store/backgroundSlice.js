@@ -4,8 +4,8 @@ const backgroundSlice = createSlice({
   name: 'background',
   initialState: {
     availableBackgroundArr: [
-      { id: '1', filePath: 'background/video/BG0111.mp4', thumbnailFilePath: 'background/thumbnail/TBG0111.jpg' },
       { id: '2', filePath: 'background/video/BG0211.mp4', thumbnailFilePath: 'background/thumbnail/TBG0211.jpg' },
+      { id: '1', filePath: 'background/video/BG0111.mp4', thumbnailFilePath: 'background/thumbnail/TBG0111.jpg' },
       { id: '3', filePath: 'background/video/BG0311.mp4', thumbnailFilePath: 'background/thumbnail/TBG0311.jpg' },
       { id: '4', filePath: 'background/video/BG0411.mp4', thumbnailFilePath: 'background/thumbnail/TBG0411.jpg' },
       { id: '5', filePath: 'background/video/BG0511.mp4', thumbnailFilePath: 'background/thumbnail/TBG0511.jpg' },
@@ -13,9 +13,9 @@ const backgroundSlice = createSlice({
       { id: '7', filePath: 'background/video/BG0711.mp4', thumbnailFilePath: 'background/thumbnail/TBG0711.jpg' },
     ],
     currentBackground: {
-      id: '1',
-      filePath: 'background/video/BG0111.mp4',
-      thumbnailFilePath: 'background/thumbnail/TBG0111.jpg',
+      id: '2',
+      filePath: 'background/video/BG0211.mp4',
+      thumbnailFilePath: 'background/thumbnail/TBG0211.jpg',
     },
   },
   reducers: {
