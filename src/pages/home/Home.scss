@@ -85,7 +85,12 @@
   padding: 0 2.5rem;
   @include flex-column-center;
   row-gap: 1rem;
-  animation: fade-in 0.3s ease;
+  opacity: 0;
+  transition: all 0.3s ease;
+
+  &.show-control {
+    opacity: 1;
+  }
 
   &__thumbnail {
     width: 100%;
@@ -131,6 +136,12 @@
   animation: fade-in 0.3s ease;
   color: $very-light-grey;
   font-size: 1.6rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+
+  &.show-control {
+    opacity: 1;
+  }
 }
 
 .mood {

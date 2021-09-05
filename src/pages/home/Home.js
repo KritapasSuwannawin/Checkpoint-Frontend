@@ -307,23 +307,25 @@ function Home() {
           <img src={profileSvg50} alt=""></img>
         </div>
       </nav>
-      {(currentPage === 'background' || currentPage === 'ambient') && (
-        <div className="background-control">
-          <img
-            src={backgroundThumbnailURL}
-            alt=""
-            onClick={openBackgroundPageHander}
-            className="background-control__thumbnail"
-          ></img>
-          <div className="background-control__ambient-container">
-            {ambientThumbnailArr}
-            <div onClick={openAmbientPageHander} className="background-control__add-ambient">
-              <img src={addSvg20} alt=""></img>
-            </div>
+      <div
+        className={`background-control ${
+          currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''
+        }`}
+      >
+        <img
+          src={backgroundThumbnailURL}
+          alt=""
+          onClick={openBackgroundPageHander}
+          className="background-control__thumbnail"
+        ></img>
+        <div className="background-control__ambient-container">
+          {ambientThumbnailArr}
+          <div onClick={openAmbientPageHander} className="background-control__add-ambient">
+            <img src={addSvg20} alt=""></img>
           </div>
         </div>
-      )}
-      {currentPage === 'music' && <div className="music-control">Comming soon...</div>}
+      </div>
+      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
       <div className="mood">
         <div className="mood--section">
           <img src={daySvg36} alt=""></img>
