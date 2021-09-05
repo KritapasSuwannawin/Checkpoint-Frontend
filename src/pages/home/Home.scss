@@ -21,7 +21,7 @@
   &--right {
     width: 33rem;
     height: 100vh;
-    background: linear-gradient(0.25turn, rgba($color: #000, $alpha: 0.15), 10%, rgba($color: #000, $alpha: 0.5));
+    background: linear-gradient(0.25turn, rgba($color: #000, $alpha: 0.15), 10%, rgba($color: #000, $alpha: 0.6));
     transition: all 0.3s ease;
 
     &.wide {
@@ -89,16 +89,26 @@
 
   &__thumbnail {
     width: 100%;
-    height: auto;
+    min-height: 16.8rem;
+    object-fit: cover;
     border-radius: 8px;
+    border: 2px $white solid;
 
     &:hover {
       cursor: pointer;
     }
   }
 
-  &__add-ambient {
+  &__ambient-container {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+    column-gap: 1rem;
+  }
+
+  &__add-ambient {
+    width: calc(50% - 0.5rem);
     height: 5rem;
     border-radius: 8px;
     border: 2px solid $very-light-grey;
@@ -205,18 +215,23 @@
 
   &__volume-control {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
-    column-gap: 1rem;
+    column-gap: 2rem;
     width: 30rem;
 
-    &--volume {
-      display: flex;
-      flex-direction: column;
+    &--section {
+      @include flex-row-center;
     }
 
     &--mute:hover {
       cursor: pointer;
+    }
+
+    &--volumn {
+      @include flex-column-center;
+      align-items: flex-end;
+      row-gap: 0.25rem;
+      column-gap: 1rem;
     }
 
     &--volume-slider {

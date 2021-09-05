@@ -5,6 +5,7 @@ import { storageRef } from '../../firebase/storage';
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
+import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -30,8 +31,8 @@ import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import ambientSvg25 from '../../svg/25px/Organic Food.svg';
 import musicSvg25 from '../../svg/25px/iTunes-1.svg';
+import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
-import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
 
 function Home() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function Home() {
   const shuffleMusic = useSelector((store) => store.music.shuffleMusic);
   const loopMusic = useSelector((store) => store.music.loopMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
+  const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
 
@@ -52,29 +54,31 @@ function Home() {
   const [backgroundThumbnailURL, setBackgroundThumbnailURL] = useState();
   const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
   const [ambientAudioArr, setAmbientAudioArr] = useState([]);
+  const [ambientThumbnailArr, setAmbientThumbnailArr] = useState([]);
 
-  const [previousMusicVolume, setPreviousMusicVolume] = useState(0.5);
-  const [previousAmbientVolume, setPreviousAmbientVolume] = useState(0.5);
+  const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
+  const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
   const currentBackgroundFilePath = useRef();
+  const currentAmbientIDArr = useRef();
   const currentMusicThumbnailFilePath = useRef();
+  const currentAmbientArrRef = useRef();
+  const availableAmbientArrRef = useRef();
 
   useEffect(() => {
     if (currentBackgroundFilePath.current !== currentBackground.filePath) {
       if (currentBackground.url) {
         currentBackgroundFilePath.current = currentBackground.filePath;
-        setTimeout(() => {
-          setBackgroundVideoArr((backgroundVideoArr) => {
-            return [
-              ...backgroundVideoArr,
-              <div key={currentBackground.id}>
-                <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
-              </div>,
-            ];
-          });
-        }, 0);
         setBackgroundVideoArr((backgroundVideoArr) => {
-          return backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
+          const filteredBackgroundVideoArr = backgroundVideoArr.filter(
+            (background) => background.key !== currentBackground.id
+          );
+          return [
+            ...filteredBackgroundVideoArr,
+            <div key={currentBackground.id}>
+              <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
+            </div>,
+          ];
         });
       } else {
         storageRef
@@ -82,18 +86,16 @@ function Home() {
           .getDownloadURL()
           .then((url) => {
             currentBackgroundFilePath.current = currentBackground.filePath;
-            setTimeout(() => {
-              setBackgroundVideoArr((backgroundVideoArr) => {
-                return [
-                  ...backgroundVideoArr,
-                  <div key={currentBackground.id}>
-                    <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
-                  </div>,
-                ];
-              });
-            }, 0);
             setBackgroundVideoArr((backgroundVideoArr) => {
-              return backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
+              const filteredBackgroundVideoArr = backgroundVideoArr.filter(
+                (background) => background.key !== currentBackground.id
+              );
+              return [
+                ...filteredBackgroundVideoArr,
+                <div key={currentBackground.id}>
+                  <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
+                </div>,
+              ];
             });
           });
       }
@@ -106,6 +108,37 @@ function Home() {
         });
     }
 
+    if (
+      JSON.stringify(currentAmbientIDArr.current) !== JSON.stringify(currentBackground.ambientArr) ||
+      JSON.stringify(availableAmbientArrRef.current) !== JSON.stringify(availableAmbientArr)
+    ) {
+      currentAmbientIDArr.current = currentBackground.ambientArr;
+      availableAmbientArrRef.current = availableAmbientArr;
+      setAmbientThumbnailArr([]);
+
+      currentBackground.ambientArr.forEach((ambientID) => {
+        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
+
+        setAmbientThumbnailArr((ambientThumbnailArr) => {
+          return [
+            ...ambientThumbnailArr,
+            <div key={ambient.id} style={{ width: 'calc(50% - 0.5rem)' }}>
+              <SimpleThumbnailCard
+                id={ambient.id}
+                name={ambient.name}
+                filePath={ambient.filePath}
+                thumbnailFilePath={ambient.thumbnailFilePath}
+                url={ambient.url}
+                ambient
+                short
+              ></SimpleThumbnailCard>
+            </div>,
+          ];
+        });
+      });
+      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
+    }
+
     if (currentMusicThumbnailFilePath.current !== currentMusic.thumbnailFilePath) {
       storageRef
         .child(currentMusic.thumbnailFilePath)
@@ -116,13 +149,18 @@ function Home() {
         });
     }
 
-    setAmbientAudioArr(
-      currentAmbientArr.map((ambient) => (
-        <div key={ambient.id}>
-          <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
-        </div>
-      ))
-    );
+    if (JSON.stringify(currentAmbientArrRef.current) !== JSON.stringify(currentAmbientArr)) {
+      currentAmbientArrRef.current = currentAmbientArr;
+      setAmbientAudioArr(
+        currentAmbientArr.map((ambient) => {
+          return (
+            <div key={ambient.id}>
+              <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
+            </div>
+          );
+        })
+      );
+    }
 
     const timeout = setTimeout(() => {
       setBackgroundVideoArr((backgroundVideoArr) => {
@@ -131,7 +169,7 @@ function Home() {
         }
         return backgroundVideoArr;
       });
-    }, 10000);
+    }, 5000);
 
     return () => {
       clearTimeout(timeout);
@@ -142,7 +180,15 @@ function Home() {
         return backgroundVideoArr;
       });
     };
-  }, [currentBackground, currentAmbientArr, currentMusic, currentBackgroundFilePath, currentMusicThumbnailFilePath]);
+  }, [
+    currentBackground,
+    availableAmbientArr,
+    currentAmbientArr,
+    currentMusic,
+    currentBackgroundFilePath,
+    currentMusicThumbnailFilePath,
+    dispatch,
+  ]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -269,8 +315,11 @@ function Home() {
             onClick={openBackgroundPageHander}
             className="background-control__thumbnail"
           ></img>
-          <div onClick={openAmbientPageHander} className="background-control__add-ambient">
-            <img src={addSvg20} alt=""></img>
+          <div className="background-control__ambient-container">
+            {ambientThumbnailArr}
+            <div onClick={openAmbientPageHander} className="background-control__add-ambient">
+              <img src={addSvg20} alt=""></img>
+            </div>
           </div>
         </div>
       )}
@@ -320,31 +369,37 @@ function Home() {
           ></img>
         </div>
         <div className="player__volume-control">
-          <img
-            src={ambientSvg25}
-            onClick={toggleMuteAmbientHandler}
-            className="player__volume-control--mute"
-            alt=""
-          ></img>
-          <img src={musicSvg25} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
-          <div className="player__volume-control--volume">
-            <div>
-              <img src={speakerSvg15} alt=""></img>
+          <img src={musicLibrarySvg25} onClick={musicClickHander} alt=""></img>
+          <div className="player__volume-control--volumn">
+            <div className="player__volume-control--section">
+              <img
+                src={musicSvg25}
+                onClick={toggleMuteMusicHandler}
+                className="player__volume-control--mute"
+                alt=""
+              ></img>
               <input
                 type="range"
                 min="0"
                 max="100"
+                defaultValue={musicVolume * 100}
                 onChange={volumeMusicChangeHandler}
                 ref={musicVolumeSliderRef}
                 className="player__volume-control--volume-slider"
               ></input>
             </div>
-            <div>
-              <img src={speakerSvg15} alt=""></img>
+            <div className="player__volume-control--section">
+              <img
+                src={ambientSvg25}
+                onClick={toggleMuteAmbientHandler}
+                className="player__volume-control--mute"
+                alt=""
+              ></img>
               <input
                 type="range"
                 min="0"
                 max="100"
+                defaultValue={ambientVolume * 100}
                 onChange={volumeAmbientChangeHandler}
                 ref={ambientVolumeSliderRef}
                 className="player__volume-control--volume-slider"

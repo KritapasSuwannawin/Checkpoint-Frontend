@@ -38,7 +38,7 @@ function AmbientAudio(props) {
     const playPromise = e.target.play();
     if (playPromise) {
       playPromise.catch((e) => {
-        if (e.name !== 'AbortError') {
+        if (e.name === 'NotAllowedError') {
           dispatch(ambientActions.ambientToggleHandler({ id: props.id }));
         }
       });

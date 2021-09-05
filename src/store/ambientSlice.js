@@ -70,6 +70,14 @@ const ambientSlice = createSlice({
       availableAmbientArr[existingAmbientIndex] = action.payload;
       state.availableAmbientArr = availableAmbientArr;
     },
+    setCurrentAmbientArrByIDArr(state, action) {
+      const currentAmbientArr = [];
+      action.payload.forEach((ambientID) => {
+        const ambient = state.availableAmbientArr.find((ambient) => ambient.id === ambientID);
+        currentAmbientArr.push(ambient);
+      });
+      state.currentAmbientArr = currentAmbientArr;
+    },
   },
 });
 

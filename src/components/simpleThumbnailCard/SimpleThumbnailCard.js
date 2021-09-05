@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { storageRef } from '../../firebase/storage';
 import './SimpleThumbnailCard.scss';
 
+import { ambientActions } from '../../store/ambientSlice';
+import { backgroundActions } from '../../store/backgroundSlice';
+
 function SimpleThumbnailCard(props) {
+  const dispatch = useDispatch();
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
 
@@ -25,7 +29,9 @@ function SimpleThumbnailCard(props) {
           currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
         }`
       : ''
-  } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''}`;
+  } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''} ${
+    props.short && props.ambient ? 'short-ambient-card' : ''
+  }`;
 
   const placeholderClassName =
     'simple-thumbnail-placeholder ' +
@@ -34,9 +40,25 @@ function SimpleThumbnailCard(props) {
 
   function clickHandler() {
     if (props.background) {
-      props.onClickHandler(props.id, props.filePath, props.thumbnailFilePath, props.url);
+      dispatch(
+        backgroundActions.changeBackgroundHandler({
+          id: props.id,
+          filePath: props.filePath,
+          thumbnailFilePath: props.thumbnailFilePath,
+          url: props.url,
+          ambientArr: props.ambientArr,
+        })
+      );
     } else if (props.ambient) {
-      props.onClickHandler(props.id, props.name, props.filePath, props.thumbnailFilePath, props.url);
+      dispatch(
+        ambientActions.ambientToggleHandler({
+          id: props.id,
+          name: props.name,
+          filePath: props.filePath,
+          thumbnailFilePath: props.thumbnailFilePath,
+          url: props.url,
+        })
+      );
     }
   }
 
