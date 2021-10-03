@@ -100,12 +100,16 @@ function Home() {
           });
       }
 
-      storageRef
-        .child(currentBackground.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setBackgroundThumbnailURL(url);
-        });
+      if (currentBackground.thumbnailUrl) {
+        setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
+      } else {
+        storageRef
+          .child(currentBackground.thumbnailFilePath)
+          .getDownloadURL()
+          .then((url) => {
+            setBackgroundThumbnailURL(url);
+          });
+      }
     }
 
     if (
@@ -129,6 +133,7 @@ function Home() {
                 filePath={ambient.filePath}
                 thumbnailFilePath={ambient.thumbnailFilePath}
                 url={ambient.url}
+                thumbnailUrl={ambient.thumbnailUrl}
                 ambient
                 short
               ></SimpleThumbnailCard>
@@ -140,13 +145,18 @@ function Home() {
     }
 
     if (currentMusicThumbnailFilePath.current !== currentMusic.thumbnailFilePath) {
-      storageRef
-        .child(currentMusic.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setMusicThumbnailURL(url);
-          currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
-        });
+      if (currentMusic.thumbnailUrl) {
+        setMusicThumbnailURL(currentMusic.thumbnailUrl);
+        currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
+      } else {
+        storageRef
+          .child(currentMusic.thumbnailFilePath)
+          .getDownloadURL()
+          .then((url) => {
+            setMusicThumbnailURL(url);
+            currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
+          });
+      }
     }
 
     if (JSON.stringify(currentAmbientArrRef.current) !== JSON.stringify(currentAmbientArr)) {
@@ -162,17 +172,7 @@ function Home() {
       );
     }
 
-    const timeout = setTimeout(() => {
-      setBackgroundVideoArr((backgroundVideoArr) => {
-        if (backgroundVideoArr.slice(-1).length === 1) {
-          return backgroundVideoArr.slice(-1);
-        }
-        return backgroundVideoArr;
-      });
-    }, 5000);
-
     return () => {
-      clearTimeout(timeout);
       setBackgroundVideoArr((backgroundVideoArr) => {
         if (backgroundVideoArr.slice(-2).length === 2) {
           return backgroundVideoArr.slice(-2);

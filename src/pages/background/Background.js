@@ -22,6 +22,7 @@ function Background() {
               filePath={background.filePath}
               thumbnailFilePath={background.thumbnailFilePath}
               url={background.url}
+              thumbnailUrl={background.thumbnailUrl}
               ambientArr={background.ambientArr}
               background
             ></SimpleThumbnailCard>

@@ -15,12 +15,16 @@ function SimpleThumbnailCard(props) {
   const [thumbnailURL, setThumbnailURL] = useState();
 
   useEffect(() => {
-    storageRef
-      .child(props.thumbnailFilePath)
-      .getDownloadURL()
-      .then((url) => {
-        setThumbnailURL(url);
-      });
+    if (props.thumbnailUrl) {
+      setThumbnailURL(props.thumbnailUrl);
+    } else {
+      storageRef
+        .child(props.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setThumbnailURL(url);
+        });
+    }
   }, [props.thumbnailFilePath]);
 
   const className = `simple-thumbnail-card ${
@@ -46,6 +50,7 @@ function SimpleThumbnailCard(props) {
           filePath: props.filePath,
           thumbnailFilePath: props.thumbnailFilePath,
           url: props.url,
+          thumbnailUrl: props.thumbnailUrl,
           ambientArr: props.ambientArr,
         })
       );

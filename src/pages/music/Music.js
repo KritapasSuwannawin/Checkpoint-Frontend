@@ -14,8 +14,10 @@ function Music() {
   const [thumbnailArr, setThumbnailArray] = useState([]);
 
   const musicClickHandler = useCallback(
-    (id, musicName, artistName, filePath, thumbnailFilePath, url) => {
-      dispatch(musicActions.changeMusicHandler({ id, musicName, artistName, filePath, thumbnailFilePath, url }));
+    (id, musicName, artistName, filePath, thumbnailFilePath, url, thumbnailUrl) => {
+      dispatch(
+        musicActions.changeMusicHandler({ id, musicName, artistName, filePath, thumbnailFilePath, url, thumbnailUrl })
+      );
     },
     [dispatch]
   );
@@ -33,6 +35,7 @@ function Music() {
               artistName={music.artistName}
               filePath={music.filePath}
               url={music.url}
+              thumbnailUrl={music.thumbnailUrl}
               thumbnailFilePath={music.thumbnailFilePath}
               onClickHandler={musicClickHandler}
             ></MusicThumbnailCard>

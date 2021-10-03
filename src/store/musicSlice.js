@@ -204,7 +204,7 @@ const musicSlice = createSlice({
     setAvailableMusic(state, action) {
       const availableMusicArr = [...state.availableMusicArr];
       const existingMusicIndex = availableMusicArr.findIndex((music) => music.id === action.payload.id);
-      if (availableMusicArr[existingMusicIndex].url) {
+      if (availableMusicArr[existingMusicIndex].url && availableMusicArr[existingMusicIndex].thumbnailUrl) {
         return;
       }
       availableMusicArr[existingMusicIndex] = action.payload;

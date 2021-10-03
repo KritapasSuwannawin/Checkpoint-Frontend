@@ -21,17 +21,20 @@ function App() {
   useEffect(() => {
     const newAvailableBackgroundArr = availableBackgroundArr.map(async (background) => {
       const url = await storageRef.child(background.filePath).getDownloadURL();
-      return { ...background, url };
+      const thumbnailUrl = await storageRef.child(background.thumbnailFilePath).getDownloadURL();
+      return { ...background, url, thumbnailUrl };
     });
 
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
       const url = await storageRef.child(ambient.filePath).getDownloadURL();
-      return { ...ambient, url };
+      const thumbnailUrl = await storageRef.child(ambient.thumbnailFilePath).getDownloadURL();
+      return { ...ambient, url, thumbnailUrl };
     });
 
     const newAvailableMusicArr = availableMusicArr.map(async (music) => {
       const url = await storageRef.child(music.filePath).getDownloadURL();
-      return { ...music, url };
+      const thumbnailUrl = await storageRef.child(music.thumbnailFilePath).getDownloadURL();
+      return { ...music, url, thumbnailUrl };
     });
 
     newAvailableBackgroundArr.forEach(async (backgroundPromise) => {

@@ -34,7 +34,8 @@ function MusicThumbnailCard(props) {
         props.artistName,
         props.filePath,
         props.thumbnailFilePath,
-        props.url
+        props.url,
+        props.thumbnailUrl
       );
     }
   }

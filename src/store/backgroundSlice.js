@@ -65,7 +65,10 @@ const backgroundSlice = createSlice({
       const existingBackgroundIndex = availableBackgroundArr.findIndex(
         (background) => background.id === action.payload.id
       );
-      if (availableBackgroundArr[existingBackgroundIndex].url) {
+      if (
+        availableBackgroundArr[existingBackgroundIndex].url &&
+        availableBackgroundArr[existingBackgroundIndex].thumbnailUrl
+      ) {
         return;
       }
       availableBackgroundArr[existingBackgroundIndex] = action.payload;

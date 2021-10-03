@@ -64,7 +64,7 @@ const ambientSlice = createSlice({
     setAvailableAmbient(state, action) {
       const availableAmbientArr = [...state.availableAmbientArr];
       const existingAmbientIndex = availableAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
-      if (availableAmbientArr[existingAmbientIndex].url) {
+      if (availableAmbientArr[existingAmbientIndex].url && availableAmbientArr[existingAmbientIndex].thumbnailUrl) {
         return;
       }
       availableAmbientArr[existingAmbientIndex] = action.payload;
