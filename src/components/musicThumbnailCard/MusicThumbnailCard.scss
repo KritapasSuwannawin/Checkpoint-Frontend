@@ -3,8 +3,8 @@
 .music-thumbnail-card {
   position: relative;
   border-radius: 8px;
-  width: 125px;
-  height: 150px;
+  width: $music-thumbnail-size;
+  height: calc($music-thumbnail-size + 3.5rem);
   border: 2px rgba($color: #fff, $alpha: 0.01) solid;
   display: flex;
   flex-direction: column;
@@ -17,26 +17,26 @@
   &__image {
     border-radius: 8px 8px 0 0;
     object-fit: cover;
-    width: 100%;
-    height: 75%;
+    width: $music-thumbnail-size;
+    height: $music-thumbnail-size;
   }
 
   &__description {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0 0.7rem 0 0.9rem;
     background-color: rgba($color: #000, $alpha: 0.75);
-    width: 100%;
-    height: 25%;
+    width: $music-thumbnail-size;
+    height: 3.5rem;
     border-radius: 0 0 8px 8px;
-    text-transform: capitalize;
     position: relative;
   }
 
   &__music-name {
     color: $white;
     font-weight: bold;
+    margin-bottom: 0.1rem;
   }
 
   &__artist-name {

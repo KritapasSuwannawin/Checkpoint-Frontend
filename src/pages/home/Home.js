@@ -350,8 +350,8 @@ function Home() {
         <div className="player__music-data">
           <img src={musicThumbnailURL} className="player__music-data--thumbnail" alt=""></img>
           <div>
-            <p className="player__music-data--music-name">Music Name</p>
-            <p className="player__music-data--artist-name">Artist Name</p>
+            <p className="player__music-data--music-name">{currentMusic.musicName}</p>
+            <p className="player__music-data--artist-name">{currentMusic.artistName}</p>
           </div>
         </div>
         <div className="player__music-control">

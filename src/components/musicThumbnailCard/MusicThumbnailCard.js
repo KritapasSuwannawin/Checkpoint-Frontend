@@ -48,13 +48,16 @@ function MusicThumbnailCard(props) {
     return <div className="music-thumbnail-placeholder"></div>;
   }
 
+  const musicName = props.musicName.length > 18 ? props.musicName.slice(0, 16) + '...' : props.musicName;
+  const artistName = props.artistName.length > 20 ? props.artistName.slice(0, 18) + '...' : props.artistName;
+
   return (
     <div className="music-thumbnail-card">
       <img src={thumbnailURL} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
       <div onClick={clickHandler} className="music-thumbnail-card__description">
         <div>
-          <p className="music-thumbnail-card__music-name">{props.musicName}</p>
-          <p className="music-thumbnail-card__artist-name">{props.artistName}</p>
+          <p className="music-thumbnail-card__music-name">{musicName}</p>
+          <p className="music-thumbnail-card__artist-name">{artistName}</p>
         </div>
         <img
           src={currentMusic.id === props.id && musicPlaying ? pauseSvg25 : playSvg25}
