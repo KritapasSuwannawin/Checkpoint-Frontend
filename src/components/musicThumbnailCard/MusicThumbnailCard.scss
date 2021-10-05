@@ -3,7 +3,7 @@
 .music-thumbnail-card {
   position: relative;
   border-radius: 8px;
-  width: $music-thumbnail-width;
+  width: calc(13rem + 4px);
   height: 16.5rem;
   border: 2px rgba($color: #fff, $alpha: 0.01) solid;
   display: flex;
@@ -17,8 +17,6 @@
   &__image {
     border-radius: 8px 8px 0 0;
     object-fit: cover;
-    width: $music-thumbnail-width;
-    height: $music-thumbnail-width;
   }
 
   &__description {
@@ -27,7 +25,7 @@
     justify-content: space-between;
     padding: 0 0.7rem 0 0.9rem;
     background-color: rgba($color: #000, $alpha: 0.75);
-    width: $music-thumbnail-width;
+    width: 13rem;
     height: 3.5rem;
     border-radius: 0 0 8px 8px;
     position: relative;

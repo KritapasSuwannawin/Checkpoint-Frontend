@@ -12,37 +12,33 @@ function MusicAudio(props) {
   const currentMusic = useSelector((store) => store.music.currentMusic);
 
   const musicRef = useRef();
-  const currentMusicFilePath = useRef();
 
   const [musicURL, setMusicURL] = useState();
 
   useEffect(() => {
-    if (currentMusicFilePath.current !== currentMusic.filePath) {
-      currentMusicFilePath.current = currentMusic.filePath;
-      if (currentMusic.url) {
-        setMusicURL(currentMusic.url);
+    if (currentMusic.url) {
+      setMusicURL(currentMusic.url);
 
-        if (musicPlaying) {
-          musicRef.current.click();
-        } else {
-          musicRef.current.pause();
-        }
+      if (musicPlaying) {
+        musicRef.current.click();
       } else {
-        storageRef
-          .child(currentMusic.filePath)
-          .getDownloadURL()
-          .then((url) => {
-            setMusicURL(url);
-
-            if (musicPlaying) {
-              musicRef.current.click();
-            } else {
-              musicRef.current.pause();
-            }
-          });
+        musicRef.current.pause();
       }
+    } else {
+      storageRef
+        .child(currentMusic.filePath)
+        .getDownloadURL()
+        .then((url) => {
+          setMusicURL(url);
+
+          if (musicPlaying) {
+            musicRef.current.click();
+          } else {
+            musicRef.current.pause();
+          }
+        });
     }
-  }, [musicPlaying, currentMusic, currentMusicFilePath]);
+  }, [musicPlaying, currentMusic]);
 
   useEffect(() => {
     if (musicPlaying) {

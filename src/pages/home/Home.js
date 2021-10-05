@@ -58,136 +58,122 @@ function Home() {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
-  const currentBackgroundFilePath = useRef();
-  const currentAmbientIDArr = useRef();
-  const currentMusicThumbnailFilePath = useRef();
-  const currentAmbientArrRef = useRef();
-  const availableAmbientArrRef = useRef();
-
   useEffect(() => {
-    if (currentBackgroundFilePath.current !== currentBackground.filePath) {
-      if (currentBackground.url) {
-        currentBackgroundFilePath.current = currentBackground.filePath;
-        setBackgroundVideoArr((backgroundVideoArr) => {
-          const filteredBackgroundVideoArr = backgroundVideoArr.filter(
-            (background) => background.key !== currentBackground.id
-          );
-          return [
-            ...filteredBackgroundVideoArr,
-            <div key={currentBackground.id}>
-              <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
-            </div>,
-          ];
-        });
-      } else {
-        storageRef
-          .child(currentBackground.filePath)
-          .getDownloadURL()
-          .then((url) => {
-            currentBackgroundFilePath.current = currentBackground.filePath;
-            setBackgroundVideoArr((backgroundVideoArr) => {
-              const filteredBackgroundVideoArr = backgroundVideoArr.filter(
-                (background) => background.key !== currentBackground.id
-              );
-              return [
-                ...filteredBackgroundVideoArr,
-                <div key={currentBackground.id}>
-                  <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
-                </div>,
-              ];
-            });
-          });
-      }
-
-      if (currentBackground.thumbnailUrl) {
-        setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
-      } else {
-        storageRef
-          .child(currentBackground.thumbnailFilePath)
-          .getDownloadURL()
-          .then((url) => {
-            setBackgroundThumbnailURL(url);
-          });
-      }
-    }
-
-    if (
-      JSON.stringify(currentAmbientIDArr.current) !== JSON.stringify(currentBackground.ambientArr) ||
-      JSON.stringify(availableAmbientArrRef.current) !== JSON.stringify(availableAmbientArr)
-    ) {
-      currentAmbientIDArr.current = currentBackground.ambientArr;
-      availableAmbientArrRef.current = availableAmbientArr;
-      setAmbientThumbnailArr([]);
-
-      currentBackground.ambientArr.forEach((ambientID) => {
-        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
-
-        setAmbientThumbnailArr((ambientThumbnailArr) => {
-          return [
-            ...ambientThumbnailArr,
-            <div key={ambient.id} style={{ width: 'calc(50% - 0.5rem)' }}>
-              <SimpleThumbnailCard
-                id={ambient.id}
-                name={ambient.name}
-                filePath={ambient.filePath}
-                thumbnailFilePath={ambient.thumbnailFilePath}
-                url={ambient.url}
-                thumbnailUrl={ambient.thumbnailUrl}
-                ambient
-                short
-              ></SimpleThumbnailCard>
-            </div>,
-          ];
-        });
+    if (currentBackground.url) {
+      setBackgroundVideoArr((backgroundVideoArr) => {
+        const filteredBackgroundVideoArr = backgroundVideoArr.filter(
+          (background) => background.key !== currentBackground.id
+        );
+        return [
+          ...filteredBackgroundVideoArr,
+          <div key={currentBackground.id}>
+            <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
+          </div>,
+        ];
       });
-      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
-    }
-
-    if (currentMusicThumbnailFilePath.current !== currentMusic.thumbnailFilePath) {
-      if (currentMusic.thumbnailUrl) {
-        setMusicThumbnailURL(currentMusic.thumbnailUrl);
-        currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
-      } else {
-        storageRef
-          .child(currentMusic.thumbnailFilePath)
-          .getDownloadURL()
-          .then((url) => {
-            setMusicThumbnailURL(url);
-            currentMusicThumbnailFilePath.current = currentMusic.thumbnailFilePath;
+    } else {
+      storageRef
+        .child(currentBackground.filePath)
+        .getDownloadURL()
+        .then((url) => {
+          setBackgroundVideoArr((backgroundVideoArr) => {
+            const filteredBackgroundVideoArr = backgroundVideoArr.filter(
+              (background) => background.key !== currentBackground.id
+            );
+            return [
+              ...filteredBackgroundVideoArr,
+              <div key={currentBackground.id}>
+                <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
+              </div>,
+            ];
           });
-      }
+        });
     }
 
-    if (JSON.stringify(currentAmbientArrRef.current) !== JSON.stringify(currentAmbientArr)) {
-      currentAmbientArrRef.current = currentAmbientArr;
-      setAmbientAudioArr(
-        currentAmbientArr.map((ambient) => {
-          return (
-            <div key={ambient.id}>
-              <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
-            </div>
-          );
-        })
-      );
-    }
-
-    return () => {
+    const timeout = setTimeout(() => {
       setBackgroundVideoArr((backgroundVideoArr) => {
         if (backgroundVideoArr.slice(-1).length === 1) {
           return backgroundVideoArr.slice(-1);
         }
         return backgroundVideoArr;
       });
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeout);
+      setBackgroundVideoArr((backgroundVideoArr) => {
+        if (backgroundVideoArr.slice(-4).length === 4) {
+          return backgroundVideoArr.slice(-4);
+        }
+        return backgroundVideoArr;
+      });
     };
-  }, [
-    currentBackground,
-    availableAmbientArr,
-    currentAmbientArr,
-    currentMusic,
-    currentBackgroundFilePath,
-    currentMusicThumbnailFilePath,
-    dispatch,
-  ]);
+  }, [currentBackground]);
+
+  useEffect(() => {
+    if (currentBackground.thumbnailUrl) {
+      setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
+    } else {
+      storageRef
+        .child(currentBackground.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setBackgroundThumbnailURL(url);
+        });
+    }
+  }, [currentBackground]);
+
+  useEffect(() => {
+    setAmbientAudioArr(
+      currentAmbientArr.map((ambient) => {
+        return (
+          <div key={ambient.id}>
+            <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
+          </div>
+        );
+      })
+    );
+  }, [currentAmbientArr]);
+
+  useEffect(() => {
+    if (currentMusic.thumbnailUrl) {
+      setMusicThumbnailURL(currentMusic.thumbnailUrl);
+    } else {
+      storageRef
+        .child(currentMusic.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setMusicThumbnailURL(url);
+        });
+    }
+  }, [currentMusic]);
+
+  useEffect(() => {
+    setAmbientThumbnailArr([]);
+
+    currentBackground.ambientArr.forEach((ambientID) => {
+      const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
+
+      setAmbientThumbnailArr((ambientThumbnailArr) => {
+        return [
+          ...ambientThumbnailArr,
+          <div key={ambient.id} style={{ width: 'calc(50% - 0.5rem)' }}>
+            <SimpleThumbnailCard
+              id={ambient.id}
+              name={ambient.name}
+              filePath={ambient.filePath}
+              thumbnailFilePath={ambient.thumbnailFilePath}
+              url={ambient.url}
+              thumbnailUrl={ambient.thumbnailUrl}
+              ambient
+              short
+            ></SimpleThumbnailCard>
+          </div>,
+        ];
+      });
+    });
+    dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
+  }, [availableAmbientArr, currentBackground, dispatch]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());

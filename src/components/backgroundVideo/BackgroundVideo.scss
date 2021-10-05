@@ -5,7 +5,7 @@
   @include fixed-whole-screen;
   z-index: -2;
   opacity: 0;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 
   &.can-play {
     opacity: 1;
