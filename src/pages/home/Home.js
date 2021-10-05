@@ -9,6 +9,7 @@ import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThum
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
+import { backgroundActions } from '../../store/backgroundSlice';
 import { ambientActions } from '../../store/ambientSlice';
 import { musicActions } from '../../store/musicSlice';
 
@@ -23,8 +24,6 @@ import cloudySvg36 from '../../svg/36px/Partly Cloudy Day.svg';
 import rainySvg36 from '../../svg/36px/Moderate Rain.svg';
 import thunderSvg36 from '../../svg/36px/Storm.svg';
 import snowySvg36 from '../../svg/36px/Winter.svg';
-import heartSvg25 from '../../svg/25px/Heart.svg';
-import heartsSvg25 from '../../svg/25px/Hearts.svg';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
@@ -174,8 +173,8 @@ function Home() {
 
     return () => {
       setBackgroundVideoArr((backgroundVideoArr) => {
-        if (backgroundVideoArr.slice(-2).length === 2) {
-          return backgroundVideoArr.slice(-2);
+        if (backgroundVideoArr.slice(-1).length === 1) {
+          return backgroundVideoArr.slice(-1);
         }
         return backgroundVideoArr;
       });
@@ -272,6 +271,14 @@ function Home() {
     dispatch(pageActions.closePageHandler());
   }
 
+  function changeBackgroundTimeHandler() {
+    dispatch(backgroundActions.changeBackgroundTimeHandler(this));
+  }
+
+  function changeBackgroundWeatherHandler() {
+    dispatch(backgroundActions.changeBackgroundWeatherHandler(this));
+  }
+
   return (
     <div className="home">
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
@@ -328,20 +335,19 @@ function Home() {
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
       <div className="mood">
         <div className="mood--section">
-          <img src={daySvg36} alt=""></img>
-          <img src={eveningSvg36} alt=""></img>
-          <img src={nightSvg36} alt=""></img>
+          <img src={daySvg36} alt="" onClick={changeBackgroundTimeHandler.bind(1)}></img>
+          <img src={eveningSvg36} alt="" onClick={changeBackgroundTimeHandler.bind(2)}></img>
+          <img src={nightSvg36} alt="" onClick={changeBackgroundTimeHandler.bind(3)}></img>
         </div>
         <div className="mood--section">
-          <img src={cloudySvg36} alt=""></img>
-          <img src={rainySvg36} alt=""></img>
-          <img src={thunderSvg36} alt=""></img>
-          <img src={snowySvg36} alt=""></img>
+          <img src={cloudySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(1)}></img>
+          <img src={rainySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(2)}></img>
+          <img src={thunderSvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(3)}></img>
+          <img src={snowySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(4)}></img>
         </div>
       </div>
       <div className="player">
         <div className="player__music-data">
-          <img src={heartsSvg25} alt=""></img>
           <img src={musicThumbnailURL} className="player__music-data--thumbnail" alt=""></img>
           <div>
             <p className="player__music-data--music-name">Music Name</p>
@@ -371,7 +377,7 @@ function Home() {
           ></img>
         </div>
         <div className="player__volume-control">
-          <img src={musicLibrarySvg25} onClick={musicClickHander} alt=""></img>
+          <img src={musicLibrarySvg25} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
           <div className="player__volume-control--volumn">
             <div className="player__volume-control--section">
               <img

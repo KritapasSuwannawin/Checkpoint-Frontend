@@ -25,7 +25,7 @@ function SimpleThumbnailCard(props) {
           setThumbnailURL(url);
         });
     }
-  }, [props.thumbnailFilePath]);
+  }, [props.thumbnailFilePath, props.thumbnailUrl]);
 
   const className = `simple-thumbnail-card ${
     props.ambient

@@ -19,12 +19,6 @@ function App() {
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
 
   useEffect(() => {
-    const newAvailableBackgroundArr = availableBackgroundArr.map(async (background) => {
-      const url = await storageRef.child(background.filePath).getDownloadURL();
-      const thumbnailUrl = await storageRef.child(background.thumbnailFilePath).getDownloadURL();
-      return { ...background, url, thumbnailUrl };
-    });
-
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
       const url = await storageRef.child(ambient.filePath).getDownloadURL();
       const thumbnailUrl = await storageRef.child(ambient.thumbnailFilePath).getDownloadURL();
@@ -37,11 +31,6 @@ function App() {
       return { ...music, url, thumbnailUrl };
     });
 
-    newAvailableBackgroundArr.forEach(async (backgroundPromise) => {
-      const background = await new Promise((resolve) => backgroundPromise.then((background) => resolve(background)));
-      dispatch(backgroundActions.setAvailableBackground(background));
-    });
-
     newAvailableAmbientArr.forEach(async (ambientPromise) => {
       const ambient = await new Promise((resolve) => ambientPromise.then((ambient) => resolve(ambient)));
       dispatch(ambientActions.setAvailableAmbient(ambient));
@@ -51,7 +40,20 @@ function App() {
       const music = await new Promise((resolve) => musicPromise.then((music) => resolve(music)));
       dispatch(musicActions.setAvailableMusic(music));
     });
-  }, [availableBackgroundArr, availableAmbientArr, availableMusicArr, dispatch]);
+  }, [availableAmbientArr, availableMusicArr, dispatch]);
+
+  useEffect(() => {
+    const newAvailableBackgroundArr = availableBackgroundArr.map(async (background) => {
+      const url = await storageRef.child(background.filePath).getDownloadURL();
+      const thumbnailUrl = await storageRef.child(background.thumbnailFilePath).getDownloadURL();
+      return { ...background, url, thumbnailUrl };
+    });
+
+    newAvailableBackgroundArr.forEach(async (backgroundPromise) => {
+      const background = await new Promise((resolve) => backgroundPromise.then((background) => resolve(background)));
+      dispatch(backgroundActions.setAvailableBackground(background));
+    });
+  }, [availableBackgroundArr, dispatch]);
 
   return (
     <>

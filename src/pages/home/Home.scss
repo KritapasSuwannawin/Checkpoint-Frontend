@@ -159,6 +159,10 @@
     border-radius: 8px;
     @include flex-row-center;
     column-gap: 2.5rem;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
@@ -221,6 +225,12 @@
       &.current-song-setting {
         background-color: rgba($color: #fff, $alpha: 0.2);
       }
+    }
+  }
+
+  &__music-playlist {
+    &:hover {
+      cursor: pointer;
     }
   }
 

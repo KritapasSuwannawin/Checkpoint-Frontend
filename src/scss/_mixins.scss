@@ -19,6 +19,8 @@
 
 @mixin page-style {
   position: fixed;
+  max-height: calc(100vh - 25rem);
+  overflow-y: auto;
   top: 10rem;
   left: 0;
   padding: 0 2.5rem;
@@ -28,6 +30,7 @@
   max-width: calc(100vw - 32rem);
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-content: flex-start;
   transition: all 0.3s ease;
   z-index: -3;
   opacity: 0;

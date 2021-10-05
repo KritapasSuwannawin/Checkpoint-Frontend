@@ -12,6 +12,10 @@ function Background() {
 
   useEffect(() => {
     availableBackgroundArr.forEach((background) => {
+      if (background.id.slice(2) !== '11') {
+        return;
+      }
+
       setThumbnailArr((thumbnailArr) => {
         const filteredThumbnailArr = thumbnailArr.filter((thumbnail) => thumbnail.key !== background.id);
         return [

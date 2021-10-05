@@ -5,8 +5,6 @@ import { storageRef } from '../../firebase/storage';
 import { musicActions } from '../../store/musicSlice';
 import './MusicThumbnailCard.scss';
 
-import heartSvg15 from '../../svg/15px/Heart.svg';
-import heartsSvg15 from '../../svg/15px/Hearts.svg';
 import playSvg25 from '../../svg/25px/Circled Play.svg';
 import pauseSvg25 from '../../svg/25px/Pause Button.svg';
 
@@ -65,7 +63,6 @@ function MusicThumbnailCard(props) {
           className="music-thumbnail-card__play-pause-btn"
         ></img>
       </div>
-      <img src={heartsSvg15} alt="" className="music-thumbnail-card__favourite-btn"></img>
     </div>
   );
 }
