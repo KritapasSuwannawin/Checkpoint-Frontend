@@ -16,13 +16,17 @@ function MusicThumbnailCard(props) {
   const [thumbnailURL, setThumbnailURL] = useState();
 
   useEffect(() => {
-    storageRef
-      .child(props.thumbnailFilePath)
-      .getDownloadURL()
-      .then((url) => {
-        setThumbnailURL(url);
-      });
-  }, [props.thumbnailFilePath]);
+    if (props.thumbnailUrl) {
+      setThumbnailURL(props.thumbnailUrl);
+    } else {
+      storageRef
+        .child(props.thumbnailFilePath)
+        .getDownloadURL()
+        .then((url) => {
+          setThumbnailURL(url);
+        });
+    }
+  }, [props.thumbnailFilePath, props.thumbnailUrl]);
 
   function clickHandler() {
     if (!(currentMusic.id === props.id) || !musicPlaying) {

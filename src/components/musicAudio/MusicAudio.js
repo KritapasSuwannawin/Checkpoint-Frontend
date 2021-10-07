@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { storageRef } from '../../firebase/storage';
@@ -15,12 +15,23 @@ function MusicAudio(props) {
 
   const [musicURL, setMusicURL] = useState();
 
+  const playMusicHandler = useCallback(() => {
+    const playPromise = musicRef.current.play();
+    if (playPromise) {
+      playPromise.catch((e) => {
+        if (e.name === 'NotAllowedError') {
+          dispatch(musicActions.setMusicPlaying(false));
+        }
+      });
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (currentMusic.url) {
       setMusicURL(currentMusic.url);
 
       if (musicPlaying) {
-        musicRef.current.click();
+        playMusicHandler();
       } else {
         musicRef.current.pause();
       }
@@ -32,21 +43,21 @@ function MusicAudio(props) {
           setMusicURL(url);
 
           if (musicPlaying) {
-            musicRef.current.click();
+            playMusicHandler();
           } else {
             musicRef.current.pause();
           }
         });
     }
-  }, [musicPlaying, currentMusic]);
+  }, [musicPlaying, currentMusic, playMusicHandler]);
 
   useEffect(() => {
     if (musicPlaying) {
-      musicRef.current.click();
+      playMusicHandler();
     } else {
       musicRef.current.pause();
     }
-  }, [musicPlaying]);
+  }, [musicPlaying, playMusicHandler]);
 
   useEffect(() => {
     musicRef.current.volume = musicVolume;
@@ -56,21 +67,17 @@ function MusicAudio(props) {
     dispatch(musicActions.nextMusicHandler());
   }
 
-  function canPlayHandler() {
+  function canPlayThroughHandler() {
     if (musicPlaying) {
-      musicRef.current.click();
+      playMusicHandler();
     }
   }
 
-  function clickHandler(e) {
-    const playPromise = e.target.play();
-    if (playPromise) {
-      playPromise.catch((e) => {
-        if (e.name === 'NotAllowedError') {
-          dispatch(musicActions.setMusicPlaying(false));
-        }
-      });
-    }
+  function errorHandler() {
+    setTimeout(() => {
+      console.log('Error occured during loading', currentMusic.musicName);
+      dispatch(musicActions.nextMusicHandler());
+    }, 100);
   }
 
   return (
@@ -78,9 +85,9 @@ function MusicAudio(props) {
       src={musicURL}
       preload="auto"
       loop={loopMusic}
-      onCanPlay={canPlayHandler}
+      onCanPlayThrough={canPlayThroughHandler}
       onEnded={audioEndedHandler}
-      onClick={clickHandler}
+      onError={errorHandler}
       ref={musicRef}
     ></audio>
   );
