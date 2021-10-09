@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { pageActions } from '../../store/pageSlice';
 
@@ -7,6 +7,7 @@ import './BackgroundVideo.scss';
 
 function BackgroundVideo(props) {
   const dispatch = useDispatch();
+  const currentBackground = useSelector((store) => store.background.currentBackground);
 
   const [canPlay, setCanPlay] = useState(false);
 
@@ -16,6 +17,10 @@ function BackgroundVideo(props) {
 
   function canPlayHandler() {
     setCanPlay(true);
+  }
+
+  if (currentBackground.id !== props.id && !canPlay) {
+    return <></>;
   }
 
   return (

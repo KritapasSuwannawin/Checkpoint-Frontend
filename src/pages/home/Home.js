@@ -320,16 +320,51 @@ function Home() {
       </div>
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
       <div className="mood">
-        <div className="mood--section">
-          <img src={daySvg36} alt="" onClick={changeBackgroundTimeHandler.bind(1)}></img>
-          <img src={eveningSvg36} alt="" onClick={changeBackgroundTimeHandler.bind(2)}></img>
-          <img src={nightSvg36} alt="" onClick={changeBackgroundTimeHandler.bind(3)}></img>
+        <div className="mood__section">
+          <img
+            src={daySvg36}
+            alt=""
+            onClick={changeBackgroundTimeHandler.bind(1)}
+            className={currentBackground.id.slice(2, 3) !== '1' ? 'mood__section--not-current-mood' : ''}
+          ></img>
+          <img
+            src={eveningSvg36}
+            alt=""
+            onClick={changeBackgroundTimeHandler.bind(2)}
+            className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
+          ></img>
+          <img
+            src={nightSvg36}
+            alt=""
+            onClick={changeBackgroundTimeHandler.bind(3)}
+            className={currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}
+          ></img>
         </div>
-        <div className="mood--section">
-          <img src={cloudySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(1)}></img>
-          <img src={rainySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(2)}></img>
-          <img src={thunderSvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(3)}></img>
-          <img src={snowySvg36} alt="" onClick={changeBackgroundWeatherHandler.bind(4)}></img>
+        <div className="mood__section">
+          <img
+            src={cloudySvg36}
+            alt=""
+            onClick={changeBackgroundWeatherHandler.bind(1)}
+            className={currentBackground.id.slice(3) !== '1' ? 'mood__section--not-current-mood' : ''}
+          ></img>
+          <img
+            src={rainySvg36}
+            alt=""
+            onClick={changeBackgroundWeatherHandler.bind(2)}
+            className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
+          ></img>
+          <img
+            src={thunderSvg36}
+            alt=""
+            onClick={changeBackgroundWeatherHandler.bind(3)}
+            className={currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}
+          ></img>
+          <img
+            src={snowySvg36}
+            alt=""
+            onClick={changeBackgroundWeatherHandler.bind(4)}
+            className={currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}
+          ></img>
         </div>
       </div>
       <div className="player">
