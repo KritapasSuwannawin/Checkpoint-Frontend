@@ -23,6 +23,7 @@ function Ambient() {
               filePath={ambient.filePath}
               thumbnailFilePath={ambient.thumbnailFilePath}
               url={ambient.url}
+              volume={ambient.volume}
               ambient
             ></SimpleThumbnailCard>
           </div>,

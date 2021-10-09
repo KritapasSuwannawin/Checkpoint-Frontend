@@ -33,8 +33,8 @@ function SimpleThumbnailCard(props) {
           currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
         }`
       : ''
-  } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''} ${
-    props.short && props.ambient ? 'short-ambient-card' : ''
+  } ${props.short && props.ambient ? 'short-ambient-card' : ''} ${
+    props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''
   }`;
 
   const placeholderClassName =
@@ -47,21 +47,12 @@ function SimpleThumbnailCard(props) {
       dispatch(
         backgroundActions.changeBackgroundHandler({
           id: props.id,
-          filePath: props.filePath,
-          thumbnailFilePath: props.thumbnailFilePath,
-          url: props.url,
-          thumbnailUrl: props.thumbnailUrl,
-          ambientArr: props.ambientArr,
         })
       );
     } else if (props.ambient) {
       dispatch(
         ambientActions.ambientToggleHandler({
           id: props.id,
-          name: props.name,
-          filePath: props.filePath,
-          thumbnailFilePath: props.thumbnailFilePath,
-          url: props.url,
         })
       );
     }

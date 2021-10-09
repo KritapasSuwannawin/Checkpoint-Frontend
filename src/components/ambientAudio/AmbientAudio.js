@@ -24,11 +24,11 @@ function AmbientAudio(props) {
           setAmbientURL(url);
         });
     }
-  }, [props]);
+  }, [props.url, props.filePath]);
 
   useEffect(() => {
-    ambientRef.current.volume = ambientVolume;
-  }, [ambientVolume]);
+    ambientRef.current.volume = Number((ambientVolume * props.volume).toFixed(2));
+  }, [ambientVolume, props.volume, props.id]);
 
   function canPlayHandler() {
     ambientRef.current.click();

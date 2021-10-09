@@ -28,13 +28,13 @@
       border: none;
     }
 
+    &.short-ambient-card {
+      width: calc(100% - 12.5rem);
+    }
+
     &.current-ambient {
       border: 2px $white solid;
     }
-  }
-
-  &.short-ambient-card {
-    width: 100%;
   }
 
   &__image {

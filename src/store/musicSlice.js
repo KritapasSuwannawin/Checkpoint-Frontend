@@ -53,6 +53,41 @@ const musicSlice = createSlice({
         filePath: 'music/audio/piano/klaus_Venus.m4a',
         thumbnailFilePath: 'music/thumbnail/piano/klaüs (5) - Venus.jpg',
       },
+      {
+        id: '8',
+        musicName: 'I like you',
+        artistName: 'Checkpoint Originals',
+        filePath: 'music/audio/lofi/FadlanAmada_ILikeYou.m4a',
+        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (2) - I like you.jpg',
+      },
+      {
+        id: '9',
+        musicName: 'New Day',
+        artistName: 'Checkpoint Originals',
+        filePath: 'music/audio/lofi/FadlanAmada_NewDay.m4a',
+        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (4) - New day.jpg',
+      },
+      {
+        id: '10',
+        musicName: 'Nothing Matters',
+        artistName: 'Checkpoint Originals',
+        filePath: 'music/audio/lofi/FadlanAmada_NothingMatters.m4a',
+        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (3) - Nothing matters.jpg',
+      },
+      {
+        id: '11',
+        musicName: 'Sunday Afternoon',
+        artistName: 'Checkpoint Originals',
+        filePath: 'music/audio/lofi/FadlanAmada_SundayAfternoon.m4a',
+        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (1) - Sunday afternoon.jpg',
+      },
+      {
+        id: '12',
+        musicName: 'The Morning',
+        artistName: 'Checkpoint Originals',
+        filePath: 'music/audio/lofi/FadlanAmada_TheMorning.m4a',
+        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (5) - The morning.jpg',
+      },
     ],
     currentMusic: {
       id: '1',
@@ -73,7 +108,9 @@ const musicSlice = createSlice({
         if (state.shuffleMusic) {
           state.shuffledMusicArr = [];
         }
-        state.currentMusic = action.payload;
+
+        const newMusic = state.availableMusicArr.find((music) => music.id === action.payload.id);
+        state.currentMusic = newMusic;
         state.musicPlaying = true;
       } else {
         state.musicPlaying = true;

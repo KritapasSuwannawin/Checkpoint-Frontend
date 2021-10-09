@@ -9,42 +9,49 @@ const ambientSlice = createSlice({
         name: 'rainy',
         filePath: 'ambient/audio/Ambient_test_rain.mp3',
         thumbnailFilePath: 'ambient/thumbnail/ambient rainy thumbnail.jpg',
+        volume: 0.5,
       },
       {
         id: '2',
         name: 'river',
         filePath: 'ambient/audio/Ambient_test_river.mp3',
         thumbnailFilePath: 'ambient/thumbnail/ambient river thumbnail.jpg',
+        volume: 0.5,
       },
       {
         id: '3',
         name: 'wind',
         filePath: 'ambient/audio/Ambient_test_Wind.mp3',
         thumbnailFilePath: 'ambient/thumbnail/ambient Wind thumbnail.jpg',
+        volume: 0.5,
       },
       {
         id: '4',
         name: 'night forest',
         filePath: 'ambient/audio/Ambient_test_Night_Forest.mp3',
         thumbnailFilePath: 'ambient/thumbnail/ambient Night Forest thumbnail.jpg',
+        volume: 0.5,
       },
       {
         id: '5',
         name: 'train',
         filePath: 'ambient/audio/Ambient_test_Train.mp3',
         thumbnailFilePath: 'ambient/thumbnail/ambient train thumbnail.jpg',
+        volume: 0.5,
       },
       {
         id: '6',
         name: 'fireplace',
         filePath: 'ambient/audio/Fireplace.mp3',
         thumbnailFilePath: 'ambient/thumbnail/Fireplace.jpg',
+        volume: 0.5,
       },
       {
         id: '7',
         name: 'winter storm',
         filePath: 'ambient/audio/Winter Storm.mp3',
         thumbnailFilePath: 'ambient/thumbnail/Winter Storm.jpg',
+        volume: 0.5,
       },
     ],
     currentAmbientArr: [],
@@ -55,7 +62,8 @@ const ambientSlice = createSlice({
       if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id) >= 0) {
         state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload.id);
       } else {
-        state.currentAmbientArr = [...state.currentAmbientArr, action.payload];
+        const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
+        state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
       }
     },
     setAmbientVolume(state, action) {
@@ -77,6 +85,19 @@ const ambientSlice = createSlice({
         currentAmbientArr.push(ambient);
       });
       state.currentAmbientArr = currentAmbientArr;
+    },
+    setSpecificAmbientVolume(state, action) {
+      const availableAmbientArr = [...state.availableAmbientArr];
+      const existingAmbientIndex = availableAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
+      availableAmbientArr[existingAmbientIndex].volume = action.payload.volume;
+      state.availableAmbientArr = availableAmbientArr;
+
+      const currentAmbientArr = [...state.currentAmbientArr];
+      const existingCurrentAmbientIndex = currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
+      if (existingCurrentAmbientIndex >= 0) {
+        currentAmbientArr[existingCurrentAmbientIndex].volume = action.payload.volume;
+        state.currentAmbientArr = currentAmbientArr;
+      }
     },
   },
 });

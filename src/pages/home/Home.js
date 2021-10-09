@@ -5,7 +5,7 @@ import { storageRef } from '../../firebase/storage';
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
-import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
+import AmbientControl from '../../components/ambientControl/AmbientControl';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -57,6 +57,8 @@ function Home() {
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
+
+  const backgroundFilePathRef = useRef();
 
   useEffect(() => {
     if (currentBackground.url) {
@@ -128,7 +130,12 @@ function Home() {
       currentAmbientArr.map((ambient) => {
         return (
           <div key={ambient.id}>
-            <AmbientAudio id={ambient.id} filePath={ambient.filePath} url={ambient.url}></AmbientAudio>
+            <AmbientAudio
+              id={ambient.id}
+              filePath={ambient.filePath}
+              url={ambient.url}
+              volume={ambient.volume}
+            ></AmbientAudio>
           </div>
         );
       })
@@ -149,30 +156,47 @@ function Home() {
   }, [currentMusic]);
 
   useEffect(() => {
-    setAmbientThumbnailArr([]);
+    if (backgroundFilePathRef.current !== currentBackground.filePath) {
+      backgroundFilePathRef.current = currentBackground.filePath;
+      setAmbientThumbnailArr([]);
 
-    currentBackground.ambientArr.forEach((ambientID) => {
-      const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
+      // For fun
+      const availableAmbientIDArr = availableAmbientArr.map((ambient) => ambient.id);
+      const ambientIDArr = [];
+      for (let i = 0; i < 2; i++) {
+        const ambientID = availableAmbientIDArr[Math.floor(Math.random() * availableAmbientIDArr.length)];
+        if (ambientIDArr.includes(ambientID)) {
+          i--;
+          continue;
+        }
+        ambientIDArr.push(ambientID);
+      }
 
-      setAmbientThumbnailArr((ambientThumbnailArr) => {
-        return [
-          ...ambientThumbnailArr,
-          <div key={ambient.id} style={{ width: 'calc(50% - 0.5rem)' }}>
-            <SimpleThumbnailCard
-              id={ambient.id}
-              name={ambient.name}
-              filePath={ambient.filePath}
-              thumbnailFilePath={ambient.thumbnailFilePath}
-              url={ambient.url}
-              thumbnailUrl={ambient.thumbnailUrl}
-              ambient
-              short
-            ></SimpleThumbnailCard>
-          </div>,
-        ];
+      // currentBackground.ambientArr.forEach((ambientID) => {
+      ambientIDArr.forEach((ambientID) => {
+        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
+
+        setAmbientThumbnailArr((ambientThumbnailArr) => {
+          return [
+            ...ambientThumbnailArr,
+            <div key={ambient.id} className="background-control__ambient-control">
+              <AmbientControl
+                id={ambient.id}
+                name={ambient.name}
+                filePath={ambient.filePath}
+                thumbnailFilePath={ambient.thumbnailFilePath}
+                url={ambient.url}
+                thumbnailUrl={ambient.thumbnailUrl}
+                volume={ambient.volume}
+              ></AmbientControl>
+            </div>,
+          ];
+        });
       });
-    });
-    dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
+
+      // dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
+      dispatch(ambientActions.setCurrentAmbientArrByIDArr(ambientIDArr));
+    }
   }, [availableAmbientArr, currentBackground, dispatch]);
 
   function playPauseMusicHandler() {

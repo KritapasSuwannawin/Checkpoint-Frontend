@@ -87,10 +87,12 @@
   @include flex-column-center;
   row-gap: 1rem;
   opacity: 0;
+  z-index: -2;
   transition: all 0.3s ease;
 
   &.show-control {
     opacity: 1;
+    z-index: 0;
   }
 
   &__thumbnail {
@@ -113,8 +115,13 @@
     column-gap: 1rem;
   }
 
+  &__ambient-control {
+    width: 100%;
+    height: 5rem;
+  }
+
   &__add-ambient {
-    width: calc(50% - 0.5rem);
+    width: 100%;
     height: 5rem;
     border-radius: 8px;
     border: 2px solid $very-light-grey;
@@ -138,10 +145,12 @@
   color: $very-light-grey;
   font-size: 1.6rem;
   opacity: 0;
+  z-index: -2;
   transition: all 0.3s ease;
 
   &.show-control {
     opacity: 1;
+    z-index: 0;
   }
 }
 
@@ -262,8 +271,8 @@
     }
 
     &--volume-slider {
-      width: 8rem;
-      margin-left: 0.5rem;
+      width: 12rem;
+      margin-left: 1rem;
     }
   }
 }

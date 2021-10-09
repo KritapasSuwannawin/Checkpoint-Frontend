@@ -1,0 +1,10 @@
+@import '../../scss/main.scss';
+
+.ambient-control {
+  @include flex-row-center;
+  justify-content: space-between;
+
+  &__volume-slider {
+    width: 12rem;
+  }
+}

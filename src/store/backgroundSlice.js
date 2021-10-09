@@ -159,7 +159,8 @@ const backgroundSlice = createSlice({
   reducers: {
     changeBackgroundHandler(state, action) {
       if (state.currentBackground.id !== action.payload.id) {
-        state.currentBackground = action.payload;
+        const newBackground = state.availableBackgroundArr.find((background) => background.id === action.payload.id);
+        state.currentBackground = newBackground;
       }
     },
     setAvailableBackground(state, action) {
