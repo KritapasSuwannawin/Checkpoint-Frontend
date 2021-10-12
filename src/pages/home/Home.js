@@ -54,6 +54,7 @@ function Home() {
   const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
   const [ambientAudioArr, setAmbientAudioArr] = useState([]);
   const [ambientThumbnailArr, setAmbientThumbnailArr] = useState([]);
+  const [ambientIDArr, setAmbientIDArr] = useState([]);
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
@@ -171,6 +172,7 @@ function Home() {
         }
         ambientIDArr.push(ambientID);
       }
+      setAmbientIDArr(ambientIDArr);
 
       // currentBackground.ambientArr.forEach((ambientID) => {
       ambientIDArr.forEach((ambientID) => {
@@ -197,7 +199,27 @@ function Home() {
       // dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
       dispatch(ambientActions.setCurrentAmbientArrByIDArr(ambientIDArr));
     }
-  }, [availableAmbientArr, currentBackground, dispatch]);
+
+    const ambientThumbnailArr2 = [];
+    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !ambientIDArr.includes(ambient.id));
+    filteredCurrentAmbientArr.forEach((ambient) => {
+      ambientThumbnailArr2.push(
+        <div key={ambient.id} className="background-control__ambient-control">
+          <AmbientControl
+            id={ambient.id}
+            name={ambient.name}
+            filePath={ambient.filePath}
+            thumbnailFilePath={ambient.thumbnailFilePath}
+            url={ambient.url}
+            thumbnailUrl={ambient.thumbnailUrl}
+            volume={ambient.volume}
+          ></AmbientControl>
+        </div>
+      );
+    });
+
+    setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, 2).concat(ambientThumbnailArr2));
+  }, [availableAmbientArr, currentBackground, currentAmbientArr, ambientIDArr, dispatch]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
