@@ -158,11 +158,13 @@ function Home() {
   }, [currentMusic]);
 
   useEffect(() => {
+    const currentAmbientIDArr = currentBackground.ambientArr;
+
     if (backgroundFilePathRef.current !== currentBackground.filePath) {
       backgroundFilePathRef.current = currentBackground.filePath;
       setAmbientThumbnailArr([]);
 
-      currentBackground.ambientArr.forEach((ambientID) => {
+      currentAmbientIDArr.forEach((ambientID) => {
         const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
 
         setAmbientThumbnailArr((ambientThumbnailArr) => {
@@ -183,13 +185,11 @@ function Home() {
         });
       });
 
-      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
+      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentAmbientIDArr));
     }
 
     const ambientThumbnailArr2 = [];
-    const filteredCurrentAmbientArr = currentAmbientArr.filter(
-      (ambient) => !currentBackground.ambientArr.includes(ambient.id)
-    );
+    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !currentAmbientIDArr.includes(ambient.id));
     filteredCurrentAmbientArr.forEach((ambient) => {
       ambientThumbnailArr2.push(
         <div key={ambient.id} className="background-control__ambient-control">
@@ -206,7 +206,9 @@ function Home() {
       );
     });
 
-    setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, 2).concat(ambientThumbnailArr2));
+    setAmbientThumbnailArr((ambientThumbnailArr) =>
+      ambientThumbnailArr.slice(0, currentAmbientIDArr.length).concat(ambientThumbnailArr2)
+    );
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
   function playPauseMusicHandler() {
