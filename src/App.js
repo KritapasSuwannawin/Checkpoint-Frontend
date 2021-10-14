@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { storageRef } from './firebase/storage';
@@ -7,6 +7,7 @@ import Home from './pages/home/Home';
 import Background from './pages/background/Background';
 import Music from './pages/music/Music';
 import Ambient from './pages/ambient/Ambient';
+import ReviewPopup from './components/reviewPopup/ReviewPopup';
 
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
@@ -18,11 +19,21 @@ function App() {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
 
+  const [showReviewPopup, setShowReviewPopup] = useState(false);
+
   const notDoUseEffect = useRef();
 
+  const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
+
   useEffect(() => {
-    if (notDoUseEffect.current) {
+    if (notDoUseEffect.current || isMobileDevice) {
       return;
+    }
+
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      console.log('You are using Safari 😥');
+    } else {
+      console.log('You are not using Safari 😄');
     }
 
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
@@ -58,12 +69,21 @@ function App() {
       dispatch(backgroundActions.setAvailableBackground(background));
     });
 
+    setTimeout(() => {
+      setShowReviewPopup(true);
+    }, 10000);
+
     notDoUseEffect.current = true;
-  }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, dispatch]);
+  }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);
+
+  if (isMobileDevice) {
+    return <Loading></Loading>;
+  }
 
   return (
     <>
       <Loading></Loading>
+      {showReviewPopup && <ReviewPopup></ReviewPopup>}
       <Home></Home>
       <Background></Background>
       <Music></Music>

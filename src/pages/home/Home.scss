@@ -52,10 +52,11 @@
   &__links {
     @include flex-row-center;
     font-size: 1.6rem;
-    column-gap: 6rem;
+    column-gap: 4.5rem;
 
     &--link {
       padding: 0.5rem;
+      @include flex-row-center;
 
       &:hover {
         cursor: pointer;
@@ -66,8 +67,12 @@
       }
 
       &.fixed-width {
-        width: 10rem;
+        width: 14rem;
       }
+    }
+
+    &--icon {
+      margin-right: 0.5rem;
     }
   }
 

@@ -24,6 +24,8 @@ import cloudySvg36 from '../../svg/36px/Partly Cloudy Day.svg';
 import rainySvg36 from '../../svg/36px/Moderate Rain.svg';
 import thunderSvg36 from '../../svg/36px/Storm.svg';
 import snowySvg36 from '../../svg/36px/Winter.svg';
+import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
+import musicSvg30 from '../../svg/30px/Music30px.svg';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
@@ -54,7 +56,6 @@ function Home() {
   const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
   const [ambientAudioArr, setAmbientAudioArr] = useState([]);
   const [ambientThumbnailArr, setAmbientThumbnailArr] = useState([]);
-  const [ambientIDArr, setAmbientIDArr] = useState([]);
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
@@ -161,21 +162,7 @@ function Home() {
       backgroundFilePathRef.current = currentBackground.filePath;
       setAmbientThumbnailArr([]);
 
-      // For fun
-      const availableAmbientIDArr = availableAmbientArr.map((ambient) => ambient.id);
-      const ambientIDArr = [];
-      for (let i = 0; i < 2; i++) {
-        const ambientID = availableAmbientIDArr[Math.floor(Math.random() * availableAmbientIDArr.length)];
-        if (ambientIDArr.includes(ambientID)) {
-          i--;
-          continue;
-        }
-        ambientIDArr.push(ambientID);
-      }
-      setAmbientIDArr(ambientIDArr);
-
-      // currentBackground.ambientArr.forEach((ambientID) => {
-      ambientIDArr.forEach((ambientID) => {
+      currentBackground.ambientArr.forEach((ambientID) => {
         const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
 
         setAmbientThumbnailArr((ambientThumbnailArr) => {
@@ -196,12 +183,13 @@ function Home() {
         });
       });
 
-      // dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
-      dispatch(ambientActions.setCurrentAmbientArrByIDArr(ambientIDArr));
+      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentBackground.ambientArr));
     }
 
     const ambientThumbnailArr2 = [];
-    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !ambientIDArr.includes(ambient.id));
+    const filteredCurrentAmbientArr = currentAmbientArr.filter(
+      (ambient) => !currentBackground.ambientArr.includes(ambient.id)
+    );
     filteredCurrentAmbientArr.forEach((ambient) => {
       ambientThumbnailArr2.push(
         <div key={ambient.id} className="background-control__ambient-control">
@@ -219,7 +207,7 @@ function Home() {
     });
 
     setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, 2).concat(ambientThumbnailArr2));
-  }, [availableAmbientArr, currentBackground, currentAmbientArr, ambientIDArr, dispatch]);
+  }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -332,6 +320,7 @@ function Home() {
             onClick={musicClickHander}
             className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}
           >
+            <img src={musicSvg30} alt="" className="nav__links--icon"></img>
             Music
           </div>
           <div
@@ -340,6 +329,7 @@ function Home() {
               currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
             }`}
           >
+            <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
             Background
           </div>
           <div className="nav__separator"></div>
