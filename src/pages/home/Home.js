@@ -101,13 +101,13 @@ function Home() {
         }
         return backgroundVideoArr;
       });
-    }, 10000);
+    }, 5000);
 
     return () => {
       clearTimeout(timeout);
       setBackgroundVideoArr((backgroundVideoArr) => {
-        if (backgroundVideoArr.slice(-4).length === 4) {
-          return backgroundVideoArr.slice(-4);
+        if (backgroundVideoArr.slice(-3).length === 3) {
+          return backgroundVideoArr.slice(-3);
         }
         return backgroundVideoArr;
       });

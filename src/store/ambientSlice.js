@@ -16,7 +16,7 @@ const ambientSlice = createSlice({
         name: 'Heavy Rain',
         filePath: 'ambient/audio/Heavy_Rain.m4a',
         thumbnailFilePath: 'ambient/thumbnail/TAB_Heavy_Rain.jpg',
-        volume: 0.15,
+        volume: 0.25,
       },
       {
         id: '3',

@@ -169,7 +169,7 @@
   margin-bottom: 1rem;
 
   &__section {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) brightness(90%);
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
     @include flex-row-center;
@@ -180,7 +180,7 @@
     }
 
     &--not-current-mood {
-      filter: brightness(60%);
+      filter: brightness(65%);
     }
   }
 }
@@ -195,7 +195,7 @@
   width: 100vw;
   height: 7rem;
   min-height: 70px;
-  backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px) brightness(90%);
   padding: 0 2.5rem;
 
   &__music-data {

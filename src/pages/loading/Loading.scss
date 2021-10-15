@@ -8,10 +8,15 @@
   z-index: 1;
   opacity: 1;
   @include flex-row-center;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 
   &.not-current-page {
     opacity: 0;
+    z-index: -3;
+  }
+
+  &.shown-behind {
+    opacity: 1;
     z-index: -3;
   }
 
@@ -21,6 +26,11 @@
 
     &.not-current-page {
       opacity: 0;
+      z-index: -3;
+    }
+
+    &.shown-behind {
+      opacity: 1;
       z-index: -3;
     }
   }
