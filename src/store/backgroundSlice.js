@@ -26,7 +26,7 @@ const backgroundSlice = createSlice({
         id: '0114',
         filePath: 'background/video/BG0114_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0114.jpg',
-        ambientArr: ['4', '7'],
+        ambientArr: ['4', '7', '9'],
       },
       {
         id: '0121',
@@ -50,7 +50,7 @@ const backgroundSlice = createSlice({
         id: '0124',
         filePath: 'background/video/BG0124_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0124.jpg',
-        ambientArr: ['4', '7'],
+        ambientArr: ['4', '7', '9'],
       },
       {
         id: '0131',
@@ -74,7 +74,7 @@ const backgroundSlice = createSlice({
         id: '0134',
         filePath: 'background/video/BG0134_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0134.jpg',
-        ambientArr: ['4', '8'],
+        ambientArr: ['4', '8', '9'],
       },
       {
         id: '0211',
@@ -98,7 +98,7 @@ const backgroundSlice = createSlice({
         id: '0214',
         filePath: 'background/video/BG0214_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0214.jpg',
-        ambientArr: ['4', '5', '7'],
+        ambientArr: ['4', '5', '7', '9'],
       },
       {
         id: '0221',
@@ -122,7 +122,7 @@ const backgroundSlice = createSlice({
         id: '0224',
         filePath: 'background/video/BG0224_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0224.jpg',
-        ambientArr: ['4', '5', '7'],
+        ambientArr: ['4', '5', '7', '9'],
       },
       {
         id: '0231',
@@ -146,7 +146,7 @@ const backgroundSlice = createSlice({
         id: '0234',
         filePath: 'background/video/BG0234_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0234.jpg',
-        ambientArr: ['4', '5', '8'],
+        ambientArr: ['4', '5', '8', '9'],
       },
       {
         id: '0311',
@@ -170,7 +170,7 @@ const backgroundSlice = createSlice({
         id: '0314',
         filePath: 'background/video/BG0314_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0314.jpg',
-        ambientArr: ['4', '6'],
+        ambientArr: ['4', '6', '9'],
       },
       {
         id: '0321',
@@ -194,7 +194,7 @@ const backgroundSlice = createSlice({
         id: '0324',
         filePath: 'background/video/BG0324_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0324.jpg',
-        ambientArr: ['4', '6'],
+        ambientArr: ['4', '6', '9'],
       },
       {
         id: '0331',
@@ -218,7 +218,7 @@ const backgroundSlice = createSlice({
         id: '0334',
         filePath: 'background/video/BG0334_1080p.mp4',
         thumbnailFilePath: 'background/thumbnail/TBG0334.jpg',
-        ambientArr: ['4', '8'],
+        ambientArr: ['4', '8', '9'],
       },
     ],
     currentBackground: {
