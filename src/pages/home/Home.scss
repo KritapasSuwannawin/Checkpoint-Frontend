@@ -8,24 +8,28 @@
   opacity: 0;
 
   &--left {
-    width: calc(100vw - 33rem);
     height: 100vh;
     background-color: rgba($color: #000, $alpha: 0.15);
-    transition: all 0.3s ease;
+
+    &.short {
+      width: calc(100vw - 33rem);
+    }
 
     &.wide {
-      width: calc(100vw - 45rem);
+      width: calc(100vw);
     }
   }
 
   &--right {
-    width: 33rem;
     height: 100vh;
     background: linear-gradient(0.25turn, rgba($color: #000, $alpha: 0.15), 10%, rgba($color: #000, $alpha: 0.6));
-    transition: all 0.3s ease;
+
+    &.short {
+      width: 33rem;
+    }
 
     &.wide {
-      width: 45rem;
+      width: 0;
     }
   }
 

@@ -305,10 +305,16 @@ function Home() {
     <div className="home">
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
         <div
-          className={`home__overlay--left ${currentPage === 'music' ? 'wide' : ''}`}
+          className={`home__overlay--left ${currentPage === 'music' ? 'wide' : ''} ${
+            currentPage && currentPage !== 'music' ? 'short' : ''
+          }`}
           onClick={overlayClickHandler}
         ></div>
-        <div className={`home__overlay--right ${currentPage === 'music' ? 'wide' : ''}`}></div>
+        <div
+          className={`home__overlay--right ${currentPage === 'music' ? 'wide' : ''} ${
+            currentPage && currentPage !== 'music' ? 'short' : ''
+          }`}
+        ></div>
       </div>
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
@@ -356,7 +362,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
+      {/* <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div> */}
       <div className="mood">
         <div className="mood__section">
           <img
