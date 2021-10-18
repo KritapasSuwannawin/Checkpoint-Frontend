@@ -2,8 +2,8 @@
 
 .simple-thumbnail-card {
   position: relative;
-  border-radius: 8px;
-  border: 2px rgba($color: #fff, $alpha: 0.01) solid;
+  border-radius: 0.8rem;
+  border: 0.2rem rgba($color: #fff, $alpha: 0.01) solid;
 
   &.background-card {
     width: 25rem;
@@ -15,7 +15,7 @@
     }
 
     &.current-background {
-      border: 2px $white solid;
+      border: 0.2rem $white solid;
     }
   }
 
@@ -33,12 +33,12 @@
     }
 
     &.current-ambient {
-      border: 2px $white solid;
+      border: 0.2rem $white solid;
     }
   }
 
   &__image {
-    border-radius: 8px;
+    border-radius: 0.8rem;
     object-fit: cover;
     width: 100%;
     height: 100%;

@@ -2,22 +2,22 @@
 
 .music-thumbnail-card {
   position: relative;
-  border-radius: 8px;
-  width: calc(13rem + 4px);
+  border-radius: 0.8rem;
+  width: calc(13rem + 0.4rem);
   height: 17rem;
-  border: 2px rgba($color: #fff, $alpha: 0.01) solid;
+  border: 0.2rem rgba($color: #fff, $alpha: 0.01) solid;
   display: flex;
   flex-direction: column;
 
   &:hover {
     cursor: pointer;
-    border: 2px $white solid;
+    border: 0.2rem $white solid;
   }
 
   &__image {
-    border-radius: 8px 8px 0 0;
-    width: 130px;
-    height: 130px;
+    border-radius: 0.8rem 0.8rem 0 0;
+    width: 13rem;
+    height: 13rem;
   }
 
   &__description {
@@ -28,7 +28,7 @@
     background-color: rgba($color: #000, $alpha: 0.75);
     width: 13rem;
     height: 3.5rem;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 0.8rem 0.8rem;
     position: relative;
   }
 

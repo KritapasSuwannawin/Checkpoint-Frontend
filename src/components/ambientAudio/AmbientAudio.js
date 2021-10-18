@@ -30,7 +30,7 @@ function AmbientAudio(props) {
     ambientRef.current.volume = Number((ambientVolume * props.volume).toFixed(2));
   }, [ambientVolume, props.volume, props.id]);
 
-  function canPlayHandler() {
+  function playAmbient() {
     ambientRef.current.click();
   }
 
@@ -45,14 +45,22 @@ function AmbientAudio(props) {
     }
   }
 
+  function loopAmbient() {
+    const buffer = 0.44;
+    if (ambientRef.current.currentTime > ambientRef.current.duration - buffer) {
+      ambientRef.current.currentTime = 0;
+      playAmbient();
+    }
+  }
+
   return (
     <audio
       src={ambientURL}
-      onCanPlay={canPlayHandler}
+      onCanPlay={playAmbient}
       preload="auto"
-      loop={true}
       onClick={clickHandler}
       ref={ambientRef}
+      onTimeUpdate={loopAmbient}
     ></audio>
   );
 }
