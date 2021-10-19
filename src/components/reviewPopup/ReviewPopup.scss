@@ -1,0 +1,69 @@
+@import '../../scss/main.scss';
+
+.review-popup {
+  @include fixed-whole-screen;
+  @include flex-row-center;
+  height: calc(100vh - 7rem);
+  z-index: 2;
+
+  form {
+    @include flex-column-center;
+    background-color: rgba(17, 17, 17, 0.5);
+    backdrop-filter: blur(5rem);
+    row-gap: 1rem;
+    padding: 4rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    color: $white;
+
+    div {
+      align-self: flex-start;
+
+      input {
+        margin-right: 0.5rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    textarea,
+    input[type='text'] {
+      width: 80% !important;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      padding: 0.5rem;
+      color: $white;
+    }
+
+    textarea {
+      height: 8rem !important;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
+  &__heading {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  &__submit {
+    align-self: center !important;
+    padding: 0.8rem 2.5rem;
+    background: $white;
+    border-radius: 2rem;
+    color: #111111;
+    font-weight: 500;
+    font-size: 1.8rem;
+    margin-top: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

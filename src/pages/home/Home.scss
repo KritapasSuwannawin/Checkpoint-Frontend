@@ -56,7 +56,7 @@
   &__links {
     @include flex-row-center;
     font-size: 1.6rem;
-    grid-column-gap: 4.5rem;
+    column-gap: 4.5rem;
 
     &--link {
       padding: 0.5rem;
@@ -94,7 +94,7 @@
   width: 33rem;
   padding: 0 2.5rem;
   @include flex-column-center;
-  grid-row-gap: 1rem;
+  row-gap: 1rem;
   opacity: 0;
   z-index: -2;
   transition: all 0.3s ease;
@@ -120,8 +120,8 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    grid-row-gap: 1rem;
-    grid-column-gap: 1rem;
+    row-gap: 1rem;
+    column-gap: 1rem;
   }
 
   &__ambient-control {
@@ -149,7 +149,7 @@
   width: 45rem;
   padding: 0 2.5rem;
   @include flex-column-center;
-  grid-row-gap: 1rem;
+  row-gap: 1rem;
   animation: fade-in 0.3s ease;
   color: $very-light-grey;
   font-size: 1.6rem;
@@ -169,7 +169,7 @@
   left: 0;
   transform: translateY(-7rem) translateX(calc(50vw - 50%));
   @include flex-row-center;
-  grid-column-gap: 2.5rem;
+  column-gap: 2.5rem;
   margin-bottom: 1rem;
 
   &__section {
@@ -178,7 +178,7 @@
     padding: 0.8rem 1.5rem;
     border-radius: 0.8rem;
     @include flex-row-center;
-    grid-column-gap: 2.5rem;
+    column-gap: 2.5rem;
 
     &:hover {
       cursor: pointer;
@@ -208,7 +208,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    grid-column-gap: 1rem;
+    column-gap: 1rem;
     width: 30rem;
 
     &--thumbnail {
@@ -233,7 +233,7 @@
 
   &__music-control {
     @include flex-row-center;
-    grid-column-gap: 2rem;
+    column-gap: 2rem;
     width: 30rem;
 
     &--play-pause,
@@ -263,7 +263,7 @@
   &__volume-control {
     display: flex;
     justify-content: flex-end;
-    grid-column-gap: 2rem;
+    column-gap: 2rem;
     width: 30rem;
 
     &--section {
@@ -277,8 +277,8 @@
     &--volumn {
       @include flex-column-center;
       align-items: flex-end;
-      grid-row-gap: 0.25rem;
-      grid-column-gap: 1rem;
+      row-gap: 0.25rem;
+      column-gap: 1rem;
     }
 
     &--volume-slider {
