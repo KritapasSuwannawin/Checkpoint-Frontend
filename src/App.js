@@ -9,6 +9,7 @@ import Music from './pages/music/Music';
 import Ambient from './pages/ambient/Ambient';
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
 import MobileLanding from './components/mobileLanding/MobileLanding';
+import SafariGuide from './components/safariGuide/SafariGuide';
 
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
@@ -21,6 +22,7 @@ function App() {
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
+  const [showSafariGuide, setShowSafariGuide] = useState(false);
 
   const notDoUseEffect = useRef();
 
@@ -53,9 +55,7 @@ function App() {
     }
 
     if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      console.log('You are using Safari 😥');
-    } else {
-      console.log('You are not using Safari 😄');
+      setShowSafariGuide(true);
     }
 
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
@@ -92,8 +92,8 @@ function App() {
     });
 
     setTimeout(() => {
-      // setShowReviewPopup(true);
-    }, 10000);
+      setShowReviewPopup(true);
+    }, 1800000);
 
     notDoUseEffect.current = true;
   }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);
@@ -106,6 +106,7 @@ function App() {
     <>
       <Loading></Loading>
       {showReviewPopup && <ReviewPopup></ReviewPopup>}
+      {showSafariGuide && <SafariGuide></SafariGuide>}
       <Home></Home>
       <Background></Background>
       <Music></Music>
