@@ -55,7 +55,10 @@ function App() {
     }
 
     if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      setShowSafariGuide(true);
+      if (!localStorage.getItem('checkpointShowSafariGuide')) {
+        setShowSafariGuide(true);
+        localStorage.setItem('checkpointShowSafariGuide', 'done');
+      }
     }
 
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
@@ -92,7 +95,10 @@ function App() {
     });
 
     setTimeout(() => {
-      setShowReviewPopup(true);
+      if (!localStorage.getItem('checkpointShowReviewPopup')) {
+        setShowReviewPopup(true);
+        localStorage.setItem('checkpointShowReviewPopup', 'done');
+      }
     }, 1800000);
 
     notDoUseEffect.current = true;
