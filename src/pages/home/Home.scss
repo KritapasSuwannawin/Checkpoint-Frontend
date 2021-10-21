@@ -25,7 +25,7 @@
     background: linear-gradient(0.25turn, rgba(17, 17, 17, 0.15), 10%, rgba(17, 17, 17, 0.6));
 
     &.short {
-      width: 33rem;
+      width: 34rem;
     }
 
     &.wide {
@@ -44,9 +44,11 @@
   padding: 2rem 2.5rem 9rem 2.5rem;
   color: $white;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(17, 17, 17, 0));
+  position: relative;
 
   &__logo {
     @include flex-row-center;
+    margin-left: -0.4rem;
 
     &:hover {
       cursor: pointer;
@@ -57,6 +59,7 @@
     @include flex-row-center;
     font-size: 1.6rem;
     column-gap: 4.5rem;
+    z-index: 2;
 
     &--link {
       padding: 0.5rem;
@@ -77,6 +80,47 @@
 
     &--icon {
       margin-right: 0.5rem;
+    }
+
+    &--about-us {
+      margin-left: -4rem;
+      margin-right: -1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__outside-links {
+    position: absolute;
+    top: 6.5rem;
+    right: 2.4rem;
+    backdrop-filter: blur(1rem);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0 0 0.8rem 0.8rem;
+    z-index: 1;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: all 0.15s ease;
+    font-size: 1.4rem;
+
+    &.display-links {
+      transform: scaleY(1);
+    }
+
+    a {
+      margin-bottom: 1rem;
+      padding: 0.2rem;
+      display: block;
+      text-decoration: none;
+      color: $white;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 

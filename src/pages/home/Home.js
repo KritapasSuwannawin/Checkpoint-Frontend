@@ -16,7 +16,6 @@ import { musicActions } from '../../store/musicSlice';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
-import profileSvg50 from '../../svg/50px/Test Account.svg';
 import daySvg36 from '../../svg/36px/Sun.svg';
 import eveningSvg36 from '../../svg/36px/Sunset.svg';
 import nightSvg36 from '../../svg/36px/Moon Symbol.svg';
@@ -26,6 +25,8 @@ import thunderSvg36 from '../../svg/36px/Storm.svg';
 import snowySvg36 from '../../svg/36px/Winter.svg';
 import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
 import musicSvg30 from '../../svg/30px/Music30px.svg';
+import globe30 from '../../svg/30px/Globe30px.png';
+import menu30 from '../../svg/30px/MenuVertical30px.png';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
@@ -34,6 +35,15 @@ import ambientSvg25 from '../../svg/25px/Organic Food.svg';
 import musicSvg25 from '../../svg/25px/iTunes-1.svg';
 import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
+
+const dictionary = {
+  language: ['EN', 'JP', 'CN'],
+  music: ['Music', '音楽', '音乐'],
+  background: ['Background', '背景', '背景'],
+  aboutUs: ['About Us', '私達について', '关于我们'],
+  policies: ['Policies', 'ポリシー', '政策'],
+  donate: ['Donate', '寄付', '捐赠'],
+};
 
 function Home() {
   const dispatch = useDispatch();
@@ -59,6 +69,9 @@ function Home() {
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
+
+  const [languageIndex, setLanguageIndex] = useState(0);
+  const [showOutsideLink, setShowOutsideLink] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -270,6 +283,7 @@ function Home() {
       dispatch(pageActions.closePageHandler());
       return;
     }
+    setShowOutsideLink(false);
     dispatch(pageActions.changePageHandler('background'));
   }
 
@@ -278,6 +292,7 @@ function Home() {
       dispatch(pageActions.closePageHandler());
       return;
     }
+    setShowOutsideLink(false);
     dispatch(pageActions.changePageHandler('music'));
   }
 
@@ -299,6 +314,20 @@ function Home() {
 
   function changeBackgroundWeatherHandler() {
     dispatch(backgroundActions.changeBackgroundWeatherHandler(this));
+  }
+
+  function outsideLinkToggleHandler() {
+    setShowOutsideLink((state) => !state);
+  }
+
+  function languageChangeHandler() {
+    setLanguageIndex((index) => {
+      if (index <= 1) {
+        return index + 1;
+      }
+
+      return 0;
+    });
   }
 
   return (
@@ -329,7 +358,7 @@ function Home() {
             className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}
           >
             <img src={musicSvg30} alt="" className="nav__links--icon"></img>
-            Music
+            {dictionary.music[languageIndex]}
           </div>
           <div
             onClick={backgroundClickHander}
@@ -338,10 +367,24 @@ function Home() {
             }`}
           >
             <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
-            Background
+            {dictionary.background[languageIndex]}
           </div>
-          <div className="nav__separator"></div>
-          <img src={profileSvg50} alt=""></img>
+          <div className="nav__links--link" onClick={languageChangeHandler}>
+            <img className="nav__links--icon" src={globe30} alt=""></img>
+            {dictionary.language[languageIndex]}
+          </div>
+          <img className="nav__links--about-us" src={menu30} alt="" onClick={outsideLinkToggleHandler}></img>
+          <div className={`nav__outside-links ${showOutsideLink ? 'display-links' : ''}`}>
+            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
+              {dictionary.aboutUs[languageIndex]}
+            </a>
+            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
+              {dictionary.policies[languageIndex]}
+            </a>
+            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
+              {dictionary.donate[languageIndex]}
+            </a>
+          </div>
         </div>
       </nav>
       <div
