@@ -369,7 +369,7 @@ function Home() {
             <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
             {dictionary.background[languageIndex]}
           </div>
-          <div className="nav__links--link" onClick={languageChangeHandler}>
+          <div className="nav__links--link language" onClick={languageChangeHandler}>
             <img className="nav__links--icon" src={globe30} alt=""></img>
             {dictionary.language[languageIndex]}
           </div>
