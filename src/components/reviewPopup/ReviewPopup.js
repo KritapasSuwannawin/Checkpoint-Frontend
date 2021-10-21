@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 
+import firestore from '../../firebase/firestore';
 import './ReviewPopup.scss';
 
 function ReviewPopup(props) {
@@ -22,17 +23,19 @@ function ReviewPopup(props) {
   }
 
   if (!showReview) {
-    console.log(ref1.current.checked);
-    console.log(ref2.current.checked);
-    console.log(ref3.current.checked);
-    console.log(ref4.current.checked);
-    console.log(ref5.current.checked);
-    console.log(ref6.current.checked);
-    console.log(ref7.current.checked);
-    console.log(ref8.current.checked);
-    console.log(ref9.current.checked);
-    console.log(ref10.current.value);
-    console.log(ref11.current.value);
+    firestore.collection('beta-test-feedback').add({
+      numberBackgroundNotEnough: ref1.current.checked ? 1 : 0,
+      numberMusicNotEnough: ref2.current.checked ? 1 : 0,
+      numberAmbienceNotEnough: ref3.current.checked ? 1 : 0,
+      qualityBackgroundNotEnough: ref4.current.checked ? 1 : 0,
+      qualityMusicNotEnough: ref5.current.checked ? 1 : 0,
+      qualityAmbienceNotEnough: ref6.current.checked ? 1 : 0,
+      slowDownloadSpeed: ref7.current.checked ? 1 : 0,
+      difficultToNavigate: ref8.current.checked ? 1 : 0,
+      operationNotSmooth: ref9.current.checked ? 1 : 0,
+      otherSuggestion: ref10.current.value,
+      email: ref11.current.value,
+    });
     return <></>;
   }
 
