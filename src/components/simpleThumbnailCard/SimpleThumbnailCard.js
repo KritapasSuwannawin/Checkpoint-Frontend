@@ -7,10 +7,24 @@ import './SimpleThumbnailCard.scss';
 import { ambientActions } from '../../store/ambientSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 
+const dictionary = {
+  LightRain: ['Light Rain', '小雨'],
+  HeavyRain: ['Heavy Rain', '激しい雨'],
+  ThunderStorm: ['Thunder Storm', '雷'],
+  WindTree: ['Wind Tree', '木のさざめき'],
+  River: ['River', '川'],
+  BirdPark: ['Bird Park', '公園の鳥'],
+  BirdForest: ['Bird Forest', '森の鳥'],
+  NightForest: ['Night Forest', '夜の森'],
+  LightWind: ['Light Wind', '風のさざめき'],
+  WindChimes: ['Wind Chimes', '風鈴'],
+};
+
 function SimpleThumbnailCard(props) {
   const dispatch = useDispatch();
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [thumbnailURL, setThumbnailURL] = useState();
 
@@ -62,12 +76,14 @@ function SimpleThumbnailCard(props) {
     return <div className={placeholderClassName}></div>;
   }
 
+  const ambientDisplayName = props.name && dictionary[props.name.replace(' ', '')][languageIndex];
+
   return (
     <div className={className}>
       <img src={thumbnailURL} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
       {props.name && (
         <p onClick={clickHandler} className="simple-thumbnail-card__overlay-name">
-          {props.name}
+          {ambientDisplayName}
         </p>
       )}
     </div>

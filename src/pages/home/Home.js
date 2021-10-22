@@ -39,11 +39,11 @@ import addSvg20 from '../../svg/20px/Add20px.svg';
 
 const dictionary = {
   language: ['EN', 'JP'],
-  music: ['Music', '音楽'],
-  background: ['Background', '背景'],
+  music: ['Music', 'ミュージック'],
+  background: ['Background', 'バックグラウンド'],
   aboutUs: ['About Us', '私たちについて'],
-  policies: ['Policy', 'ポリシー'],
-  donate: ['Donate', '寄付'],
+  policy: ['Policy', 'プライバシーポリシー'],
+  donate: ['Donate', '寄付する'],
 };
 
 function Home() {
@@ -370,13 +370,13 @@ function Home() {
           </div>
           <img className="nav__links--about-us" src={menu30} alt="" onClick={outsideLinkToggleHandler}></img>
           <div className={`nav__outside-links ${showOutsideLink ? 'display-links' : ''}`}>
-            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
+            <a href="https://checkpoint-tokyo.netlify.app/about.html" target="_blank" rel="noreferrer">
               {dictionary.aboutUs[languageIndex]}
             </a>
-            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
-              {dictionary.policies[languageIndex]}
+            <a href="https://checkpoint-tokyo.netlify.app/about.html#bottom" target="_blank" rel="noreferrer">
+              {dictionary.policy[languageIndex]}
             </a>
-            <a href="https://www.google.com/" target="_blank" rel="noreferrer">
+            <a href="https://www.buymeacoffee.com/checkpoint" target="_blank" rel="noreferrer">
               {dictionary.donate[languageIndex]}
             </a>
           </div>

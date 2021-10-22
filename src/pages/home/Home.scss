@@ -59,6 +59,7 @@
     @include flex-row-center;
     font-size: 1.6rem;
     column-gap: 4.5rem;
+    white-space: nowrap;
 
     &--link {
       padding: 0.5rem;
@@ -390,6 +391,18 @@
 }
 
 @media (max-width: 610px) {
+  .nav {
+    &__logo {
+      width: 20rem;
+    }
+
+    &__links {
+      &--link.fixed-width {
+        margin-left: -4rem;
+      }
+    }
+  }
+
   .player {
     &__volume-control {
       &--mute {

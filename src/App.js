@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { storageRef } from './firebase/storage';
+import firestore from './firebase/firestore';
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
 import Background from './pages/background/Background';
@@ -54,6 +55,17 @@ function App() {
       return;
     }
 
+    firestore
+      .collection('website-control')
+      .doc('storage')
+      .onSnapshot((doc) => {
+        const allowRead = doc.data().allowRead;
+
+        if (!allowRead) {
+          window.location.replace('https://checkpoint-tokyo.netlify.app/');
+        }
+      });
+
     if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
       if (!localStorage.getItem('checkpointShowSafariGuide')) {
         setShowSafariGuide(true);
@@ -99,7 +111,7 @@ function App() {
         setShowReviewPopup(true);
         localStorage.setItem('checkpointShowReviewPopup', 'done');
       }
-    }, 1800000);
+    }, 900000);
 
     notDoUseEffect.current = true;
   }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);

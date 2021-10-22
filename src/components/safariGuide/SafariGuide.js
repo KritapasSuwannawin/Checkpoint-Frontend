@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import './SafariGuide.scss';
 
@@ -6,8 +7,9 @@ import imageUrl from './Safari minigame.png';
 
 function SafariGuide(props) {
   const [showGuide, setShowGuide] = useState(true);
+  const loading = useSelector((store) => store.page.loading);
 
-  if (!showGuide) {
+  if (!showGuide || loading) {
     return <></>;
   }
 

@@ -17,6 +17,7 @@
     color: $white;
     max-height: 80%;
     overflow-y: auto;
+    position: relative;
 
     div {
       align-self: flex-start;
@@ -64,6 +65,20 @@
     font-weight: 500;
     font-size: 1.6rem;
     margin-top: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: rgba(196, 196, 196, 0.7);
 
     &:hover {
       cursor: pointer;

@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import firestore from '../firebase/firestore';
+
 const ambientSlice = createSlice({
   name: 'ambient',
   initialState: {
@@ -27,7 +29,7 @@ const ambientSlice = createSlice({
       },
       {
         id: '4',
-        name: 'Wind tree',
+        name: 'Wind Tree',
         filePath: 'ambient/audio/Wind_Tree.m4a',
         thumbnailFilePath: 'ambient/thumbnail/TAB_Wind_Tree.jpg',
         volume: 0.15,
@@ -82,9 +84,19 @@ const ambientSlice = createSlice({
     ambientToggleHandler(state, action) {
       if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id) >= 0) {
         state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload.id);
+
+        firestore.collection('beta-test-ambient-tracking').add({
+          event: 'remove-ambient',
+          id: action.payload.id,
+        });
       } else {
         const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
         state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
+
+        firestore.collection('beta-test-ambient-tracking').add({
+          event: 'add-ambient',
+          id: action.payload.id,
+        });
       }
     },
     setAmbientVolume(state, action) {

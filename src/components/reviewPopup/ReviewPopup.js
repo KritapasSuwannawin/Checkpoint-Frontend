@@ -28,6 +28,7 @@ function ReviewPopup(props) {
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [showReview, setShowReview] = useState(true);
+  const [sendToFirestore, setSendToFirestore] = useState(true);
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -45,8 +46,14 @@ function ReviewPopup(props) {
     setShowReview(false);
   }
 
+  function closePopupHandler() {
+    setShowReview(false);
+    setSendToFirestore(false);
+    localStorage.removeItem('checkpointShowReviewPopup');
+  }
+
   if (!showReview) {
-    if (ref1.current) {
+    if (ref1.current && sendToFirestore) {
       firestore.collection('beta-test-feedback').add({
         numberBackgroundNotEnough: ref1.current.checked ? 1 : 0,
         numberMusicNotEnough: ref2.current.checked ? 1 : 0,
@@ -67,6 +74,7 @@ function ReviewPopup(props) {
   return (
     <div className={`review-popup ${languageIndex === 1 ? 'japanese' : ''}`}>
       <form>
+        <div className="review-popup__close-btn" onClick={closePopupHandler}></div>
         <p className="review-popup__heading">{dictionary.heading[languageIndex]}</p>
         <div>
           <input type="checkbox" value="1" ref={ref1}></input>
