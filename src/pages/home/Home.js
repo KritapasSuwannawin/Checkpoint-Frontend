@@ -12,6 +12,7 @@ import { pageActions } from '../../store/pageSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { ambientActions } from '../../store/ambientSlice';
 import { musicActions } from '../../store/musicSlice';
+import { languageActions } from '../../store/languageSlice';
 
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
@@ -37,12 +38,12 @@ import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 
 const dictionary = {
-  language: ['EN', 'JP', 'CN'],
-  music: ['Music', '音楽', '音乐'],
-  background: ['Background', '背景', '背景'],
-  aboutUs: ['About Us', '私達について', '关于我们'],
-  policies: ['Policies', 'ポリシー', '政策'],
-  donate: ['Donate', '寄付', '捐赠'],
+  language: ['EN', 'JP'],
+  music: ['Music', '音楽'],
+  background: ['Background', '背景'],
+  aboutUs: ['About Us', '私たちについて'],
+  policies: ['Policy', 'ポリシー'],
+  donate: ['Donate', '寄付'],
 };
 
 function Home() {
@@ -57,6 +58,7 @@ function Home() {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
@@ -70,7 +72,6 @@ function Home() {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
-  const [languageIndex, setLanguageIndex] = useState(0);
   const [showOutsideLink, setShowOutsideLink] = useState(false);
 
   const backgroundFilePathRef = useRef();
@@ -321,13 +322,7 @@ function Home() {
   }
 
   function languageChangeHandler() {
-    setLanguageIndex((index) => {
-      if (index <= 1) {
-        return index + 1;
-      }
-
-      return 0;
-    });
+    dispatch(languageActions.languageChangeHandler());
   }
 
   return (

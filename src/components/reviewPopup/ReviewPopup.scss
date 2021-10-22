@@ -11,10 +11,12 @@
     background-color: rgba(17, 17, 17, 0.5);
     backdrop-filter: blur(5rem);
     row-gap: 1rem;
-    padding: 4rem;
+    padding: 3.5rem;
     border-radius: 0.8rem;
     font-size: 1.4rem;
     color: $white;
+    max-height: 80%;
+    overflow-y: auto;
 
     div {
       align-self: flex-start;
@@ -29,7 +31,7 @@
 
     textarea,
     input[type='text'] {
-      width: 80% !important;
+      width: 90% !important;
       background-color: rgba(0, 0, 0, 0.5);
       border: none;
       padding: 0.5rem;
@@ -37,12 +39,13 @@
     }
 
     textarea {
-      height: 8rem !important;
+      min-height: 5rem;
       margin-bottom: 0.5rem;
     }
 
     p {
       text-align: center;
+      width: 32rem;
     }
   }
 
@@ -59,11 +62,17 @@
     border-radius: 2rem;
     color: #111111;
     font-weight: 500;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     margin-top: 1rem;
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  &.japanese {
+    p {
+      width: 40rem;
     }
   }
 }

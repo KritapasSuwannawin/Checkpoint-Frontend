@@ -75,6 +75,10 @@
       &.fixed-width {
         width: 14rem;
       }
+
+      &.language {
+        z-index: 2;
+      }
     }
 
     &--icon {
