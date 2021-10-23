@@ -55,6 +55,10 @@ function App() {
       return;
     }
 
+    if (window.location.protocol === 'http:' && window.location.href !== 'http://localhost:3000/') {
+      window.location.replace(window.location.href.replace('http:', 'https:'));
+    }
+
     firestore
       .collection('website-control')
       .doc('storage')

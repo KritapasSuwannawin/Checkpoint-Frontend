@@ -376,7 +376,7 @@ function Home() {
             <a href="https://checkpoint-tokyo.netlify.app/about.html#bottom" target="_blank" rel="noreferrer">
               {dictionary.policy[languageIndex]}
             </a>
-            <a href="https://www.buymeacoffee.com/checkpoint" target="_blank" rel="noreferrer">
+            <a href="https://ko-fi.com/checkpointtokyo" target="_blank" rel="noreferrer">
               {dictionary.donate[languageIndex]}
             </a>
           </div>
