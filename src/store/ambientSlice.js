@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import firestore from '../firebase/firestore';
-
 const ambientSlice = createSlice({
   name: 'ambient',
   initialState: {
@@ -84,19 +82,9 @@ const ambientSlice = createSlice({
     ambientToggleHandler(state, action) {
       if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id) >= 0) {
         state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload.id);
-
-        firestore.collection('beta-test-ambient-tracking').add({
-          event: 'remove-ambient',
-          id: action.payload.id,
-        });
       } else {
         const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
         state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
-
-        firestore.collection('beta-test-ambient-tracking').add({
-          event: 'add-ambient',
-          id: action.payload.id,
-        });
       }
     },
     setAmbientVolume(state, action) {
