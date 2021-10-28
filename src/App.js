@@ -71,10 +71,7 @@ function App() {
       });
 
     if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      if (!localStorage.getItem('checkpointShowSafariGuide')) {
-        setShowSafariGuide(true);
-        localStorage.setItem('checkpointShowSafariGuide', 'done');
-      }
+      setShowSafariGuide(true);
     }
 
     const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
@@ -115,7 +112,13 @@ function App() {
         setShowReviewPopup(true);
         localStorage.setItem('checkpointShowReviewPopup', 'done');
       }
-    }, 900000);
+    }, 300000);
+
+    document.addEventListener('keyup', (event) => {
+      if (event.code === 'Space') {
+        dispatch(musicActions.toggleMusicPlayPause());
+      }
+    });
 
     notDoUseEffect.current = true;
   }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);
