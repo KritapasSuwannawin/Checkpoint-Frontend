@@ -107,18 +107,21 @@ function App() {
       dispatch(backgroundActions.setAvailableBackground(background));
     });
 
+    function spacebarHandler(event) {
+      if (event.code === 'Space') {
+        dispatch(musicActions.toggleMusicPlayPause());
+      }
+    }
+
     setTimeout(() => {
       if (!localStorage.getItem('checkpointShowReviewPopup')) {
+        document.removeEventListener('keyup', spacebarHandler);
         setShowReviewPopup(true);
         localStorage.setItem('checkpointShowReviewPopup', 'done');
       }
     }, 300000);
 
-    document.addEventListener('keyup', (event) => {
-      if (event.code === 'Space') {
-        dispatch(musicActions.toggleMusicPlayPause());
-      }
-    });
+    document.addEventListener('keyup', spacebarHandler);
 
     notDoUseEffect.current = true;
   }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);

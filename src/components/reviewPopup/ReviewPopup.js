@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import firestore from '../../firebase/firestore';
 import './ReviewPopup.scss';
+
+import { musicActions } from '../../store/musicSlice';
 
 const dictionary = {
   heading: ['Help us improve by giving us feedback!', 'サービス向上のため、ご意見をお聞かせください'],
@@ -25,6 +27,7 @@ const dictionary = {
 };
 
 function ReviewPopup(props) {
+  const dispatch = useDispatch();
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [showReview, setShowReview] = useState(true);
@@ -68,6 +71,12 @@ function ReviewPopup(props) {
         email: ref11.current.value,
       });
     }
+
+    document.addEventListener('keyup', (event) => {
+      if (event.code === 'Space') {
+        dispatch(musicActions.toggleMusicPlayPause());
+      }
+    });
     return <></>;
   }
 
