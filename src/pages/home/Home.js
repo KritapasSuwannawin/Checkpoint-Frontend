@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { storageRef } from '../../firebase/storage';
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
@@ -77,36 +76,17 @@ function Home() {
   const backgroundFilePathRef = useRef();
 
   useEffect(() => {
-    if (currentBackground.url) {
-      setBackgroundVideoArr((backgroundVideoArr) => {
-        const filteredBackgroundVideoArr = backgroundVideoArr.filter(
-          (background) => background.key !== currentBackground.id
-        );
-        return [
-          ...filteredBackgroundVideoArr,
-          <div key={currentBackground.id}>
-            <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
-          </div>,
-        ];
-      });
-    } else {
-      storageRef
-        .child(currentBackground.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          setBackgroundVideoArr((backgroundVideoArr) => {
-            const filteredBackgroundVideoArr = backgroundVideoArr.filter(
-              (background) => background.key !== currentBackground.id
-            );
-            return [
-              ...filteredBackgroundVideoArr,
-              <div key={currentBackground.id}>
-                <BackgroundVideo id={currentBackground.id} url={url}></BackgroundVideo>
-              </div>,
-            ];
-          });
-        });
-    }
+    setBackgroundVideoArr((backgroundVideoArr) => {
+      const filteredBackgroundVideoArr = backgroundVideoArr.filter(
+        (background) => background.key !== currentBackground.id
+      );
+      return [
+        ...filteredBackgroundVideoArr,
+        <div key={currentBackground.id}>
+          <BackgroundVideo id={currentBackground.id} url={currentBackground.url}></BackgroundVideo>
+        </div>,
+      ];
+    });
 
     const timeout = setTimeout(() => {
       setBackgroundVideoArr((backgroundVideoArr) => {
@@ -129,16 +109,7 @@ function Home() {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (currentBackground.thumbnailUrl) {
-      setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
-    } else {
-      storageRef
-        .child(currentBackground.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setBackgroundThumbnailURL(url);
-        });
-    }
+    setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
   }, [currentBackground]);
 
   useEffect(() => {
@@ -146,12 +117,7 @@ function Home() {
       currentAmbientArr.map((ambient) => {
         return (
           <div key={ambient.id}>
-            <AmbientAudio
-              id={ambient.id}
-              filePath={ambient.filePath}
-              url={ambient.url}
-              volume={ambient.volume}
-            ></AmbientAudio>
+            <AmbientAudio id={ambient.id} url={ambient.url} volume={ambient.volume}></AmbientAudio>
           </div>
         );
       })
@@ -159,16 +125,7 @@ function Home() {
   }, [currentAmbientArr]);
 
   useEffect(() => {
-    if (currentMusic.thumbnailUrl) {
-      setMusicThumbnailURL(currentMusic.thumbnailUrl);
-    } else {
-      storageRef
-        .child(currentMusic.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setMusicThumbnailURL(url);
-        });
-    }
+    setMusicThumbnailURL(currentMusic.thumbnailUrl);
   }, [currentMusic]);
 
   useEffect(() => {
@@ -188,8 +145,6 @@ function Home() {
               <AmbientControl
                 id={ambient.id}
                 name={ambient.name}
-                filePath={ambient.filePath}
-                thumbnailFilePath={ambient.thumbnailFilePath}
                 url={ambient.url}
                 thumbnailUrl={ambient.thumbnailUrl}
                 volume={ambient.volume}
@@ -210,8 +165,6 @@ function Home() {
           <AmbientControl
             id={ambient.id}
             name={ambient.name}
-            filePath={ambient.filePath}
-            thumbnailFilePath={ambient.thumbnailFilePath}
             url={ambient.url}
             thumbnailUrl={ambient.thumbnailUrl}
             volume={ambient.volume}

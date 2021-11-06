@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { storageRef } from '../../firebase/storage';
 import './SimpleThumbnailCard.scss';
 
 import { ambientActions } from '../../store/ambientSlice';
@@ -29,17 +28,8 @@ function SimpleThumbnailCard(props) {
   const [thumbnailURL, setThumbnailURL] = useState();
 
   useEffect(() => {
-    if (props.thumbnailUrl) {
-      setThumbnailURL(props.thumbnailUrl);
-    } else {
-      storageRef
-        .child(props.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setThumbnailURL(url);
-        });
-    }
-  }, [props.thumbnailFilePath, props.thumbnailUrl]);
+    setThumbnailURL(props.thumbnailUrl);
+  }, [props.thumbnailUrl]);
 
   const className = `simple-thumbnail-card ${
     props.ambient

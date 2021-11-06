@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { storageRef } from '../../firebase/storage';
-
 import { ambientActions } from '../../store/ambientSlice';
 
 function AmbientAudio(props) {
@@ -14,17 +12,8 @@ function AmbientAudio(props) {
   const [ambientURL, setAmbientURL] = useState();
 
   useEffect(() => {
-    if (props.url) {
-      setAmbientURL(props.url);
-    } else {
-      storageRef
-        .child(props.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          setAmbientURL(url);
-        });
-    }
-  }, [props.url, props.filePath]);
+    setAmbientURL(props.url);
+  }, [props.url]);
 
   useEffect(() => {
     ambientRef.current.volume = Number((ambientVolume * props.volume).toFixed(2));

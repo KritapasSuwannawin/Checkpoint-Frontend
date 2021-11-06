@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { storageRef } from '../../firebase/storage';
 import { musicActions } from '../../store/musicSlice';
 import './MusicThumbnailCard.scss';
 
@@ -16,17 +15,8 @@ function MusicThumbnailCard(props) {
   const [thumbnailURL, setThumbnailURL] = useState();
 
   useEffect(() => {
-    if (props.thumbnailUrl) {
-      setThumbnailURL(props.thumbnailUrl);
-    } else {
-      storageRef
-        .child(props.thumbnailFilePath)
-        .getDownloadURL()
-        .then((url) => {
-          setThumbnailURL(url);
-        });
-    }
-  }, [props.thumbnailFilePath, props.thumbnailUrl]);
+    setThumbnailURL(props.thumbnailUrl);
+  }, [props.thumbnailUrl]);
 
   function clickHandler() {
     if (!(currentMusic.id === props.id) || !musicPlaying) {

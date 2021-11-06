@@ -3,78 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const ambientSlice = createSlice({
   name: 'ambient',
   initialState: {
-    availableAmbientArr: [
-      {
-        id: '1',
-        name: 'Light Rain',
-        filePath: 'ambient/audio/Light_Rain.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Light_Rain.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '2',
-        name: 'Heavy Rain',
-        filePath: 'ambient/audio/Heavy_Rain.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Heavy_Rain.jpg',
-        volume: 0.25,
-      },
-      {
-        id: '3',
-        name: 'Thunder Storm',
-        filePath: 'ambient/audio/Thunder_Strom.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Thunder_Strom.jpg',
-        volume: 0.8,
-      },
-      {
-        id: '4',
-        name: 'Wind Tree',
-        filePath: 'ambient/audio/Wind_Tree.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Wind_Tree.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '5',
-        name: 'River',
-        filePath: 'ambient/audio/River.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_River.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '6',
-        name: 'Bird Park',
-        filePath: 'ambient/audio/Bird_Park.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Bird_Park.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '7',
-        name: 'Bird Forest',
-        filePath: 'ambient/audio/Bird_Forest.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Bird_Forest.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '8',
-        name: 'Night Forest',
-        filePath: 'ambient/audio/Night_Forest.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Night_Forest.jpg',
-        volume: 0.15,
-      },
-      {
-        id: '9',
-        name: 'Light Wind',
-        filePath: 'ambient/audio/Light_Wind.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Cold_Wind.jpg',
-        volume: 0.8,
-      },
-      {
-        id: '10',
-        name: 'Wind Chimes',
-        filePath: 'ambient/audio/Wind_Chimes.m4a',
-        thumbnailFilePath: 'ambient/thumbnail/TAB_Wind_Chimes.jpg',
-        volume: 0.15,
-      },
-    ],
+    availableAmbientArr: [],
     currentAmbientArr: [],
     ambientVolume: 0.5,
   },
@@ -89,15 +18,6 @@ const ambientSlice = createSlice({
     },
     setAmbientVolume(state, action) {
       state.ambientVolume = action.payload;
-    },
-    setAvailableAmbient(state, action) {
-      const availableAmbientArr = [...state.availableAmbientArr];
-      const existingAmbientIndex = availableAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
-      if (availableAmbientArr[existingAmbientIndex].url && availableAmbientArr[existingAmbientIndex].thumbnailUrl) {
-        return;
-      }
-      availableAmbientArr[existingAmbientIndex] = action.payload;
-      state.availableAmbientArr = availableAmbientArr;
     },
     setCurrentAmbientArrByIDArr(state, action) {
       const currentAmbientArr = [];
@@ -119,6 +39,9 @@ const ambientSlice = createSlice({
         currentAmbientArr[existingCurrentAmbientIndex].volume = action.payload.volume;
         state.currentAmbientArr = currentAmbientArr;
       }
+    },
+    setAvailableAmbient(state, action) {
+      state.availableAmbientArr = action.payload;
     },
   },
 });

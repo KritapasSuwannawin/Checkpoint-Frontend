@@ -31,10 +31,8 @@ function Music() {
               id={music.id}
               musicName={music.musicName}
               artistName={music.artistName}
-              filePath={music.filePath}
               url={music.url}
               thumbnailUrl={music.thumbnailUrl}
-              thumbnailFilePath={music.thumbnailFilePath}
               onClickHandler={musicClickHandler}
             ></MusicThumbnailCard>
           </div>,

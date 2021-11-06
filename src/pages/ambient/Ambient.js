@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
@@ -9,8 +9,13 @@ function Ambient() {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
+  const doneSetupPage = useRef();
 
   useEffect(() => {
+    if (doneSetupPage.current) {
+      return;
+    }
+
     availableAmbientArr.forEach((ambient) => {
       setThumbnailArr((thumbnailArr) => {
         const filteredThumbnailArr = thumbnailArr.filter((thumbnail) => thumbnail.key !== ambient.id);
@@ -20,9 +25,7 @@ function Ambient() {
             <SimpleThumbnailCard
               id={ambient.id}
               name={ambient.name}
-              filePath={ambient.filePath}
-              thumbnailFilePath={ambient.thumbnailFilePath}
-              url={ambient.url}
+              thumbnailUrl={ambient.thumbnailUrl}
               volume={ambient.volume}
               ambient
             ></SimpleThumbnailCard>
@@ -30,6 +33,10 @@ function Ambient() {
         ];
       });
     });
+
+    if (availableAmbientArr.length > 0) {
+      doneSetupPage.current = true;
+    }
   }, [availableAmbientArr]);
 
   return <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>{thumbnailArr}</div>;

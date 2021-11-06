@@ -18,8 +18,6 @@ function AmbientControl(props) {
       <SimpleThumbnailCard
         id={props.id}
         name={props.name}
-        filePath={props.filePath}
-        thumbnailFilePath={props.thumbnailFilePath}
         url={props.url}
         thumbnailUrl={props.thumbnailUrl}
         volume={props.volume}

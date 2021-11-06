@@ -26,8 +26,6 @@ function Background() {
           <div key={background.id}>
             <SimpleThumbnailCard
               id={background.id}
-              filePath={background.filePath}
-              thumbnailFilePath={background.thumbnailFilePath}
               url={background.url}
               thumbnailUrl={background.thumbnailUrl}
               ambientArr={background.ambientArr}

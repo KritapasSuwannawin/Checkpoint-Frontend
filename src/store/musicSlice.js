@@ -3,99 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const musicSlice = createSlice({
   name: 'music',
   initialState: {
-    availableMusicArr: [
-      {
-        id: '1',
-        musicName: 'Summer Breeze',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/SteveAiken_SummerBreeze.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/Steve Aiken (1) - Summer Breeze.jpg',
-      },
-      {
-        id: '2',
-        musicName: 'Shine',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/klaus_Shine.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/klaüs (1) - Shine.jpg',
-      },
-      {
-        id: '3',
-        musicName: 'The voice of the Wind',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/klaus_TheVoiceOfTheWind.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/klaüs (2) - The voice of the wind.jpg',
-      },
-      {
-        id: '4',
-        musicName: 'Ivory',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/klaus_Ivory.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/klaüs (3) - Ivory.jpg',
-      },
-      {
-        id: '5',
-        musicName: 'Learn to Fly',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/klaus_LearnToFly.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/klaüs (4) - Learn to fly.jpg',
-      },
-      {
-        id: '6',
-        musicName: 'Venus',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/piano/klaus_Venus.m4a',
-        thumbnailFilePath: 'music/thumbnail/piano/klaüs (5) - Venus.jpg',
-      },
-      {
-        id: '7',
-        musicName: 'I like you',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/FadlanAmada_ILikeYou.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (2) - I like you.jpg',
-      },
-      {
-        id: '8',
-        musicName: 'New Day',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/FadlanAmada_NewDay.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (4) - New day.jpg',
-      },
-      {
-        id: '9',
-        musicName: 'Nothing Matters',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/FadlanAmada_NothingMatters.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (3) - Nothing matters.jpg',
-      },
-      {
-        id: '10',
-        musicName: 'Sunday Afternoon',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/FadlanAmada_SundayAfternoon.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (1) - Sunday afternoon.jpg',
-      },
-      {
-        id: '11',
-        musicName: 'The Morning',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/FadlanAmada_TheMorning.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Fadlan Amada (5) - The morning.jpg',
-      },
-      {
-        id: '12',
-        musicName: 'Moonlight',
-        artistName: 'Checkpoint Originals',
-        filePath: 'music/audio/lofi/Isehgal_Moonlight.m4a',
-        thumbnailFilePath: 'music/thumbnail/lofi/Isehgal (1) - Moonlight.jpg',
-      },
-    ],
-    currentMusic: {
-      id: '1',
-      musicName: 'Summer Breeze',
-      artistName: 'Checkpoint Originals',
-      filePath: 'music/audio/piano/SteveAiken_SummerBreeze.m4a',
-      thumbnailFilePath: 'music/thumbnail/piano/Steve Aiken (1) - Summer Breeze.jpg',
-    },
+    availableMusicArr: [],
+    currentMusic: null,
     shuffledMusicArr: [],
     musicPlaying: false,
     musicVolume: 0.5,
@@ -197,13 +106,8 @@ const musicSlice = createSlice({
       state.musicPlaying = action.payload;
     },
     setAvailableMusic(state, action) {
-      const availableMusicArr = [...state.availableMusicArr];
-      const existingMusicIndex = availableMusicArr.findIndex((music) => music.id === action.payload.id);
-      if (availableMusicArr[existingMusicIndex].url && availableMusicArr[existingMusicIndex].thumbnailUrl) {
-        return;
-      }
-      availableMusicArr[existingMusicIndex] = action.payload;
-      state.availableMusicArr = availableMusicArr;
+      state.availableMusicArr = action.payload;
+      state.currentMusic = action.payload[0];
     },
   },
 });

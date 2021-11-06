@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { storageRef } from './firebase/storage';
 import firestore from './firebase/firestore';
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -18,14 +17,10 @@ import { musicActions } from './store/musicSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const availableBackgroundArr = useSelector((store) => store.background.availableBackgroundArr);
-  const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
-  const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
-
-  const notDoUseEffect = useRef();
+  const [doneInitialize, setDoneInitialize] = useState(false);
 
   function mobileOrTabletCheck() {
     let check = false;
@@ -51,7 +46,7 @@ function App() {
     mobileOrTabletCheck();
 
   useEffect(() => {
-    if (notDoUseEffect.current || isMobileDevice) {
+    if (isMobileDevice) {
       return;
     }
 
@@ -74,38 +69,54 @@ function App() {
       setShowSafariGuide(true);
     }
 
-    const newAvailableAmbientArr = availableAmbientArr.map(async (ambient) => {
-      const url = await storageRef.child(ambient.filePath).getDownloadURL();
-      const thumbnailUrl = await storageRef.child(ambient.thumbnailFilePath).getDownloadURL();
-      return { ...ambient, url, thumbnailUrl };
-    });
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
+      .then((response) => response.json())
+      .then((result) => {
+        dispatch(
+          ambientActions.setAvailableAmbient(
+            result.data.ambient.map((ambient) => {
+              return {
+                ...ambient,
+                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.filePath.replaceAll(' ', '+')}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.thumbnailFilePath.replaceAll(
+                  ' ',
+                  '+'
+                )}`,
+              };
+            })
+          )
+        );
+        dispatch(
+          backgroundActions.setAvailableBackground(
+            result.data.background.map((background) => {
+              return {
+                ...background,
+                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.filePath.replaceAll(' ', '+')}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.thumbnailFilePath.replaceAll(
+                  ' ',
+                  '+'
+                )}`,
+              };
+            })
+          )
+        );
+        dispatch(
+          musicActions.setAvailableMusic(
+            result.data.music.map((music) => {
+              return {
+                ...music,
+                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.filePath.replaceAll(' ', '+')}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.thumbnailFilePath.replaceAll(
+                  ' ',
+                  '+'
+                )}`,
+              };
+            })
+          )
+        );
 
-    const newAvailableMusicArr = availableMusicArr.map(async (music) => {
-      const url = await storageRef.child(music.filePath).getDownloadURL();
-      const thumbnailUrl = await storageRef.child(music.thumbnailFilePath).getDownloadURL();
-      return { ...music, url, thumbnailUrl };
-    });
-
-    const newAvailableBackgroundArr = availableBackgroundArr.map(async (background) => {
-      const url = await storageRef.child(background.filePath).getDownloadURL();
-      const thumbnailUrl = await storageRef.child(background.thumbnailFilePath).getDownloadURL();
-      return { ...background, url, thumbnailUrl };
-    });
-
-    newAvailableAmbientArr.forEach(async (ambientPromise) => {
-      const ambient = await new Promise((resolve) => ambientPromise.then((ambient) => resolve(ambient)));
-      dispatch(ambientActions.setAvailableAmbient(ambient));
-    });
-
-    newAvailableMusicArr.forEach(async (musicPromise) => {
-      const music = await new Promise((resolve) => musicPromise.then((music) => resolve(music)));
-      dispatch(musicActions.setAvailableMusic(music));
-    });
-
-    newAvailableBackgroundArr.forEach(async (backgroundPromise) => {
-      const background = await new Promise((resolve) => backgroundPromise.then((background) => resolve(background)));
-      dispatch(backgroundActions.setAvailableBackground(background));
-    });
+        setDoneInitialize(true);
+      });
 
     function spacebarHandler(event) {
       if (event.code === 'Space') {
@@ -122,9 +133,7 @@ function App() {
     }, 300000);
 
     document.addEventListener('keyup', spacebarHandler);
-
-    notDoUseEffect.current = true;
-  }, [availableAmbientArr, availableBackgroundArr, availableMusicArr, isMobileDevice, dispatch]);
+  }, [isMobileDevice, dispatch]);
 
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;
@@ -135,10 +144,14 @@ function App() {
       <Loading></Loading>
       {showReviewPopup && <ReviewPopup></ReviewPopup>}
       {showSafariGuide && <SafariGuide></SafariGuide>}
-      <Home></Home>
-      <Background></Background>
-      <Music></Music>
-      <Ambient></Ambient>
+      {doneInitialize && (
+        <>
+          <Home></Home>
+          <Background></Background>
+          <Music></Music>
+          <Ambient></Ambient>
+        </>
+      )}
     </>
   );
 }

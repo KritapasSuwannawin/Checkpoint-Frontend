@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { storageRef } from '../../firebase/storage';
 import { musicActions } from '../../store/musicSlice';
 
 function MusicAudio(props) {
@@ -27,27 +26,12 @@ function MusicAudio(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentMusic.url) {
-      setMusicURL(currentMusic.url);
+    setMusicURL(currentMusic.url);
 
-      if (musicPlaying) {
-        playMusicHandler();
-      } else {
-        musicRef.current.pause();
-      }
+    if (musicPlaying) {
+      playMusicHandler();
     } else {
-      storageRef
-        .child(currentMusic.filePath)
-        .getDownloadURL()
-        .then((url) => {
-          setMusicURL(url);
-
-          if (musicPlaying) {
-            playMusicHandler();
-          } else {
-            musicRef.current.pause();
-          }
-        });
+      musicRef.current.pause();
     }
   }, [musicPlaying, currentMusic, playMusicHandler]);
 
