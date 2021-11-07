@@ -1,0 +1,57 @@
+@import '../../scss/main.scss';
+
+.music-category-card {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  padding: 1.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    margin-bottom: 1rem;
+
+    &--text {
+      color: white;
+      font-size: 1.8rem;
+      text-transform: capitalize;
+    }
+
+    &--btn {
+      background-color: white;
+      border-radius: 2rem;
+      padding: 0.5rem 1.2rem;
+    }
+  }
+
+  &__content {
+    display: flex;
+    column-gap: 1rem;
+
+    &--main-thumbnail {
+      width: 20rem;
+      height: 20rem;
+      border-radius: 0.8rem;
+    }
+
+    &--sub-thumbnail-container {
+      display: flex;
+      column-gap: 1rem;
+
+      img {
+        width: 9.5rem;
+        height: 9.5rem;
+        border-radius: 0.8rem;
+      }
+
+      &.margin-top {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

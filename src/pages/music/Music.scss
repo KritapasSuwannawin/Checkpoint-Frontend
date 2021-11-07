@@ -6,6 +6,33 @@
   &.current-page {
     @include display-page;
   }
+
+  &__category-name {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    margin-bottom: -1rem;
+
+    img:hover {
+      cursor: pointer;
+    }
+
+    p {
+      font-size: 5rem;
+      font-weight: 500;
+      text-transform: capitalize;
+      color: white;
+    }
+  }
+
+  &__category-container {
+    width: 100%;
+    display: flex;
+    column-gap: 2.2rem;
+    row-gap: 2rem;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 770px) {

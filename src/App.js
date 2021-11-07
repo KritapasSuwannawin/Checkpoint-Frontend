@@ -72,9 +72,13 @@ function App() {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
       .then((response) => response.json())
       .then((result) => {
+        const ambient = result.data.ambient;
+        const background = result.data.background;
+        const music = result.data.music;
+
         dispatch(
           ambientActions.setAvailableAmbient(
-            result.data.ambient.map((ambient) => {
+            ambient.map((ambient) => {
               return {
                 ...ambient,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.filePath.replaceAll(' ', '+')}`,
@@ -88,7 +92,7 @@ function App() {
         );
         dispatch(
           backgroundActions.setAvailableBackground(
-            result.data.background.map((background) => {
+            background.map((background) => {
               return {
                 ...background,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.filePath.replaceAll(' ', '+')}`,
@@ -102,7 +106,7 @@ function App() {
         );
         dispatch(
           musicActions.setAvailableMusic(
-            result.data.music.map((music) => {
+            music.map((music) => {
               return {
                 ...music,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.filePath.replaceAll(' ', '+')}`,
@@ -115,7 +119,9 @@ function App() {
           )
         );
 
-        setDoneInitialize(true);
+        if (ambient.name !== 'error' && background.name !== 'error' && music.name !== 'error') {
+          setDoneInitialize(true);
+        }
       })
       .catch(() => {
         window.location.reload();

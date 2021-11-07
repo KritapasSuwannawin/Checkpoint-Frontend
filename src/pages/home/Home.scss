@@ -132,10 +132,20 @@
   width: 45rem;
   padding: 0 4rem;
   @include flex-column-center;
+  justify-content: flex-start;
   row-gap: 1.5rem;
+  height: calc(100vh - 16.1rem);
+  overflow-y: auto;
   opacity: 0;
   z-index: -2;
   transition: all 0.3s ease;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   &.show-control {
     opacity: 1;
@@ -144,8 +154,6 @@
 
   &__thumbnail {
     width: 100%;
-    min-height: 16.8rem;
-    object-fit: cover;
     border-radius: 0.8rem;
     border: 0.2rem $white solid;
 
@@ -164,7 +172,7 @@
 
   &__ambient-control {
     width: 100%;
-    height: 5rem;
+    height: 5.5rem;
   }
 
   &__add-ambient {
