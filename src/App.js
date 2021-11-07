@@ -116,6 +116,9 @@ function App() {
         );
 
         setDoneInitialize(true);
+      })
+      .catch(() => {
+        window.location.reload();
       });
 
     function spacebarHandler(event) {

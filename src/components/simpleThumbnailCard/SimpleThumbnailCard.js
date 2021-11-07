@@ -37,7 +37,7 @@ function SimpleThumbnailCard(props) {
           currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
         }`
       : ''
-  } ${props.short && props.ambient ? 'short-ambient-card' : ''} ${
+  } ${props.long && props.ambient ? 'long-ambient-card' : ''} ${
     props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''
   }`;
 

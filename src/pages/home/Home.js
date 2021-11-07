@@ -281,17 +281,8 @@ function Home() {
   return (
     <div className="home">
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
-        <div
-          className={`home__overlay--left ${currentPage === 'music' ? 'wide' : ''} ${
-            currentPage && currentPage !== 'music' ? 'short' : ''
-          }`}
-          onClick={overlayClickHandler}
-        ></div>
-        <div
-          className={`home__overlay--right ${currentPage === 'music' ? 'wide' : ''} ${
-            currentPage && currentPage !== 'music' ? 'short' : ''
-          }`}
-        ></div>
+        <div className="home__overlay--left" onClick={overlayClickHandler}></div>
+        <div className="home__overlay--right"></div>
       </div>
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
@@ -310,7 +301,7 @@ function Home() {
           </div>
           <div
             onClick={backgroundClickHander}
-            className={`nav__links--link fixed-width ${
+            className={`nav__links--link fixed-width ${languageIndex === 1 ? 'japanese' : ''} ${
               currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
             }`}
           >
@@ -353,7 +344,7 @@ function Home() {
           </div>
         </div>
       </div>
-      {/* <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div> */}
+      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
       <div className="mood">
         <div className="mood__section">
           <img
@@ -434,7 +425,7 @@ function Home() {
         </div>
         <div className="player__volume-control">
           <img src={musicLibrarySvg25} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
-          <div className="player__volume-control--volumn">
+          <div className="player__volume-control--volume">
             <div className="player__volume-control--section">
               <img
                 src={musicSvg25}
