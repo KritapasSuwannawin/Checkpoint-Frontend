@@ -25,10 +25,10 @@ function SimpleThumbnailCard(props) {
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
-  const [thumbnailURL, setThumbnailURL] = useState();
+  const [thumbnailUrl, setThumbnailUrl] = useState();
 
   useEffect(() => {
-    setThumbnailURL(props.thumbnailUrl);
+    setThumbnailUrl(props.thumbnailUrl);
   }, [props.thumbnailUrl]);
 
   const className = `simple-thumbnail-card ${
@@ -62,7 +62,7 @@ function SimpleThumbnailCard(props) {
     }
   }
 
-  if (!thumbnailURL) {
+  if (!thumbnailUrl) {
     return <div className={placeholderClassName}></div>;
   }
 
@@ -70,7 +70,7 @@ function SimpleThumbnailCard(props) {
 
   return (
     <div className={className}>
-      <img src={thumbnailURL} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
+      <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
       {props.name && (
         <p onClick={clickHandler} className="simple-thumbnail-card__overlay-name">
           {ambientDisplayName}

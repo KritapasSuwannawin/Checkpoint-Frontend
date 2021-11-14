@@ -12,10 +12,10 @@ function MusicThumbnailCard(props) {
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
 
-  const [thumbnailURL, setThumbnailURL] = useState();
+  const [thumbnailUrl, setThumbnailUrl] = useState();
 
   useEffect(() => {
-    setThumbnailURL(props.thumbnailUrl);
+    setThumbnailUrl(props.thumbnailUrl);
   }, [props.thumbnailUrl]);
 
   function clickHandler() {
@@ -30,7 +30,7 @@ function MusicThumbnailCard(props) {
     }
   }
 
-  if (!thumbnailURL) {
+  if (!thumbnailUrl) {
     return <div className="music-thumbnail-placeholder"></div>;
   }
 
@@ -39,7 +39,7 @@ function MusicThumbnailCard(props) {
 
   return (
     <div className="music-thumbnail-card">
-      <img src={thumbnailURL} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
+      <img src={thumbnailUrl} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
       <div onClick={clickHandler} className="music-thumbnail-card__description">
         <div>
           <p className="music-thumbnail-card__music-name">{musicName}</p>

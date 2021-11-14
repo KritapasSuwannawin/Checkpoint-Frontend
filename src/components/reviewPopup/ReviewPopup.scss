@@ -15,8 +15,6 @@
     border-radius: 0.8rem;
     font-size: 1.4rem;
     color: $white;
-    max-height: 80%;
-    overflow-y: auto;
     position: relative;
 
     div {
@@ -46,19 +44,19 @@
 
     p {
       text-align: center;
-      width: 32rem;
+      width: 36rem;
     }
   }
 
   &__heading {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
   }
 
   &__submit {
     align-self: center !important;
-    padding: 0.8rem 2.5rem;
+    padding: 0.7rem 2rem;
     background: $white;
     border-radius: 2rem;
     color: #111111;
@@ -87,7 +85,7 @@
 
   &.japanese {
     p {
-      width: 40rem;
+      width: 44rem;
     }
   }
 }

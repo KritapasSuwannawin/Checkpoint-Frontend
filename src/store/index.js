@@ -5,6 +5,7 @@ import backgroundReducer from './backgroundSlice';
 import musicReducer from './musicSlice';
 import ambientReducer from './ambientSlice';
 import languageReducer from './languageSlice';
+import memberReducer from './memberSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     music: musicReducer,
     ambient: ambientReducer,
     language: languageReducer,
+    member: memberReducer,
   },
 });
 

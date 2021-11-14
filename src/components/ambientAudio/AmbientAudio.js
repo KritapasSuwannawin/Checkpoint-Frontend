@@ -9,10 +9,10 @@ function AmbientAudio(props) {
 
   const ambientRef = useRef();
 
-  const [ambientURL, setAmbientURL] = useState();
+  const [ambientUrl, setAmbientUrl] = useState();
 
   useEffect(() => {
-    setAmbientURL(props.url);
+    setAmbientUrl(props.url);
   }, [props.url]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function AmbientAudio(props) {
 
   return (
     <audio
-      src={ambientURL}
+      src={ambientUrl}
       onCanPlay={playAmbient}
       preload="auto"
       onClick={clickHandler}

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import './Loading.scss';
 
-import videoURL from './Checkpoint loading 150px.mp4';
+import videoUrl from './Checkpoint loading 150px.mp4';
 
 function Loading() {
   const loading = useSelector((store) => store.page.loading);
@@ -22,7 +22,7 @@ function Loading() {
 
   return (
     <div className={`loading ${className}`}>
-      <video autoPlay loop muted preload="auto" src={videoURL} className={`loading__video ${className}`}></video>
+      <video autoPlay loop muted preload="auto" src={videoUrl} className={`loading__video ${className}`}></video>
     </div>
   );
 }

@@ -12,7 +12,7 @@ function MusicAudio(props) {
 
   const musicRef = useRef();
 
-  const [musicURL, setMusicURL] = useState();
+  const [musicUrl, setMusicUrl] = useState();
 
   const playMusicHandler = useCallback(() => {
     const playPromise = musicRef.current.play();
@@ -26,7 +26,7 @@ function MusicAudio(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    setMusicURL(currentMusic.url);
+    setMusicUrl(currentMusic.url);
 
     if (musicPlaying) {
       playMusicHandler();
@@ -66,7 +66,7 @@ function MusicAudio(props) {
 
   return (
     <audio
-      src={musicURL}
+      src={musicUrl}
       preload="auto"
       loop={loopMusic}
       onCanPlayThrough={canPlayThroughHandler}

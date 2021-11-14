@@ -5,6 +5,7 @@ import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
 import AmbientControl from '../../components/ambientControl/AmbientControl';
+import LoginPopup from '../../components/loginPopup/LoginPopup';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -58,12 +59,13 @@ function Home() {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
   const languageIndex = useSelector((store) => store.language.languageIndex);
+  const memberType = useSelector((store) => store.member.memberType);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
 
-  const [musicThumbnailURL, setMusicThumbnailURL] = useState();
-  const [backgroundThumbnailURL, setBackgroundThumbnailURL] = useState();
+  const [musicThumbnailUrl, setMusicThumbnailUrl] = useState();
+  const [backgroundThumbnailUrl, setBackgroundThumbnailUrl] = useState();
   const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
   const [ambientAudioArr, setAmbientAudioArr] = useState([]);
   const [ambientThumbnailArr, setAmbientThumbnailArr] = useState([]);
@@ -72,6 +74,7 @@ function Home() {
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
   const [showOutsideLink, setShowOutsideLink] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -109,7 +112,7 @@ function Home() {
   }, [currentBackground]);
 
   useEffect(() => {
-    setBackgroundThumbnailURL(currentBackground.thumbnailUrl);
+    setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
   }, [currentBackground]);
 
   useEffect(() => {
@@ -125,18 +128,18 @@ function Home() {
   }, [currentAmbientArr]);
 
   useEffect(() => {
-    setMusicThumbnailURL(currentMusic.thumbnailUrl);
+    setMusicThumbnailUrl(currentMusic.thumbnailUrl);
   }, [currentMusic]);
 
   useEffect(() => {
-    const currentAmbientIDArr = currentBackground.ambientArr;
+    const currentAmbientIdArr = currentBackground.ambientIdArr;
 
     if (backgroundFilePathRef.current !== currentBackground.filePath) {
       backgroundFilePathRef.current = currentBackground.filePath;
       setAmbientThumbnailArr([]);
 
-      currentAmbientIDArr.forEach((ambientID) => {
-        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientID);
+      currentAmbientIdArr.forEach((ambientId) => {
+        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientId);
 
         setAmbientThumbnailArr((ambientThumbnailArr) => {
           return [
@@ -154,11 +157,11 @@ function Home() {
         });
       });
 
-      dispatch(ambientActions.setCurrentAmbientArrByIDArr(currentAmbientIDArr));
+      dispatch(ambientActions.setCurrentAmbientArrByIdArr(currentAmbientIdArr));
     }
 
     const ambientThumbnailArr2 = [];
-    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !currentAmbientIDArr.includes(ambient.id));
+    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !currentAmbientIdArr.includes(ambient.id));
     filteredCurrentAmbientArr.forEach((ambient) => {
       ambientThumbnailArr2.push(
         <div key={ambient.id} className="background-control__ambient-control">
@@ -174,7 +177,7 @@ function Home() {
     });
 
     setAmbientThumbnailArr((ambientThumbnailArr) =>
-      ambientThumbnailArr.slice(0, currentAmbientIDArr.length).concat(ambientThumbnailArr2)
+      ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2)
     );
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
@@ -278,8 +281,17 @@ function Home() {
     dispatch(languageActions.languageChangeHandler());
   }
 
+  function navBtnClickHandler() {
+    setShowLoginPopup(true);
+  }
+
+  function closeLoginPopup() {
+    setShowLoginPopup(false);
+  }
+
   return (
     <div className="home">
+      {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
         <div className="home__overlay--right"></div>
@@ -289,7 +301,12 @@ function Home() {
       {ambientAudioArr}
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
-          <img src={logo50} alt=""></img>
+          <img src={logo50} alt="" className="nav__logo--img"></img>
+          {memberType !== 'premium' && (
+            <div className="nav__logo--btn" onClick={navBtnClickHandler}>
+              {!memberType ? 'Join us' : 'Upgrade'}
+            </div>
+          )}
         </div>
         <div className="nav__links">
           <div
@@ -332,7 +349,7 @@ function Home() {
         }`}
       >
         <img
-          src={backgroundThumbnailURL}
+          src={backgroundThumbnailUrl}
           alt=""
           onClick={openBackgroundPageHander}
           className="background-control__thumbnail"
@@ -395,7 +412,7 @@ function Home() {
       </div>
       <div className="player">
         <div className="player__music-data">
-          <img src={musicThumbnailURL} className="player__music-data--thumbnail" alt=""></img>
+          <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
           <div>
             <p className="player__music-data--music-name">{currentMusic.musicName}</p>
             <p className="player__music-data--artist-name">{currentMusic.artistName}</p>

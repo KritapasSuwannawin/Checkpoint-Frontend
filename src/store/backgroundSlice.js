@@ -14,18 +14,18 @@ const backgroundSlice = createSlice({
       }
     },
     changeBackgroundTimeHandler(state, action) {
-      let backgroundID = state.currentBackground.id;
-      backgroundID = backgroundID.slice(0, 2) + action.payload + backgroundID.slice(3);
-      if (backgroundID !== state.currentBackground.id) {
-        const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundID);
+      let backgroundId = state.currentBackground.id;
+      backgroundId = backgroundId.slice(0, 2) + action.payload + backgroundId.slice(3);
+      if (backgroundId !== state.currentBackground.id) {
+        const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundId);
         state.currentBackground = newBackground;
       }
     },
     changeBackgroundWeatherHandler(state, action) {
-      let backgroundID = state.currentBackground.id;
-      backgroundID = backgroundID.slice(0, 3) + action.payload;
-      if (backgroundID !== state.currentBackground.id) {
-        const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundID);
+      let backgroundId = state.currentBackground.id;
+      backgroundId = backgroundId.slice(0, 3) + action.payload;
+      if (backgroundId !== state.currentBackground.id) {
+        const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundId);
         state.currentBackground = newBackground;
       }
     },

@@ -28,7 +28,6 @@ function Background() {
               id={background.id}
               url={background.url}
               thumbnailUrl={background.thumbnailUrl}
-              ambientArr={background.ambientArr}
               background
             ></SimpleThumbnailCard>
           </div>,

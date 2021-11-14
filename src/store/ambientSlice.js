@@ -19,10 +19,10 @@ const ambientSlice = createSlice({
     setAmbientVolume(state, action) {
       state.ambientVolume = action.payload;
     },
-    setCurrentAmbientArrByIDArr(state, action) {
+    setCurrentAmbientArrByIdArr(state, action) {
       const currentAmbientArr = [];
-      action.payload.forEach((ambientID) => {
-        const ambient = state.availableAmbientArr.find((ambient) => ambient.id === ambientID);
+      action.payload.forEach((ambientId) => {
+        const ambient = state.availableAmbientArr.find((ambient) => ambient.id === ambientId);
         currentAmbientArr.push(ambient);
       });
       state.currentAmbientArr = currentAmbientArr;
