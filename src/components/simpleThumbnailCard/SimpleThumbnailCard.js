@@ -17,6 +17,9 @@ const dictionary = {
   NightForest: ['Night Forest', '夜の森'],
   LightWind: ['Light Wind', '風のさざめき'],
   WindChimes: ['Wind Chimes', '風鈴'],
+  AirConditioner: ['Air Conditioner', 'エアコン'],
+  RainonWindow: ['Rain on Window', '窓に雨が降る'],
+  Cafe: ['Cafe', 'カフェ'],
 };
 
 function SimpleThumbnailCard(props) {
@@ -66,7 +69,7 @@ function SimpleThumbnailCard(props) {
     return <div className={placeholderClassName}></div>;
   }
 
-  const ambientDisplayName = props.name && dictionary[props.name.replace(' ', '')][languageIndex];
+  const ambientDisplayName = props.name && dictionary[props.name.replaceAll(' ', '')][languageIndex];
 
   return (
     <div className={className}>
