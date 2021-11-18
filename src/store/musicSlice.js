@@ -32,8 +32,11 @@ const musicSlice = createSlice({
       state.musicVolume = action.payload;
     },
     backMusicHandler(state, action) {
+      const availableMusicArr =
+        action.payload === 'premium'
+          ? [...state.availableMusicArr]
+          : state.availableMusicArr.filter((music) => !music.isPremium);
       if (!state.shuffleMusic) {
-        const availableMusicArr = state.availableMusicArr;
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex === 0) {
           state.currentMusic = availableMusicArr[availableMusicArr.length - 1];
@@ -49,7 +52,6 @@ const musicSlice = createSlice({
           state.currentMusic = previousMusic;
           state.shuffledMusicArr = shuffledMusicArr;
         } else {
-          const availableMusicArr = [...state.availableMusicArr];
           const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
           availableMusicArr.splice(currentMusicIndex, 1);
           const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
@@ -59,8 +61,11 @@ const musicSlice = createSlice({
       state.musicPlaying = true;
     },
     nextMusicHandler(state, action) {
+      const availableMusicArr =
+        action.payload === 'premium'
+          ? [...state.availableMusicArr]
+          : state.availableMusicArr.filter((music) => !music.isPremium);
       if (!state.shuffleMusic) {
-        const availableMusicArr = state.availableMusicArr;
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex < availableMusicArr.length - 1) {
           state.currentMusic = availableMusicArr[currentMusicIndex + 1];
@@ -69,17 +74,17 @@ const musicSlice = createSlice({
         }
       } else {
         let shuffledMusicArr = state.shuffledMusicArr;
-        if (shuffledMusicArr.length === state.availableMusicArr.length) {
+        if (shuffledMusicArr.length === availableMusicArr.length) {
           shuffledMusicArr = [];
         }
-        const availableMusicArr = [];
-        state.availableMusicArr.forEach((music) => {
+        const notShuffledMusicArr = [];
+        availableMusicArr.forEach((music) => {
           const indexInShuffled = shuffledMusicArr.findIndex((shuffledMusic) => shuffledMusic.id === music.id);
           if (indexInShuffled === -1) {
-            availableMusicArr.push(music);
+            notShuffledMusicArr.push(music);
           }
         });
-        const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
+        const randomMusic = notShuffledMusicArr[Math.floor(Math.random() * notShuffledMusicArr.length)];
         state.currentMusic = randomMusic;
         shuffledMusicArr.push(randomMusic);
         state.shuffledMusicArr = shuffledMusicArr;

@@ -61,7 +61,9 @@ function LoginPopup(props) {
             props.closeHandler();
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          setErrorDuringAuthen(true);
+        });
     }
   }
 

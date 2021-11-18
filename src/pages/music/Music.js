@@ -55,6 +55,7 @@ function Music() {
                 artistName={music.artistName}
                 url={music.url}
                 thumbnailUrl={music.thumbnailUrl}
+                isPremium={music.isPremium}
                 onClickHandler={musicClickHandler}
               ></MusicThumbnailCard>
             </div>,
@@ -81,6 +82,7 @@ function Music() {
             artistName={music.artistName}
             url={music.url}
             thumbnailUrl={music.thumbnailUrl}
+            isPremium={music.isPremium}
             onClickHandler={musicClickHandler}
           ></MusicThumbnailCard>
         </div>,

@@ -199,6 +199,10 @@
     &:hover {
       cursor: pointer;
     }
+
+    &.premium:hover {
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -246,6 +250,10 @@
 
     &--not-current-mood {
       opacity: 0.2;
+    }
+
+    .premium:hover {
+      cursor: not-allowed;
     }
   }
 }

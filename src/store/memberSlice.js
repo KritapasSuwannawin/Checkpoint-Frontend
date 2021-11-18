@@ -10,6 +10,9 @@ const memberSlice = createSlice({
       state.memberType = action.payload.memberType;
       state.avatarId = action.payload.avatarId;
     },
+    upgradeMember(state, action) {
+      state.memberType = 'premium';
+    },
   },
 });
 

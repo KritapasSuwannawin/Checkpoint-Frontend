@@ -6,6 +6,7 @@ import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
 import AmbientControl from '../../components/ambientControl/AmbientControl';
 import LoginPopup from '../../components/loginPopup/LoginPopup';
+import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -75,6 +76,7 @@ function Home() {
 
   const [showOutsideLink, setShowOutsideLink] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showUpgradePopup, setShowUpgradePopup] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -228,11 +230,11 @@ function Home() {
   }
 
   function backMusicHandler() {
-    dispatch(musicActions.backMusicHandler());
+    dispatch(musicActions.backMusicHandler(memberType));
   }
 
   function nextMusicHandler() {
-    dispatch(musicActions.nextMusicHandler());
+    dispatch(musicActions.nextMusicHandler(memberType));
   }
 
   function backgroundClickHander() {
@@ -254,6 +256,10 @@ function Home() {
   }
 
   function openAmbientPageHander() {
+    if (memberType !== 'premium') {
+      return;
+    }
+
     dispatch(pageActions.changePageHandler('ambient'));
   }
 
@@ -282,16 +288,25 @@ function Home() {
   }
 
   function navBtnClickHandler() {
-    setShowLoginPopup(true);
+    if (!memberType) {
+      setShowLoginPopup(true);
+    } else if (memberType === 'free') {
+      setShowUpgradePopup(true);
+    }
   }
 
   function closeLoginPopup() {
     setShowLoginPopup(false);
   }
 
+  function closeUpgradePopup() {
+    setShowUpgradePopup(false);
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
+      {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
       <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
         <div className="home__overlay--right"></div>
@@ -356,7 +371,11 @@ function Home() {
         ></img>
         <div className="background-control__ambient-container">
           {ambientThumbnailArr}
-          <div onClick={openAmbientPageHander} className="background-control__add-ambient">
+          <div
+            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
+            onClick={openAmbientPageHander}
+            className={`background-control__add-ambient ${memberType !== 'premium' ? 'premium' : ''}`}
+          >
             <img src={addSvg20} alt=""></img>
           </div>
         </div>
@@ -379,8 +398,11 @@ function Home() {
           <img
             src={nightSvg36}
             alt=""
-            onClick={changeBackgroundTimeHandler.bind(3)}
-            className={currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}
+            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
+            onClick={memberType === 'premium' ? changeBackgroundTimeHandler.bind(3) : () => {}}
+            className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
+              memberType !== 'premium' ? 'premium' : ''
+            }`}
           ></img>
         </div>
         <div className="mood__section">
@@ -399,14 +421,20 @@ function Home() {
           <img
             src={thunderSvg36}
             alt=""
-            onClick={changeBackgroundWeatherHandler.bind(3)}
-            className={currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}
+            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
+            onClick={memberType === 'premium' ? changeBackgroundWeatherHandler.bind(3) : () => {}}
+            className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
+              memberType !== 'premium' ? 'premium' : ''
+            }`}
           ></img>
           <img
             src={snowySvg36}
             alt=""
-            onClick={changeBackgroundWeatherHandler.bind(4)}
-            className={currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}
+            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
+            onClick={memberType === 'premium' ? changeBackgroundWeatherHandler.bind(4) : () => {}}
+            className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''} ${
+              memberType !== 'premium' ? 'premium' : ''
+            }`}
           ></img>
         </div>
       </div>
