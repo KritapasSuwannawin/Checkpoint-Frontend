@@ -61,9 +61,9 @@ function LoginPopup(props) {
           if (!errorMessage) {
             const data = result.data[0];
             dispatch(memberActions.setMember(data));
-            dispatch(backgroundActions.changeBackgroundHandler({ id: data.backgroundId }));
-            dispatch(musicActions.setInitialMusic(data.musicId));
-            dispatch(musicActions.setMusicCategory(data.musicCategory));
+            data.backgroundId && dispatch(backgroundActions.changeBackgroundHandler({ id: data.backgroundId }));
+            data.musicId && dispatch(musicActions.setInitialMusic(data.musicId));
+            data.musicCategory && dispatch(musicActions.setMusicCategory(data.musicCategory));
             props.closeHandler();
           }
         })
