@@ -10,6 +10,7 @@ const musicSlice = createSlice({
     musicVolume: 0.5,
     shuffleMusic: false,
     loopMusic: false,
+    musicCategory: null,
   },
   reducers: {
     changeMusicHandler(state, action) {
@@ -25,6 +26,9 @@ const musicSlice = createSlice({
         state.musicPlaying = true;
       }
     },
+    setInitialMusic(state, action) {
+      state.currentMusic = state.availableMusicArr.find((music) => music.id === action.payload);
+    },
     toggleMusicPlayPause(state, action) {
       state.musicPlaying = !state.musicPlaying;
     },
@@ -32,10 +36,15 @@ const musicSlice = createSlice({
       state.musicVolume = action.payload;
     },
     backMusicHandler(state, action) {
-      const availableMusicArr =
+      let availableMusicArr =
         action.payload === 'premium'
           ? [...state.availableMusicArr]
           : state.availableMusicArr.filter((music) => !music.isPremium);
+
+      if (state.musicCategory) {
+        availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
+      }
+
       if (!state.shuffleMusic) {
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex === 0) {
@@ -61,10 +70,15 @@ const musicSlice = createSlice({
       state.musicPlaying = true;
     },
     nextMusicHandler(state, action) {
-      const availableMusicArr =
+      let availableMusicArr =
         action.payload === 'premium'
           ? [...state.availableMusicArr]
           : state.availableMusicArr.filter((music) => !music.isPremium);
+
+      if (state.musicCategory) {
+        availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
+      }
+
       if (!state.shuffleMusic) {
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex < availableMusicArr.length - 1) {
@@ -113,6 +127,9 @@ const musicSlice = createSlice({
     setAvailableMusic(state, action) {
       state.availableMusicArr = action.payload;
       state.currentMusic = action.payload[0];
+    },
+    setMusicCategory(state, action) {
+      state.musicCategory = action.payload;
     },
   },
 });

@@ -16,7 +16,7 @@ function Music() {
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const [categoryArr, setCategoryArr] = useState([]);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState(null);
 
   const availableMusicArrRef = useRef();
   const categoryRef = useRef();
@@ -24,8 +24,9 @@ function Music() {
   const musicClickHandler = useCallback(
     (id) => {
       dispatch(musicActions.changeMusicHandler({ id }));
+      dispatch(musicActions.setMusicCategory(category));
     },
-    [dispatch]
+    [dispatch, category]
   );
 
   useEffect(() => {
@@ -108,7 +109,7 @@ function Music() {
     <div className={`music ${currentPage === 'music' ? 'current-page' : ''}`}>
       {category && (
         <div className="music__category-name">
-          <img src={backArrowSvg36} alt="" onClick={() => setCategory()}></img>
+          <img src={backArrowSvg36} alt="" onClick={() => setCategory(null)}></img>
           <p>{category}</p>
         </div>
       )}

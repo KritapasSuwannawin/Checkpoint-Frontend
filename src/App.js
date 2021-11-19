@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import firestore from './firebase/firestore';
 import Loading from './pages/loading/Loading';
@@ -17,6 +17,10 @@ import { musicActions } from './store/musicSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const currentBackground = useSelector((store) => store.background.currentBackground);
+  const currentMusic = useSelector((store) => store.music.currentMusic);
+  const musicCategory = useSelector((store) => store.music.musicCategory);
+  const memberId = useSelector((store) => store.member.memberId);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
@@ -58,10 +62,13 @@ function App() {
       .collection('website-control')
       .doc('storage')
       .onSnapshot((doc) => {
-        const allowRead = doc.data().allowRead;
-
-        if (!allowRead) {
-          window.location.replace('https://checkpoint-tokyo.netlify.app/');
+        if (doc.data) {
+          const allowRead = doc.data().allowRead;
+          if (!allowRead) {
+            window.location.replace('https://checkpoint-tokyo.netlify.app/');
+          }
+        } else {
+          window.location.reload();
         }
       });
 
@@ -143,6 +150,30 @@ function App() {
 
     document.addEventListener('keyup', spacebarHandler);
   }, [isMobileDevice, dispatch]);
+
+  useEffect(() => {
+    window.onbeforeunload = () => {
+      if (!memberId) {
+        return null;
+      }
+
+      const data = {
+        backgroundId: currentBackground.id,
+        musicId: currentMusic.id,
+        musicCategory,
+        memberId,
+      };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/setting`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      return null;
+    };
+  }, [memberId, currentBackground, currentMusic, musicCategory]);
 
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;

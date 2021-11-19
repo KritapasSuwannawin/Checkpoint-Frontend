@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import './LoginPopup.scss';
 
 import { memberActions } from '../../store/memberSlice';
+import { backgroundActions } from '../../store/backgroundSlice';
+import { musicActions } from '../../store/musicSlice';
 
 function LoginPopup(props) {
   const dispatch = useDispatch();
@@ -57,7 +59,11 @@ function LoginPopup(props) {
           setPasswordNotMatch(errorMessage === 'invalid password');
 
           if (!errorMessage) {
-            dispatch(memberActions.setMember(result.data[0]));
+            const data = result.data[0];
+            dispatch(memberActions.setMember(data));
+            dispatch(backgroundActions.changeBackgroundHandler({ id: data.backgroundId }));
+            dispatch(musicActions.setInitialMusic(data.musicId));
+            dispatch(musicActions.setMusicCategory(data.musicCategory));
             props.closeHandler();
           }
         })
