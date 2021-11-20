@@ -6,11 +6,14 @@ import './MusicThumbnailCard.scss';
 
 import playSvg25 from '../../svg/25px/Circled Play.svg';
 import pauseSvg25 from '../../svg/25px/Pause Button.svg';
+import heartFullSvg15 from '../../svg/15px/Heart.svg';
+import heartSvg15 from '../../svg/15px/Hearts.svg';
 
 function MusicThumbnailCard(props) {
   const dispatch = useDispatch();
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
+  const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
   const memberType = useSelector((store) => store.member.memberType);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -21,6 +24,11 @@ function MusicThumbnailCard(props) {
 
   function clickHandler() {
     if (props.isPremium && memberType !== 'premium') {
+      return;
+    }
+
+    if (this) {
+      dispatch(musicActions.favouriteBtnClickHandler(props.id));
       return;
     }
 
@@ -46,6 +54,14 @@ function MusicThumbnailCard(props) {
     <div className="music-thumbnail-card">
       {props.isPremium && memberType !== 'premium' && (
         <div title="For premium member" className="music-thumbnail-card__premium-overlay"></div>
+      )}
+      {memberType && (
+        <img
+          src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}
+          onClick={clickHandler.bind('fav')}
+          alt=""
+          className="music-thumbnail-card__favourite-btn"
+        ></img>
       )}
       <img src={thumbnailUrl} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
       <div onClick={clickHandler} className="music-thumbnail-card__description">

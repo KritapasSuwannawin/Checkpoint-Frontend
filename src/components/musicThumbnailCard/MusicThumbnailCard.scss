@@ -28,6 +28,13 @@
     }
   }
 
+  &__favourite-btn {
+    position: absolute;
+    top: 0rem;
+    right: 0rem;
+    padding: 0.5rem;
+  }
+
   &__image {
     border-radius: 0.8rem 0.8rem 0 0;
     width: 13rem;
@@ -55,12 +62,5 @@
   &__artist-name {
     font-size: 0.9rem;
     color: $very-light-grey;
-  }
-
-  &__favourite-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5rem;
   }
 }

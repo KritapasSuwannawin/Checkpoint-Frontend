@@ -5,6 +5,7 @@ import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
 import AmbientControl from '../../components/ambientControl/AmbientControl';
+import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMusicCard';
 import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
 import './Home.scss';
@@ -36,6 +37,8 @@ import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import ambientSvg25 from '../../svg/25px/Organic Food.svg';
 import musicSvg25 from '../../svg/25px/iTunes-1.svg';
 import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
+import heartFullSvg25 from '../../svg/25px/Heart.svg';
+import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 
 const dictionary = {
@@ -56,6 +59,7 @@ function Home() {
   const shuffleMusic = useSelector((store) => store.music.shuffleMusic);
   const loopMusic = useSelector((store) => store.music.loopMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
+  const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
@@ -303,6 +307,10 @@ function Home() {
     setShowUpgradePopup(false);
   }
 
+  function favouriteBtnClickHandler() {
+    dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
@@ -380,7 +388,24 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>Comming soon...</div>
+      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
+        {!memberType ? (
+          <p>Join us to have your own music playlist</p>
+        ) : (
+          <>
+            {/* <div className="music-control__header">
+              <img src={heartFullSvg25} alt=""></img>
+              <p>Favourite music</p>
+            </div> */}
+            {favouriteMusicIdArr.length === 0 && <p>Your music playlist is empty</p>}
+            {favouriteMusicIdArr.map((id) => (
+              <div key={id} className="music-control__cards">
+                <FavouriteMusicCard id={id}></FavouriteMusicCard>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
       <div className="mood">
         <div className="mood__section">
           <img
@@ -440,6 +465,12 @@ function Home() {
       </div>
       <div className="player">
         <div className="player__music-data">
+          <img
+            src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg25 : heartSvg25}
+            alt=""
+            className="player__music-data--favourite-btn"
+            onClick={favouriteBtnClickHandler}
+          ></img>
           <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
           <div>
             <p className="player__music-data--music-name">{currentMusic.musicName}</p>

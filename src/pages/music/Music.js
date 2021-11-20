@@ -25,6 +25,7 @@ function Music() {
     (id) => {
       dispatch(musicActions.changeMusicHandler({ id }));
       dispatch(musicActions.setMusicCategory(category));
+      dispatch(musicActions.setPlayFromPlaylist(false));
     },
     [dispatch, category]
   );

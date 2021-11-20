@@ -20,6 +20,8 @@ function App() {
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicCategory = useSelector((store) => store.music.musicCategory);
+  const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
+  const playFromPlaylist = useSelector((store) => store.music.playFromPlaylist);
   const memberId = useSelector((store) => store.member.memberId);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
@@ -162,6 +164,8 @@ function App() {
         musicId: currentMusic.id,
         musicCategory,
         memberId,
+        favouriteMusicIdArr,
+        playFromPlaylist,
       };
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/setting`, {
         method: 'POST',
@@ -173,7 +177,7 @@ function App() {
 
       return null;
     };
-  }, [memberId, currentBackground, currentMusic, musicCategory]);
+  }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist]);
 
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;

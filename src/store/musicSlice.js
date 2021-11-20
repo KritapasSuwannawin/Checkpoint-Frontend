@@ -11,6 +11,8 @@ const musicSlice = createSlice({
     shuffleMusic: false,
     loopMusic: false,
     musicCategory: null,
+    favouriteMusicIdArr: [],
+    playFromPlaylist: false,
   },
   reducers: {
     changeMusicHandler(state, action) {
@@ -45,6 +47,16 @@ const musicSlice = createSlice({
         availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
       }
 
+      if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
+        availableMusicArr = state.favouriteMusicIdArr.map((id) =>
+          state.availableMusicArr.find((music) => music.id === id)
+        );
+      }
+
+      if (availableMusicArr.length === 1) {
+        state.loopMusic = true;
+      }
+
       if (!state.shuffleMusic) {
         const currentMusicIndex = availableMusicArr.findIndex((music) => music.id === state.currentMusic.id);
         if (currentMusicIndex === 0) {
@@ -77,6 +89,16 @@ const musicSlice = createSlice({
 
       if (state.musicCategory) {
         availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
+      }
+
+      if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
+        availableMusicArr = state.favouriteMusicIdArr.map((id) =>
+          state.availableMusicArr.find((music) => music.id === id)
+        );
+      }
+
+      if (availableMusicArr.length === 1) {
+        state.loopMusic = true;
       }
 
       if (!state.shuffleMusic) {
@@ -130,6 +152,21 @@ const musicSlice = createSlice({
     },
     setMusicCategory(state, action) {
       state.musicCategory = action.payload;
+    },
+    favouriteBtnClickHandler(state, action) {
+      const favouriteMusicIdArr = state.favouriteMusicIdArr;
+      const clickedId = action.payload;
+      if (favouriteMusicIdArr.includes(clickedId)) {
+        state.favouriteMusicIdArr = favouriteMusicIdArr.filter((id) => id !== clickedId);
+      } else {
+        state.favouriteMusicIdArr = [...favouriteMusicIdArr, clickedId];
+      }
+    },
+    setFavouriteMusicIdArr(state, action) {
+      state.favouriteMusicIdArr = action.payload;
+    },
+    setPlayFromPlaylist(state, action) {
+      state.playFromPlaylist = action.payload;
     },
   },
 });
