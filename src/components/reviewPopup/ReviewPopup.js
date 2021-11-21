@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import firestore from '../../firebase/firestore';
 import './ReviewPopup.scss';
 
 import { musicActions } from '../../store/musicSlice';
@@ -29,9 +28,10 @@ const dictionary = {
 function ReviewPopup(props) {
   const dispatch = useDispatch();
   const languageIndex = useSelector((store) => store.language.languageIndex);
+  const memberId = useSelector((store) => store.member.memberId);
 
   const [showReview, setShowReview] = useState(true);
-  const [sendToFirestore, setSendToFirestore] = useState(true);
+  const [sendToDatabase, setSendToDatabase] = useState(true);
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -51,25 +51,37 @@ function ReviewPopup(props) {
 
   function closePopupHandler() {
     setShowReview(false);
-    setSendToFirestore(false);
+    setSendToDatabase(false);
     localStorage.removeItem('checkpointShowReviewPopup');
   }
 
   if (!showReview) {
-    if (ref1.current && sendToFirestore) {
-      firestore.collection('beta-test-feedback').add({
-        numberBackgroundNotEnough: ref1.current.checked ? 1 : 0,
-        numberMusicNotEnough: ref2.current.checked ? 1 : 0,
-        numberAmbienceNotEnough: ref3.current.checked ? 1 : 0,
-        qualityBackgroundNotEnough: ref4.current.checked ? 1 : 0,
-        qualityMusicNotEnough: ref5.current.checked ? 1 : 0,
-        qualityAmbienceNotEnough: ref6.current.checked ? 1 : 0,
-        slowDownloadSpeed: ref7.current.checked ? 1 : 0,
-        difficultToNavigate: ref8.current.checked ? 1 : 0,
-        operationNotSmooth: ref9.current.checked ? 1 : 0,
+    if (ref1.current && sendToDatabase) {
+      const data = {
+        memberId: memberId ? memberId : null,
+        numberBackgroundNotEnough: ref1.current.checked,
+        numberMusicNotEnough: ref2.current.checked,
+        numberAmbienceNotEnough: ref3.current.checked,
+        qualityBackgroundNotEnough: ref4.current.checked,
+        qualityMusicNotEnough: ref5.current.checked,
+        qualityAmbienceNotEnough: ref6.current.checked,
+        slowDownloadSpeed: ref7.current.checked,
+        difficultToNavigate: ref8.current.checked,
+        operationNotSmooth: ref9.current.checked,
         otherSuggestion: ref10.current.value,
         email: ref11.current.value,
-      });
+      };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/review`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {})
+        .catch(() => {});
     }
 
     document.addEventListener('keyup', (event) => {
@@ -129,7 +141,7 @@ function ReviewPopup(props) {
           ref={ref10}
         ></textarea>
         <p>{dictionary.ending[languageIndex]}</p>
-        <input type="text" placeholder={dictionary.email[languageIndex]} ref={ref11}></input>
+        <input type="text" placeholder={dictionary.email[languageIndex]} id="email" ref={ref11}></input>
         <div className="review-popup__submit" onClick={submitHandler}>
           {dictionary.send[languageIndex]}
         </div>
