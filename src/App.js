@@ -154,11 +154,7 @@ function App() {
   }, [isMobileDevice, dispatch]);
 
   useEffect(() => {
-    window.onbeforeunload = () => {
-      if (!memberId) {
-        return null;
-      }
-
+    if (memberId && currentBackground && currentMusic) {
       const data = {
         backgroundId: currentBackground.id,
         musicId: currentMusic.id,
@@ -174,9 +170,7 @@ function App() {
         },
         body: JSON.stringify(data),
       });
-
-      return null;
-    };
+    }
   }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist]);
 
   if (isMobileDevice) {
