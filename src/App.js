@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
 
 import firestore from './firebase/firestore';
+
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
 import Background from './pages/background/Background';
 import Music from './pages/music/Music';
 import Ambient from './pages/ambient/Ambient';
+
+import Policy from './pages/policy/Policy';
+import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy';
+import TermCondition from './pages/termCondition/TermCondition';
+import Disclaimer from './pages/disclaimer/Disclaimer';
+
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
 import MobileLanding from './components/mobileLanding/MobileLanding';
 import SafariGuide from './components/safariGuide/SafariGuide';
@@ -56,7 +64,7 @@ function App() {
       return;
     }
 
-    if (window.location.protocol === 'http:' && window.location.href !== 'http://localhost:3000/') {
+    if (window.location.protocol === 'http:' && !window.location.href.includes('http://localhost:3000/')) {
       window.location.replace(window.location.href.replace('http:', 'https:'));
     }
 
@@ -179,17 +187,35 @@ function App() {
 
   return (
     <>
-      <Loading></Loading>
-      {showReviewPopup && <ReviewPopup></ReviewPopup>}
-      {showSafariGuide && <SafariGuide></SafariGuide>}
-      {doneInitialize && (
-        <>
-          <Home></Home>
-          <Background></Background>
-          <Music></Music>
-          <Ambient></Ambient>
-        </>
-      )}
+      <Route exact path="/">
+        <Loading></Loading>
+        {showReviewPopup && <ReviewPopup></ReviewPopup>}
+        {showSafariGuide && <SafariGuide></SafariGuide>}
+        {doneInitialize && (
+          <>
+            <Home></Home>
+            <Background></Background>
+            <Music></Music>
+            <Ambient></Ambient>
+          </>
+        )}
+      </Route>
+
+      <Route exact path="/policy">
+        <Policy></Policy>
+      </Route>
+
+      <Route exact path="/privacy-policy">
+        <PrivacyPolicy></PrivacyPolicy>
+      </Route>
+
+      <Route exact path="/term-condition">
+        <TermCondition></TermCondition>
+      </Route>
+
+      <Route exact path="/disclaimer">
+        <Disclaimer></Disclaimer>
+      </Route>
     </>
   );
 }

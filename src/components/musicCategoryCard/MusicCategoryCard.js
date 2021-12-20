@@ -11,16 +11,20 @@ function MusicCategoryCard(props) {
       </div>
       <div className="music-category-card__content">
         <img src={dataArr[0].thumbnailUrl} alt="" className="music-category-card__content--main-thumbnail"></img>
-        <div>
-          <div className="music-category-card__content--sub-thumbnail-container">
-            <img src={dataArr[1].thumbnailUrl} alt=""></img>
-            <img src={dataArr[2].thumbnailUrl} alt=""></img>
-          </div>
-          <div className="music-category-card__content--sub-thumbnail-container margin-top">
-            <img src={dataArr[3].thumbnailUrl} alt=""></img>
-            <img src={dataArr[4].thumbnailUrl} alt=""></img>
-          </div>
-        </div>
+        {dataArr.length >= 3 && (
+          <>
+            <div className="music-category-card__content--sub-thumbnail-container">
+              <img src={dataArr[1].thumbnailUrl} alt=""></img>
+              <img src={dataArr[2].thumbnailUrl} alt=""></img>
+            </div>
+            {dataArr.length === 5 && (
+              <div className="music-category-card__content--sub-thumbnail-container">
+                <img src={dataArr[3].thumbnailUrl} alt=""></img>
+                <img src={dataArr[4].thumbnailUrl} alt=""></img>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

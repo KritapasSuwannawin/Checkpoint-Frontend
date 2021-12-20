@@ -20,6 +20,7 @@ const dictionary = {
   AirConditioner: ['Air Conditioner', 'エアコン'],
   RainonWindow: ['Rain on Window', '窓に雨が降る'],
   Cafe: ['Cafe', 'カフェ'],
+  Rooftop: ['Rooftop', '屋上'],
 };
 
 function SimpleThumbnailCard(props) {

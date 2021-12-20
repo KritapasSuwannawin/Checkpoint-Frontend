@@ -357,7 +357,7 @@ function Home() {
             <a href="https://checkpoint-tokyo.netlify.app/about.html" target="_blank" rel="noreferrer">
               {dictionary.aboutUs[languageIndex]}
             </a>
-            <a href="https://checkpoint-tokyo.netlify.app/about.html#bottom" target="_blank" rel="noreferrer">
+            <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
               {dictionary.policy[languageIndex]}
             </a>
             <a href="https://ko-fi.com/checkpointtokyo" target="_blank" rel="noreferrer">
