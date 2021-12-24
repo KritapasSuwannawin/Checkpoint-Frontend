@@ -58,7 +58,7 @@
   &__links {
     @include flex-row-center;
     font-size: 1.6rem;
-    column-gap: 4.5rem;
+    column-gap: 2rem;
     white-space: nowrap;
 
     &--link {
@@ -69,6 +69,10 @@
         cursor: pointer;
       }
 
+      &.japanese {
+        font-size: 1.4rem;
+      }
+
       &.current-page {
         font-weight: bold;
       }
@@ -77,12 +81,24 @@
         width: 14rem;
 
         &.japanese {
-          margin: 0 -2rem;
+          margin: 0 -1rem;
         }
       }
 
       &.language {
         z-index: 2;
+      }
+
+      &.profile {
+        width: 5rem;
+        height: 5rem;
+        padding: 0;
+        border: 0.3rem solid #ffae00;
+        border-radius: 50%;
+
+        &.japanese {
+          margin-left: -1rem;
+        }
       }
     }
 
@@ -102,40 +118,80 @@
 
   &__outside-links {
     position: absolute;
-    top: 6.5rem;
+    top: 8rem;
     right: 2.4rem;
     backdrop-filter: blur(1rem);
     background-color: rgba(0, 0, 0, 0.6);
     padding: 1.5rem;
     padding-bottom: 0.5rem;
-    border-radius: 0 0 0.8rem 0.8rem;
+    border-radius: 0.8rem;
     z-index: 1;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: all 0.15s ease;
     font-size: 1.4rem;
 
-    &.display-links {
-      transform: scaleY(1);
-    }
+    &--profile-container {
+      display: flex;
+      column-gap: 1rem;
+      padding-bottom: 1rem;
+      align-items: center;
 
-    a {
-      margin-bottom: 1rem;
-      padding: 0.2rem;
-      display: block;
-      text-decoration: none;
-      color: $white;
+      img {
+        width: 5rem;
+        height: 5rem;
+        border: 0.3rem solid #ffae00;
+        border-radius: 50%;
 
-      &:hover {
-        cursor: pointer;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
-  }
 
-  &__separator {
-    width: 0.2rem;
-    height: 2rem;
-    background-color: $white;
+    &--username {
+      font-size: 2rem;
+      font-weight: 500;
+      margin-top: -0.8rem;
+    }
+
+    &--member-id {
+      font-size: 1.2rem;
+    }
+
+    &--container {
+      display: flex;
+      column-gap: 1rem;
+
+      &.border-top {
+        border-top: 0.1rem solid white;
+        padding-top: 1rem;
+      }
+
+      img {
+        height: 2rem;
+      }
+
+      a,
+      p {
+        margin-bottom: 1rem;
+        padding: 0.2rem;
+        display: block;
+        text-decoration: none;
+        color: $white;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    &--icon-container {
+      width: 3rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    &--small-icon {
+      height: 1.6rem !important;
+    }
   }
 }
 
@@ -224,6 +280,14 @@
   &.show-control {
     opacity: 1;
     z-index: 0;
+  }
+
+  &__placeholder {
+    opacity: 0;
+
+    &.show-control {
+      opacity: 1;
+    }
   }
 
   &__header {

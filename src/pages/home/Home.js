@@ -15,6 +15,7 @@ import { backgroundActions } from '../../store/backgroundSlice';
 import { ambientActions } from '../../store/ambientSlice';
 import { musicActions } from '../../store/musicSlice';
 import { languageActions } from '../../store/languageSlice';
+import { memberActions } from '../../store/memberSlice';
 
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
@@ -29,7 +30,6 @@ import snowySvg36 from '../../svg/36px/Winter.svg';
 import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
 import musicSvg30 from '../../svg/30px/Music30px.svg';
 import globe30 from '../../svg/30px/Globe30px.png';
-import menu30 from '../../svg/30px/MenuVertical30px.png';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
@@ -40,6 +40,14 @@ import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
 import heartFullSvg25 from '../../svg/25px/Heart.svg';
 import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
+
+import png1 from './1.png';
+import png2 from './2.png';
+import png3 from './3.png';
+import png4 from './4.png';
+import png5 from './5.png';
+import png6 from './6.png';
+import png7 from './7.png';
 
 const dictionary = {
   language: ['EN', 'JP'],
@@ -64,7 +72,10 @@ function Home() {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
   const languageIndex = useSelector((store) => store.language.languageIndex);
+  const memberId = useSelector((store) => store.member.memberId);
+  const username = useSelector((store) => store.member.username);
   const memberType = useSelector((store) => store.member.memberType);
+  const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
@@ -271,6 +282,10 @@ function Home() {
     dispatch(pageActions.changePageHandler('background'));
   }
 
+  function openAvatarPageHander() {
+    dispatch(pageActions.changePageHandler('avatar'));
+  }
+
   function overlayClickHandler() {
     dispatch(pageActions.closePageHandler());
   }
@@ -284,6 +299,7 @@ function Home() {
   }
 
   function outsideLinkToggleHandler() {
+    dispatch(pageActions.closePageHandler());
     setShowOutsideLink((state) => !state);
   }
 
@@ -311,11 +327,17 @@ function Home() {
     dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
   }
 
+  function logoutHandler() {
+    dispatch(memberActions.logout());
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
-      <div className={`home__overlay ${currentPage ? 'show-overlay' : ''}`}>
+      <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
         <div className="home__overlay--right"></div>
       </div>
@@ -334,7 +356,9 @@ function Home() {
         <div className="nav__links">
           <div
             onClick={musicClickHander}
-            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}
+            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${
+              languageIndex === 1 ? 'japanese' : ''
+            }`}
           >
             <img src={musicSvg30} alt="" className="nav__links--icon"></img>
             {dictionary.music[languageIndex]}
@@ -352,18 +376,77 @@ function Home() {
             <img className="nav__links--icon" src={globe30} alt=""></img>
             {dictionary.language[languageIndex]}
           </div>
-          <img className="nav__links--about-us" src={menu30} alt="" onClick={outsideLinkToggleHandler}></img>
-          <div className={`nav__outside-links ${showOutsideLink ? 'display-links' : ''}`}>
-            <a href="https://checkpoint-tokyo.netlify.app/about.html" target="_blank" rel="noreferrer">
-              {dictionary.aboutUs[languageIndex]}
-            </a>
-            <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-              {dictionary.policy[languageIndex]}
-            </a>
-            <a href="https://ko-fi.com/checkpointtokyo" target="_blank" rel="noreferrer">
-              {dictionary.donate[languageIndex]}
-            </a>
-          </div>
+          <img
+            className={`nav__links--link profile ${languageIndex === 1 ? 'japanese' : ''}`}
+            src={currentAvatar.url}
+            alt=""
+            onClick={outsideLinkToggleHandler}
+          ></img>
+          {showOutsideLink && (
+            <div className="nav__outside-links">
+              {memberId && (
+                <>
+                  <div className="nav__outside-links--profile-container">
+                    <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
+                    <div>
+                      <p className="nav__outside-links--username">{username}</p>
+                      <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
+                    </div>
+                  </div>
+                  <div className="nav__outside-links--container border-top">
+                    <div className="nav__outside-links--icon-container">
+                      <img className="nav__outside-links--small-icon" src={png1} alt=""></img>
+                    </div>
+                    <p>Subscription</p>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png2} alt=""></img>
+                    </div>
+                    <p>Help & Support</p>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png3} alt=""></img>
+                    </div>
+                    <p>Feedback</p>
+                  </div>
+                </>
+              )}
+              <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
+                <div className="nav__outside-links--icon-container">
+                  <img src={png4} alt=""></img>
+                </div>
+                <a href="https://checkpoint-tokyo.netlify.app/about.html" target="_blank" rel="noreferrer">
+                  {dictionary.aboutUs[languageIndex]}
+                </a>
+              </div>
+              <div className="nav__outside-links--container">
+                <div className="nav__outside-links--icon-container">
+                  <img src={png5} alt=""></img>
+                </div>
+                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
+                  {dictionary.policy[languageIndex]}
+                </a>
+              </div>
+              <div className="nav__outside-links--container">
+                <div className="nav__outside-links--icon-container">
+                  <img src={png6} alt=""></img>
+                </div>
+                <a href="https://ko-fi.com/checkpointtokyo" target="_blank" rel="noreferrer">
+                  {dictionary.donate[languageIndex]}
+                </a>
+              </div>
+              {memberId && (
+                <div className="nav__outside-links--container border-top">
+                  <div className="nav__outside-links--icon-container">
+                    <img src={png7} alt=""></img>
+                  </div>
+                  <p onClick={logoutHandler}>Logout</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </nav>
       <div
@@ -390,13 +473,11 @@ function Home() {
       </div>
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
         {!memberType ? (
-          <p>Join us to have your own music playlist</p>
+          <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
+            Join us to have your own music playlist
+          </p>
         ) : (
           <>
-            {/* <div className="music-control__header">
-              <img src={heartFullSvg25} alt=""></img>
-              <p>Favourite music</p>
-            </div> */}
             {favouriteMusicIdArr.length === 0 && <p>Your music playlist is empty</p>}
             {favouriteMusicIdArr.map((id) => (
               <div key={id} className="music-control__cards">

@@ -38,6 +38,21 @@
     }
   }
 
+  &.avatar-card {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 1rem;
+
+    &:hover {
+      cursor: pointer;
+      border: none;
+    }
+
+    &.current-avatar {
+      border: 0.2rem $white solid;
+    }
+  }
+
   &__image {
     border-radius: 0.8rem;
     object-fit: cover;
@@ -69,5 +84,10 @@
   &.ambient-placeholder {
     width: 15rem;
     height: 5rem;
+  }
+
+  &.avatar-placeholder {
+    width: 10rem;
+    height: 10rem;
   }
 }

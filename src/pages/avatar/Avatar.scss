@@ -1,0 +1,9 @@
+@import '../../scss/main.scss';
+
+.avatar {
+  @include page-style;
+
+  &.current-page {
+    @include display-page;
+  }
+}

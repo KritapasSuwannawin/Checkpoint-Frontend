@@ -6,6 +6,7 @@ import './LoginPopup.scss';
 import { memberActions } from '../../store/memberSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { musicActions } from '../../store/musicSlice';
+import { avatarActions } from '../../store/avatarSlice';
 
 function LoginPopup(props) {
   const dispatch = useDispatch();
@@ -140,6 +141,7 @@ function LoginPopup(props) {
             dispatch(musicActions.setMusicCategory(data.musicCategory));
             dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
+            dispatch(avatarActions.changeAvatarHandler({ id: data.avatarId }));
             props.closeHandler();
           }
         })
@@ -203,7 +205,17 @@ function LoginPopup(props) {
             {accountAlreadyExist && <p className="login-popup__error-msg">Account already exists, please sign in</p>}
             <div className="login-popup__privacy-container margin-top">
               <input type="checkbox" ref={checkboxRef1}></input>
-              <p>By registering, you agree to the Terms and Privacy Policy.</p>
+              <p>
+                By registering, you agree to the{' '}
+                <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+                  Terms
+                </a>{' '}
+                and{' '}
+                <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+                  Privacy Policy
+                </a>
+                .
+              </p>
             </div>
             <div className="login-popup__privacy-container">
               <input type="checkbox" ref={checkboxRef2}></input>

@@ -5,6 +5,7 @@ import './SimpleThumbnailCard.scss';
 
 import { ambientActions } from '../../store/ambientSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
+import { avatarActions } from '../../store/avatarSlice';
 
 const dictionary = {
   LightRain: ['Light Rain', '小雨'],
@@ -27,6 +28,7 @@ function SimpleThumbnailCard(props) {
   const dispatch = useDispatch();
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
+  const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -43,12 +45,13 @@ function SimpleThumbnailCard(props) {
       : ''
   } ${props.long && props.ambient ? 'long-ambient-card' : ''} ${
     props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''
-  }`;
+  } ${props.avatar ? `avatar-card ${currentAvatar.id === props.id ? 'current-avatar' : ''}` : ''}`;
 
   const placeholderClassName =
     'simple-thumbnail-placeholder ' +
     (props.background ? 'background-placeholder' : '') +
-    (props.ambient ? 'ambient-placeholder' : '');
+    (props.ambient ? 'ambient-placeholder' : '') +
+    (props.avatar ? 'avatar-placeholder' : '');
 
   function clickHandler() {
     if (props.background) {
@@ -60,6 +63,12 @@ function SimpleThumbnailCard(props) {
     } else if (props.ambient) {
       dispatch(
         ambientActions.ambientToggleHandler({
+          id: props.id,
+        })
+      );
+    } else if (props.avatar) {
+      dispatch(
+        avatarActions.changeAvatarHandler({
           id: props.id,
         })
       );

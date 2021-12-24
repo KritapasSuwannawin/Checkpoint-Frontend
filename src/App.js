@@ -9,6 +9,7 @@ import Home from './pages/home/Home';
 import Background from './pages/background/Background';
 import Music from './pages/music/Music';
 import Ambient from './pages/ambient/Ambient';
+import Avatar from './pages/avatar/Avatar';
 
 import Policy from './pages/policy/Policy';
 import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy';
@@ -22,6 +23,7 @@ import SafariGuide from './components/safariGuide/SafariGuide';
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
+import { avatarActions } from './store/avatarSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ function App() {
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
   const playFromPlaylist = useSelector((store) => store.music.playFromPlaylist);
   const memberId = useSelector((store) => store.member.memberId);
+  const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
@@ -92,6 +95,7 @@ function App() {
         const ambient = result.data.ambient;
         const background = result.data.background;
         const music = result.data.music;
+        const avatar = result.data.avatar;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -135,9 +139,26 @@ function App() {
             })
           )
         );
+        dispatch(
+          avatarActions.setAvailableAvatar(
+            avatar.map((avatar) => {
+              return {
+                ...avatar,
+                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${avatar.filePath.replaceAll(' ', '+')}`,
+              };
+            })
+          )
+        );
 
-        if (ambient.name !== 'error' && background.name !== 'error' && music.name !== 'error') {
+        if (
+          ambient.name !== 'error' &&
+          background.name !== 'error' &&
+          music.name !== 'error' &&
+          avatar.name !== 'error'
+        ) {
           setDoneInitialize(true);
+        } else {
+          window.location.reload();
         }
       })
       .catch(() => {
@@ -181,6 +202,22 @@ function App() {
     }
   }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist]);
 
+  useEffect(() => {
+    if (memberId && currentAvatar) {
+      const data = {
+        memberId,
+        avatarId: currentAvatar.id,
+      };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+    }
+  }, [memberId, currentAvatar]);
+
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;
   }
@@ -197,6 +234,7 @@ function App() {
             <Background></Background>
             <Music></Music>
             <Ambient></Ambient>
+            <Avatar></Avatar>
           </>
         )}
       </Route>

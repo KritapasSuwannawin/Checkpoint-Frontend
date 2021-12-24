@@ -6,6 +6,7 @@ import musicReducer from './musicSlice';
 import ambientReducer from './ambientSlice';
 import languageReducer from './languageSlice';
 import memberReducer from './memberSlice';
+import avatarReducer from './avatarSlice';
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     ambient: ambientReducer,
     language: languageReducer,
     member: memberReducer,
+    avatar: avatarReducer,
   },
 });
 
