@@ -8,6 +8,7 @@ import AmbientControl from '../../components/ambientControl/AmbientControl';
 import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMusicCard';
 import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
+import CheckpointModal from '../../components/checkpointModal/CheckpoinntModal';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -92,6 +93,7 @@ function Home() {
   const [showOutsideLink, setShowOutsideLink] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
+  const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -129,8 +131,13 @@ function Home() {
   }, [currentBackground]);
 
   useEffect(() => {
+    if (memberType !== 'premium' && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
+      dispatch(backgroundActions.changeBackgroundHandler({ id: '0111' }));
+      return;
+    }
+
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
-  }, [currentBackground]);
+  }, [currentBackground, dispatch, memberType]);
 
   useEffect(() => {
     setAmbientAudioArr(
@@ -145,8 +152,13 @@ function Home() {
   }, [currentAmbientArr]);
 
   useEffect(() => {
+    if (currentMusic.isPremium && memberType !== 'premium' && musicPlaying) {
+      dispatch(musicActions.nextMusicHandler(memberType));
+      return;
+    }
+
     setMusicThumbnailUrl(currentMusic.thumbnailUrl);
-  }, [currentMusic]);
+  }, [currentMusic, dispatch, memberType, musicPlaying]);
 
   useEffect(() => {
     const currentAmbientIdArr = currentBackground.ambientIdArr;
@@ -321,12 +333,20 @@ function Home() {
     }
   }
 
-  function closeLoginPopup() {
+  function closeLoginPopup(showFreeTrialModal) {
     setShowLoginPopup(false);
+
+    if (showFreeTrialModal) {
+      setShowFreeTrialModal(true);
+    }
   }
 
   function closeUpgradePopup() {
     setShowUpgradePopup(false);
+  }
+
+  function closeFreeTrialModal() {
+    setShowFreeTrialModal(false);
   }
 
   function favouriteBtnClickHandler() {
@@ -343,6 +363,13 @@ function Home() {
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
+      {showFreeTrialModal && (
+        <CheckpointModal
+          title="Your 7-day free trial has started"
+          btn="Okay"
+          closeHandler={closeFreeTrialModal}
+        ></CheckpointModal>
+      )}
       <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
         <div className="home__overlay--right"></div>

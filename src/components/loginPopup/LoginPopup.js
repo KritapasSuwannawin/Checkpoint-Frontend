@@ -30,7 +30,7 @@ function LoginPopup(props) {
   const checkboxRef2 = useRef();
 
   // function closeHandler() {
-  //   props.closeHandler();
+  //   props.closeHandler(false);
   // }
 
   function signUpSubmitHandler() {
@@ -87,7 +87,7 @@ function LoginPopup(props) {
           if (!errorMessage) {
             const data = result.data[0];
             dispatch(memberActions.setMember(data));
-            props.closeHandler();
+            props.closeHandler(true);
           }
         })
         .catch(() => {
@@ -142,7 +142,7 @@ function LoginPopup(props) {
             dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
             dispatch(avatarActions.changeAvatarHandler({ id: data.avatarId }));
-            props.closeHandler();
+            props.closeHandler(false);
           }
         })
         .catch(() => {
