@@ -41,9 +41,9 @@ import heartFullSvg25 from '../../svg/25px/Heart.svg';
 import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 
-import png1 from './1.png';
-import png2 from './2.png';
-import png3 from './3.png';
+// import png1 from './1.png';
+// import png2 from './2.png';
+// import png3 from './3.png';
 import png4 from './4.png';
 import png5 from './5.png';
 import png6 from './6.png';
@@ -197,6 +197,12 @@ function Home() {
       ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2)
     );
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
+
+  useEffect(() => {
+    if (!memberId) {
+      setShowLoginPopup(true);
+    }
+  }, [memberId]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -393,7 +399,7 @@ function Home() {
                       <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
                     </div>
                   </div>
-                  <div className="nav__outside-links--container border-top">
+                  {/* <div className="nav__outside-links--container border-top">
                     <div className="nav__outside-links--icon-container">
                       <img className="nav__outside-links--small-icon" src={png1} alt=""></img>
                     </div>
@@ -410,7 +416,7 @@ function Home() {
                       <img src={png3} alt=""></img>
                     </div>
                     <p>Feedback</p>
-                  </div>
+                  </div> */}
                 </>
               )}
               <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>

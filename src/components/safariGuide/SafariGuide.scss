@@ -3,7 +3,7 @@
 .safari-guide {
   @include fixed-whole-screen;
   @include flex-row-center;
-  z-index: 1;
+  z-index: 2;
   padding-bottom: 7rem;
 
   &__content {

@@ -3,7 +3,8 @@
 .login-popup {
   @include fixed-whole-screen;
   @include flex-row-center;
-  height: calc(100vh - 7rem);
+  height: 100vh;
+  padding-bottom: 7rem;
   z-index: 1;
 
   form {

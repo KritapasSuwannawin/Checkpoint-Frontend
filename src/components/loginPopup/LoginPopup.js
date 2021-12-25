@@ -29,9 +29,9 @@ function LoginPopup(props) {
   const checkboxRef1 = useRef();
   const checkboxRef2 = useRef();
 
-  function closeHandler() {
-    props.closeHandler();
-  }
+  // function closeHandler() {
+  //   props.closeHandler();
+  // }
 
   function signUpSubmitHandler() {
     const email = emailRef.current.value;
@@ -168,7 +168,7 @@ function LoginPopup(props) {
   return (
     <div className="login-popup">
       <form>
-        <div className="login-popup__close-btn" onClick={closeHandler}></div>
+        {/* <div className="login-popup__close-btn" onClick={closeHandler}></div> */}
         <div className="login-popup__title-container">
           <p
             className={`login-popup__title ${!signingUp ? 'not-current' : ''}`}
