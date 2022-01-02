@@ -41,6 +41,7 @@ import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
 import heartFullSvg25 from '../../svg/25px/Heart.svg';
 import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
+import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
 
 // import png1 from './1.png';
 // import png2 from './2.png';
@@ -494,6 +495,19 @@ function Home() {
           className="background-control__thumbnail"
         ></img>
         <div className="background-control__ambient-container">
+          <div className="background-control__ambient-volume">
+            <p>Ambience</p>
+            <img src={speakerSvg15} alt=""></img>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              defaultValue={ambientVolume * 100}
+              onChange={volumeAmbientChangeHandler}
+              ref={ambientVolumeSliderRef}
+              className="background-control__ambient-volume--slider"
+            ></input>
+          </div>
           {ambientThumbnailArr}
           <div
             title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
@@ -511,12 +525,19 @@ function Home() {
           </p>
         ) : (
           <>
-            {favouriteMusicIdArr.length === 0 && <p>Your music playlist is empty</p>}
-            {favouriteMusicIdArr.map((id) => (
-              <div key={id} className="music-control__cards">
-                <FavouriteMusicCard id={id}></FavouriteMusicCard>
-              </div>
-            ))}
+            <div className="music-control__title">
+              <img src={heartFullSvg25} alt=""></img>
+              <p>Favorite music</p>
+            </div>
+            {favouriteMusicIdArr.length === 0 ? (
+              <p>Your music playlist is empty</p>
+            ) : (
+              favouriteMusicIdArr.map((id) => (
+                <div key={id} className="music-control__cards">
+                  <FavouriteMusicCard id={id}></FavouriteMusicCard>
+                </div>
+              ))
+            )}
           </>
         )}
       </div>
