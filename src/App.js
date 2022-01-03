@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 
-import firestore from './firebase/firestore';
+import { firestore } from './firebase/app';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';

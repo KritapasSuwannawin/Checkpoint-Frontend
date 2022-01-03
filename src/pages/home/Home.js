@@ -502,7 +502,7 @@ function Home() {
               type="range"
               min="0"
               max="100"
-              defaultValue={ambientVolume * 100}
+              value={ambientVolume * 100}
               onChange={volumeAmbientChangeHandler}
               ref={ambientVolumeSliderRef}
               className="background-control__ambient-volume--slider"
@@ -648,7 +648,7 @@ function Home() {
                 type="range"
                 min="0"
                 max="100"
-                defaultValue={musicVolume * 100}
+                value={musicVolume * 100}
                 onChange={volumeMusicChangeHandler}
                 ref={musicVolumeSliderRef}
                 className="player__volume-control--volume-slider"
@@ -665,7 +665,7 @@ function Home() {
                 type="range"
                 min="0"
                 max="100"
-                defaultValue={ambientVolume * 100}
+                value={ambientVolume * 100}
                 onChange={volumeAmbientChangeHandler}
                 ref={ambientVolumeSliderRef}
                 className="player__volume-control--volume-slider"
