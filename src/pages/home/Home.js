@@ -357,6 +357,7 @@ function Home() {
   function logoutHandler() {
     dispatch(memberActions.logout());
     dispatch(pageActions.closePageHandler());
+    dispatch(musicActions.setMusicPlaying(false));
     setShowOutsideLink(false);
   }
 
