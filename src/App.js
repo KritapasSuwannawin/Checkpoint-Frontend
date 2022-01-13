@@ -90,6 +90,10 @@ function App() {
       setShowSafariGuide(true);
     }
 
+    if (window.navigator.userLanguage === 'ja' || window.navigator.language === 'ja') {
+      dispatch(languageActions.languageChangeHandler());
+    }
+
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
       .then((response) => response.json())
       .then((result) => {
@@ -222,15 +226,6 @@ function App() {
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;
   }
-
-  fetch('http://ip-api.com/json')
-    .then((response) => response.json())
-    .then((result) => {
-      if (result && result.country === 'Japan') {
-        dispatch(languageActions.languageChangeHandler());
-      }
-    })
-    .catch(() => {});
 
   return (
     <>
