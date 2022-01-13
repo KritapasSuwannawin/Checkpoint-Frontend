@@ -148,7 +148,7 @@ const musicSlice = createSlice({
     },
     setAvailableMusic(state, action) {
       state.availableMusicArr = action.payload;
-      state.currentMusic = action.payload[0];
+      state.currentMusic = action.payload.find((music) => music.id === 13);
     },
     setMusicCategory(state, action) {
       state.musicCategory = action.payload;

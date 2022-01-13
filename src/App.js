@@ -24,6 +24,7 @@ import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
 import { avatarActions } from './store/avatarSlice';
+import { languageActions } from './store/languageSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -221,6 +222,15 @@ function App() {
   if (isMobileDevice) {
     return <MobileLanding></MobileLanding>;
   }
+
+  fetch('http://ip-api.com/json')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result && result.country === 'Japan') {
+        dispatch(languageActions.languageChangeHandler());
+      }
+    })
+    .catch(() => {});
 
   return (
     <>

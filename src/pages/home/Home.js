@@ -17,6 +17,7 @@ import { ambientActions } from '../../store/ambientSlice';
 import { musicActions } from '../../store/musicSlice';
 import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
+import { avatarActions } from '../../store/avatarSlice';
 
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
@@ -133,7 +134,8 @@ function Home() {
 
   useEffect(() => {
     if (memberType !== 'premium' && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
-      dispatch(backgroundActions.changeBackgroundHandler({ id: '0111' }));
+      dispatch(backgroundActions.changeBackgroundHandler({ id: '0411' }));
+      dispatch(avatarActions.changeAvatarHandler({ id: 1 }));
       return;
     }
 
