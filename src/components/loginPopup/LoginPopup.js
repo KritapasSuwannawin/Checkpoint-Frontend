@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import crypto from 'crypto-js';
 
 import './LoginPopup.scss';
 
@@ -107,7 +108,10 @@ function LoginPopup(props) {
   }
 
   function verifyHandler() {
-    if (verificationCodeRef.current.value === verificationCode) {
+    if (
+      verificationCodeRef.current.value ===
+      crypto.AES.decrypt(verificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(crypto.enc.Utf8)
+    ) {
       setInvalidCode(false);
 
       const data = { email, password, loginMethod: 'email', receiveNews };
