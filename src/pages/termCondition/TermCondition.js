@@ -3,264 +3,208 @@ import '../privacyPolicy/PrivacyPolicy.scss';
 function TermCondition(props) {
   return (
     <div className="term-condition">
-      <h2>
-        <strong>Terms and Conditions</strong>
-      </h2>
-
-      <p>Welcome to Checkpoint!</p>
-
+      <h1>Terms and Conditions</h1>
       <p>
-        These terms and conditions outline the rules and regulations for the use of Checkpoint's Website, located at
-        checkpoint.tokyo.
+        This agreement applies as between you, the User of this Web Site and Checkpoint, the owner(s) of this Web Site.
+        Your agreement to comply with and be bound by these terms and conditions is deemed to occur upon your first use
+        of the Web Site. If you do not agree to be bound by these terms and conditions, you should stop using the Web
+        Site immediately.
       </p>
 
-      <p>
-        By accessing this website we assume you accept these terms and conditions. Do not continue to use Checkpoint if
-        you do not agree to take all of the terms and conditions stated on this page.
-      </p>
-
-      <p>
-        The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all
-        Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the
-        Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company.
-        "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance
-        and consideration of payment necessary to undertake the process of our assistance to the Client in the most
-        appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the
-        Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the
-        above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as
-        interchangeable and therefore as referring to same.
-      </p>
-
-      <h3>
-        <strong>Cookies</strong>
-      </h3>
-
-      <p>
-        We employ the use of cookies. By accessing Checkpoint, you agreed to use cookies in agreement with the
-        Checkpoint's Privacy Policy.{' '}
-      </p>
-
-      <p>
-        Most interactive websites use cookies to let us retrieve the user’s details for each visit. Cookies are used by
-        our website to enable the functionality of certain areas to make it easier for people visiting our website. Some
-        of our affiliate/advertising partners may also use cookies.
-      </p>
-
-      <h3>
-        <strong>License</strong>
-      </h3>
-
-      <p>
-        Unless otherwise stated, Checkpoint and/or its licensors own the intellectual property rights for all material
-        on Checkpoint. All intellectual property rights are reserved. You may access this from Checkpoint for your own
-        personal use subjected to restrictions set in these terms and conditions.
-      </p>
-
-      <p>You must not:</p>
-      <ul>
-        <li>Republish material from Checkpoint</li>
-        <li>Sell, rent or sub-license material from Checkpoint</li>
-        <li>Reproduce, duplicate or copy material from Checkpoint</li>
-        <li>Redistribute content from Checkpoint</li>
-      </ul>
-
-      <p>
-        This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the{' '}
-        <a href="https://www.termsandconditionsgenerator.com">Terms And Conditions Generator</a>.
-      </p>
-
-      <p>
-        Parts of this website offer an opportunity for users to post and exchange opinions and information in certain
-        areas of the website. Checkpoint does not filter, edit, publish or review Comments prior to their presence on
-        the website. Comments do not reflect the views and opinions of Checkpoint,its agents and/or affiliates. Comments
-        reflect the views and opinions of the person who post their views and opinions. To the extent permitted by
-        applicable laws, Checkpoint shall not be liable for the Comments or for any liability, damages or expenses
-        caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this
-        website.
-      </p>
-
-      <p>
-        Checkpoint reserves the right to monitor all Comments and to remove any Comments which can be considered
-        inappropriate, offensive or causes breach of these Terms and Conditions.
-      </p>
-
-      <p>You warrant and represent that:</p>
-
-      <ul>
+      <ol>
         <li>
-          You are entitled to post the Comments on our website and have all necessary licenses and consents to do so;
+          <h2>Intellectual Property</h2>
+          <ul>
+            <li>
+              All Content included on the Web Site, unless uploaded by Users, including, but not limited to, text,
+              graphics, logos, icons, images, sound clips, video clips, data compilations, page layout, underlying code
+              and software is the property of Checkpoint, our affiliates or other relevant third parties. By continuing
+              to use the Web Site you acknowledge that such material is protected by applicable National and
+              International intellectual property and other relevant laws.
+            </li>
+            <li>
+              You may not reproduce, copy, distribute, store or in any other fashion re-use material from the Web Site
+              unless otherwise indicated on the Web Site or unless given express written permission to do so by
+              Checkpoint.
+            </li>
+          </ul>
         </li>
+
         <li>
-          The Comments do not invade any intellectual property right, including without limitation copyright, patent or
-          trademark of any third party;
+          <h2>Links to Other Web Sites</h2>
+          This Web Site may contain links to other sites. Unless expressly stated, these sites are not under the control
+          of Checkpoint or that of our affiliates. We assume no responsibility for the content of such web sites and
+          disclaim liability for any and all forms of loss or damage arising out of the use of them. The inclusion of a
+          link to another site on this Web Site does not imply any endorsement of the sites themselves or of those in
+          control of them.
         </li>
+
         <li>
-          The Comments do not contain any defamatory, libelous, offensive, indecent or otherwise unlawful material which
-          is an invasion of privacy
+          <h2>Privacy</h2>
+          <ul>
+            <li>
+              For the purposes of applicable data protection legislation, Checkpoint will process any personal data you
+              have provided to it in accordance Privacy Policy available on the Checkpoint website or on request from
+              Checkpoint.
+            </li>
+            <li>
+              You agree that, if you have provided Checkpoint with personal data relating to a third party (1) you have
+              in place all necessary appropriate consents and notices to enable lawful transfer such personal data to
+              Checkpoint and (2) that you have brought to the attention of any such third party the Privacy Notice
+              available on the Checkpoint’s website or otherwise provided a copy of it to the third party. You agree to
+              indemnify Checkpoint in relation to all and any liabilities, penalties, fines, awards or costs arising
+              from your non-compliance with these requirements.
+            </li>
+          </ul>
         </li>
+
         <li>
-          The Comments will not be used to solicit or promote business or custom or present commercial activities or
-          unlawful activity.
+          <h2>Donation Specific Terms</h2>
+          <ul>
+            <p>
+              By using the services of the donation portal, you as a user (hereinafter referred to as donor) agree to
+              these terms and conditions of the donation portal.
+            </p>
+            <li>
+              Validity. These terms and conditions apply to all one-off and ongoing donations portal within the scope of
+              Checkpoint's activity and irrespective of the classification under contract law. They also apply to all
+              future donations without the need for explicit acceptance. These terms and conditions shall be deemed
+              accepted at the latest with your first donation. These terms and conditions as well as all further
+              amendments are available online on the Checkpoint website and apply exclusively. Checkpoint reserves the
+              right to amend these terms and conditions in any form at any time, without further notice and at its own
+              discretion. Notification of changes at this point is recognized by the donor as sufficient notice.
+            </li>
+            <li>
+              Scope. We are a non-profit organization, the statutory purposes of Checkpoint, therefore, include all
+              purposes that charitable movements might pursue. The donor turns his/her donation over to Checkpoint,
+              which first adds it to its assets and then allocating it to the development of its app. In its function as
+              a social movement, Checkpoint is therefore entitled to issue the donor with a donation receipt. The
+              purpose of the donation is fulfilled by Checkpoint by using the funds received within the framework of
+              Checkpoint's own purposes to develop the Checkpoint. Checkpoint decides on the use of the donations in
+              respect to the development. There is no legal claim on the part of the donor or the favoured part of the
+              Checkpoint. Depending on the selected transfer method, fees may be charged for the donation, which the
+              respective provider will charge to Checkpoint. Donors have the choice of paying these fees themselves in
+              addition to the donation; otherwise, the fees will be deducted from the intended donation before it is
+              transferred to Checkpoint. The donor agrees to the transmission of the data required for the transfer of
+              the donation to the implementing banks or to the transmission of the data required for the implementation
+              of the donation by direct debit to the non-profit organization.
+            </li>
+            <li>
+              Data protection of donors. Checkpoint uses SSL encryption technology when transmitting data. The data of
+              the donors will only be stored for a short period of time for accounting, security and research reasons.
+              The data is used exclusively for the purpose of transferring the donation to Checkpoint. The donor's
+              personal data may be used by Checkpoint for the purpose of producing a donation receipt for the donor.
+              Furthermore, the data may be used to remedy technical defects. They will not be forwarded to other
+              organizations.
+            </li>
+            <li>
+              Donors Responsibilities. By donating to Checkpoint you agree to provide true, accurate and up-to-date
+              information about yourself as specified in the donation form. If it becomes known that any of the
+              information you provide is untrue, inaccurate, outdated or incomplete, the Checkpoint reserves the right
+              not to accept you as a donor in the future and to take other legal action if necessary. Donors undertake
+              to comply with all applicable legal provisions when donating in order to prevent unlawful use.
+              Furthermore, donors undertake to assume sole responsibility for compliance with such legal provisions.
+            </li>
+          </ul>
         </li>
-      </ul>
 
-      <p>
-        You hereby grant Checkpoint a non-exclusive license to use, reproduce, edit and authorize others to use,
-        reproduce and edit any of your Comments in any and all forms, formats or media.
-      </p>
-
-      <h3>
-        <strong>Hyperlinking to our Content</strong>
-      </h3>
-
-      <p>The following organizations may link to our Website without prior written approval:</p>
-
-      <ul>
-        <li>Government agencies;</li>
-        <li>Search engines;</li>
-        <li>News organizations;</li>
         <li>
-          Online directory distributors may link to our Website in the same manner as they hyperlink to the Websites of
-          other listed businesses; and
+          <h2>Disclaimer</h2>
+          <ul>
+            <li>
+              Checkpoint operates all services with the greatest possible care and reliability. It does not guarantee
+              that the services are accessible without interruption and that the services or the desired connections are
+              always accessible. This also applies in the event of disruptions occurring in the public
+              telecommunications network between participants and the donation portal dial-in point and in the event of
+              disruptions occurring in national and international network areas not operated by the donation portal.
+            </li>
+            <li>
+              Checkpoint shall be liable without limitation in the event of intent, fraudulent intent and gross
+              negligence on the part of Checkpoint, as well as in the event of personal injury as a result of
+              Checkpoint's actions.
+            </li>
+            <li>
+              In the event of a negligent breach of essential contractual obligations, Checkpoint's liability is limited
+              to the amount of the typical and foreseeable damage. Checkpoint's obligations in this sense are the
+              contractual main performance obligations, the fulfilment of which enable the proper execution of the
+              contract concluded between Checkpoint and the donor. In this case, however, Checkpoint shall not be liable
+              for lost profit, indirect damage, consequential harm caused by a defect and/or claims by third parties.
+            </li>
+            <li>For all other cases, the liability of Checkpoint is excluded.</li>
+            <li>
+              Since the moderators and organizers of Checkpoint cannot constantly monitor the contents of external web
+              sites for changes, Checkpoint accepts no responsibility for the contents of such web sites. This also
+              applies to the contents of web sites which in turn can be accessed via links on such sites. However,
+              Checkpoint has the right to block individual offers if conduct, uploaded content and submissions violate
+              applicable laws and blocking is necessary in this respect.
+            </li>
+            <li>
+              Furthermore, Checkpoint shall not be held responsible if someone succeeds in unlawfully obtaining data of
+              the donors and further using them. The assertion of claims for damages or consequential damages by donors
+              or third parties against Checkpoint or donors is excluded by mutual agreement in such a context.
+            </li>
+            <li>
+              Checkpoint makes no warranty or representation that the Web Site will meet your requirements, that it will
+              be of satisfactory quality, that it will be fit for a particular purpose, that it will not infringe the
+              rights of third parties, that it will be compatible with all systems, that it will be secure and that all
+              information provided will be accurate. We make no guarantee of any specific results from the use of our
+              Service.
+            </li>
+            <li>
+              No part of this Web Site is intended to constitute advice and the Content of this Web Site should not be
+              relied upon when making any decisions or taking any action of any kind.
+            </li>
+          </ul>
         </li>
+
         <li>
-          System wide Accredited Businesses except soliciting non-profit organizations, charity shopping malls, and
-          charity fundraising groups which may not hyperlink to our Web site.
+          <h2>Limitation of Liability</h2>
+          <ul>
+            <li>
+              To the maximum extent permitted by law, Checkpoint accepts no liability for any direct or indirect loss or
+              damage, foreseeable or otherwise, including any indirect, consequential, special or exemplary damages
+              arising from the use of the Web Site or any information contained therein. Users should be aware that they
+              use the Web Site and its Content at their own risk.
+            </li>
+            <li>
+              Nothing in these terms and conditions excludes or restricts Checkpoint’s liability for death or personal
+              injury resulting from any negligence or fraud on the part of Checkpoint.
+            </li>
+            <li>
+              Every effort has been made to ensure that these terms and conditions adhere strictly with the relevant
+              legal provisions. However, in the event that any of these terms are found to be unlawful, invalid or
+              otherwise unenforceable, that term is to be deemed severed from these terms and conditions and shall not
+              affect the validity and enforceability of the remaining terms and conditions. This term shall apply only
+              within jurisdictions where a particular term is illegal.
+            </li>
+          </ul>
         </li>
-      </ul>
 
-      <p>
-        These organizations may link to our home page, to publications or to other Website information so long as the
-        link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement or approval of the
-        linking party and its products and/or services; and (c) fits within the context of the linking party’s site.
-      </p>
-
-      <p>We may consider and approve other link requests from the following types of organizations:</p>
-
-      <ul>
-        <li>commonly-known consumer and/or business information sources;</li>
-        <li>dot.com community sites;</li>
-        <li>associations or other groups representing charities;</li>
-        <li>online directory distributors;</li>
-        <li>internet portals;</li>
-        <li>accounting, law and consulting firms; and</li>
-        <li>educational institutions and trade associations.</li>
-      </ul>
-
-      <p>
-        We will approve link requests from these organizations if we decide that: (a) the link would not make us look
-        unfavorably to ourselves or to our accredited businesses; (b) the organization does not have any negative
-        records with us; (c) the benefit to us from the visibility of the hyperlink compensates the absence of
-        Checkpoint; and (d) the link is in the context of general resource information.
-      </p>
-
-      <p>
-        These organizations may link to our home page so long as the link: (a) is not in any way deceptive; (b) does not
-        falsely imply sponsorship, endorsement or approval of the linking party and its products or services; and (c)
-        fits within the context of the linking party’s site.
-      </p>
-
-      <p>
-        If you are one of the organizations listed in paragraph 2 above and are interested in linking to our website,
-        you must inform us by sending an e-mail to Checkpoint. Please include your name, your organization name, contact
-        information as well as the URL of your site, a list of any URLs from which you intend to link to our Website,
-        and a list of the URLs on our site to which you would like to link. Wait 2-3 weeks for a response.
-      </p>
-
-      <p>Approved organizations may hyperlink to our Website as follows:</p>
-
-      <ul>
-        <li>By use of our corporate name; or</li>
-        <li>By use of the uniform resource locator being linked to; or</li>
         <li>
-          By use of any other description of our Website being linked to that makes sense within the context and format
-          of content on the linking party’s site.
+          <h2>No Waiver</h2>
+          <p>
+            In the event that any party to these Terms and Conditions fails to exercise any right or remedy contained
+            herein, this shall not be construed as a waiver of that right or remedy.
+          </p>
         </li>
-      </ul>
 
-      <p>
-        No use of Checkpoint's logo or other artwork will be allowed for linking absent a trademark license agreement.
-      </p>
+        <li>
+          <h2>Previous Terms and Conditions</h2>
+          <p>
+            In the event of any conflict between these Terms and Conditions and any prior versions thereof, the
+            provisions of these Terms and Conditions shall prevail unless it is expressly stated otherwise.
+          </p>
+        </li>
 
-      <h3>
-        <strong>iFrames</strong>
-      </h3>
-
-      <p>
-        Without prior approval and written permission, you may not create frames around our Webpages that alter in any
-        way the visual presentation or appearance of our Website.
-      </p>
-
-      <h3>
-        <strong>Content Liability</strong>
-      </h3>
-
-      <p>
-        We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend
-        us against all claims that is rising on your Website. No link(s) should appear on any Website that may be
-        interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the
-        infringement or other violation of, any third party rights.
-      </p>
-
-      <h3>
-        <strong>Your Privacy</strong>
-      </h3>
-
-      <p>Please read Privacy Policy</p>
-
-      <h3>
-        <strong>Reservation of Rights</strong>
-      </h3>
-
-      <p>
-        We reserve the right to request that you remove all links or any particular link to our Website. You approve to
-        immediately remove all links to our Website upon request. We also reserve the right to amen these terms and
-        conditions and it’s linking policy at any time. By continuously linking to our Website, you agree to be bound to
-        and follow these linking terms and conditions.
-      </p>
-
-      <h3>
-        <strong>Removal of links from our website</strong>
-      </h3>
-
-      <p>
-        If you find any link on our Website that is offensive for any reason, you are free to contact and inform us any
-        moment. We will consider requests to remove links but we are not obligated to or so or to respond to you
-        directly.
-      </p>
-
-      <p>
-        We do not ensure that the information on this website is correct, we do not warrant its completeness or
-        accuracy; nor do we promise to ensure that the website remains available or that the material on the website is
-        kept up to date.
-      </p>
-
-      <h3>
-        <strong>Disclaimer</strong>
-      </h3>
-
-      <p>
-        To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions
-        relating to our website and the use of this website. Nothing in this disclaimer will:
-      </p>
-
-      <ul>
-        <li>limit or exclude our or your liability for death or personal injury;</li>
-        <li>limit or exclude our or your liability for fraud or fraudulent misrepresentation;</li>
-        <li>limit any of our or your liabilities in any way that is not permitted under applicable law; or</li>
-        <li>exclude any of our or your liabilities that may not be excluded under applicable law.</li>
-      </ul>
-
-      <p>
-        The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are
-        subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including
-        liabilities arising in contract, in tort and for breach of statutory duty.
-      </p>
-
-      <p>
-        As long as the website and the information and services on the website are provided free of charge, we will not
-        be liable for any loss or damage of any nature.
-      </p>
+        <li>
+          <h2>Law and Jurisdiction</h2>
+          <p>
+            These terms and conditions and the relationship between you and Checkpoint shall be governed by and
+            construed in accordance with the Law of Thailand and Checkpoint and you agree to submit to the exclusive
+            jurisdiction of the Courts of Bangkok.
+          </p>
+        </li>
+      </ol>
     </div>
   );
 }

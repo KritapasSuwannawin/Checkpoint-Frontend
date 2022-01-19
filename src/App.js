@@ -14,7 +14,9 @@ import Avatar from './pages/avatar/Avatar';
 import Policy from './pages/policy/Policy';
 import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy';
 import TermCondition from './pages/termCondition/TermCondition';
-import Disclaimer from './pages/disclaimer/Disclaimer';
+import CookiePolicy from './pages/cookiePolicy/CookiePolicy';
+import Gdpr from './pages/gdpr/Gdpr';
+import CancellationRefundPolicy from './pages/cancellationRefundPolicy/CancellationRefundPolicy';
 
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
 import MobileLanding from './components/mobileLanding/MobileLanding';
@@ -256,8 +258,16 @@ function App() {
         <TermCondition></TermCondition>
       </Route>
 
-      <Route exact path="/disclaimer">
-        <Disclaimer></Disclaimer>
+      <Route exact path="/cookie-policy">
+        <CookiePolicy></CookiePolicy>
+      </Route>
+
+      <Route exact path="/gdpr-singapore-japan-statement">
+        <Gdpr></Gdpr>
+      </Route>
+
+      <Route exact path="/cancellation-refund-policy">
+        <CancellationRefundPolicy></CancellationRefundPolicy>
       </Route>
     </>
   );
