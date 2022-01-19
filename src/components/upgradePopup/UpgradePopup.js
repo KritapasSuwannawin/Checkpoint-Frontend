@@ -81,10 +81,23 @@ function UpgradePopup(props) {
         <div className="upgrade-popup__close-btn" onClick={closeHandler}></div>
         <p className="upgrade-popup__title">Upgrade to premium!</p>
         <p className="upgrade-popup__content">3.99$ / month</p>
+        <p className="upgrade-popup__sub-content">Listen without limits on your computer, phone, and other devices</p>
+        <p className="upgrade-popup__sub-content">Advanced ambience customization</p>
+        <p className="upgrade-popup__sub-content">No advertisement</p>
         <button id="credit-card" className="upgrade-popup__submit-btn" type="button" onClick={handleClick}>
           Upgrade
         </button>
         {errorDuringUpgrading && <p className="upgrade-popup__error-msg">Error occured, please try again later</p>}
+        <p className="upgrade-popup__sub-content-link">
+          By continuing, you agree to our{' '}
+          <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+            Terms & Conditions
+          </a>{' '}
+          and{' '}
+          <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
+            Cancellation & Refund Policy.
+          </a>
+        </p>
       </form>
     </div>
   );

@@ -27,6 +27,18 @@
     font-size: 1.8rem;
   }
 
+  &__sub-content {
+    font-size: 1.4rem;
+  }
+
+  &__sub-content-link {
+    font-size: 1.2rem;
+
+    a {
+      color: white;
+    }
+  }
+
   &__error-msg {
     font-size: 1.2rem;
   }
