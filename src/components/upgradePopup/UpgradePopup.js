@@ -10,10 +10,16 @@ function UpgradePopup(props) {
   const dispatch = useDispatch();
   const memberId = useSelector((store) => store.member.memberId);
   const email = useSelector((store) => store.member.email);
+  const memberType = useSelector((store) => store.member.memberType);
 
   const [errorDuringUpgrading, setErrorDuringUpgrading] = useState(false);
+  const [alreadyPremium, setAlreadyPremium] = useState(false);
 
   function closeHandler() {
+    if (props.premiumPage) {
+      return;
+    }
+
     props.closeHandler();
   }
 
@@ -29,7 +35,7 @@ function UpgradePopup(props) {
       .then((response) => response.json())
       .then((result) => {
         if (result.active) {
-          props.closeHandler();
+          closeHandler();
           dispatch(memberActions.upgradeMember());
         } else {
           setErrorDuringUpgrading(true);
@@ -69,6 +75,11 @@ function UpgradePopup(props) {
   }
 
   function handleClick(e) {
+    if (memberType === 'premium') {
+      setAlreadyPremium(true);
+      return;
+    }
+
     e.preventDefault();
     creditCardConfigure();
     omiseCardHandler();
@@ -78,7 +89,7 @@ function UpgradePopup(props) {
     <div className="upgrade-popup">
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleScriptLoad} />
       <form>
-        <div className="upgrade-popup__close-btn" onClick={closeHandler}></div>
+        {!props.premiumPage && <div className="upgrade-popup__close-btn" onClick={closeHandler}></div>}
         <p className="upgrade-popup__title">Upgrade to premium!</p>
         <p className="upgrade-popup__content">3.99$ / month</p>
         <p className="upgrade-popup__sub-content">Listen without limits on your computer, phone, and other devices</p>
@@ -88,13 +99,18 @@ function UpgradePopup(props) {
           Upgrade
         </button>
         {errorDuringUpgrading && <p className="upgrade-popup__error-msg">Error occured, please try again later</p>}
+        {alreadyPremium && <p className="upgrade-popup__error-msg">You are already a premium member</p>}
         <p className="upgrade-popup__sub-content-link">
           By continuing, you agree to our{' '}
-          <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+          <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
             Terms & Conditions
           </a>{' '}
           and{' '}
-          <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
+          <a
+            href={`${window.location.href.replace('premium', '')}cancellation-refund-policy`}
+            target="_blank"
+            rel="noreferrer"
+          >
             Cancellation & Refund Policy.
           </a>
         </p>

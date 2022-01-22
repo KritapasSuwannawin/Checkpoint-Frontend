@@ -19,6 +19,7 @@ import Gdpr from './pages/gdpr/Gdpr';
 import CancellationRefundPolicy from './pages/cancellationRefundPolicy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
+import Premium from './pages/premium/Premium';
 
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
 import SafariGuide from './components/safariGuide/SafariGuide';
@@ -67,7 +68,7 @@ function App() {
     mobileOrTabletCheck();
 
   useEffect(() => {
-    if (isMobileDevice && !window.location.href.includes('about')) {
+    if (isMobileDevice && !window.location.href.includes('about') && !window.location.href.includes('premium')) {
       window.location.replace(`${window.location.href}about`);
     }
 
@@ -269,6 +270,10 @@ function App() {
 
       <Route exact path="/about">
         <About></About>
+      </Route>
+
+      <Route exact path="/premium">
+        <Premium></Premium>
       </Route>
     </>
   );

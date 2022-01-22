@@ -60,7 +60,7 @@
 
     .landing-links {
       @include flex-row-center;
-      column-gap: 2rem;
+      column-gap: 4rem;
       margin-top: 3rem;
 
       img {

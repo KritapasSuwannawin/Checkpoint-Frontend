@@ -12,7 +12,7 @@ import { avatarActions } from '../../store/avatarSlice';
 function LoginPopup(props) {
   const dispatch = useDispatch();
 
-  const [signingUp, setSigningUp] = useState(true);
+  const [signingUp, setSigningUp] = useState(props.signIn ? false : true);
   const [verificationCode, setVerificationCode] = useState(undefined);
 
   const [invalidEmail, setInvalidEmail] = useState(false);
@@ -220,12 +220,14 @@ function LoginPopup(props) {
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">
-              <p
-                className={`login-popup__title ${!signingUp ? 'not-current' : ''}`}
-                onClick={signUpClickHandler.bind(true)}
-              >
-                Sign up
-              </p>
+              {!props.signIn && (
+                <p
+                  className={`login-popup__title ${!signingUp ? 'not-current' : ''}`}
+                  onClick={signUpClickHandler.bind(true)}
+                >
+                  Sign up
+                </p>
+              )}
               <p
                 className={`login-popup__title ${signingUp ? 'not-current' : ''}`}
                 onClick={signUpClickHandler.bind(false)}
@@ -261,11 +263,19 @@ function LoginPopup(props) {
                   <input type="checkbox" ref={checkboxRef1}></input>
                   <p>
                     By registering, you agree to the{' '}
-                    <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+                    <a
+                      href={`${window.location.href.replace('premium', '')}term-condition`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Terms
                     </a>{' '}
                     and{' '}
-                    <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+                    <a
+                      href={`${window.location.href.replace('premium', '')}term-condition`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Privacy Policy
                     </a>
                     .
