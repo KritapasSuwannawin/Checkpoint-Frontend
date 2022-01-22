@@ -18,8 +18,9 @@ import CookiePolicy from './pages/cookiePolicy/CookiePolicy';
 import Gdpr from './pages/gdpr/Gdpr';
 import CancellationRefundPolicy from './pages/cancellationRefundPolicy/CancellationRefundPolicy';
 
+import About from './pages/about/About';
+
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
-import MobileLanding from './components/mobileLanding/MobileLanding';
 import SafariGuide from './components/safariGuide/SafariGuide';
 
 import { backgroundActions } from './store/backgroundSlice';
@@ -66,8 +67,8 @@ function App() {
     mobileOrTabletCheck();
 
   useEffect(() => {
-    if (isMobileDevice) {
-      return;
+    if (isMobileDevice && !window.location.href.includes('about')) {
+      window.location.replace(`${window.location.href}about`);
     }
 
     if (window.location.protocol === 'http:' && !window.location.href.includes('http://localhost:3000/')) {
@@ -81,7 +82,7 @@ function App() {
         if (doc.data) {
           const allowRead = doc.data().allowRead;
           if (!allowRead) {
-            window.location.replace('https://checkpoint-tokyo.netlify.app/');
+            window.location.replace(`${window.location.href}about`);
           }
         } else {
           window.location.reload();
@@ -225,10 +226,6 @@ function App() {
     }
   }, [memberId, currentAvatar]);
 
-  if (isMobileDevice) {
-    return <MobileLanding></MobileLanding>;
-  }
-
   return (
     <>
       <Route exact path="/">
@@ -268,6 +265,10 @@ function App() {
 
       <Route exact path="/cancellation-refund-policy">
         <CancellationRefundPolicy></CancellationRefundPolicy>
+      </Route>
+
+      <Route exact path="/about">
+        <About></About>
       </Route>
     </>
   );

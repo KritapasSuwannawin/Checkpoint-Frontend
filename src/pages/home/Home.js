@@ -454,7 +454,7 @@ function Home() {
                 <div className="nav__outside-links--icon-container">
                   <img src={png4} alt=""></img>
                 </div>
-                <a href="https://checkpoint-tokyo.netlify.app/about.html" target="_blank" rel="noreferrer">
+                <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
                   {dictionary.aboutUs[languageIndex]}
                 </a>
               </div>
