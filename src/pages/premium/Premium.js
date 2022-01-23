@@ -11,7 +11,7 @@ function Premium(props) {
   const memberId = useSelector((store) => store.member.memberId);
 
   return (
-    <div className="premium">
+    <div className="premium-page">
       <img src={bg} alt=""></img>
       <div className="container">
         <p className="title">Premium</p>

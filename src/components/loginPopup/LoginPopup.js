@@ -183,13 +183,13 @@ function LoginPopup(props) {
 
           if (!errorMessage) {
             const data = result.data[0];
-            dispatch(memberActions.setMember(data));
             dispatch(backgroundActions.changeBackgroundHandler({ id: data.backgroundId }));
             dispatch(musicActions.setInitialMusic(data.musicId));
             dispatch(musicActions.setMusicCategory(data.musicCategory));
             dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
             dispatch(avatarActions.changeAvatarHandler({ id: data.avatarId }));
+            dispatch(memberActions.setMember(data));
             props.closeHandler(false);
           }
         })

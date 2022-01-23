@@ -68,7 +68,13 @@ function App() {
     mobileOrTabletCheck();
 
   useEffect(() => {
-    if (isMobileDevice && !window.location.href.includes('about') && !window.location.href.includes('premium')) {
+    if (
+      isMobileDevice &&
+      !window.location.href.includes('about') &&
+      !window.location.href.includes('premium') &&
+      !window.location.href.includes('term-condition') &&
+      !window.location.href.includes('cancellation-refund-policy')
+    ) {
       window.location.replace(`${window.location.href}about`);
     }
 
