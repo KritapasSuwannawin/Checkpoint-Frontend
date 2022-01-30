@@ -1,9 +1,7 @@
 import { useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import './ReviewPopup.scss';
-
-import { musicActions } from '../../store/musicSlice';
 
 const dictionary = {
   heading: ['Help us improve by giving us feedback!', 'サービス向上のため、ご意見をお聞かせください'],
@@ -26,7 +24,6 @@ const dictionary = {
 };
 
 function ReviewPopup(props) {
-  const dispatch = useDispatch();
   const languageIndex = useSelector((store) => store.language.languageIndex);
   const memberId = useSelector((store) => store.member.memberId);
 
@@ -78,18 +75,10 @@ function ReviewPopup(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {})
-        .catch(() => {});
+      }).catch(() => {});
     }
 
-    document.addEventListener('keyup', (event) => {
-      if (event.code === 'Space') {
-        dispatch(musicActions.toggleMusicPlayPause());
-      }
-    });
-    return <></>;
+    props.closeHandler();
   }
 
   return (

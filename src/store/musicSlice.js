@@ -16,12 +16,12 @@ const musicSlice = createSlice({
   },
   reducers: {
     changeMusicHandler(state, action) {
-      if (state.currentMusic.id !== action.payload.id) {
+      if (state.currentMusic.id !== action.payload) {
         if (state.shuffleMusic) {
           state.shuffledMusicArr = [];
         }
 
-        const newMusic = state.availableMusicArr.find((music) => music.id === action.payload.id);
+        const newMusic = state.availableMusicArr.find((music) => music.id === action.payload);
         state.currentMusic = newMusic;
         state.musicPlaying = true;
       } else {

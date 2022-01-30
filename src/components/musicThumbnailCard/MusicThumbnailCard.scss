@@ -5,13 +5,13 @@
   border-radius: 0.8rem;
   width: calc(13rem + 0.4rem);
   height: 17rem;
-  border: 0.2rem rgba($color: #fff, $alpha: 0.01) solid;
+  border: 0.2rem rgba($color: white, $alpha: 0.01) solid;
   display: flex;
   flex-direction: column;
 
   &:hover {
     cursor: pointer;
-    border: 0.2rem $white solid;
+    border: 0.2rem white solid;
   }
 
   &__premium-overlay {
@@ -54,13 +54,13 @@
   }
 
   &__music-name {
-    color: $white;
+    color: white;
     font-weight: bold;
     margin-bottom: 0.1rem;
   }
 
   &__artist-name {
     font-size: 0.9rem;
-    color: $very-light-grey;
+    color: #ddd;
   }
 }

@@ -1,10 +1,10 @@
 import './About.scss';
 
 import aboutUsLanding from './aboutus-landing.png';
-import fb from './facebook.png';
-import ig from './instagram.png';
-import yt from './youtube.png';
-import tw from './twitter.png';
+import fb from '../../svg/20px/facebook.png';
+import ig from '../../svg/20px/instagram.png';
+import yt from '../../svg/20px/youtube.png';
+import tw from '../../svg/20px/twitter.png';
 
 function About(props) {
   return (

@@ -12,7 +12,7 @@ const memberSlice = createSlice({
       const currentTime = new Date().getTime();
       const registrationTime = new Date(action.payload.registrationDate).getTime();
       const dateDifference = Math.floor((currentTime - registrationTime) / (1000 * 60 * 60 * 24));
-      if (dateDifference < 7) {
+      if (dateDifference < 3) {
         state.memberType = 'premium';
       }
     },

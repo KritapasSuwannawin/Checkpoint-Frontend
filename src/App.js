@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
-
-import { firestore } from './firebase/app';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -12,17 +10,18 @@ import Ambient from './pages/ambient/Ambient';
 import Avatar from './pages/avatar/Avatar';
 
 import Policy from './pages/policy/Policy';
-import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy';
-import TermCondition from './pages/termCondition/TermCondition';
-import CookiePolicy from './pages/cookiePolicy/CookiePolicy';
-import Gdpr from './pages/gdpr/Gdpr';
-import CancellationRefundPolicy from './pages/cancellationRefundPolicy/CancellationRefundPolicy';
+import PrivacyPolicy from './pages/policy/PrivacyPolicy';
+import TermCondition from './pages/policy/TermCondition';
+import CookiePolicy from './pages/policy/CookiePolicy';
+import Gdpr from './pages/policy/Gdpr';
+import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
-import Premium from './pages/premium/Premium';
 
 import ReviewPopup from './components/reviewPopup/ReviewPopup';
 import SafariGuide from './components/safariGuide/SafariGuide';
+
+import { firestore } from './firebase/app';
 
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
@@ -32,13 +31,11 @@ import { languageActions } from './store/languageSlice';
 
 function App() {
   const dispatch = useDispatch();
-  const currentBackground = useSelector((store) => store.background.currentBackground);
-  const currentMusic = useSelector((store) => store.music.currentMusic);
-  const musicCategory = useSelector((store) => store.music.musicCategory);
-  const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
-  const playFromPlaylist = useSelector((store) => store.music.playFromPlaylist);
-  const memberId = useSelector((store) => store.member.memberId);
-  const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
+
+  const { currentBackground } = useSelector((store) => store.background);
+  const { currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist } = useSelector((store) => store.music);
+  const { memberId } = useSelector((store) => store.member);
+  const { currentAvatar } = useSelector((store) => store.avatar);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
@@ -67,14 +64,17 @@ function App() {
     typeof window.orientation !== 'undefined' ||
     mobileOrTabletCheck();
 
+  const spacebarHandler = useCallback(
+    (event) => {
+      if (event.code === 'Space') {
+        dispatch(musicActions.toggleMusicPlayPause());
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
-    if (
-      isMobileDevice &&
-      !window.location.href.includes('about') &&
-      !window.location.href.includes('premium') &&
-      !window.location.href.includes('term-condition') &&
-      !window.location.href.includes('cancellation-refund-policy')
-    ) {
+    if (isMobileDevice && !window.location.href.includes('about')) {
       window.location.replace(`${window.location.href}about`);
     }
 
@@ -107,10 +107,7 @@ function App() {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
       .then((response) => response.json())
       .then((result) => {
-        const ambient = result.data.ambient;
-        const background = result.data.background;
-        const music = result.data.music;
-        const avatar = result.data.avatar;
+        const { ambient, background, music, avatar } = result.data;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -180,12 +177,6 @@ function App() {
         window.location.reload();
       });
 
-    function spacebarHandler(event) {
-      if (event.code === 'Space') {
-        dispatch(musicActions.toggleMusicPlayPause());
-      }
-    }
-
     setTimeout(() => {
       if (!localStorage.getItem('checkpointShowReviewPopup')) {
         document.removeEventListener('keyup', spacebarHandler);
@@ -195,7 +186,7 @@ function App() {
     }, 300000);
 
     document.addEventListener('keyup', spacebarHandler);
-  }, [isMobileDevice, dispatch]);
+  }, [isMobileDevice, spacebarHandler, dispatch]);
 
   useEffect(() => {
     if (memberId && currentBackground && currentMusic) {
@@ -233,12 +224,21 @@ function App() {
     }
   }, [memberId, currentAvatar]);
 
+  function closeReviewPopupHandler() {
+    document.addEventListener('keyup', spacebarHandler);
+    setShowReviewPopup(false);
+  }
+
+  function closeSafariGuideHandler() {
+    setShowSafariGuide(false);
+  }
+
   return (
     <>
       <Route exact path="/">
         <Loading></Loading>
-        {showReviewPopup && <ReviewPopup></ReviewPopup>}
-        {showSafariGuide && <SafariGuide></SafariGuide>}
+        {showReviewPopup && <ReviewPopup closeHandler={closeReviewPopupHandler}></ReviewPopup>}
+        {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
         {doneInitialize && (
           <>
             <Home></Home>
@@ -276,10 +276,6 @@ function App() {
 
       <Route exact path="/about">
         <About></About>
-      </Route>
-
-      <Route exact path="/premium">
-        <Premium></Premium>
       </Route>
     </>
   );

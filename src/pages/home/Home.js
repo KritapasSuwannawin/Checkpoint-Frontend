@@ -44,13 +44,10 @@ import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
 
-// import png1 from './1.png';
-// import png2 from './2.png';
-// import png3 from './3.png';
-import png4 from './4.png';
-import png5 from './5.png';
-import png6 from './6.png';
-import png7 from './7.png';
+import png4 from '../../svg/20px/4.png';
+import png5 from '../../svg/20px/5.png';
+import png6 from '../../svg/20px/6.png';
+import png7 from '../../svg/20px/7.png';
 
 const dictionary = {
   language: ['EN', 'JP'],
@@ -134,7 +131,7 @@ function Home() {
 
   useEffect(() => {
     if (memberType !== 'premium' && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
-      dispatch(backgroundActions.changeBackgroundHandler({ id: '0411' }));
+      dispatch(backgroundActions.changeBackgroundHandler('0411'));
       dispatch(avatarActions.changeAvatarHandler({ id: 1 }));
       return;
     }
@@ -430,24 +427,6 @@ function Home() {
                       <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
                     </div>
                   </div>
-                  {/* <div className="nav__outside-links--container border-top">
-                    <div className="nav__outside-links--icon-container">
-                      <img className="nav__outside-links--small-icon" src={png1} alt=""></img>
-                    </div>
-                    <p>Subscription</p>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png2} alt=""></img>
-                    </div>
-                    <p>Help & Support</p>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png3} alt=""></img>
-                    </div>
-                    <p>Feedback</p>
-                  </div> */}
                 </>
               )}
               <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>

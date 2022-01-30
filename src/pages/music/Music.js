@@ -23,7 +23,7 @@ function Music() {
 
   const musicClickHandler = useCallback(
     (id) => {
-      dispatch(musicActions.changeMusicHandler({ id }));
+      dispatch(musicActions.changeMusicHandler(id));
       dispatch(musicActions.setMusicCategory(category));
       dispatch(musicActions.setPlayFromPlaylist(false));
     },

@@ -183,7 +183,7 @@ function LoginPopup(props) {
 
           if (!errorMessage) {
             const data = result.data[0];
-            dispatch(backgroundActions.changeBackgroundHandler({ id: data.backgroundId }));
+            dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
             dispatch(musicActions.setInitialMusic(data.musicId));
             dispatch(musicActions.setMusicCategory(data.musicCategory));
             dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));

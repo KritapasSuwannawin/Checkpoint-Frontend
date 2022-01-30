@@ -9,10 +9,10 @@ const ambientSlice = createSlice({
   },
   reducers: {
     ambientToggleHandler(state, action) {
-      if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id) >= 0) {
-        state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload.id);
+      if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload) >= 0) {
+        state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload);
       } else {
-        const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
+        const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload);
         state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
       }
     },

@@ -1,4 +1,4 @@
-import '../privacyPolicy/PrivacyPolicy.scss';
+import './PrivacyPolicy.scss';
 
 function CancellationRefundPolicy(props) {
   return (
@@ -15,7 +15,7 @@ function CancellationRefundPolicy(props) {
       <h2>Contact</h2>
       <p>
         Questions, comments and requests regarding this Cancellation & Refund Policy are welcome and should be addressed
-        to at inquiry@checkpoint.tokyo.{' '}
+        to at inquiry@checkpoint.tokyo.
       </p>
     </div>
   );

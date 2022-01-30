@@ -1,4 +1,4 @@
-import '../privacyPolicy/PrivacyPolicy.scss';
+import './PrivacyPolicy.scss';
 
 function TermCondition(props) {
   return (

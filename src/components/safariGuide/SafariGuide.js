@@ -10,7 +10,7 @@ function SafariGuide(props) {
   const loading = useSelector((store) => store.page.loading);
 
   if (!showGuide || loading) {
-    return <></>;
+    props.closeHandler();
   }
 
   function submitHandler() {

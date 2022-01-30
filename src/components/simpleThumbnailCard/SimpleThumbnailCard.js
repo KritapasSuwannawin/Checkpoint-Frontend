@@ -56,17 +56,9 @@ function SimpleThumbnailCard(props) {
 
   function clickHandler() {
     if (props.background) {
-      dispatch(
-        backgroundActions.changeBackgroundHandler({
-          id: props.id,
-        })
-      );
+      dispatch(backgroundActions.changeBackgroundHandler(props.id));
     } else if (props.ambient) {
-      dispatch(
-        ambientActions.ambientToggleHandler({
-          id: props.id,
-        })
-      );
+      dispatch(ambientActions.ambientToggleHandler(props.id));
     } else if (props.avatar) {
       dispatch(
         avatarActions.changeAvatarHandler({

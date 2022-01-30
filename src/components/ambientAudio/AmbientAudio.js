@@ -28,7 +28,7 @@ function AmbientAudio(props) {
     if (playPromise) {
       playPromise.catch((e) => {
         if (e.name === 'NotAllowedError') {
-          dispatch(ambientActions.ambientToggleHandler({ id: props.id }));
+          dispatch(ambientActions.ambientToggleHandler(props.id));
         }
       });
     }

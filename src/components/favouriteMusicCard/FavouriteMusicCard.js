@@ -23,7 +23,7 @@ function FavouriteMusicCard(props) {
     if (musicPlaying && currentMusic.id === props.id) {
       dispatch(musicActions.setMusicPlaying(false));
     } else {
-      dispatch(musicActions.changeMusicHandler({ id: props.id }));
+      dispatch(musicActions.changeMusicHandler(props.id));
       dispatch(musicActions.setPlayFromPlaylist(true));
     }
   }

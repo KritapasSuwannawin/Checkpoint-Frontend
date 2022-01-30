@@ -1,4 +1,4 @@
-import '../privacyPolicy/PrivacyPolicy.scss';
+import './PrivacyPolicy.scss';
 
 function Gdpr(props) {
   return (
@@ -97,7 +97,7 @@ function Gdpr(props) {
       <p>
         We process and store your personal data only for the period of time required to fulfil the purpose of storage or
         if this has been provided for, in laws or regulations. After the purpose has ceased to exist or has been
-        fulfilled, your personal data will be deleted or blocked.{' '}
+        fulfilled, your personal data will be deleted or blocked.
       </p>
       <p>
         In the case of blocking, deletion will take place as soon as legal, statutory or contractual retention periods
@@ -127,7 +127,7 @@ function Gdpr(props) {
       <p>
         The legal basis for this data processing is Contract, as the collection and storage of this data is necessary
         for the operation of the website in order to ensure the functionality of the website and to deliver the content
-        of our website correctly.{' '}
+        of our website correctly.
       </p>
       <p>
         In addition, the data serve us to optimise our website and to ensure the security of our IT systems and the
@@ -229,7 +229,7 @@ function Gdpr(props) {
       <p>
         In contrast to order processing, in the following cases we transmit data to third parties for their own use in
         order to process the contract. In the case of payment for goods to the payment service provider specified when
-        the order was placed.{' '}
+        the order was placed.
       </p>
       <p>
         We do not collect or store any payment transaction information such as credit card numbers or bank details
