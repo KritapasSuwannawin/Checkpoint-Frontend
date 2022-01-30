@@ -132,7 +132,6 @@ function Home() {
   useEffect(() => {
     if (memberType !== 'premium' && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
       dispatch(backgroundActions.changeBackgroundHandler('0411'));
-      dispatch(avatarActions.changeAvatarHandler({ id: 1 }));
       return;
     }
 
@@ -357,6 +356,7 @@ function Home() {
     dispatch(memberActions.logout());
     dispatch(pageActions.closePageHandler());
     dispatch(musicActions.setMusicPlaying(false));
+    dispatch(avatarActions.changeAvatarHandler(1));
     setShowOutsideLink(false);
   }
 

@@ -60,11 +60,7 @@ function SimpleThumbnailCard(props) {
     } else if (props.ambient) {
       dispatch(ambientActions.ambientToggleHandler(props.id));
     } else if (props.avatar) {
-      dispatch(
-        avatarActions.changeAvatarHandler({
-          id: props.id,
-        })
-      );
+      dispatch(avatarActions.changeAvatarHandler(props.id));
     }
   }
 

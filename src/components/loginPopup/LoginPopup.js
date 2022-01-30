@@ -17,6 +17,7 @@ function LoginPopup(props) {
 
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [errorDuringAuthen, setErrorDuringAuthen] = useState(false);
@@ -37,11 +38,11 @@ function LoginPopup(props) {
   const checkboxRef2 = useRef();
   const verificationCodeRef = useRef();
 
-  // function closeHandler() {
-  //   props.closeHandler(false);
-  // }
-
   function signUpSubmitHandler() {
+    if (loading || !emailRef.current || !passwordRef1.current || !passwordRef2.current || !checkboxRef1.current) {
+      return;
+    }
+
     const email = emailRef.current.value;
     const password = passwordRef1.current.value;
     const confirmPassword = passwordRef2.current.value;
@@ -76,6 +77,7 @@ function LoginPopup(props) {
     }
 
     if (!invalidEmail && !invalidPassword && !passwordNotMatch && agreeToPolicy) {
+      setLoading(true);
       const data = { email, loginMethod: 'email' };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/verification`, {
@@ -87,6 +89,7 @@ function LoginPopup(props) {
       })
         .then((response) => response.json())
         .then((result) => {
+          setLoading(false);
           const errorMessage = result.message;
 
           setErrorDuringAuthen(errorMessage === 'error during authentication');
@@ -108,10 +111,15 @@ function LoginPopup(props) {
   }
 
   function verifyHandler() {
+    if (loading || !verificationCodeRef.current) {
+      return;
+    }
+
     if (
       verificationCodeRef.current.value ===
       crypto.AES.decrypt(verificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(crypto.enc.Utf8)
     ) {
+      setLoading(true);
       setInvalidCode(false);
 
       const data = { email, password, loginMethod: 'email', receiveNews };
@@ -125,14 +133,15 @@ function LoginPopup(props) {
       })
         .then((response) => response.json())
         .then((result) => {
+          setLoading(false);
           const errorMessage = result.message;
 
           setErrorDuringAuthen(errorMessage === 'error during authentication');
           setAccountAlreadyExist(errorMessage === 'account already exist');
 
           if (!errorMessage) {
-            const data = result.data[0];
-            dispatch(memberActions.setMember(data));
+            dispatch(memberActions.setMember(result.data[0]));
+            document.removeEventListener('keyup', enterHandler);
             props.closeHandler(true);
           }
         })
@@ -145,6 +154,10 @@ function LoginPopup(props) {
   }
 
   function signInSubmitHandler() {
+    if (loading || !emailRef.current || !passwordRef1.current) {
+      return;
+    }
+
     const email = emailRef.current.value;
     const password = passwordRef1.current.value;
 
@@ -164,6 +177,7 @@ function LoginPopup(props) {
     }
 
     if (!invalidEmail && !invalidPassword) {
+      setLoading(true);
       const data = { email, password, loginMethod: 'email' };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
@@ -175,6 +189,7 @@ function LoginPopup(props) {
       })
         .then((response) => response.json())
         .then((result) => {
+          setLoading(false);
           const errorMessage = result.message;
 
           setErrorDuringAuthen(errorMessage === 'error during authentication');
@@ -188,8 +203,9 @@ function LoginPopup(props) {
             dispatch(musicActions.setMusicCategory(data.musicCategory));
             dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
-            dispatch(avatarActions.changeAvatarHandler({ id: data.avatarId }));
+            dispatch(avatarActions.changeAvatarHandler(data.avatarId));
             dispatch(memberActions.setMember(data));
+            document.removeEventListener('keyup', enterHandler);
             props.closeHandler(false);
           }
         })
@@ -213,10 +229,23 @@ function LoginPopup(props) {
     setAgreeToPolicy(undefined);
   }
 
+  function enterHandler(event) {
+    if (event.key === 'Enter') {
+      if (verificationCode) {
+        verifyHandler();
+      } else if (!signingUp) {
+        signInSubmitHandler();
+      } else if (signingUp) {
+        signUpSubmitHandler();
+      }
+    }
+  }
+
+  document.addEventListener('keyup', enterHandler);
+
   return (
     <div className="login-popup">
       <form>
-        {/* <div className="login-popup__close-btn" onClick={closeHandler}></div> */}
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">
