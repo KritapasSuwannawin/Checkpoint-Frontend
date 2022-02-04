@@ -7,7 +7,7 @@
   padding-bottom: 7rem;
   z-index: 1;
 
-  form {
+  &__form {
     @include flex-column-center;
     background-color: rgba(17, 17, 17, 0.5);
     backdrop-filter: blur(5rem);
@@ -36,6 +36,12 @@
     &:hover {
       cursor: pointer;
     }
+  }
+
+  &__sub-title {
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin-top: 1rem;
   }
 
   &__input {
@@ -107,5 +113,21 @@
     &:hover {
       cursor: pointer;
     }
+  }
+
+  &__forget-password {
+    color: white;
+    text-decoration: underline;
+    margin-top: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__spinner {
+    width: 1.8rem;
+    margin-bottom: -0.2rem;
+    animation: rotation 1.8s infinite linear;
   }
 }

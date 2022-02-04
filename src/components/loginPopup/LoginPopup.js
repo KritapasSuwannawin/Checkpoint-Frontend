@@ -9,15 +9,21 @@ import { backgroundActions } from '../../store/backgroundSlice';
 import { musicActions } from '../../store/musicSlice';
 import { avatarActions } from '../../store/avatarSlice';
 
+import spinner from '../../svg/20px/spinner-solid.svg';
+
 function LoginPopup(props) {
   const dispatch = useDispatch();
 
   const [signingUp, setSigningUp] = useState(props.signIn ? false : true);
   const [verificationCode, setVerificationCode] = useState(undefined);
+  const [resetPasswordVerificationCode, setResetPasswordVerificationCode] = useState(undefined);
 
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [forgetPassword, setForgetPassword] = useState(false);
+  const [invalidResetPasswordVerificationCode, setInvalidResetPasswordVerificationCode] = useState(false);
+  const [allowEnterNewPassword, setAllowEnterNewPassword] = useState(false);
 
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [errorDuringAuthen, setErrorDuringAuthen] = useState(false);
@@ -26,6 +32,8 @@ function LoginPopup(props) {
   const [accountAlreadyExist, setAccountAlreadyExist] = useState(false);
   const [agreeToPolicy, setAgreeToPolicy] = useState(undefined);
   const [invalidCode, setInvalidCode] = useState(false);
+  const [newPasswordNotMatch, setNewPasswordNotMatch] = useState(false);
+  const [invalidNewPassword, setInvalidNewPassword] = useState(false);
 
   const [email, setEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
@@ -37,6 +45,10 @@ function LoginPopup(props) {
   const checkboxRef1 = useRef();
   const checkboxRef2 = useRef();
   const verificationCodeRef = useRef();
+  const resetPasswordEmailRef = useRef();
+  const resetPasswordVerificationCodeRef = useRef();
+  const newPasswordRef = useRef();
+  const confirmNewPasswordRef = useRef();
 
   function signUpSubmitHandler() {
     if (loading || !emailRef.current || !passwordRef1.current || !passwordRef2.current || !checkboxRef1.current) {
@@ -78,6 +90,8 @@ function LoginPopup(props) {
 
     if (!invalidEmail && !invalidPassword && !passwordNotMatch && agreeToPolicy) {
       setLoading(true);
+      setErrorDuringAuthen(false);
+
       const data = { email, loginMethod: 'email' };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/verification`, {
@@ -105,6 +119,7 @@ function LoginPopup(props) {
           }
         })
         .catch(() => {
+          setLoading(false);
           setErrorDuringAuthen(true);
         });
     }
@@ -121,6 +136,7 @@ function LoginPopup(props) {
     ) {
       setLoading(true);
       setInvalidCode(false);
+      setErrorDuringAuthen(false);
 
       const data = { email, password, loginMethod: 'email', receiveNews };
 
@@ -146,6 +162,7 @@ function LoginPopup(props) {
           }
         })
         .catch(() => {
+          setLoading(false);
           setErrorDuringAuthen(true);
         });
     } else {
@@ -178,6 +195,8 @@ function LoginPopup(props) {
 
     if (!invalidEmail && !invalidPassword) {
       setLoading(true);
+      setErrorDuringAuthen(false);
+
       const data = { email, password, loginMethod: 'email' };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
@@ -210,6 +229,7 @@ function LoginPopup(props) {
           }
         })
         .catch(() => {
+          setLoading(false);
           setErrorDuringAuthen(true);
         });
     }
@@ -220,6 +240,7 @@ function LoginPopup(props) {
 
     setInvalidEmail(false);
     setInvalidPassword(false);
+    setForgetPassword(false);
 
     setPasswordNotMatch(false);
     setErrorDuringAuthen(false);
@@ -230,7 +251,7 @@ function LoginPopup(props) {
   }
 
   function enterHandler(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !forgetPassword) {
       if (verificationCode) {
         verifyHandler();
       } else if (!signingUp) {
@@ -241,11 +262,204 @@ function LoginPopup(props) {
     }
   }
 
+  function forgetPasswordHandler() {
+    setForgetPassword(true);
+    setInvalidEmail(false);
+    setInvalidPassword(false);
+  }
+
+  function forgetPasswordEmailSendHandler() {
+    if (loading) {
+      return;
+    }
+
+    const email = resetPasswordEmailRef.current.value;
+
+    if (email.includes('@')) {
+      setEmail(email);
+      setInvalidEmail(false);
+      setLoading(true);
+      setErrorDuringAuthen(false);
+
+      const data = { email };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/forget-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setLoading(false);
+          const errorMessage = result.message;
+
+          setErrorDuringAuthen(errorMessage === 'error during authentication');
+          setAccountNotExist(errorMessage === 'account not exist');
+
+          if (!errorMessage) {
+            resetPasswordEmailRef.current.value = '';
+            setResetPasswordVerificationCode(result.verificationCode);
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+          setErrorDuringAuthen(true);
+        });
+    } else {
+      setInvalidEmail(true);
+    }
+  }
+
+  function forgetPasswordCheckCodeHandler() {
+    if (
+      resetPasswordVerificationCodeRef.current.value ===
+      crypto.AES.decrypt(resetPasswordVerificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(
+        crypto.enc.Utf8
+      )
+    ) {
+      setInvalidResetPasswordVerificationCode(false);
+      setAllowEnterNewPassword(true);
+    } else {
+      setInvalidResetPasswordVerificationCode(true);
+    }
+  }
+
+  function resetPasswordHandler() {
+    if (loading) {
+      return;
+    }
+
+    const newPassword = newPasswordRef.current.value;
+    const confirmNewPassword = confirmNewPasswordRef.current.value;
+
+    if (newPassword !== confirmNewPassword) {
+      setNewPasswordNotMatch(true);
+      return;
+    } else {
+      setNewPasswordNotMatch(false);
+    }
+
+    if (newPassword.length < 6) {
+      setInvalidNewPassword(true);
+      return;
+    } else {
+      setInvalidNewPassword(false);
+    }
+
+    setLoading(true);
+    setErrorDuringAuthen(false);
+
+    const data = { email, newPassword };
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setLoading(false);
+        const errorMessage = result.message;
+
+        setErrorDuringAuthen(errorMessage === 'error during authentication');
+
+        if (!errorMessage) {
+          setForgetPassword(false);
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        setErrorDuringAuthen(true);
+      });
+  }
+
   document.addEventListener('keyup', enterHandler);
+
+  if (forgetPassword) {
+    return (
+      <div className="login-popup">
+        <div className="login-popup__form">
+          <div className="login-popup__title-container">
+            {!props.signIn && (
+              <p
+                className={`login-popup__title ${!signingUp ? 'not-current' : ''}`}
+                onClick={signUpClickHandler.bind(true)}
+              >
+                Sign up
+              </p>
+            )}
+            <p
+              className={`login-popup__title ${signingUp ? 'not-current' : ''}`}
+              onClick={signUpClickHandler.bind(false)}
+            >
+              Sign in
+            </p>
+          </div>
+          <p className={`login-popup__sub-title`}>Reset Password</p>
+          {!resetPasswordVerificationCode ? (
+            <input
+              className="login-popup__input"
+              type="text"
+              id="email"
+              ref={resetPasswordEmailRef}
+              placeholder="Email"
+            ></input>
+          ) : !allowEnterNewPassword ? (
+            <input
+              className="login-popup__input"
+              type="text"
+              ref={resetPasswordVerificationCodeRef}
+              placeholder="Verification code (check your email)"
+            ></input>
+          ) : (
+            <>
+              <input
+                className="login-popup__input"
+                type="password"
+                ref={newPasswordRef}
+                placeholder="New Password"
+              ></input>
+              <input
+                className="login-popup__input"
+                type="password"
+                ref={confirmNewPasswordRef}
+                placeholder="Confirm new password"
+              ></input>
+            </>
+          )}
+          {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
+          {newPasswordNotMatch && <p className="login-popup__error-msg">Passwords do not match</p>}
+          {invalidNewPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
+          <p className="login-popup__error-msg">
+            If you need any help, please contact <br></br> inquiry@checkpoint.tokyo
+          </p>
+          {!resetPasswordVerificationCode ? (
+            <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Send'}
+            </div>
+          ) : (
+            <div
+              className="login-popup__submit-btn no-margin"
+              onClick={allowEnterNewPassword ? resetPasswordHandler : forgetPasswordCheckCodeHandler}
+            >
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Submit'}
+            </div>
+          )}
+          {invalidResetPasswordVerificationCode && <p className="login-popup__error-msg">Invalid verification code</p>}
+          {accountNotExist && <p className="login-popup__error-msg">Account does not exist, please sign up</p>}
+          {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="login-popup">
-      <form>
+      <div className="login-popup__form">
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">
@@ -317,8 +531,23 @@ function LoginPopup(props) {
               </>
             )}
             <div className="login-popup__submit-btn" onClick={signingUp ? signUpSubmitHandler : signInSubmitHandler}>
-              {signingUp ? 'Sign up' : 'Sign in'}
+              {signingUp ? (
+                loading ? (
+                  <img className="login-popup__spinner" src={spinner} alt=""></img>
+                ) : (
+                  'Sign up'
+                )
+              ) : loading ? (
+                <img className="login-popup__spinner" src={spinner} alt=""></img>
+              ) : (
+                'Sign in'
+              )}
             </div>
+            {!signingUp && (
+              <div className="login-popup__forget-password" onClick={forgetPasswordHandler}>
+                Forgot your password?
+              </div>
+            )}
             {signingUp && agreeToPolicy === false && (
               <p className="login-popup__error-msg">Please agree to the policy</p>
             )}
@@ -336,12 +565,12 @@ function LoginPopup(props) {
             {accountAlreadyExist && <p className="login-popup__error-msg">Account already exists, please sign in</p>}
             {invalidCode && <p className="login-popup__error-msg">Invalid verification code</p>}
             <div className="login-popup__submit-btn no-margin" onClick={verifyHandler}>
-              Verify
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Verify'}
             </div>
             {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>
         )}
-      </form>
+      </div>
     </div>
   );
 }
