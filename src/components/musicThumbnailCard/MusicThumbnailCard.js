@@ -23,10 +23,6 @@ function MusicThumbnailCard(props) {
   }, [props.thumbnailUrl]);
 
   function clickHandler() {
-    if (props.isPremium && memberType !== 'premium') {
-      return;
-    }
-
     if (this) {
       dispatch(musicActions.favouriteBtnClickHandler(props.id));
       return;
@@ -52,9 +48,6 @@ function MusicThumbnailCard(props) {
 
   return (
     <div className="music-thumbnail-card">
-      {props.isPremium && memberType !== 'premium' && (
-        <div title="For premium member" className="music-thumbnail-card__premium-overlay"></div>
-      )}
       {memberType && (
         <img
           src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}

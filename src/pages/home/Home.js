@@ -151,13 +151,8 @@ function Home() {
   }, [currentAmbientArr]);
 
   useEffect(() => {
-    if (currentMusic.isPremium && memberType !== 'premium' && musicPlaying) {
-      dispatch(musicActions.nextMusicHandler(memberType));
-      return;
-    }
-
     setMusicThumbnailUrl(currentMusic.thumbnailUrl);
-  }, [currentMusic, dispatch, memberType, musicPlaying]);
+  }, [currentMusic]);
 
   useEffect(() => {
     const currentAmbientIdArr = currentBackground.ambientIdArr;
@@ -262,11 +257,11 @@ function Home() {
   }
 
   function backMusicHandler() {
-    dispatch(musicActions.backMusicHandler(memberType));
+    dispatch(musicActions.backMusicHandler());
   }
 
   function nextMusicHandler() {
-    dispatch(musicActions.nextMusicHandler(memberType));
+    dispatch(musicActions.nextMusicHandler());
   }
 
   function backgroundClickHander() {

@@ -38,10 +38,7 @@ const musicSlice = createSlice({
       state.musicVolume = action.payload;
     },
     backMusicHandler(state, action) {
-      let availableMusicArr =
-        action.payload === 'premium'
-          ? [...state.availableMusicArr]
-          : state.availableMusicArr.filter((music) => !music.isPremium);
+      let availableMusicArr = [...state.availableMusicArr];
 
       if (state.musicCategory) {
         availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
@@ -82,10 +79,7 @@ const musicSlice = createSlice({
       state.musicPlaying = true;
     },
     nextMusicHandler(state, action) {
-      let availableMusicArr =
-        action.payload === 'premium'
-          ? [...state.availableMusicArr]
-          : state.availableMusicArr.filter((music) => !music.isPremium);
+      let availableMusicArr = [...state.availableMusicArr];
 
       if (state.musicCategory) {
         availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);

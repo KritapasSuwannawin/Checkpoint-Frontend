@@ -9,7 +9,6 @@ function MusicAudio(props) {
   const musicVolume = useSelector((store) => store.music.musicVolume);
   const loopMusic = useSelector((store) => store.music.loopMusic);
   const currentMusic = useSelector((store) => store.music.currentMusic);
-  const memberType = useSelector((store) => store.member.memberType);
 
   const musicRef = useRef();
 
@@ -49,7 +48,7 @@ function MusicAudio(props) {
   }, [musicVolume]);
 
   function audioEndedHandler() {
-    dispatch(musicActions.nextMusicHandler(memberType));
+    dispatch(musicActions.nextMusicHandler());
   }
 
   function canPlayThroughHandler() {
@@ -61,7 +60,7 @@ function MusicAudio(props) {
   function errorHandler() {
     setTimeout(() => {
       console.log('Error occured during loading', currentMusic.musicName);
-      dispatch(musicActions.nextMusicHandler(memberType));
+      dispatch(musicActions.nextMusicHandler());
     }, 100);
   }
 

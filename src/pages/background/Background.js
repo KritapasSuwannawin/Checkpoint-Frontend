@@ -28,6 +28,7 @@ function Background() {
               id={background.id}
               url={background.url}
               thumbnailUrl={background.thumbnailUrl}
+              isPremium={background.isPremium}
               background
             ></SimpleThumbnailCard>
           </div>,
