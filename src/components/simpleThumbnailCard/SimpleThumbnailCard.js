@@ -31,7 +31,7 @@ function SimpleThumbnailCard(props) {
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const languageIndex = useSelector((store) => store.language.languageIndex);
-  const memberType = useSelector((store) => store.member.memberType);
+  const isPremium = useSelector((store) => store.member.isPremium);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
 
@@ -56,7 +56,7 @@ function SimpleThumbnailCard(props) {
     (props.avatar ? 'avatar-placeholder' : '');
 
   function clickHandler() {
-    if (props.isPremium && memberType !== 'premium') {
+    if (props.isPremium && !isPremium) {
       return;
     }
 
@@ -77,7 +77,7 @@ function SimpleThumbnailCard(props) {
 
   return (
     <div className={className}>
-      {props.background && props.isPremium && memberType !== 'premium' && (
+      {props.background && props.isPremium && !isPremium && (
         <div title="For premium member" className="simple-thumbnail-card__premium-overlay"></div>
       )}
       <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>

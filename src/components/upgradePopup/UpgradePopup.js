@@ -10,7 +10,7 @@ function UpgradePopup(props) {
   const dispatch = useDispatch();
   const memberId = useSelector((store) => store.member.memberId);
   const email = useSelector((store) => store.member.email);
-  const memberType = useSelector((store) => store.member.memberType);
+  const isPremium = useSelector((store) => store.member.isPremium);
 
   const [errorDuringUpgrading, setErrorDuringUpgrading] = useState(false);
   const [alreadyPremium, setAlreadyPremium] = useState(false);
@@ -75,7 +75,7 @@ function UpgradePopup(props) {
   }
 
   function handleClick(e) {
-    if (memberType === 'premium') {
+    if (isPremium) {
       setAlreadyPremium(true);
       return;
     }

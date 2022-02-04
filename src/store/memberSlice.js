@@ -2,27 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const memberSlice = createSlice({
   name: 'member',
-  initialState: { memberId: undefined, username: undefined, memberType: undefined },
+  initialState: { memberId: undefined, username: undefined, isPremium: undefined },
   reducers: {
     setMember(state, action) {
       state.memberId = action.payload.id;
       state.username = action.payload.username;
-      state.memberType = action.payload.memberType;
-
-      const currentTime = new Date().getTime();
-      const registrationTime = new Date(action.payload.registrationDate).getTime();
-      const dateDifference = Math.floor((currentTime - registrationTime) / (1000 * 60 * 60 * 24));
-      if (dateDifference < 3) {
-        state.memberType = 'premium';
-      }
+      state.isPremium = action.payload.isPremium;
     },
     upgradeMember(state, action) {
-      state.memberType = 'premium';
+      state.isPremium = true;
     },
     logout(state, action) {
       state.memberId = undefined;
       state.username = undefined;
-      state.memberType = undefined;
+      state.isPremium = undefined;
     },
   },
 });

@@ -74,7 +74,7 @@ function Home() {
   const languageIndex = useSelector((store) => store.language.languageIndex);
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
-  const memberType = useSelector((store) => store.member.memberType);
+  const isPremium = useSelector((store) => store.member.isPremium);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
 
   const musicVolumeSliderRef = useRef();
@@ -130,13 +130,13 @@ function Home() {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (memberType !== 'premium' && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
+    if (!isPremium && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
       dispatch(backgroundActions.changeBackgroundHandler('0411'));
       return;
     }
 
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
-  }, [currentBackground, dispatch, memberType]);
+  }, [currentBackground, dispatch, isPremium]);
 
   useEffect(() => {
     setAmbientAudioArr(
@@ -283,7 +283,7 @@ function Home() {
   }
 
   function openAmbientPageHander() {
-    if (memberType !== 'premium') {
+    if (!isPremium) {
       return;
     }
 
@@ -320,9 +320,9 @@ function Home() {
   }
 
   function navBtnClickHandler() {
-    if (!memberType) {
+    if (isPremium === undefined) {
       setShowLoginPopup(true);
-    } else if (memberType === 'free') {
+    } else if (!isPremium) {
       setShowUpgradePopup(true);
     }
   }
@@ -376,9 +376,9 @@ function Home() {
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
           <img src={logo50} alt="" className="nav__logo--img"></img>
-          {memberType !== 'premium' && (
+          {!isPremium && (
             <div className="nav__logo--btn" onClick={navBtnClickHandler}>
-              {!memberType ? 'Join us' : 'Upgrade'}
+              {isPremium === undefined ? 'Join us' : 'Upgrade'}
             </div>
           )}
         </div>
@@ -487,16 +487,16 @@ function Home() {
           </div>
           {ambientThumbnailArr}
           <div
-            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
+            title={`${!isPremium ? 'For premium member' : ''}`}
             onClick={openAmbientPageHander}
-            className={`background-control__add-ambient ${memberType !== 'premium' ? 'premium' : ''}`}
+            className={`background-control__add-ambient ${!isPremium ? 'premium' : ''}`}
           >
             <img src={addSvg20} alt=""></img>
           </div>
         </div>
       </div>
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
-        {!memberType ? (
+        {isPremium === undefined ? (
           <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
             Join us to have your own music playlist
           </p>
@@ -535,10 +535,10 @@ function Home() {
           <img
             src={nightSvg36}
             alt=""
-            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
-            onClick={memberType === 'premium' ? changeBackgroundTimeHandler.bind(3) : () => {}}
+            title={`${!isPremium ? 'For premium member' : ''}`}
+            onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : () => {}}
             className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
-              memberType !== 'premium' ? 'premium' : ''
+              !isPremium ? 'premium' : ''
             }`}
           ></img>
         </div>
@@ -558,19 +558,19 @@ function Home() {
           <img
             src={thunderSvg36}
             alt=""
-            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
-            onClick={memberType === 'premium' ? changeBackgroundWeatherHandler.bind(3) : () => {}}
+            title={`${!isPremium ? 'For premium member' : ''}`}
+            onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : () => {}}
             className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
-              memberType !== 'premium' ? 'premium' : ''
+              !isPremium ? 'premium' : ''
             }`}
           ></img>
           <img
             src={snowySvg36}
             alt=""
-            title={`${memberType !== 'premium' ? 'For premium member' : ''}`}
-            onClick={memberType === 'premium' ? changeBackgroundWeatherHandler.bind(4) : () => {}}
+            title={`${!isPremium ? 'For premium member' : ''}`}
+            onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : () => {}}
             className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''} ${
-              memberType !== 'premium' ? 'premium' : ''
+              !isPremium ? 'premium' : ''
             }`}
           ></img>
         </div>

@@ -14,7 +14,7 @@ function MusicThumbnailCard(props) {
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
-  const memberType = useSelector((store) => store.member.memberType);
+  const isPremium = useSelector((store) => store.member.isPremium);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
 
@@ -48,7 +48,7 @@ function MusicThumbnailCard(props) {
 
   return (
     <div className="music-thumbnail-card">
-      {memberType && (
+      {isPremium !== undefined && (
         <img
           src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}
           onClick={clickHandler.bind('fav')}
