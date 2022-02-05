@@ -9,6 +9,7 @@ import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMus
 import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
 import CheckpointModal from '../../components/checkpointModal/CheckpoinntModal';
+import ActivationPopup from '../../components/activationPopup/ActivationPopup';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -19,6 +20,7 @@ import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
 
+import buyMeCoffee from '../../svg/50px/bmc-button.png';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
@@ -93,6 +95,7 @@ function Home() {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
   const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
+  const [showActivationPopup, setShowActivationPopup] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -355,10 +358,19 @@ function Home() {
     setShowOutsideLink(false);
   }
 
+  function activationBtnClickHandler() {
+    setShowActivationPopup(true);
+  }
+
+  function closeActivationPopup() {
+    setShowActivationPopup(false);
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
+      {showActivationPopup && <ActivationPopup closeHandler={closeActivationPopup}></ActivationPopup>}
       {showFreeTrialModal && (
         <CheckpointModal
           title="Your 7-day free trial has started"
@@ -376,11 +388,19 @@ function Home() {
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
           <img src={logo50} alt="" className="nav__logo--img"></img>
-          {!isPremium && (
-            <div className="nav__logo--btn" onClick={navBtnClickHandler}>
-              {isPremium === undefined ? 'Join us' : 'Upgrade'}
-            </div>
-          )}
+          {!isPremium &&
+            (isPremium === undefined ? (
+              <div className="nav__logo--join-btn" onClick={navBtnClickHandler}>
+                Join us
+              </div>
+            ) : (
+              <>
+                <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyMeCoffee} alt=""></img>
+                <div className="nav__logo--activate-btn" onClick={activationBtnClickHandler}>
+                  Activate Premium Code Here
+                </div>
+              </>
+            ))}
         </div>
         <div className="nav__links">
           <div
@@ -444,7 +464,7 @@ function Home() {
                 <div className="nav__outside-links--icon-container">
                   <img src={png6} alt=""></img>
                 </div>
-                <a href="https://ko-fi.com/checkpointtokyo" target="_blank" rel="noreferrer">
+                <a href={process.env.REACT_APP_DONATE_LINK} target="_blank" rel="noreferrer">
                   {dictionary.donate[languageIndex]}
                 </a>
               </div>
