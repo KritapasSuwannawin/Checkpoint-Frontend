@@ -373,7 +373,7 @@ function Home() {
       {showActivationPopup && <ActivationPopup closeHandler={closeActivationPopup}></ActivationPopup>}
       {showFreeTrialModal && (
         <CheckpointModal
-          title="Your 7-day free trial has started"
+          title="Your 3-day free trial has started"
           btn="Okay"
           closeHandler={closeFreeTrialModal}
         ></CheckpointModal>

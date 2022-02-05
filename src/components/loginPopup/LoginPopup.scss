@@ -51,6 +51,10 @@
     padding: 0.7rem 1rem;
     color: white;
     border-radius: 0.8rem;
+
+    &.margin-top {
+      margin-top: 1rem;
+    }
   }
 
   &__error-msg {

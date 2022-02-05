@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { GoogleLogin } from 'react-google-login';
 import crypto from 'crypto-js';
 
 import './LoginPopup.scss';
@@ -91,6 +92,7 @@ function LoginPopup(props) {
     if (!invalidEmail && !invalidPassword && !passwordNotMatch && agreeToPolicy) {
       setLoading(true);
       setErrorDuringAuthen(false);
+      setAccountAlreadyExist(false);
 
       const data = { email, loginMethod: 'email' };
 
@@ -137,6 +139,7 @@ function LoginPopup(props) {
       setLoading(true);
       setInvalidCode(false);
       setErrorDuringAuthen(false);
+      setAccountAlreadyExist(false);
 
       const data = { email, password, loginMethod: 'email', receiveNews };
 
@@ -196,6 +199,8 @@ function LoginPopup(props) {
     if (!invalidEmail && !invalidPassword) {
       setLoading(true);
       setErrorDuringAuthen(false);
+      setIncorrectPassword(false);
+      setAccountNotExist(false);
 
       const data = { email, password, loginMethod: 'email' };
 
@@ -280,6 +285,7 @@ function LoginPopup(props) {
       setInvalidEmail(false);
       setLoading(true);
       setErrorDuringAuthen(false);
+      setAccountNotExist(false);
 
       const data = { email };
 
@@ -375,6 +381,96 @@ function LoginPopup(props) {
         setLoading(false);
         setErrorDuringAuthen(true);
       });
+  }
+
+  function onGoogleSuccess(res) {
+    const { email, googleId } = res.profileObj;
+
+    if (signingUp) {
+      if (!checkboxRef1.current.checked) {
+        setAgreeToPolicy(false);
+        return;
+      } else {
+        setAgreeToPolicy(true);
+      }
+
+      setLoading(true);
+      setErrorDuringAuthen(false);
+      setAccountAlreadyExist(false);
+
+      const data = { email, password: googleId, loginMethod: 'google', receiveNews: checkboxRef2.current.checked };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setLoading(false);
+          const errorMessage = result.message;
+
+          setErrorDuringAuthen(errorMessage === 'error during authentication');
+          setAccountAlreadyExist(errorMessage === 'account already exist');
+
+          if (!errorMessage) {
+            dispatch(memberActions.setMember(result.data[0]));
+            document.removeEventListener('keyup', enterHandler);
+            props.closeHandler(true);
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+          setErrorDuringAuthen(true);
+        });
+    } else {
+      setLoading(true);
+      setErrorDuringAuthen(false);
+      setIncorrectPassword(false);
+      setAccountNotExist(false);
+
+      const data = { email, password: googleId, loginMethod: 'google' };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setLoading(false);
+          const errorMessage = result.message;
+
+          setErrorDuringAuthen(errorMessage === 'error during authentication');
+          setIncorrectPassword(errorMessage === 'incorrect password');
+          setAccountNotExist(errorMessage === 'account not exist');
+
+          if (!errorMessage) {
+            const data = result.data[0];
+            dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
+            dispatch(musicActions.setInitialMusic(data.musicId));
+            dispatch(musicActions.setMusicCategory(data.musicCategory));
+            dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
+            dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
+            dispatch(avatarActions.changeAvatarHandler(data.avatarId));
+            dispatch(memberActions.setMember(data));
+            document.removeEventListener('keyup', enterHandler);
+            props.closeHandler(false);
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+          setErrorDuringAuthen(true);
+        });
+    }
+  }
+
+  function onGoogleFailure() {
+    setErrorDuringAuthen(true);
   }
 
   document.addEventListener('keyup', enterHandler);
@@ -478,7 +574,20 @@ function LoginPopup(props) {
                 Sign in
               </p>
             </div>
-            <input className="login-popup__input" type="text" placeholder="Email" id="email" ref={emailRef}></input>
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              buttonText={signingUp ? 'Sign up' : 'Sign in'}
+              onSuccess={onGoogleSuccess}
+              onFailure={onGoogleFailure}
+              cookiePolicy={'single_host_origin'}
+            ></GoogleLogin>
+            <input
+              className="login-popup__input margin-top"
+              type="text"
+              placeholder="Email"
+              id="email"
+              ref={emailRef}
+            ></input>
             {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
             <input className="login-popup__input" type="password" placeholder="Password" ref={passwordRef1}></input>
             {invalidPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
