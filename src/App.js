@@ -28,6 +28,8 @@ import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
 import { avatarActions } from './store/avatarSlice';
 import { languageActions } from './store/languageSlice';
+import { memberActions } from './store/memberSlice';
+import { pageActions } from './store/pageSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +38,7 @@ function App() {
   const { currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist } = useSelector((store) => store.music);
   const { memberId } = useSelector((store) => store.member);
   const { currentAvatar } = useSelector((store) => store.avatar);
+  const { deviceId, startTime } = useSelector((store) => store.device);
 
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
@@ -197,6 +200,8 @@ function App() {
         memberId,
         favouriteMusicIdArr,
         playFromPlaylist,
+        deviceId,
+        onlineDuration: Date.now() - startTime,
       };
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/setting`, {
         method: 'POST',
@@ -204,9 +209,30 @@ function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          const errorMessage = result.message;
+          if (errorMessage === 'new device has logged in') {
+            dispatch(memberActions.logout());
+            dispatch(pageActions.closePageHandler());
+            dispatch(musicActions.setMusicPlaying(false));
+            dispatch(avatarActions.changeAvatarHandler(1));
+          }
+        })
+        .catch(() => {});
     }
-  }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist]);
+  }, [
+    memberId,
+    currentBackground,
+    currentMusic,
+    musicCategory,
+    favouriteMusicIdArr,
+    playFromPlaylist,
+    deviceId,
+    startTime,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (memberId && currentAvatar) {

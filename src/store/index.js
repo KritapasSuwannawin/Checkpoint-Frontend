@@ -7,6 +7,7 @@ import ambientReducer from './ambientSlice';
 import languageReducer from './languageSlice';
 import memberReducer from './memberSlice';
 import avatarReducer from './avatarSlice';
+import deviceReducer from './deviceSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     language: languageReducer,
     member: memberReducer,
     avatar: avatarReducer,
+    device: deviceReducer,
   },
 });
 

@@ -9,6 +9,7 @@ import { memberActions } from '../../store/memberSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { musicActions } from '../../store/musicSlice';
 import { avatarActions } from '../../store/avatarSlice';
+import { deviceActions } from '../../store/deviceSlice';
 
 import spinner from '../../svg/20px/spinner-solid.svg';
 
@@ -159,6 +160,7 @@ function LoginPopup(props) {
           setAccountAlreadyExist(errorMessage === 'account already exist');
 
           if (!errorMessage) {
+            dispatch(deviceActions.setNewDevice());
             dispatch(memberActions.setMember(result.data[0]));
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(true);
@@ -222,6 +224,7 @@ function LoginPopup(props) {
 
           if (!errorMessage) {
             const data = result.data[0];
+            dispatch(deviceActions.setNewDevice());
             dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
             dispatch(musicActions.setInitialMusic(data.musicId));
             dispatch(musicActions.setMusicCategory(data.musicCategory));
@@ -416,6 +419,7 @@ function LoginPopup(props) {
           setAccountAlreadyExist(errorMessage === 'account already exist');
 
           if (!errorMessage) {
+            dispatch(deviceActions.setNewDevice());
             dispatch(memberActions.setMember(result.data[0]));
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(true);
@@ -451,6 +455,7 @@ function LoginPopup(props) {
 
           if (!errorMessage) {
             const data = result.data[0];
+            dispatch(deviceActions.setNewDevice());
             dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
             dispatch(musicActions.setInitialMusic(data.musicId));
             dispatch(musicActions.setMusicCategory(data.musicCategory));
