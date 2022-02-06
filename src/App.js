@@ -18,7 +18,10 @@ import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
 
-import ReviewPopup from './components/reviewPopup/ReviewPopup';
+import FiveMinuteFeedback from './components/feedback/FiveMinuteFeedback';
+import TrialLastDayFeedback from './components/feedback/TrialLastDayFeedback';
+import AfterTrialPremiumFeedback from './components/feedback/AfterTrialPremiumFeedback';
+import AfterTrialStandardFeedback from './components/feedback/AfterTrialStandardFeedback';
 import SafariGuide from './components/safariGuide/SafariGuide';
 
 import { firestore } from './firebase/app';
@@ -36,11 +39,14 @@ function App() {
 
   const { currentBackground } = useSelector((store) => store.background);
   const { currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist } = useSelector((store) => store.music);
-  const { memberId } = useSelector((store) => store.member);
+  const { memberId, dayOfTrial, isPremium, isOntrial } = useSelector((store) => store.member);
   const { currentAvatar } = useSelector((store) => store.avatar);
   const { deviceId, startTime } = useSelector((store) => store.device);
 
-  const [showReviewPopup, setShowReviewPopup] = useState(false);
+  const [showFiveMinuteFeedback, setShowFiveMinuteFeedback] = useState(false);
+  const [showAfterTrialStandardFeedback, setShowAfterTrialStandardFeedback] = useState(false);
+  const [showTrialLastDayFeedback, setShowTrialLastDayFeedback] = useState(false);
+  const [showAfterTrialPremiumFeedback, setShowAfterTrialPremiumFeedback] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
   const [doneInitialize, setDoneInitialize] = useState(false);
 
@@ -180,16 +186,98 @@ function App() {
         window.location.reload();
       });
 
-    setTimeout(() => {
-      if (!localStorage.getItem('checkpointShowReviewPopup')) {
-        document.removeEventListener('keyup', spacebarHandler);
-        setShowReviewPopup(true);
-        localStorage.setItem('checkpointShowReviewPopup', 'done');
+    document.addEventListener('keyup', spacebarHandler);
+  }, [isMobileDevice, spacebarHandler, dispatch]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (memberId) {
+        const data = { memberId, tableName: 'feedback_five_minute' };
+
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.message !== 'done') {
+              document.removeEventListener('keyup', spacebarHandler);
+              setShowFiveMinuteFeedback(true);
+            }
+          });
       }
     }, 300000);
 
-    document.addEventListener('keyup', spacebarHandler);
-  }, [isMobileDevice, spacebarHandler, dispatch]);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [memberId, spacebarHandler]);
+
+  useEffect(() => {
+    if (memberId && dayOfTrial === 3) {
+      const data = { memberId, tableName: 'feedback_trial_last_day' };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.message !== 'done') {
+            document.removeEventListener('keyup', spacebarHandler);
+            setShowTrialLastDayFeedback(true);
+          }
+        });
+    }
+  }, [memberId, dayOfTrial, spacebarHandler]);
+
+  useEffect(() => {
+    if (memberId && !isPremium) {
+      const data = { memberId, tableName: 'feedback_after_trial_standard' };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.message !== 'done') {
+            document.removeEventListener('keyup', spacebarHandler);
+            setShowAfterTrialStandardFeedback(true);
+          }
+        });
+    }
+  }, [memberId, isPremium, spacebarHandler]);
+
+  useEffect(() => {
+    if (memberId && isPremium && !isOntrial) {
+      const data = { memberId, tableName: 'feedback_after_trial_premium' };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.message !== 'done') {
+            document.removeEventListener('keyup', spacebarHandler);
+            setShowAfterTrialPremiumFeedback(true);
+          }
+        });
+    }
+  }, [memberId, isPremium, isOntrial, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && currentBackground && currentMusic) {
@@ -250,9 +338,24 @@ function App() {
     }
   }, [memberId, currentAvatar]);
 
-  function closeReviewPopupHandler() {
+  function closeFiveMinuteFeedbackHandler() {
     document.addEventListener('keyup', spacebarHandler);
-    setShowReviewPopup(false);
+    setShowFiveMinuteFeedback(false);
+  }
+
+  function closeTrialLastDayFeedbackHandler() {
+    document.addEventListener('keyup', spacebarHandler);
+    setShowTrialLastDayFeedback(false);
+  }
+
+  function closeAfterTrialPremiumFeedbackHandler() {
+    document.addEventListener('keyup', spacebarHandler);
+    setShowAfterTrialPremiumFeedback(false);
+  }
+
+  function closeAfterTrialStandardFeedbackHandler() {
+    document.addEventListener('keyup', spacebarHandler);
+    setShowAfterTrialStandardFeedback(false);
   }
 
   function closeSafariGuideHandler() {
@@ -263,7 +366,20 @@ function App() {
     <>
       <Route exact path="/">
         <Loading></Loading>
-        {showReviewPopup && <ReviewPopup closeHandler={closeReviewPopupHandler}></ReviewPopup>}
+        {showFiveMinuteFeedback && (
+          <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>
+        )}
+        {showAfterTrialStandardFeedback && (
+          <AfterTrialStandardFeedback
+            closeHandler={closeAfterTrialStandardFeedbackHandler}
+          ></AfterTrialStandardFeedback>
+        )}
+        {showTrialLastDayFeedback && (
+          <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>
+        )}
+        {showAfterTrialPremiumFeedback && (
+          <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
+        )}
         {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
         {doneInitialize && (
           <>

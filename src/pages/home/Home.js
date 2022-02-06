@@ -77,6 +77,7 @@ function Home() {
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
   const isPremium = useSelector((store) => store.member.isPremium);
+  const isOntrial = useSelector((store) => store.member.isOntrial);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
 
   const musicVolumeSliderRef = useRef();
@@ -133,9 +134,8 @@ function Home() {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (!isPremium && (currentBackground.id[2] >= 3 || currentBackground.id[3] >= 3)) {
-      dispatch(backgroundActions.changeBackgroundHandler('0411'));
-      return;
+    if (isPremium === false && currentBackground.isPremium) {
+      dispatch(backgroundActions.changeBackgroundHandler('0111'));
     }
 
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
@@ -325,7 +325,7 @@ function Home() {
   function navBtnClickHandler() {
     if (isPremium === undefined) {
       setShowLoginPopup(true);
-    } else if (!isPremium) {
+    } else if (!isPremium || isOntrial) {
       setShowUpgradePopup(true);
     }
   }
@@ -388,19 +388,20 @@ function Home() {
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
           <img src={logo50} alt="" className="nav__logo--img"></img>
-          {!isPremium &&
-            (isPremium === undefined ? (
-              <div className="nav__logo--join-btn" onClick={navBtnClickHandler}>
-                Join us
-              </div>
-            ) : (
+          {isPremium === undefined ? (
+            <div className="nav__logo--join-btn" onClick={navBtnClickHandler}>
+              Join us
+            </div>
+          ) : (
+            (isPremium === false || isOntrial) && (
               <>
                 <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyMeCoffee} alt=""></img>
                 <div className="nav__logo--activate-btn" onClick={activationBtnClickHandler}>
                   Activate Premium Code Here
                 </div>
               </>
-            ))}
+            )
+          )}
         </div>
         <div className="nav__links">
           <div
