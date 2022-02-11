@@ -370,6 +370,10 @@ function Home(props) {
   }
 
   function logoutHandler() {
+    localStorage.removeItem('CheckpointEmail');
+    localStorage.removeItem('CheckpointPassword');
+    localStorage.removeItem('CheckpointLoginMethod');
+
     dispatch(memberActions.logout());
     dispatch(pageActions.closePageHandler());
     dispatch(musicActions.setMusicPlaying(false));

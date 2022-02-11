@@ -86,7 +86,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (isMobileDevice && !window.location.href.includes('about')) {
+    if (isMobileDevice && window.location.pathname === '/') {
       window.location.replace(`${window.location.href}about`);
     }
 

@@ -52,6 +52,72 @@ function LoginPopup(props) {
   const newPasswordRef = useRef();
   const confirmNewPasswordRef = useRef();
 
+  if (
+    localStorage.getItem('CheckpointEmail') &&
+    localStorage.getItem('CheckpointPassword') &&
+    localStorage.getItem('CheckpointLoginMethod')
+  ) {
+    const data = {
+      email: localStorage.getItem('CheckpointEmail'),
+      password: localStorage.getItem('CheckpointPassword'),
+      loginMethod: localStorage.getItem('CheckpointLoginMethod'),
+    };
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        const errorMessage = result.message;
+
+        setErrorDuringAuthen(errorMessage === 'error during authentication');
+        setIncorrectPassword(errorMessage === 'incorrect password');
+        setAccountNotExist(errorMessage === 'account not exist');
+
+        if (!errorMessage) {
+          const data = result.data[0];
+          dispatch(deviceActions.setNewDevice());
+          dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
+          dispatch(musicActions.setInitialMusic(data.musicId));
+          dispatch(musicActions.setMusicCategory(data.musicCategory));
+          dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
+          dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
+          dispatch(avatarActions.changeAvatarHandler(data.avatarId));
+          dispatch(memberActions.setMember(data));
+          setLocalStorage({
+            email: localStorage.getItem('CheckpointEmail'),
+            password: localStorage.getItem('CheckpointPassword'),
+            loginMethod: localStorage.getItem('CheckpointLoginMethod'),
+          });
+          document.removeEventListener('keyup', enterHandler);
+          props.closeHandler(false);
+        } else {
+          clearLocalStorage();
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        setErrorDuringAuthen(true);
+      });
+  }
+
+  function setLocalStorage(data) {
+    const { email, password, loginMethod } = data;
+    localStorage.setItem('CheckpointEmail', email);
+    localStorage.setItem('CheckpointPassword', password);
+    localStorage.setItem('CheckpointLoginMethod', loginMethod);
+  }
+
+  function clearLocalStorage() {
+    localStorage.removeItem('CheckpointEmail');
+    localStorage.removeItem('CheckpointPassword');
+    localStorage.removeItem('CheckpointLoginMethod');
+  }
+
   function signUpSubmitHandler() {
     if (loading || !emailRef.current || !passwordRef1.current || !passwordRef2.current || !checkboxRef1.current) {
       return;
@@ -162,6 +228,7 @@ function LoginPopup(props) {
           if (!errorMessage) {
             dispatch(deviceActions.setNewDevice());
             dispatch(memberActions.setMember(result.data[0]));
+            setLocalStorage(data);
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(true);
           }
@@ -232,8 +299,11 @@ function LoginPopup(props) {
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
             dispatch(avatarActions.changeAvatarHandler(data.avatarId));
             dispatch(memberActions.setMember(data));
+            setLocalStorage({ email, password, loginMethod: 'email' });
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(false);
+          } else {
+            clearLocalStorage();
           }
         })
         .catch(() => {
@@ -377,6 +447,7 @@ function LoginPopup(props) {
         setErrorDuringAuthen(errorMessage === 'error during authentication');
 
         if (!errorMessage) {
+          clearLocalStorage();
           setForgetPassword(false);
         }
       })
@@ -421,6 +492,7 @@ function LoginPopup(props) {
           if (!errorMessage) {
             dispatch(deviceActions.setNewDevice());
             dispatch(memberActions.setMember(result.data[0]));
+            setLocalStorage(data);
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(true);
           }
@@ -463,8 +535,11 @@ function LoginPopup(props) {
             dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
             dispatch(avatarActions.changeAvatarHandler(data.avatarId));
             dispatch(memberActions.setMember(data));
+            setLocalStorage({ email, password: googleId, loginMethod: 'google' });
             document.removeEventListener('keyup', enterHandler);
             props.closeHandler(false);
+          } else {
+            clearLocalStorage();
           }
         })
         .catch(() => {
