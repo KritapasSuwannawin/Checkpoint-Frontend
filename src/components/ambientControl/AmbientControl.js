@@ -24,7 +24,6 @@ function AmbientControl(props) {
         thumbnailUrl={props.thumbnailUrl}
         volume={props.volume}
         ambient
-        long
       ></SimpleThumbnailCard>
       <img src={speakerSvg15} alt=""></img>
       <input

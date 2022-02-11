@@ -535,8 +535,9 @@ function LoginPopup(props) {
           {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
           {newPasswordNotMatch && <p className="login-popup__error-msg">Passwords do not match</p>}
           {invalidNewPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
-          <p className="login-popup__error-msg">
-            If you need any help, please contact <br></br> inquiry@checkpoint.tokyo
+          <p className="login-popup__contact">
+            If you need any help, please contact <br></br>
+            <span>inquiry@checkpoint.tokyo</span>
           </p>
           {!resetPasswordVerificationCode ? (
             <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
@@ -579,20 +580,17 @@ function LoginPopup(props) {
                 Sign in
               </p>
             </div>
-            <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-              buttonText={signingUp ? 'Sign up' : 'Sign in'}
-              onSuccess={onGoogleSuccess}
-              onFailure={onGoogleFailure}
-              cookiePolicy={'single_host_origin'}
-            ></GoogleLogin>
-            <input
-              className="login-popup__input margin-top"
-              type="text"
-              placeholder="Email"
-              id="email"
-              ref={emailRef}
-            ></input>
+            <div className="login-popup__google">
+              <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                buttonText={signingUp ? 'Sign up' : 'Sign in'}
+                onSuccess={onGoogleSuccess}
+                onFailure={onGoogleFailure}
+                cookiePolicy={'single_host_origin'}
+              ></GoogleLogin>
+            </div>
+            <div className="login-popup__seperator"></div>
+            <input className="login-popup__input" type="text" placeholder="Email" id="email" ref={emailRef}></input>
             {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
             <input className="login-popup__input" type="password" placeholder="Password" ref={passwordRef1}></input>
             {invalidPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
@@ -625,8 +623,8 @@ function LoginPopup(props) {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Terms
-                    </a>{' '}
+                      Terms<br></br>
+                    </a>
                     and{' '}
                     <a
                       href={`${window.location.href.replace('premium', '')}term-condition`}
@@ -638,9 +636,14 @@ function LoginPopup(props) {
                     .
                   </p>
                 </div>
+                {signingUp && agreeToPolicy === false && (
+                  <p className="login-popup__error-msg">Please agree to the policy</p>
+                )}
                 <div className="login-popup__privacy-container">
                   <input type="checkbox" ref={checkboxRef2}></input>
-                  <p>I agree to receive news and updates from Checkpoint.</p>
+                  <p>
+                    I agree to receive news and updates<br></br>from Checkpoint.
+                  </p>
                 </div>
               </>
             )}
@@ -661,9 +664,6 @@ function LoginPopup(props) {
               <div className="login-popup__forget-password" onClick={forgetPasswordHandler}>
                 Forgot your password?
               </div>
-            )}
-            {signingUp && agreeToPolicy === false && (
-              <p className="login-popup__error-msg">Please agree to the policy</p>
             )}
             {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>

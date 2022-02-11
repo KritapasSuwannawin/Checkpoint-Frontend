@@ -1,0 +1,95 @@
+@import '../../scss/main.scss';
+
+.help-support-popup {
+  @include fixed-whole-screen;
+  @include flex-row-center;
+  height: calc(100vh - 17.2rem);
+  padding-top: 8.6rem;
+  z-index: 2;
+
+  &__form {
+    @include flex-column-center;
+    background-color: rgba(17, 17, 17, 0.5);
+    backdrop-filter: blur(5rem);
+    row-gap: 1rem;
+    padding: 3.5rem 4rem;
+    border-radius: 0.8rem;
+    max-height: 100%;
+    overflow-y: auto;
+    color: white;
+    position: relative;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &--close-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background-color: rgba(196, 196, 196, 0.7);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &--logo {
+      height: 2.1rem;
+    }
+
+    &--heading {
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    &--sub-heading {
+      align-self: flex-start;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+
+    &--submit-btn {
+      align-self: center;
+      padding: 0.7rem 2.5rem;
+      background: white;
+      border-radius: 2rem;
+      color: #111111;
+      font-weight: 500;
+      font-size: 1.8rem;
+      margin-top: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    input[type='text'],
+    textarea {
+      width: calc(100% - 3.6rem);
+      min-width: 30rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      padding: 0.5rem;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      border-radius: 0.5rem;
+    }
+
+    textarea {
+      min-height: 10rem;
+    }
+
+    &--ps {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}

@@ -8,8 +8,11 @@ import AmbientControl from '../../components/ambientControl/AmbientControl';
 import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMusicCard';
 import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
-import CheckpointModal from '../../components/checkpointModal/CheckpoinntModal';
+import FreeTrialPopup from '../../components/freeTrialPopup/FreeTrialPopup';
 import ActivationPopup from '../../components/activationPopup/ActivationPopup';
+import HelpSupportPopup from '../../components/helpSupportPopup/HelpSupportPopup';
+import FeedbackPopup from '../../components/feedbackPopup/FeedbackPopup';
+import SubscriptionPopup from '../../components/subscriptionPopup/SubscriptionPopup';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -20,8 +23,9 @@ import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
 
-import buyMeCoffee from '../../svg/50px/bmc-button.png';
+import buyPremiumBtn from '../../svg/50px/buy-premium-button.png';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
+import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
 import daySvg36 from '../../svg/36px/Sun.svg';
@@ -31,21 +35,25 @@ import cloudySvg36 from '../../svg/36px/Partly Cloudy Day.svg';
 import rainySvg36 from '../../svg/36px/Moderate Rain.svg';
 import thunderSvg36 from '../../svg/36px/Storm.svg';
 import snowySvg36 from '../../svg/36px/Winter.svg';
+import musicLibrarySvg36 from '../../svg/36px/Music Library.svg';
 import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
 import musicSvg30 from '../../svg/30px/Music30px.svg';
 import globe30 from '../../svg/30px/Globe30px.png';
+import heartFullSvg30 from '../../svg/30px/Heart.svg';
+import heartSvg30 from '../../svg/30px/Hearts.svg';
+import ambientSvg30 from '../../svg/30px/Organic Food.svg';
+import iTunesSvg30 from '../../svg/30px/iTunes-1.svg';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
-import ambientSvg25 from '../../svg/25px/Organic Food.svg';
-import musicSvg25 from '../../svg/25px/iTunes-1.svg';
-import musicLibrarySvg25 from '../../svg/25px/MusicLibrary25px.svg';
-import heartFullSvg25 from '../../svg/25px/Heart.svg';
-import heartSvg25 from '../../svg/25px/Hearts.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
+import lockSvg15 from '../../svg/15px/Lock.svg';
 
+import png1 from '../../svg/20px/1.svg';
+import png2 from '../../svg/20px/2.svg';
+import png3 from '../../svg/20px/3.svg';
 import png4 from '../../svg/20px/4.png';
 import png5 from '../../svg/20px/5.png';
 import png6 from '../../svg/20px/6.png';
@@ -60,7 +68,7 @@ const dictionary = {
   donate: ['Donate', '寄付する'],
 };
 
-function Home() {
+function Home(props) {
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const currentBackground = useSelector((store) => store.background.currentBackground);
@@ -97,8 +105,15 @@ function Home() {
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
   const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
+  const [showHelpSupportPopup, setShowHelpSupportPopup] = useState(false);
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
 
   const backgroundFilePathRef = useRef();
+
+  useEffect(() => {
+    setShowUpgradePopup(props.showUpgradePopup);
+  }, [props.showUpgradePopup]);
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
@@ -323,10 +338,14 @@ function Home() {
   }
 
   function navBtnClickHandler() {
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+
     if (isPremium === undefined) {
       setShowLoginPopup(true);
-    } else if (!isPremium || isOntrial) {
+    } else {
       setShowUpgradePopup(true);
+      setShowSubscriptionPopup(false);
     }
   }
 
@@ -342,7 +361,7 @@ function Home() {
     setShowUpgradePopup(false);
   }
 
-  function closeFreeTrialModal() {
+  function closeFreeTrialPopup() {
     setShowFreeTrialModal(false);
   }
 
@@ -359,6 +378,9 @@ function Home() {
   }
 
   function activationBtnClickHandler() {
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+    setShowSubscriptionPopup(false);
     setShowActivationPopup(true);
   }
 
@@ -366,17 +388,56 @@ function Home() {
     setShowActivationPopup(false);
   }
 
+  function openHelpSupportHandler() {
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+    setShowActivationPopup(false);
+    setShowHelpSupportPopup(true);
+  }
+
+  function closeHelpSupportHandler() {
+    setShowHelpSupportPopup(false);
+  }
+
+  function openFeedbackHandler() {
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+    setShowFeedbackPopup(true);
+  }
+
+  function closeFeedbackHandler() {
+    setShowFeedbackPopup(false);
+  }
+
+  function openSubscriptionHandler() {
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+    setShowSubscriptionPopup(true);
+  }
+
+  function closeSubscriptionHandler() {
+    setShowSubscriptionPopup(false);
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
-      {showActivationPopup && <ActivationPopup closeHandler={closeActivationPopup}></ActivationPopup>}
-      {showFreeTrialModal && (
-        <CheckpointModal
-          title="Your 3-day free trial has started"
-          btn="Okay"
-          closeHandler={closeFreeTrialModal}
-        ></CheckpointModal>
+      {showActivationPopup && (
+        <ActivationPopup
+          closeHandler={closeActivationPopup}
+          helpSupportClickHandler={openHelpSupportHandler}
+        ></ActivationPopup>
+      )}
+      {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
+      {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
+      {showFeedbackPopup && <FeedbackPopup closeHandler={closeFeedbackHandler}></FeedbackPopup>}
+      {showSubscriptionPopup && (
+        <SubscriptionPopup
+          closeHandler={closeSubscriptionHandler}
+          activateHandler={activationBtnClickHandler}
+          upgradeHandler={navBtnClickHandler}
+        ></SubscriptionPopup>
       )}
       <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
@@ -387,17 +448,17 @@ function Home() {
       {ambientAudioArr}
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
-          <img src={logo50} alt="" className="nav__logo--img"></img>
+          <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
           {isPremium === undefined ? (
-            <div className="nav__logo--join-btn" onClick={navBtnClickHandler}>
+            <div className="nav__logo--text-btn" onClick={navBtnClickHandler}>
               Join us
             </div>
           ) : (
             (isPremium === false || isOntrial) && (
               <>
-                <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyMeCoffee} alt=""></img>
-                <div className="nav__logo--activate-btn" onClick={activationBtnClickHandler}>
-                  Activate Premium Code Here
+                <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyPremiumBtn} alt=""></img>
+                <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                  Activate Premium
                 </div>
               </>
             )
@@ -442,6 +503,35 @@ function Home() {
                       <p className="nav__outside-links--username">{username}</p>
                       <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
                     </div>
+                  </div>
+                  <div className="nav__outside-links--btn-container">
+                    <img
+                      className="nav__logo--upgrade-btn"
+                      onClick={navBtnClickHandler}
+                      src={buyPremiumBtn}
+                      alt=""
+                    ></img>
+                    <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                      {isPremium && !isOntrial ? 'Extend' : 'Activate'} Premium
+                    </div>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png1} alt="" className="small"></img>
+                    </div>
+                    <p onClick={openSubscriptionHandler}>Subscription</p>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png2} alt=""></img>
+                    </div>
+                    <p onClick={openHelpSupportHandler}>Help & Support</p>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png3} alt=""></img>
+                    </div>
+                    <p onClick={openFeedbackHandler}>Feedback</p>
                   </div>
                 </>
               )}
@@ -512,7 +602,7 @@ function Home() {
             onClick={openAmbientPageHander}
             className={`background-control__add-ambient ${!isPremium ? 'premium' : ''}`}
           >
-            <img src={addSvg20} alt=""></img>
+            <img src={isPremium ? addSvg20 : lockSvg15} alt="" className={!isPremium ? 'small' : ''}></img>
           </div>
         </div>
       </div>
@@ -524,7 +614,7 @@ function Home() {
         ) : (
           <>
             <div className="music-control__title">
-              <img src={heartFullSvg25} alt=""></img>
+              <img src={heartFullSvg30} alt=""></img>
               <p>Favorite music</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
@@ -553,15 +643,18 @@ function Home() {
             onClick={changeBackgroundTimeHandler.bind(2)}
             className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
           ></img>
-          <img
-            src={nightSvg36}
-            alt=""
-            title={`${!isPremium ? 'For premium member' : ''}`}
-            onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : () => {}}
-            className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
-              !isPremium ? 'premium' : ''
-            }`}
-          ></img>
+          <div className="mood__section--premium">
+            <img
+              src={nightSvg36}
+              alt=""
+              title={`${!isPremium ? 'For premium member' : ''}`}
+              onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : () => {}}
+              className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+            {!isPremium && (
+              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+            )}
+          </div>
         </div>
         <div className="mood__section">
           <img
@@ -576,30 +669,36 @@ function Home() {
             onClick={changeBackgroundWeatherHandler.bind(2)}
             className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
           ></img>
-          <img
-            src={thunderSvg36}
-            alt=""
-            title={`${!isPremium ? 'For premium member' : ''}`}
-            onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : () => {}}
-            className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''} ${
-              !isPremium ? 'premium' : ''
-            }`}
-          ></img>
-          <img
-            src={snowySvg36}
-            alt=""
-            title={`${!isPremium ? 'For premium member' : ''}`}
-            onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : () => {}}
-            className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''} ${
-              !isPremium ? 'premium' : ''
-            }`}
-          ></img>
+          <div className="mood__section--premium">
+            <img
+              src={thunderSvg36}
+              alt=""
+              title={`${!isPremium ? 'For premium member' : ''}`}
+              onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : () => {}}
+              className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+            {!isPremium && (
+              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+            )}
+          </div>
+          <div className="mood__section--premium">
+            <img
+              src={snowySvg36}
+              alt=""
+              title={`${!isPremium ? 'For premium member' : ''}`}
+              onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : () => {}}
+              className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+            {!isPremium && (
+              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+            )}
+          </div>
         </div>
       </div>
       <div className="player">
         <div className="player__music-data">
           <img
-            src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg25 : heartSvg25}
+            src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg30 : heartSvg30}
             alt=""
             className="player__music-data--favourite-btn"
             onClick={favouriteBtnClickHandler}
@@ -633,11 +732,11 @@ function Home() {
           ></img>
         </div>
         <div className="player__volume-control">
-          <img src={musicLibrarySvg25} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
+          <img src={musicLibrarySvg36} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
           <div className="player__volume-control--volume">
             <div className="player__volume-control--section">
               <img
-                src={musicSvg25}
+                src={iTunesSvg30}
                 onClick={toggleMuteMusicHandler}
                 className="player__volume-control--mute"
                 alt=""
@@ -654,7 +753,7 @@ function Home() {
             </div>
             <div className="player__volume-control--section">
               <img
-                src={ambientSvg25}
+                src={ambientSvg30}
                 onClick={toggleMuteAmbientHandler}
                 className="player__volume-control--mute"
                 alt=""

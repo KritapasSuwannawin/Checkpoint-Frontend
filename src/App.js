@@ -18,11 +18,12 @@ import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
 
-import FiveMinuteFeedback from './components/feedback/FiveMinuteFeedback';
-import TrialLastDayFeedback from './components/feedback/TrialLastDayFeedback';
-import AfterTrialPremiumFeedback from './components/feedback/AfterTrialPremiumFeedback';
-import AfterTrialStandardFeedback from './components/feedback/AfterTrialStandardFeedback';
+import FiveMinuteFeedback from './components/feedbackPopup/FiveMinuteFeedback';
+import TrialLastDayFeedback from './components/feedbackPopup/TrialLastDayFeedback';
+import AfterTrialPremiumFeedback from './components/feedbackPopup/AfterTrialPremiumFeedback';
+import AfterTrialStandardFeedback from './components/feedbackPopup/AfterTrialStandardFeedback';
 import SafariGuide from './components/safariGuide/SafariGuide';
+import Tutorial from './components/tutorial/Tutorial';
 
 import { firestore } from './firebase/app';
 
@@ -49,6 +50,8 @@ function App() {
   const [showAfterTrialPremiumFeedback, setShowAfterTrialPremiumFeedback] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
   const [doneInitialize, setDoneInitialize] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [showUpgradePopup, setShowUpgradePopup] = useState(false);
 
   function mobileOrTabletCheck() {
     let check = false;
@@ -104,10 +107,6 @@ function App() {
           window.location.reload();
         }
       });
-
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      setShowSafariGuide(true);
-    }
 
     if (window.navigator.userLanguage === 'ja' || window.navigator.language === 'ja') {
       dispatch(languageActions.languageChangeHandler());
@@ -188,6 +187,23 @@ function App() {
 
     document.addEventListener('keyup', spacebarHandler);
   }, [isMobileDevice, spacebarHandler, dispatch]);
+
+  useEffect(() => {
+    if (
+      memberId &&
+      navigator.userAgent.includes('Safari') &&
+      !navigator.userAgent.includes('Chrome') &&
+      !localStorage.getItem('checkpointShowSafariPopup')
+    ) {
+      setShowSafariGuide(true);
+      localStorage.setItem('checkpointShowSafariPopup', '1');
+    }
+
+    if (memberId && !localStorage.getItem('checkpointShowTutorial')) {
+      setShowTutorial(true);
+      localStorage.setItem('checkpointShowTutorial', '1');
+    }
+  }, [memberId]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -362,6 +378,15 @@ function App() {
     setShowSafariGuide(false);
   }
 
+  function closeTutorialHandler() {
+    setShowTutorial(false);
+  }
+
+  function openUpgradePopupHandler() {
+    setShowTutorial(false);
+    setShowUpgradePopup(true);
+  }
+
   return (
     <>
       <Route exact path="/">
@@ -369,21 +394,24 @@ function App() {
         {showFiveMinuteFeedback && (
           <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>
         )}
+        {showTrialLastDayFeedback && (
+          <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>
+        )}
         {showAfterTrialStandardFeedback && (
           <AfterTrialStandardFeedback
             closeHandler={closeAfterTrialStandardFeedbackHandler}
           ></AfterTrialStandardFeedback>
         )}
-        {showTrialLastDayFeedback && (
-          <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>
-        )}
         {showAfterTrialPremiumFeedback && (
           <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
         )}
         {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
+        {showTutorial && (
+          <Tutorial closeHandler={closeTutorialHandler} openUpgradePopupHandler={openUpgradePopupHandler}></Tutorial>
+        )}
         {doneInitialize && (
           <>
-            <Home></Home>
+            <Home showUpgradePopup={showUpgradePopup}></Home>
             <Background></Background>
             <Music></Music>
             <Ambient></Ambient>

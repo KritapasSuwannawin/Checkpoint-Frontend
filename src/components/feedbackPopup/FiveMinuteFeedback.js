@@ -6,7 +6,7 @@ import './FeedbackPopup.scss';
 import starRegular from '../../svg/30px/star-regular.svg';
 import starSolid from '../../svg/30px/star-solid.svg';
 
-function TrialLastDayFeedback(props) {
+function FiveMinuteFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
 
   const [star, setStar] = useState(3);
@@ -19,30 +19,20 @@ function TrialLastDayFeedback(props) {
   const ref6 = useRef();
   const ref7 = useRef();
   const ref8 = useRef();
-  const ref9 = useRef();
-  const ref10 = useRef();
-  const ref11 = useRef();
-  const ref12 = useRef();
-  const ref13 = useRef();
 
   function submitHandler() {
     const data = {
       memberId,
-      tableName: 'feedback_trial_last_day',
-      music_quantity: ref1.current.checked,
-      ambience_quantity: ref2.current.checked,
-      background_quantity: ref3.current.checked,
-      music_quality: ref4.current.checked,
-      ambience_quality: ref5.current.checked,
-      background_quality: ref6.current.checked,
-      interface: ref7.current.checked,
-      other_weakness: ref8.current.value,
-      ambience_customization: ref9.current.checked,
-      background_customization: ref10.current.checked,
-      easy_to_use: ref11.current.checked,
-      suggestion: ref12.current.value,
+      tableName: 'feedback_five_minute',
       star,
-      wanted_feature: ref13.current.value,
+      ad: ref1.current.checked,
+      social_media: ref2.current.checked,
+      friend: ref3.current.checked,
+      otherWay: ref4.current.value,
+      sleep: ref5.current.checked,
+      productivity: ref6.current.checked,
+      relax: ref7.current.checked,
+      other_interest: ref8.current.value,
     };
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/feedback`, {
@@ -68,7 +58,7 @@ function TrialLastDayFeedback(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">Last Day of Trial Feedback</p>
+        <p className="feedback-popup__form--heading">First Impression Feedback</p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -78,62 +68,35 @@ function TrialLastDayFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">What do you think should be improved?</p>
+        <p className="feedback-popup__form--sub-heading">How did you first know about Checkpoint?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
-          <label>Selections of music</label>
+          <label>Advertisements</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>Selections of ambience</label>
+          <label>Posts on social media</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>Selections of background</label>
+          <label>Recommendation from friends</label>
         </div>
-        <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref4}></input>
-          <label>Music quality</label>
-        </div>
+        <input type="text" placeholder="Others" ref={ref4}></input>
+
+        <p className="feedback-popup__form--sub-heading">Why are you interested in Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>Ambience quality</label>
+          <label>Checkpoint helps me sleep better</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>Background quality</label>
+          <label>Checkpoint improves my productivity</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>
-          <label>Interface</label>
+          <label>Checkpoint makes me feel relaxed</label>
         </div>
         <input type="text" placeholder="Others" ref={ref8}></input>
-
-        <p className="feedback-popup__form--sub-heading">What do you think is our strength?</p>
-        <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref9}></input>
-          <label>Ambience customization</label>
-        </div>
-        <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref10}></input>
-          <label>Background customization</label>
-        </div>
-        <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref11}></input>
-          <label>Easy to use</label>
-        </div>
-
-        <p className="feedback-popup__form--sub-heading">Do you have any suggestions for us?</p>
-        <textarea
-          placeholder="Suggestion (not require)"
-          data-gramm="false"
-          data-gramm_editor="false"
-          data-enable-grammarly="false"
-          ref={ref12}
-        ></textarea>
-
-        <p className="feedback-popup__form--sub-heading">What do you want to see more in the future?</p>
-        <input type="text" placeholder="Features (not require)" ref={ref13}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
           Send
@@ -143,4 +106,4 @@ function TrialLastDayFeedback(props) {
   );
 }
 
-export default TrialLastDayFeedback;
+export default FiveMinuteFeedback;

@@ -7,6 +7,8 @@ import { ambientActions } from '../../store/ambientSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { avatarActions } from '../../store/avatarSlice';
 
+import lockSvg from '../../svg/15px/Lock.svg';
+
 const dictionary = {
   LightRain: ['Light Rain', '小雨'],
   HeavyRain: ['Heavy Rain', '激しい雨'],
@@ -45,9 +47,9 @@ function SimpleThumbnailCard(props) {
           currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
         }`
       : ''
-  } ${props.long && props.ambient ? 'long-ambient-card' : ''} ${
-    props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''
-  } ${props.avatar ? `avatar-card ${currentAvatar.id === props.id ? 'current-avatar' : ''}` : ''}`;
+  } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''} ${
+    props.avatar ? `avatar-card ${currentAvatar.id === props.id ? 'current-avatar' : ''}` : ''
+  }`;
 
   const placeholderClassName =
     'simple-thumbnail-placeholder ' +
@@ -78,7 +80,10 @@ function SimpleThumbnailCard(props) {
   return (
     <div className={className}>
       {props.background && props.isPremium && !isPremium && (
-        <div title="For premium member" className="simple-thumbnail-card__premium-overlay"></div>
+        <div className="simple-thumbnail-card__premium" title="For premium member">
+          <div className="simple-thumbnail-card__premium-overlay"></div>
+          <img src={lockSvg} alt="" className="simple-thumbnail-card__lock-svg"></img>
+        </div>
       )}
       <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
       {props.name && (

@@ -5,6 +5,7 @@ import './ActivationPopup.scss';
 
 import { memberActions } from '../../store/memberSlice';
 
+import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import spinner from '../../svg/20px/spinner-solid.svg';
 
 function ActivationPopup(props) {
@@ -70,19 +71,39 @@ function ActivationPopup(props) {
     <div className="activation-popup">
       <div className="activation-popup__container">
         <div className="activation-popup__close-btn" onClick={closeHandler}></div>
-        <p className={`activation-popup__title`}>Premium Activation</p>
+        <img src={logoPremium50} alt=""></img>
+        <p className={`activation-popup__title`}>Activate Premium</p>
         <input
           className="activation-popup__input"
           type="text"
           ref={activationCodeRef}
-          placeholder="Activation code"
+          placeholder="Insert code here..."
         ></input>
-        {invalidCode && <p className="activation-popup__error-msg">Invalid verification code</p>}
+        {invalidCode && (
+          <p className="activation-popup__error-msg">
+            Your code is invalid. Please make sure that you input the correct code.
+          </p>
+        )}
         {codeAlreadyUsed && <p className="activation-popup__error-msg">This code has already been used</p>}
         <div className="activation-popup__submit-btn" onClick={verifyHandler}>
           {loading ? <img className="activation-popup__spinner" src={spinner} alt=""></img> : 'Activate'}
         </div>
         {errorDuringAuthen && <p className="activation-popup__error-msg">Error occured, please try again later</p>}
+        <p className="activation-popup__ps">
+          By continuing, you agree to our<br></br>
+          <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+            Terms & Conditions
+          </a>{' '}
+          and{' '}
+          <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
+            Cancellation & Refund Policy
+          </a>
+        </p>
+        <p className="activation-popup__ps">
+          If you have any problems, feel free to contact us at{' '}
+          <span onClick={props.helpSupportClickHandler}>Help & Support</span>.<br></br>
+          We'll get back to you as soon as possible!
+        </p>
       </div>
     </div>
   );

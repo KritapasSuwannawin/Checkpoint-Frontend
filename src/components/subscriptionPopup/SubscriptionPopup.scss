@@ -1,0 +1,112 @@
+@import '../../scss/main.scss';
+
+.subscription-popup {
+  @include fixed-whole-screen;
+  @include flex-row-center;
+  height: calc(100vh - 17.2rem);
+  padding-top: 8.6rem;
+  z-index: 2;
+
+  &__container {
+    @include flex-column-center;
+    background-color: rgba(17, 17, 17, 0.5);
+    backdrop-filter: blur(5rem);
+    row-gap: 2rem;
+    padding: 3.5rem 4rem;
+    border-radius: 0.8rem;
+    max-height: 100%;
+    overflow-y: auto;
+    color: white;
+    position: relative;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &--close-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background-color: rgba(196, 196, 196, 0.7);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &--title {
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    &--desc {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    &--buy-premium {
+      height: 3rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &--btn {
+      color: #111111;
+      font-size: 1.4rem;
+      font-weight: 500;
+      background: white;
+      border-radius: 2rem;
+      padding: 0.8rem 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &--ps {
+      text-align: center;
+      font-weight: 1.1rem;
+
+      a {
+        color: white;
+      }
+    }
+  }
+
+  &__plan {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #f580eb;
+    border-radius: 2rem;
+    padding: 2rem 2.8rem;
+    @include flex-column-center;
+
+    img {
+      height: 2.1rem;
+    }
+
+    &--title {
+      font-size: 4.2rem;
+      font-weight: 700;
+      color: #f580eb;
+      margin: 1rem 0;
+
+      &.small {
+        font-size: 2.4rem;
+      }
+    }
+
+    &--desc {
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+  }
+}

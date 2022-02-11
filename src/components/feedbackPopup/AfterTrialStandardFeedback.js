@@ -1,10 +1,15 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import './FeedbackPopup.scss';
 
+import starRegular from '../../svg/30px/star-regular.svg';
+import starSolid from '../../svg/30px/star-solid.svg';
+
 function AfterTrialStandardFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
+
+  const [star, setStar] = useState(3);
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -25,6 +30,7 @@ function AfterTrialStandardFeedback(props) {
       not_worth_money: ref5.current.checked,
       not_looking_for: ref6.current.checked,
       other: ref7.current.value,
+      star,
     };
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/feedback`, {
@@ -42,13 +48,27 @@ function AfterTrialStandardFeedback(props) {
     props.closeHandler();
   }
 
+  function setReviewStar() {
+    setStar(this);
+  }
+
   return (
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">After Free Trial Feedback</p>
+        <p className="feedback-popup__form--heading">Help us improve by giving us feedbacks!</p>
 
-        <p className="feedback-popup__form--sub-heading">Why you are sticking with standard plan?</p>
+        <div className="feedback-popup__form--star-container">
+          <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
+          <img src={star > 1 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(2)}></img>
+          <img src={star > 2 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(3)}></img>
+          <img src={star > 3 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(4)}></img>
+          <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
+        </div>
+
+        <p className="feedback-popup__form--sub-heading">
+          Why you are sticking with standard plan <br></br> rather than going premium?
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
           <label>The features I get from standard plan are already enough</label>
@@ -73,13 +93,7 @@ function AfterTrialStandardFeedback(props) {
           <input type="checkbox" ref={ref6}></input>
           <label>I wasn't looking for this service</label>
         </div>
-        <textarea
-          placeholder="Others"
-          data-gramm="false"
-          data-gramm_editor="false"
-          data-enable-grammarly="false"
-          ref={ref7}
-        ></textarea>
+        <input type="text" placeholder="Others" ref={ref7}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
           Send

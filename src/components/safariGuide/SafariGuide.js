@@ -20,7 +20,7 @@ function SafariGuide(props) {
   return (
     <div className="safari-guide">
       <div className="safari-guide__content">
-        <p>For Safari users, please adjust the setting for the best experience!</p>
+        <p>For Safari users, please adjust the settings for the best experience!</p>
         <img src={imageUrl} alt=""></img>
         <div className="safari-guide__done" onClick={submitHandler}>
           Done
