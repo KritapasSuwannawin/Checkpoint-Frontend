@@ -4,7 +4,7 @@
   @include fixed-whole-screen;
   @include flex-row-center;
   height: 100vh;
-  padding-bottom: 7rem;
+  padding-bottom: 8.6rem;
   z-index: 1;
 
   &__form {
@@ -170,5 +170,11 @@
     width: 1.8rem;
     margin-bottom: -0.2rem;
     animation: rotation 1.8s infinite linear;
+  }
+}
+
+@media (max-height: 615px) {
+  .login-popup {
+    padding-bottom: 0;
   }
 }

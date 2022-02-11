@@ -20,7 +20,10 @@ function SliderCard(props) {
 
   useEffect(() => {
     setImageArr((imageArr) => {
-      return [...imageArr, <img key={imageIndex} src={imageUrl} alt="" className="slider-card__slide--image"></img>];
+      return [
+        ...imageArr,
+        <img key={imageIndex} src={imageUrl} alt="" className="slider-card-upgrade__slide--image"></img>,
+      ];
     });
 
     const timeout = setTimeout(() => {
@@ -42,14 +45,14 @@ function SliderCard(props) {
   }
 
   return (
-    <div className="slider-card">
-      <div className="slider-card__slide">
+    <div className="slider-card-upgrade">
+      <div className="slider-card-upgrade__slide">
         {imageArr}
-        <div className="slider-card__slide--btn-container">
+        <div className="slider-card-upgrade__slide--btn-container">
           {imageSrcArr.map((url, index) => (
             <label
               key={index}
-              className={`slider-card__slide--btn ${imageIndex === index ? 'selected' : ''}`}
+              className={`slider-card-upgrade__slide--btn ${imageIndex === index ? 'selected' : ''}`}
               onClick={radioBtnClickHandler.bind(index)}
             ></label>
           ))}

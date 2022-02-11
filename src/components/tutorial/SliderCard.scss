@@ -1,6 +1,6 @@
 @import '../../scss/main.scss';
 
-.slider-card {
+.slider-card-tutorial {
   width: 100%;
   margin-bottom: 2rem;
   border-radius: 0.5rem;
@@ -10,15 +10,14 @@
     height: fit-content;
     width: 61.1rem;
     height: 34.4rem;
+    margin: 0 auto;
     display: flex;
-    margin-right: 1rem;
 
     &--image {
       position: absolute;
       top: 0;
       left: 0;
-      width: 61.1rem;
-      height: 34.4rem;
+      width: 100%;
       object-fit: cover;
       border-radius: 0.5rem;
       animation: fade-in 0.3s ease;
@@ -47,6 +46,24 @@
 
     &--btn.selected {
       background-color: #f580eb;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .slider-card-tutorial {
+    &__slide {
+      width: 50rem;
+      height: 28.15rem;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .slider-card-tutorial {
+    &__slide {
+      width: 40rem;
+      height: 22.5rem;
     }
   }
 }

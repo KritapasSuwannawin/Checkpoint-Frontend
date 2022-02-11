@@ -44,6 +44,10 @@
     display: flex;
     justify-content: space-between;
 
+    img {
+      margin-left: 1rem;
+    }
+
     &--title {
       font-weight: 700;
       font-size: 2.4rem;
@@ -52,6 +56,7 @@
     &--sub-title {
       font-weight: 500;
       font-size: 1.2rem;
+      margin-top: 0.25rem;
 
       a {
         color: white;
@@ -144,12 +149,94 @@
     }
   }
 
-  &__community-review--title {
-    font-size: 2.4rem;
-    font-weight: 700;
-  }
+  &__community-review {
+    &--title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 1.7rem;
+    }
 
-  &__community-review--img {
-    width: 105.5rem;
+    &--img {
+      width: 118.2rem;
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 1410px) {
+  .upgrade-popup {
+    &__community-review {
+      &--img {
+        width: 107rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1290px) {
+  .upgrade-popup {
+    &__community-review {
+      &--img {
+        width: 97rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1180px) {
+  .upgrade-popup {
+    &__community-review {
+      &--img {
+        width: 87rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1060px) {
+  .upgrade-popup {
+    &__premium {
+      &--content {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 870px) {
+  .upgrade-popup {
+    &__community-review {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .upgrade-popup {
+    &__nav {
+      img {
+        height: 3rem;
+      }
+
+      &--title {
+        font-size: 2rem;
+      }
+
+      &--sub-title {
+        font-size: 1rem;
+      }
+    }
+
+    &__cards {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 2rem;
+    }
+
+    &__standard,
+    &__premium {
+      width: 100%;
+    }
   }
 }

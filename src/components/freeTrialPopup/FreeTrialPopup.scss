@@ -9,10 +9,23 @@
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(1rem);
 
+  &__container {
+    overflow-y: auto;
+    margin: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   &__title {
     font-size: 2.4rem;
     font-weight: 700;
     text-align: center;
+    margin-top: 2rem;
 
     span {
       font-size: 6.4rem;
@@ -30,11 +43,12 @@
   }
 
   &__img-container {
-    display: flex;
+    @include flex-row-center;
     column-gap: 3.4rem;
+    margin: 0 auto;
 
     img {
-      width: 50rem;
+      width: 45rem;
     }
   }
 
@@ -44,10 +58,30 @@
     font-weight: 500;
     font-size: 1.8rem;
     padding: 0.8rem 2rem;
-    margin-top: 3rem;
+    width: fit-content;
+    margin: 3rem auto 2rem auto;
 
     &:hover {
       cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 990px) {
+  .free-trial-popup {
+    &__img-container {
+      img {
+        width: 35rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .free-trial-popup {
+    &__img-container {
+      flex-direction: column;
+      row-gap: 3rem;
     }
   }
 }

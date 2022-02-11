@@ -67,8 +67,10 @@ function UpgradePopup(props) {
             </p>
           </div>
         </div>
-        <p className="upgrade-popup__community-review--title">Community Review</p>
-        <img src={communityreview} alt="" className="upgrade-popup__community-review--img"></img>
+        <div className="upgrade-popup__community-review">
+          <p className="upgrade-popup__community-review--title">Community Review</p>
+          <img src={communityreview} alt="" className="upgrade-popup__community-review--img"></img>
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,10 @@ function SliderCard(props) {
 
   useEffect(() => {
     setImageArr((imageArr) => {
-      return [...imageArr, <img key={props.page} src={imageUrl} alt="" className="slider-card__slide--image"></img>];
+      return [
+        ...imageArr,
+        <img key={props.page} src={imageUrl} alt="" className="slider-card-tutorial__slide--image"></img>,
+      ];
     });
 
     const timeout = setTimeout(() => {
@@ -34,14 +37,14 @@ function SliderCard(props) {
   }, [props.page, imageUrl]);
 
   return (
-    <div className="slider-card">
-      <div className="slider-card__slide">
+    <div className="slider-card-tutorial">
+      <div className="slider-card-tutorial__slide">
         {imageArr}
-        <div className="slider-card__slide--btn-container">
+        <div className="slider-card-tutorial__slide--btn-container">
           {imageSrcArr.map((url, index) => (
             <label
               key={index}
-              className={`slider-card__slide--btn ${props.page === index ? 'selected' : ''}`}
+              className={`slider-card-tutorial__slide--btn ${props.page === index ? 'selected' : ''}`}
               onClick={props.changePageHandler.bind(index)}
             ></label>
           ))}

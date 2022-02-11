@@ -514,30 +514,50 @@
   }
 }
 
-@media (max-width: 770px) {
-  .home__overlay {
-    &--left {
-      width: 100vw;
+@media (max-width: 1000px) {
+  .nav {
+    &__logo {
+      &--text-btn {
+        display: none;
+      }
     }
+  }
+}
 
-    &--right {
-      display: none;
+@media (max-width: 860px) {
+  .nav {
+    &__logo {
+      &--upgrade-btn {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 790px) {
+  .home {
+    &__overlay {
+      &--left {
+        width: 100vw;
+      }
+
+      &--right {
+        display: none;
+      }
     }
   }
 
-  .nav__links {
-    &--link {
-      &.language {
+  .nav {
+    &__links {
+      &--link {
+        &.language {
+          display: none;
+        }
+      }
+
+      &--icon {
         display: none;
       }
-
-      &.fixed-width {
-        width: fit-content;
-      }
-    }
-
-    &--icon {
-      display: none;
     }
   }
 
@@ -556,8 +576,10 @@
       display: none;
     }
 
-    &__volume-control--volume-slider {
-      width: 9rem;
+    &__volume-control {
+      &--volume-slider {
+        width: 9rem;
+      }
     }
   }
 
@@ -567,15 +589,17 @@
   }
 }
 
-@media (max-width: 610px) {
+@media (max-width: 680px) {
   .nav {
     &__logo {
-      width: 20rem;
+      &--img {
+        width: 20rem;
+      }
     }
 
     &__links {
       &--link.fixed-width {
-        margin-left: -4rem;
+        margin-left: -2rem;
       }
     }
   }
@@ -598,6 +622,24 @@
 
       &--artist-name {
         font-size: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .nav {
+    &__logo {
+      &--img {
+        width: 15rem;
+      }
+    }
+  }
+
+  .player {
+    &__music-control {
+      &--play-pause {
+        width: 4.5rem;
       }
     }
   }

@@ -5,15 +5,25 @@
   @include flex-row-center;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(1rem);
-  z-index: 3;
+  z-index: 4;
 
   &__container {
-    @include flex-column-center;
+    max-height: 100vh;
+    padding: 0 2rem;
     color: white;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
     &--logo {
+      display: block;
       height: 3.4rem;
-      margin-bottom: 5.5rem;
+      margin: 4rem auto 5.5rem auto;
     }
 
     &--title {
@@ -33,6 +43,8 @@
     }
 
     &--later {
+      margin-bottom: 4rem;
+
       &:hover {
         cursor: pointer;
       }
@@ -45,7 +57,8 @@
       padding: 0.8rem 1.5rem;
       background-color: white;
       border-radius: 2rem;
-      margin: 2rem 0 1rem 0;
+      margin: 2rem auto 1rem auto;
+      width: fit-content;
 
       &:hover {
         cursor: pointer;
@@ -53,8 +66,9 @@
     }
 
     &--buy-premium {
+      display: block;
       height: 3.4rem;
-      margin: 2rem 0 1rem 0;
+      margin: 2rem auto 1rem auto;
 
       &:hover {
         cursor: pointer;
