@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux';
 import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
 import './Ambient.scss';
 
-function Ambient() {
+import overlay from './Premium Card 1m.png';
+
+function Ambient(props) {
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
+  const isPremium = useSelector((store) => store.member.isPremium);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const doneSetupPage = useRef();
@@ -25,8 +28,10 @@ function Ambient() {
             <SimpleThumbnailCard
               id={ambient.id}
               name={ambient.name}
+              nameJapanese={ambient.nameJapanese}
               thumbnailUrl={ambient.thumbnailUrl}
               volume={ambient.volume}
+              isPremium={true}
               ambient
             ></SimpleThumbnailCard>
           </div>,
@@ -39,7 +44,16 @@ function Ambient() {
     }
   }, [availableAmbientArr]);
 
-  return <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>{thumbnailArr}</div>;
+  return (
+    <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>
+      {thumbnailArr}
+      {!isPremium && (
+        <div className="ambient__overlay">
+          <img src={overlay} alt="" onClick={props.openUpgradePopupHandler}></img>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Ambient;

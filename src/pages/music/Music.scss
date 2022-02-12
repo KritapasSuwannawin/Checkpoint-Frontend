@@ -7,6 +7,14 @@
     @include display-page;
   }
 
+  &__title {
+    width: 100%;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: white;
+    margin-left: 0.2rem;
+  }
+
   &__category-name {
     width: 100%;
     display: flex;

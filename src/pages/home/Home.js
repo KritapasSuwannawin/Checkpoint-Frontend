@@ -9,6 +9,7 @@ import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMus
 import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
 import FreeTrialPopup from '../../components/freeTrialPopup/FreeTrialPopup';
+import LastDayTrialPopup from '../../components/freeTrialPopup/LastDayTrialPopup';
 import ActivationPopup from '../../components/activationPopup/ActivationPopup';
 import HelpSupportPopup from '../../components/helpSupportPopup/HelpSupportPopup';
 import FeedbackPopup from '../../components/feedbackPopup/FeedbackPopup';
@@ -86,6 +87,7 @@ function Home(props) {
   const username = useSelector((store) => store.member.username);
   const isPremium = useSelector((store) => store.member.isPremium);
   const isOntrial = useSelector((store) => store.member.isOntrial);
+  const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
 
   const musicVolumeSliderRef = useRef();
@@ -104,16 +106,20 @@ function Home(props) {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
   const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
+  const [showLastDayTrialModal, setShowLastDayTrialModal] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
   const [showHelpSupportPopup, setShowHelpSupportPopup] = useState(false);
-  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
+  const [showCookiePopup, setShowCookiePopup] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
   useEffect(() => {
-    setShowUpgradePopup(props.showUpgradePopup);
-  }, [props.showUpgradePopup]);
+    if (props.showUpgradePopup) {
+      setShowUpgradePopup(true);
+      dispatch(pageActions.closePageHandler());
+    }
+  }, [props.showUpgradePopup, dispatch]);
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
@@ -189,6 +195,7 @@ function Home(props) {
               <AmbientControl
                 id={ambient.id}
                 name={ambient.name}
+                nameJapanese={ambient.nameJapanese}
                 url={ambient.url}
                 thumbnailUrl={ambient.thumbnailUrl}
                 volume={ambient.volume}
@@ -225,8 +232,16 @@ function Home(props) {
   useEffect(() => {
     if (!memberId) {
       setShowLoginPopup(true);
+    } else {
+      if (!localStorage.getItem('checkpointShowCookie')) {
+        setShowCookiePopup(true);
+      }
+
+      if (dayOfTrial === 3 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
+        setShowLastDayTrialModal(true);
+      }
     }
-  }, [memberId]);
+  }, [memberId, dayOfTrial]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -301,10 +316,6 @@ function Home(props) {
   }
 
   function openAmbientPageHander() {
-    if (!isPremium) {
-      return;
-    }
-
     dispatch(pageActions.changePageHandler('ambient'));
   }
 
@@ -357,12 +368,22 @@ function Home(props) {
     }
   }
 
+  function showUpgradePopupHandler() {
+    setShowUpgradePopup(true);
+  }
+
   function closeUpgradePopup() {
     setShowUpgradePopup(false);
+    props.closeUpgradePopupHandler();
   }
 
   function closeFreeTrialPopup() {
     setShowFreeTrialModal(false);
+  }
+
+  function closeLastDayTrialPopup() {
+    localStorage.setItem('checkpointShowLastDayTrialPopup', 1);
+    setShowLastDayTrialModal(false);
   }
 
   function favouriteBtnClickHandler() {
@@ -406,11 +427,7 @@ function Home(props) {
   function openFeedbackHandler() {
     dispatch(pageActions.closePageHandler());
     setShowOutsideLink(false);
-    setShowFeedbackPopup(true);
-  }
-
-  function closeFeedbackHandler() {
-    setShowFeedbackPopup(false);
+    props.showFeedbackPopupHandler();
   }
 
   function openSubscriptionHandler() {
@@ -421,6 +438,11 @@ function Home(props) {
 
   function closeSubscriptionHandler() {
     setShowSubscriptionPopup(false);
+  }
+
+  function closeCookiePopupHandler() {
+    localStorage.setItem('checkpointShowCookie', '1');
+    setShowCookiePopup(false);
   }
 
   return (
@@ -434,14 +456,32 @@ function Home(props) {
         ></ActivationPopup>
       )}
       {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
+      {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
       {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
-      {showFeedbackPopup && <FeedbackPopup closeHandler={closeFeedbackHandler}></FeedbackPopup>}
+      {props.showFeedbackPopup && <FeedbackPopup closeHandler={props.closeFeedbackPopupHandler}></FeedbackPopup>}
       {showSubscriptionPopup && (
         <SubscriptionPopup
           closeHandler={closeSubscriptionHandler}
           activateHandler={activationBtnClickHandler}
           upgradeHandler={navBtnClickHandler}
         ></SubscriptionPopup>
+      )}
+      {showCookiePopup && (
+        <div className="cookie-popup">
+          <p>
+            This site uses cookie to store information on your computer. Some of these cookies are essential to make our
+            site work and others help us improve by giving us some insight into how the site is being used.<br></br>
+            By using our site, you agree to our{' '}
+            <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
+              Cookie
+            </a>{' '}
+            and{' '}
+            <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
+              Privacy Policy
+            </a>
+          </p>
+          <div onClick={closeCookiePopupHandler}>I understand</div>
+        </div>
       )}
       <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
         <div className="home__overlay--left" onClick={overlayClickHandler}></div>
@@ -469,6 +509,12 @@ function Home(props) {
           )}
         </div>
         <div className="nav__links">
+          <div
+            onClick={props.showTutorialHandler}
+            className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}
+          >
+            Tutorial
+          </div>
           <div
             onClick={musicClickHander}
             className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${
@@ -549,18 +595,18 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={png5} alt=""></img>
+                  <img src={png6} alt=""></img>
                 </div>
-                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                  {dictionary.policy[languageIndex]}
+                <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
+                  For Artist
                 </a>
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={png6} alt=""></img>
+                  <img src={png5} alt=""></img>
                 </div>
-                <a href={process.env.REACT_APP_DONATE_LINK} target="_blank" rel="noreferrer">
-                  {dictionary.donate[languageIndex]}
+                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
+                  {dictionary.policy[languageIndex]}
                 </a>
               </div>
               {memberId && (
@@ -601,12 +647,8 @@ function Home(props) {
             ></input>
           </div>
           {ambientThumbnailArr}
-          <div
-            title={`${!isPremium ? 'For premium member' : ''}`}
-            onClick={openAmbientPageHander}
-            className={`background-control__add-ambient ${!isPremium ? 'premium' : ''}`}
-          >
-            <img src={isPremium ? addSvg20 : lockSvg15} alt="" className={!isPremium ? 'small' : ''}></img>
+          <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
+            <img src={addSvg20} alt=""></img>
           </div>
         </div>
       </div>
@@ -647,16 +689,22 @@ function Home(props) {
             onClick={changeBackgroundTimeHandler.bind(2)}
             className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
           ></img>
-          <div className="mood__section--premium">
+          <div className={isPremium ? '' : 'mood__section--premium'}>
             <img
               src={nightSvg36}
               alt=""
               title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : () => {}}
+              onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : showUpgradePopupHandler}
               className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
             ></img>
             {!isPremium && (
-              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+              <img
+                src={lockSvg15}
+                alt=""
+                title="For premium member"
+                className="mood__section--lock"
+                onClick={showUpgradePopupHandler}
+              ></img>
             )}
           </div>
         </div>
@@ -673,28 +721,40 @@ function Home(props) {
             onClick={changeBackgroundWeatherHandler.bind(2)}
             className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
           ></img>
-          <div className="mood__section--premium">
+          <div className={isPremium ? '' : 'mood__section--premium'}>
             <img
               src={thunderSvg36}
               alt=""
               title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : () => {}}
+              onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : showUpgradePopupHandler}
               className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
             ></img>
             {!isPremium && (
-              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+              <img
+                src={lockSvg15}
+                alt=""
+                title="For premium member"
+                className="mood__section--lock"
+                onClick={showUpgradePopupHandler}
+              ></img>
             )}
           </div>
-          <div className="mood__section--premium">
+          <div className={isPremium ? '' : 'mood__section--premium'}>
             <img
               src={snowySvg36}
               alt=""
               title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : () => {}}
+              onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : showUpgradePopupHandler}
               className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
             ></img>
             {!isPremium && (
-              <img src={lockSvg15} alt="" title="For premium member" className="mood__section--lock"></img>
+              <img
+                src={lockSvg15}
+                alt=""
+                title="For premium member"
+                className="mood__section--lock"
+                onClick={showUpgradePopupHandler}
+              ></img>
             )}
           </div>
         </div>

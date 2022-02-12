@@ -68,29 +68,29 @@ function FiveMinuteFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">How did you first know about Checkpoint?</p>
+        <p className="feedback-popup__form--sub-heading">How did you first know about Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
           <label>Advertisements</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref2}></input>
-          <label>Posts on social media</label>
+          <input type="checkbox" ref={ref3}></input>
+          <label>Recommendation from friends/family</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref3}></input>
-          <label>Recommendation from friends</label>
+          <input type="checkbox" ref={ref2}></input>
+          <label>Posts on social media (ads excluded)</label>
         </div>
         <input type="text" placeholder="Others" ref={ref4}></input>
 
         <p className="feedback-popup__form--sub-heading">Why are you interested in Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>Checkpoint helps me sleep better</label>
+          <label>Checkpoint improves my sleep quality</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>Checkpoint improves my productivity</label>
+          <label>Checkpoint increases my productivity</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>

@@ -9,24 +9,6 @@ import { avatarActions } from '../../store/avatarSlice';
 
 import lockSvg from '../../svg/15px/Lock.svg';
 
-const dictionary = {
-  LightRain: ['Light Rain', '小雨'],
-  HeavyRain: ['Heavy Rain', '激しい雨'],
-  ThunderStorm: ['Thunder Storm', '雷'],
-  WindTree: ['Wind Tree', '木のさざめき'],
-  River: ['River', '川'],
-  BirdPark: ['Bird Park', '公園の鳥'],
-  BirdForest: ['Bird Forest', '森の鳥'],
-  NightForest: ['Night Forest', '夜の森'],
-  LightWind: ['Light Wind', '風のさざめき'],
-  WindChimes: ['Wind Chimes', '風鈴'],
-  AirConditioner: ['Air Conditioner', 'エアコン'],
-  RainonWindow: ['Rain on Window', '窓に雨が降る'],
-  Cafe: ['Cafe', 'カフェ'],
-  Rooftop: ['Rooftop', '屋上'],
-  Fireplace: ['Fireplace', '暖炉'],
-};
-
 function SimpleThumbnailCard(props) {
   const dispatch = useDispatch();
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
@@ -75,20 +57,18 @@ function SimpleThumbnailCard(props) {
     return <div className={placeholderClassName}></div>;
   }
 
-  const ambientDisplayName = props.name && dictionary[props.name.replaceAll(' ', '')][languageIndex];
-
   return (
     <div className={className}>
-      {props.background && props.isPremium && !isPremium && (
+      {(props.background || props.ambient) && props.isPremium && !isPremium && (
         <div className="simple-thumbnail-card__premium" title="For premium member">
           <div className="simple-thumbnail-card__premium-overlay"></div>
-          <img src={lockSvg} alt="" className="simple-thumbnail-card__lock-svg"></img>
+          <img src={lockSvg} alt="" className={`simple-thumbnail-card__lock-svg ${props.ambient ? 'small' : ''}`}></img>
         </div>
       )}
       <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
       {props.name && (
         <p onClick={clickHandler} className="simple-thumbnail-card__overlay-name">
-          {ambientDisplayName}
+          {languageIndex === 0 ? props.name : props.nameJapanese}
         </p>
       )}
     </div>

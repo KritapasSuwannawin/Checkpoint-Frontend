@@ -86,34 +86,34 @@ function FeedbackPopup(props) {
 
         <p className="feedback-popup__form--sub-heading">How would you describe yourself?</p>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref1}></input>
+          <input type="radio" ref={ref1} name="job"></input>
           <label>High School</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref2}></input>
+          <input type="radio" ref={ref2} name="job"></input>
           <label>College Student</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref3}></input>
+          <input type="radio" ref={ref3} name="job"></input>
           <label>Working</label>
         </div>
         <input type="text" placeholder="Others" ref={ref4}></input>
 
         <p className="feedback-popup__form--sub-heading">How long have you been using Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref5}></input>
+          <input type="radio" ref={ref5} name="duration"></input>
           <label>Less than a week</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref6}></input>
+          <input type="radio" ref={ref6} name="duration"></input>
           <label>A week</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref7}></input>
+          <input type="radio" ref={ref7} name="duration"></input>
           <label>Almost 1 month</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
-          <input type="checkbox" ref={ref8}></input>
+          <input type="radio" ref={ref8} name="duration"></input>
           <label>More than 1 month</label>
         </div>
 
@@ -142,7 +142,7 @@ function FeedbackPopup(props) {
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref14}></input>
-          <label>Checkpoint increases my productivityr</label>
+          <label>Checkpoint increases my productivity</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref15}></input>

@@ -38,11 +38,21 @@ function UpgradePopup(props) {
             <div className="upgrade-popup__cards--btn" onClick={closeHandler}>
               Use Standard
             </div>
-            <p className="upgrade-popup__cards--list">+ &nbsp;Ad-Free</p>
-            <p className="upgrade-popup__cards--list">+ &nbsp;2 Peaceful Background</p>
-            <p className="upgrade-popup__cards--list">+ &nbsp;6 Realistic Ambience</p>
-            <p className="upgrade-popup__cards--list">- &nbsp;Fully Customizable Background</p>
-            <p className="upgrade-popup__cards--list">- &nbsp;Fully Customizable Ambience</p>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn"></div>Ad-Free
+            </div>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn"></div>2 Peaceful Background
+            </div>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn"></div>6 Realistic Ambience
+            </div>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn-hollow"></div>Fully Customizable Background
+            </div>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn-hollow"></div>Fully Customizable Ambience
+            </div>
           </div>
           <div className="upgrade-popup__premium">
             <div className="upgrade-popup__premium--container">
@@ -54,11 +64,21 @@ function UpgradePopup(props) {
                 <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
                   <img src={buyPremiumBtn} alt="" className="upgrade-popup__cards--buy-premium"></img>
                 </a>
-                <p className="upgrade-popup__cards--list">+ &nbsp;Ad-Free</p>
-                <p className="upgrade-popup__cards--list">+ &nbsp;7 Peaceful Background</p>
-                <p className="upgrade-popup__cards--list">+ &nbsp;15 Realistic Ambience</p>
-                <p className="upgrade-popup__cards--list">+ &nbsp;Fully Customizable Background</p>
-                <p className="upgrade-popup__cards--list">+ &nbsp;Fully Customizable Ambience</p>
+                <div className="upgrade-popup__cards--list">
+                  <div className="upgrade-popup__cards--list-btn"></div>Ad-Free
+                </div>
+                <div className="upgrade-popup__cards--list">
+                  <div className="upgrade-popup__cards--list-btn"></div>7 Peaceful Background
+                </div>
+                <div className="upgrade-popup__cards--list">
+                  <div className="upgrade-popup__cards--list-btn"></div>15 Realistic Ambience
+                </div>
+                <div className="upgrade-popup__cards--list">
+                  <div className="upgrade-popup__cards--list-btn"></div>Fully Customizable Background
+                </div>
+                <div className="upgrade-popup__cards--list">
+                  <div className="upgrade-popup__cards--list-btn"></div>Fully Customizable Ambience
+                </div>
               </div>
               <SliderCard></SliderCard>
             </div>

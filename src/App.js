@@ -48,6 +48,7 @@ function App() {
   const [showAfterTrialStandardFeedback, setShowAfterTrialStandardFeedback] = useState(false);
   const [showTrialLastDayFeedback, setShowTrialLastDayFeedback] = useState(false);
   const [showAfterTrialPremiumFeedback, setShowAfterTrialPremiumFeedback] = useState(false);
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const [showSafariGuide, setShowSafariGuide] = useState(false);
   const [doneInitialize, setDoneInitialize] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
@@ -374,8 +375,22 @@ function App() {
     setShowAfterTrialStandardFeedback(false);
   }
 
+  function showFeedbackPopupHandler() {
+    document.removeEventListener('keyup', spacebarHandler);
+    setShowFeedbackPopup(true);
+  }
+
+  function closeFeedbackPopupHandler() {
+    document.addEventListener('keyup', spacebarHandler);
+    setShowFeedbackPopup(false);
+  }
+
   function closeSafariGuideHandler() {
     setShowSafariGuide(false);
+  }
+
+  function showTutorialHandler() {
+    setShowTutorial(true);
   }
 
   function closeTutorialHandler() {
@@ -385,6 +400,10 @@ function App() {
   function openUpgradePopupHandler() {
     setShowTutorial(false);
     setShowUpgradePopup(true);
+  }
+
+  function closeUpgradePopupHandler() {
+    setShowUpgradePopup(false);
   }
 
   return (
@@ -411,10 +430,17 @@ function App() {
         )}
         {doneInitialize && (
           <>
-            <Home showUpgradePopup={showUpgradePopup}></Home>
+            <Home
+              showFeedbackPopup={showFeedbackPopup}
+              showFeedbackPopupHandler={showFeedbackPopupHandler}
+              closeFeedbackPopupHandler={closeFeedbackPopupHandler}
+              showUpgradePopup={showUpgradePopup}
+              closeUpgradePopupHandler={closeUpgradePopupHandler}
+              showTutorialHandler={showTutorialHandler}
+            ></Home>
             <Background></Background>
             <Music></Music>
-            <Ambient></Ambient>
+            <Ambient openUpgradePopupHandler={openUpgradePopupHandler}></Ambient>
             <Avatar></Avatar>
           </>
         )}

@@ -8,7 +8,9 @@
   z-index: 3;
 
   &__container {
-    background-image: url('./img/Upgrade\ Image\ Showcase\ 5.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('./img/Premium Card Background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
     backdrop-filter: blur(5rem);
     padding: 2rem 2.5rem 2rem 6rem;
     border-radius: 2rem;
@@ -33,7 +35,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    background-color: rgba(196, 196, 196, 0.7);
+    background-color: rgba(196, 196, 196, 0.9);
 
     &:hover {
       cursor: pointer;
@@ -114,6 +116,28 @@
       font-size: 1.4rem;
       align-self: flex-start;
       white-space: nowrap;
+      position: relative;
+      padding-left: 1.4rem;
+    }
+
+    &--list-btn {
+      position: absolute;
+      top: 0.3rem;
+      left: -0.5rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background-color: #f580eb;
+    }
+
+    &--list-btn-hollow {
+      position: absolute;
+      top: 0.3rem;
+      left: -0.5rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid #c4c4c4;
     }
   }
 
@@ -167,7 +191,7 @@
   .upgrade-popup {
     &__community-review {
       &--img {
-        width: 107rem;
+        width: 106.2rem;
       }
     }
   }
@@ -177,7 +201,7 @@
   .upgrade-popup {
     &__community-review {
       &--img {
-        width: 97rem;
+        width: 96.2rem;
       }
     }
   }
@@ -187,7 +211,7 @@
   .upgrade-popup {
     &__community-review {
       &--img {
-        width: 87rem;
+        width: 86.3rem;
       }
     }
   }

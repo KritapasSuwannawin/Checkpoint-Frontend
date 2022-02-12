@@ -658,7 +658,7 @@ function LoginPopup(props) {
             <div className="login-popup__google">
               <GoogleLogin
                 clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                buttonText={signingUp ? 'Sign up' : 'Sign in'}
+                buttonText={signingUp ? 'Sign up with Google' : 'Sign in with Google'}
                 onSuccess={onGoogleSuccess}
                 onFailure={onGoogleFailure}
                 cookiePolicy={'single_host_origin'}

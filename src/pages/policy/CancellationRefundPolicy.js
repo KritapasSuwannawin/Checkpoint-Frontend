@@ -7,9 +7,13 @@ function CancellationRefundPolicy(props) {
 
       <h2>Cancellation & Refund Policy</h2>
       <p>
-        We hope you will be pleased with our service. Should you wish to cancel the subscription, you can do so any time
-        at the “Account” menu. Please note that once the payment has been made, refund will not be given under any
-        circumstances. You are responsible for acknowledging the date of renewal shown in the “Account” menu.
+        Checkpoint currently offers a [1-month] digital coupon and [3-month] digital coupon that users can purchase from
+        Buy Me a Coffee. After [1-month] or [3-month] after the code is redeemed, your Premium subscription will be
+        automatically suspended, given that you have not redeemed another code before the current plan expires.
+      </p>
+      <p>
+        We hope you will be pleased with our service. Please note that once the payment has been made, either for a
+        [1-month] or [3-month] plan, refund will not be made under any circumstances.
       </p>
 
       <h2>Contact</h2>

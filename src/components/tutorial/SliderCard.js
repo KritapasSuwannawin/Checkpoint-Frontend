@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import './SliderCard.scss';
 
-import img1 from './img/Tutorial Image Page 1.png';
-import img2 from './img/Tutorial Image Page 2.png';
-import img3 from './img/Tutorial Image Page 3.png';
-import img4 from './img/Tutorial Image Page 4.png';
-import img5 from './img/Tutorial Image Page 5.png';
+import img1 from './img/Tutorial Image Page 1.jpg';
+import img2 from './img/Tutorial Image Page 2.jpg';
+import img3 from './img/Tutorial Image Page 3.jpg';
+import img4 from './img/Tutorial Image Page 4.jpg';
+import img5 from './img/Tutorial Image Page 5.jpg';
 const imageSrcArr = [img1, img2, img3, img4, img5];
 
 function SliderCard(props) {

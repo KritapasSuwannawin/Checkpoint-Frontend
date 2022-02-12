@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import './SliderCard.scss';
 
-import img1 from './img/Upgrade Image Showcase 1.png';
-import img2 from './img/Upgrade Image Showcase 2.png';
-import img3 from './img/Upgrade Image Showcase 3.png';
-import img4 from './img/Upgrade Image Showcase 4.png';
-import img5 from './img/Upgrade Image Showcase 5.png';
-import img6 from './img/Upgrade Image Showcase 6.png';
-import img7 from './img/Upgrade Image Showcase 7.png';
-import img8 from './img/Upgrade Image Showcase 8.png';
+import img1 from './img/Upgrade Image Showcase 1.jpg';
+import img2 from './img/Upgrade Image Showcase 2.jpg';
+import img3 from './img/Upgrade Image Showcase 3.jpg';
+import img4 from './img/Upgrade Image Showcase 4.jpg';
+import img5 from './img/Upgrade Image Showcase 5.jpg';
+import img6 from './img/Upgrade Image Showcase 6.jpg';
+import img7 from './img/Upgrade Image Showcase 7.jpg';
+import img8 from './img/Upgrade Image Showcase 8.jpg';
 const imageSrcArr = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 function SliderCard(props) {
@@ -22,7 +22,13 @@ function SliderCard(props) {
     setImageArr((imageArr) => {
       return [
         ...imageArr,
-        <img key={imageIndex} src={imageUrl} alt="" className="slider-card-upgrade__slide--image"></img>,
+        <img
+          key={imageIndex}
+          src={imageUrl}
+          onClick={imageClickHandler}
+          alt=""
+          className="slider-card-upgrade__slide--image"
+        ></img>,
       ];
     });
 
@@ -42,6 +48,16 @@ function SliderCard(props) {
 
   function radioBtnClickHandler() {
     setImageIndex(this);
+  }
+
+  function imageClickHandler() {
+    setImageIndex((index) => {
+      if (index === imageSrcArr.length - 1) {
+        return 0;
+      } else {
+        return index + 1;
+      }
+    });
   }
 
   return (

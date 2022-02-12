@@ -106,11 +106,13 @@ function Music() {
 
   return (
     <div className={`music ${currentPage === 'music' ? 'current-page' : ''}`}>
-      {category && (
+      {category ? (
         <div className="music__category-name">
           <img src={backArrowSvg36} alt="" onClick={() => setCategory(null)}></img>
           <p>{category}</p>
         </div>
+      ) : (
+        <p className="music__title">New Release</p>
       )}
       {thumbnailArr}
       {!category && <div className="music__category-container">{categoryArr}</div>}
