@@ -8,6 +8,7 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function TrialLastDayFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [star, setStar] = useState(3);
 
@@ -70,7 +71,9 @@ function TrialLastDayFeedback(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">Help us improve by giving us feedbacks!</p>
+        <p className="feedback-popup__form--heading">
+          {languageIndex === 0 ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
+        </p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -80,58 +83,66 @@ function TrialLastDayFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">What do you think should be improved?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'What do you think should be improved?' : '改善すべき点は何だと思いますか？'}
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
-          <label>Selections of music</label>
+          <label>{languageIndex === 0 ? 'Selections of music' : '音楽の選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>Selections of ambience</label>
+          <label>{languageIndex === 0 ? 'Selections of ambience' : 'アンビアンスの選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>Selections of background</label>
+          <label>{languageIndex === 0 ? 'Selections of background' : '背景の選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref4}></input>
-          <label>Music quality</label>
+          <label>{languageIndex === 0 ? 'Music quality' : '音楽の質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>Ambience quality</label>
+          <label>{languageIndex === 0 ? 'Ambience quality' : 'アンビエンスの質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>Background quality</label>
+          <label>{languageIndex === 0 ? 'Background quality' : '背景の質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>
-          <label>Interface</label>
+          <label>{languageIndex === 0 ? 'Interface' : 'インターフェース'}</label>
         </div>
-        <input type="text" placeholder="Others" ref={ref8}></input>
+        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref8}></input>
 
-        <p className="feedback-popup__form--sub-heading">What do you think is our strength?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'What do you think is our strength?' : 'Checkpointの強みは何だと思いますか？'}
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref9}></input>
-          <label>Ambience customization</label>
+          <label>{languageIndex === 0 ? 'Ambience customization' : 'カスタマイズ可能なアンビアンス'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref10}></input>
-          <label>Background customization</label>
+          <label>{languageIndex === 0 ? 'Background customization' : 'カスタマイズ可能な背景'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref11}></input>
-          <label>Easy to use</label>
+          <label>{languageIndex === 0 ? 'Easy to use' : '使いやすさ'}</label>
         </div>
-        <input type="text" placeholder="Others" ref={ref14}></input>
+        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref14}></input>
 
-        <p className="feedback-popup__form--sub-heading">What do you want to see more in the future?</p>
-        <input type="text" placeholder="Optional" ref={ref13}></input>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'What do you want to see more in the future?' : '今後、さらに期待することは何ですか？'}
+        </p>
+        <input type="text" placeholder={languageIndex === 0 ? 'Optional' : '任意'} ref={ref13}></input>
 
-        <p className="feedback-popup__form--sub-heading">Do you have any suggestions for us?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'Do you have any suggestions for us?' : '私たちに何かご提案がありますか？'}
+        </p>
         <textarea
-          placeholder="Optional"
+          placeholder={languageIndex === 0 ? 'Optional' : '任意'}
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
@@ -139,7 +150,7 @@ function TrialLastDayFeedback(props) {
         ></textarea>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          Send
+          {languageIndex === 0 ? 'Send' : '送信'}
         </div>
       </div>
     </div>

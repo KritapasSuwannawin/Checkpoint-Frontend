@@ -8,6 +8,7 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function FeedbackPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [star, setStar] = useState(3);
 
@@ -74,7 +75,9 @@ function FeedbackPopup(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">Help us improve by giving us feedbacks!</p>
+        <p className="feedback-popup__form--heading">
+          {languageIndex === 0 ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
+        </p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -84,74 +87,96 @@ function FeedbackPopup(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">How would you describe yourself?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'How would you describe yourself?' : 'あなたは以下のうちどれですか？'}
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref1} name="job"></input>
-          <label>High School</label>
+          <label>{languageIndex === 0 ? 'High school student' : '高校生'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref2} name="job"></input>
-          <label>College Student</label>
+          <label>{languageIndex === 0 ? 'College student' : '大学生'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref3} name="job"></input>
-          <label>Working</label>
+          <label>{languageIndex === 0 ? 'Working' : '社会人'}</label>
         </div>
-        <input type="text" placeholder="Others" ref={ref4}></input>
+        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref4}></input>
 
-        <p className="feedback-popup__form--sub-heading">How long have you been using Checkpoint.tokyo?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0
+            ? 'How long have you been using Checkpoint.tokyo?'
+            : 'Checkpoint.tokyoを使い始めてどのくらいになりますか？'}
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref5} name="duration"></input>
-          <label>Less than a week</label>
+          <label>{languageIndex === 0 ? 'Less than a week' : '1週間未満'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref6} name="duration"></input>
-          <label>A week</label>
+          <label>{languageIndex === 0 ? 'A week' : '1週間'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref7} name="duration"></input>
-          <label>Almost 1 month</label>
+          <label>{languageIndex === 0 ? 'Almost 1 month' : 'ほぼ1ヶ月'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref8} name="duration"></input>
-          <label>More than 1 month</label>
+          <label>{languageIndex === 0 ? 'More than 1 month' : '1ヶ月以上'}</label>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">How do you use Checkpoint.tokyo?</p>
+        <p className="feedback-popup__form--sub-heading">
+          {languageIndex === 0 ? 'How do you use Checkpoint.tokyo?' : 'Checkpoint.tokyoをどのように使っていますか？'}
+        </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref9}></input>
-          <label>With full-screen browser on my computer</label>
+          <label>
+            {languageIndex === 0 ? 'With full-screen browser on my computer' : 'パソコンのフルスクリーンブラウザで'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref10}></input>
-          <label>With minimized browser on my computer</label>
+          <label>
+            {languageIndex === 0 ? 'With minimized browser on my computer' : 'パソコンの最小化されたブラウザで'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref11}></input>
-          <label>With half-screen browser on my computer</label>
+          <label>
+            {languageIndex === 0 ? 'With half-screen browser on my computer' : 'パソコンの半画面ブラウザで'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref12}></input>
-          <label>With my Phone</label>
+          <label>{languageIndex === 0 ? 'With my Phone' : '携帯電話で'}</label>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">What problem does Checkpoint.tokyo solve for you?</p>
+        {languageIndex === 0 ? (
+          <p className="feedback-popup__form--sub-heading">What problem does Checkpoint.tokyo solve for you?</p>
+        ) : (
+          <p className="feedback-popup__form--sub-heading">
+            あなたにとって、 <br></br> Checkpoint.tokyoはどんな問題を解決しますか？
+          </p>
+        )}
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref13}></input>
-          <label>Checkpoint improves my sleep quality</label>
+          <label>
+            {languageIndex === 0 ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref14}></input>
-          <label>Checkpoint increases my productivity</label>
+          <label>{languageIndex === 0 ? 'Checkpoint increases my productivity' : '生産性の向上'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref15}></input>
-          <label>Checkpoint makes me feel relaxed</label>
+          <label>{languageIndex === 0 ? 'Checkpoint makes me feel relaxed' : 'リラックスできる'}</label>
         </div>
-        <input type="text" placeholder="Others" ref={ref16}></input>
+        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref16}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          Send
+          {languageIndex === 0 ? 'Send' : '送信'}
         </div>
       </div>
     </div>

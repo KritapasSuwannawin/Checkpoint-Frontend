@@ -139,6 +139,15 @@
     border-radius: 0.8rem;
     z-index: 1;
     font-size: 1.6rem;
+    max-height: calc(100vh - 9rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
     &--btn-container {
       @include flex-row-center;
@@ -701,6 +710,14 @@
       &--play-pause {
         width: 4.5rem;
       }
+    }
+  }
+}
+
+@media (max-height: 810px) {
+  .mood {
+    &.not-show {
+      display: none;
     }
   }
 }

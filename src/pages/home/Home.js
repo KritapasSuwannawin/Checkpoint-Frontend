@@ -10,6 +10,7 @@ import LoginPopup from '../../components/loginPopup/LoginPopup';
 import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
 import FreeTrialPopup from '../../components/freeTrialPopup/FreeTrialPopup';
 import LastDayTrialPopup from '../../components/freeTrialPopup/LastDayTrialPopup';
+import ExpirationPopup from '../../components/freeTrialPopup/ExpirationPopup';
 import ActivationPopup from '../../components/activationPopup/ActivationPopup';
 import HelpSupportPopup from '../../components/helpSupportPopup/HelpSupportPopup';
 import FeedbackPopup from '../../components/feedbackPopup/FeedbackPopup';
@@ -64,7 +65,7 @@ const dictionary = {
   language: ['EN', 'JP'],
   music: ['Music', 'ミュージック'],
   background: ['Background', 'バックグラウンド'],
-  aboutUs: ['About Us', '私たちについて'],
+  aboutUs: ['About Us', 'Checkpointについて'],
   policy: ['Policy', 'プライバシーポリシー'],
   donate: ['Donate', '寄付する'],
 };
@@ -107,6 +108,7 @@ function Home(props) {
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
   const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
   const [showLastDayTrialModal, setShowLastDayTrialModal] = useState(false);
+  const [showExpirationPopup, setShowExpirationPopup] = useState(false);
   const [showActivationPopup, setShowActivationPopup] = useState(false);
   const [showHelpSupportPopup, setShowHelpSupportPopup] = useState(false);
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
@@ -239,9 +241,11 @@ function Home(props) {
 
       if (dayOfTrial === 3 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
         setShowLastDayTrialModal(true);
+      } else if (!isPremium && !localStorage.getItem('checkpointShowExpirationPopup')) {
+        setShowExpirationPopup(true);
       }
     }
-  }, [memberId, dayOfTrial]);
+  }, [memberId, dayOfTrial, isPremium]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -386,6 +390,11 @@ function Home(props) {
     setShowLastDayTrialModal(false);
   }
 
+  function closeExpirationPopup() {
+    localStorage.setItem('checkpointShowExpirationPopup', 1);
+    setShowExpirationPopup(false);
+  }
+
   function favouriteBtnClickHandler() {
     dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
   }
@@ -457,6 +466,7 @@ function Home(props) {
       )}
       {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
       {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
+      {showExpirationPopup && <ExpirationPopup closeHandler={closeExpirationPopup}></ExpirationPopup>}
       {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
       {props.showFeedbackPopup && <FeedbackPopup closeHandler={props.closeFeedbackPopupHandler}></FeedbackPopup>}
       {showSubscriptionPopup && (
@@ -493,19 +503,13 @@ function Home(props) {
       <nav className="nav">
         <div onClick={overlayClickHandler} className="nav__logo">
           <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
-          {isPremium === undefined ? (
-            <div className="nav__logo--text-btn" onClick={navBtnClickHandler}>
-              Join us
-            </div>
-          ) : (
-            (isPremium === false || isOntrial) && (
-              <>
-                <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyPremiumBtn} alt=""></img>
-                <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                  Activate Premium
-                </div>
-              </>
-            )
+          {(isPremium === false || isOntrial) && (
+            <>
+              <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyPremiumBtn} alt=""></img>
+              <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                {languageIndex === 0 ? 'Activate Premium' : 'プレミアム有効化'}
+              </div>
+            </>
           )}
         </div>
         <div className="nav__links">
@@ -513,7 +517,7 @@ function Home(props) {
             onClick={props.showTutorialHandler}
             className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}
           >
-            Tutorial
+            {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
           </div>
           <div
             onClick={musicClickHander}
@@ -562,26 +566,36 @@ function Home(props) {
                       alt=""
                     ></img>
                     <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                      {isPremium && !isOntrial ? 'Extend' : 'Activate'} Premium
+                      {isPremium && !isOntrial
+                        ? languageIndex === 0
+                          ? 'Extend Premium'
+                          : 'プレミアムの延長'
+                        : languageIndex === 0
+                        ? 'Activate Premium'
+                        : 'プレミアム有効化'}
                     </div>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={png1} alt="" className="small"></img>
                     </div>
-                    <p onClick={openSubscriptionHandler}>Subscription</p>
+                    <p onClick={openSubscriptionHandler}>
+                      {languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}
+                    </p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={png2} alt=""></img>
                     </div>
-                    <p onClick={openHelpSupportHandler}>Help & Support</p>
+                    <p onClick={openHelpSupportHandler}>
+                      {languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}
+                    </p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={png3} alt=""></img>
                     </div>
-                    <p onClick={openFeedbackHandler}>Feedback</p>
+                    <p onClick={openFeedbackHandler}>{languageIndex === 0 ? 'Feedback' : 'ご意見・ご感想'}</p>
                   </div>
                 </>
               )}
@@ -598,7 +612,7 @@ function Home(props) {
                   <img src={png6} alt=""></img>
                 </div>
                 <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                  For Artist
+                  {languageIndex === 0 ? 'For Artist' : 'アーティスト向け'}
                 </a>
               </div>
               <div className="nav__outside-links--container">
@@ -614,7 +628,7 @@ function Home(props) {
                   <div className="nav__outside-links--icon-container">
                     <img src={png7} alt=""></img>
                   </div>
-                  <p onClick={logoutHandler}>Logout</p>
+                  <p onClick={logoutHandler}>{languageIndex === 0 ? 'Logout' : 'ログアウト'}</p>
                 </div>
               )}
             </div>
@@ -675,7 +689,7 @@ function Home(props) {
           </>
         )}
       </div>
-      <div className="mood">
+      <div className={`mood ${!memberId ? 'not-show' : ''}`}>
         <div className="mood__section">
           <img
             src={daySvg36}

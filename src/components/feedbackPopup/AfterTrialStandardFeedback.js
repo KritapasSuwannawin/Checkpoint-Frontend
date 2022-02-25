@@ -8,6 +8,7 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function AfterTrialStandardFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [star, setStar] = useState(3);
 
@@ -56,7 +57,9 @@ function AfterTrialStandardFeedback(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">Help us improve by giving us feedbacks!</p>
+        <p className="feedback-popup__form--heading">
+          {languageIndex === 0 ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
+        </p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -66,37 +69,57 @@ function AfterTrialStandardFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">
-          Why you are sticking with standard plan <br></br> rather than going premium?
-        </p>
+        {languageIndex === 0 ? (
+          <p className="feedback-popup__form--sub-heading">
+            Why you are sticking with standard plan <br></br> rather than going premium?
+          </p>
+        ) : (
+          <p className="feedback-popup__form--sub-heading">
+            なぜプレミアムではなく、<br></br> スタンダードプランにこだわっているのですか？
+          </p>
+        )}
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
-          <label>The features I get from standard plan are already enough</label>
+          <label>
+            {languageIndex === 0
+              ? 'The features I get from standard plan are already enough'
+              : 'スタンダードプランで得られる機能ですでに十分です'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>Premium plan is too expensive</label>
+          <label>{languageIndex === 0 ? 'Premium plan is too expensive' : 'プレミアムプランは高すぎる'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>I don't use the service very often</label>
+          <label>{languageIndex === 0 ? "I don't use the service very often" : 'あまり利用しないので'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref4}></input>
-          <label>I've decided to use another similar service</label>
+          <label>
+            {languageIndex === 0
+              ? "I've decided to use another similar service"
+              : '他の似たようなサービスを利用することにした'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>I don't think Premium subscription is worth the money</label>
+          <label>
+            {languageIndex === 0
+              ? "I don't think Premium subscription is worth the money"
+              : 'プレミアムプランはお金を払う価値がないと思う'}
+          </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>I wasn't looking for this service</label>
+          <label>
+            {languageIndex === 0 ? "I wasn't looking for this service" : 'このサービスを探していたわけではありません'}
+          </label>
         </div>
-        <input type="text" placeholder="Others" ref={ref7}></input>
+        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref7}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          Send
+          {languageIndex === 0 ? 'Send' : '送信'}
         </div>
       </div>
     </div>

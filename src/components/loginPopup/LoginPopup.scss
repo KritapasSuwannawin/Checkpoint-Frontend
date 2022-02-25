@@ -33,6 +33,10 @@
       opacity: 0.2;
     }
 
+    &.small {
+      font-size: 3rem;
+    }
+
     &:hover {
       cursor: pointer;
     }
@@ -173,7 +177,7 @@
   }
 }
 
-@media (max-height: 615px) {
+@media (max-height: 810px) {
   .login-popup {
     padding-bottom: 0;
   }

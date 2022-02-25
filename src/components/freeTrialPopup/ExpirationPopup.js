@@ -5,20 +5,27 @@ import './FreeTrialPopup.scss';
 import oneMonthImg from './img/Premium Card 1m.png';
 import threeMonthImg from './img/Premium Card 3m.png';
 
-function FreeTrialPopup(props) {
+function ExpirationPopup(props) {
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
   return (
     <div className="free-trial-popup">
       <div className="free-trial-popup__container">
         <p className="free-trial-popup__title">
-          {languageIndex === 0 ? 'Your 3-Day Free Trial Has' : '3日間の無料トライアルを'} <br></br>{' '}
-          <span>{languageIndex === 0 ? 'Started!' : '開始しました！'}</span>
+          {languageIndex === 0 ? 'Your Free Trial Has' : '無料トライアルは'} <br></br>{' '}
+          <span className="red">{languageIndex === 0 ? 'Expired!' : '終了しました！'}</span>
         </p>
-        <p className="free-trial-popup__sub-title">
-          You can now enjoy Premium perks<br></br>
-          with full customization and much more contents
-        </p>
+        {languageIndex === 0 ? (
+          <p className="free-trial-popup__sub-title">
+            To continue enjoying Premium features, <br></br>
+            buy a digital coupon here.
+          </p>
+        ) : (
+          <p className="free-trial-popup__sub-title">
+            引き続きプレミアム機能をお楽しみいただくには、<br></br>
+            こちらからデジタルクーポンをご購入ください。
+          </p>
+        )}
         <div className="free-trial-popup__img-container">
           <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
             <img src={oneMonthImg} alt=""></img>
@@ -35,4 +42,4 @@ function FreeTrialPopup(props) {
   );
 }
 
-export default FreeTrialPopup;
+export default ExpirationPopup;

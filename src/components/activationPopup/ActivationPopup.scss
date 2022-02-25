@@ -94,6 +94,10 @@
     font-weight: 500;
     font-size: 1.8rem;
 
+    &.small {
+      font-size: 1.6rem;
+    }
+
     &:hover {
       cursor: pointer;
     }

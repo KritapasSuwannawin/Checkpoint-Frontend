@@ -25,8 +25,6 @@ import AfterTrialStandardFeedback from './components/feedbackPopup/AfterTrialSta
 import SafariGuide from './components/safariGuide/SafariGuide';
 import Tutorial from './components/tutorial/Tutorial';
 
-import { firestore } from './firebase/app';
-
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
@@ -94,20 +92,6 @@ function App() {
     if (window.location.protocol === 'http:' && !window.location.href.includes('http://localhost:3000/')) {
       window.location.replace(window.location.href.replace('http:', 'https:'));
     }
-
-    firestore
-      .collection('website-control')
-      .doc('storage')
-      .onSnapshot((doc) => {
-        if (doc.data) {
-          const allowRead = doc.data().allowRead;
-          if (!allowRead) {
-            window.location.replace(`${window.location.href}about`);
-          }
-        } else {
-          window.location.reload();
-        }
-      });
 
     if (window.navigator.userLanguage === 'ja' || window.navigator.language === 'ja') {
       dispatch(languageActions.languageChangeHandler());

@@ -115,9 +115,9 @@
       font-weight: 500;
       font-size: 1.4rem;
       align-self: flex-start;
-      white-space: nowrap;
       position: relative;
       padding-left: 1.4rem;
+      width: 21.5rem;
     }
 
     &--list-btn {
@@ -256,6 +256,10 @@
       flex-wrap: wrap;
       justify-content: center;
       row-gap: 2rem;
+
+      &--list {
+        width: 100%;
+      }
     }
 
     &__standard,

@@ -38,6 +38,9 @@ const memberSlice = createSlice({
     },
     upgradeMember(state, action) {
       state.isPremium = true;
+      state.isOntrial = false;
+      state.dayOfTrial = undefined;
+      state.premiumExpirationDate = action.payload.premiumExpirationDate;
     },
     logout(state, action) {
       state.memberId = undefined;
