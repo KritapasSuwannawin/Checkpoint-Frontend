@@ -35,7 +35,7 @@ function LastDayTrialPopup(props) {
           </a>
         </div>
         <div className="free-trial-popup__btn" onClick={props.closeHandler}>
-          Later
+          {languageIndex === 0 ? 'Later' : '後で読む'}
         </div>
       </div>
     </div>

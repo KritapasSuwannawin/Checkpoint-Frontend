@@ -648,7 +648,7 @@ function Home(props) {
         ></img>
         <div className="background-control__ambient-container">
           <div className="background-control__ambient-volume">
-            <p>Ambience</p>
+            <p>{languageIndex === 0 ? 'Ambience' : '雰囲気'}</p>
             <img src={speakerSvg15} alt=""></img>
             <input
               type="range"
@@ -675,7 +675,7 @@ function Home(props) {
           <>
             <div className="music-control__title">
               <img src={heartFullSvg30} alt=""></img>
-              <p>Favorite music</p>
+              <p>{languageIndex === 0 ? 'Favorite music' : '好きな音楽'}</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
               <p>Your music playlist is empty</p>

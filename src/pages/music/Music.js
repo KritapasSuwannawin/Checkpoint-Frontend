@@ -13,6 +13,7 @@ function Music() {
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
+  const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const [categoryArr, setCategoryArr] = useState([]);
@@ -112,7 +113,7 @@ function Music() {
           <p>{category}</p>
         </div>
       ) : (
-        <p className="music__title">New Release</p>
+        <p className="music__title">{languageIndex === 0 ? 'New Release' : '新しいリリース'}</p>
       )}
       {thumbnailArr}
       {!category && <div className="music__category-container">{categoryArr}</div>}

@@ -272,6 +272,10 @@
     column-gap: 1rem;
     width: 100%;
 
+    p {
+      white-space: nowrap;
+    }
+
     &--slider {
       width: 100%;
     }

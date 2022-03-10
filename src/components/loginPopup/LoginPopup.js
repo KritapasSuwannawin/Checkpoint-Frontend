@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GoogleLogin } from 'react-google-login';
+import { signInWithPopupHandler, googleProvider, appleProvider } from '../../firebase/app';
 import crypto from 'crypto-js';
 
 import './LoginPopup.scss';
@@ -12,6 +12,8 @@ import { avatarActions } from '../../store/avatarSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
 import spinner from '../../svg/20px/spinner-solid.svg';
+import googleLogo from '../../svg/36px/google-logo.svg';
+import appleLogo from '../../svg/36px/apple-brands.svg';
 
 function LoginPopup(props) {
   const languageIndex = useSelector((store) => store.language.languageIndex);
@@ -459,100 +461,107 @@ function LoginPopup(props) {
       });
   }
 
-  function onGoogleSuccess(res) {
-    const { email, googleId } = res.profileObj;
-
-    if (signingUp) {
-      if (!checkboxRef1.current.checked) {
-        setAgreeToPolicy(false);
-        return;
-      } else {
-        setAgreeToPolicy(true);
-      }
-
-      setLoading(true);
-      setErrorDuringAuthen(false);
-      setAccountAlreadyExist(false);
-
-      const data = { email, password: googleId, loginMethod: 'google', receiveNews: checkboxRef2.current.checked };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
-
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setAccountAlreadyExist(errorMessage === 'account already exist');
-
-          if (!errorMessage) {
-            dispatch(deviceActions.setNewDevice());
-            dispatch(memberActions.setMember(result.data[0]));
-            setLocalStorage(data);
-            document.removeEventListener('keyup', enterHandler);
-            props.closeHandler(true);
-          }
-        })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
-    } else {
-      setLoading(true);
-      setErrorDuringAuthen(false);
-      setIncorrectPassword(false);
-      setAccountNotExist(false);
-
-      const data = { email, password: googleId, loginMethod: 'google' };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
-
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setIncorrectPassword(errorMessage === 'incorrect password');
-          setAccountNotExist(errorMessage === 'account not exist');
-
-          if (!errorMessage) {
-            const data = result.data[0];
-            dispatch(deviceActions.setNewDevice());
-            dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
-            dispatch(musicActions.setInitialMusic(data.musicId));
-            dispatch(musicActions.setMusicCategory(data.musicCategory));
-            dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
-            dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
-            dispatch(avatarActions.changeAvatarHandler(data.avatarId));
-            dispatch(memberActions.setMember(data));
-            setLocalStorage({ email, password: googleId, loginMethod: 'google' });
-            document.removeEventListener('keyup', enterHandler);
-            props.closeHandler(false);
-          } else {
-            clearLocalStorage();
-          }
-        })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
+  function loginHandler() {
+    let provider;
+    if (this === 'google') {
+      provider = googleProvider;
+    } else if (this === 'apple') {
+      provider = appleProvider;
     }
-  }
 
-  function onGoogleFailure() {
-    setErrorDuringAuthen(true);
+    signInWithPopupHandler(provider)
+      .then((result) => {
+        const { email, uid } = result.user.providerData[0];
+
+        if (signingUp) {
+          if (!checkboxRef1.current.checked) {
+            setAgreeToPolicy(false);
+            return;
+          } else {
+            setAgreeToPolicy(true);
+          }
+
+          setLoading(true);
+          setErrorDuringAuthen(false);
+          setAccountAlreadyExist(false);
+
+          const data = { email, password: uid, loginMethod: this, receiveNews: checkboxRef2.current.checked };
+
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              setLoading(false);
+              const errorMessage = result.message;
+
+              setErrorDuringAuthen(errorMessage === 'error during authentication');
+              setAccountAlreadyExist(errorMessage === 'account already exist');
+
+              if (!errorMessage) {
+                dispatch(deviceActions.setNewDevice());
+                dispatch(memberActions.setMember(result.data[0]));
+                setLocalStorage(data);
+                document.removeEventListener('keyup', enterHandler);
+                props.closeHandler(true);
+              }
+            })
+            .catch(() => {
+              setLoading(false);
+              setErrorDuringAuthen(true);
+            });
+        } else {
+          setLoading(true);
+          setErrorDuringAuthen(false);
+          setIncorrectPassword(false);
+          setAccountNotExist(false);
+
+          const data = { email, password: uid, loginMethod: this };
+
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              setLoading(false);
+              const errorMessage = result.message;
+
+              setErrorDuringAuthen(errorMessage === 'error during authentication');
+              setIncorrectPassword(errorMessage === 'incorrect password');
+              setAccountNotExist(errorMessage === 'account not exist');
+
+              if (!errorMessage) {
+                const data = result.data[0];
+                dispatch(deviceActions.setNewDevice());
+                dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
+                dispatch(musicActions.setInitialMusic(data.musicId));
+                dispatch(musicActions.setMusicCategory(data.musicCategory));
+                dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
+                dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
+                dispatch(avatarActions.changeAvatarHandler(data.avatarId));
+                dispatch(memberActions.setMember(data));
+                setLocalStorage({ email, password: uid, loginMethod: this });
+                document.removeEventListener('keyup', enterHandler);
+                props.closeHandler(false);
+              } else {
+                clearLocalStorage();
+              }
+            })
+            .catch(() => {
+              setLoading(false);
+              setErrorDuringAuthen(true);
+            });
+        }
+      })
+      .catch(() => setErrorDuringAuthen(true));
   }
 
   document.addEventListener('keyup', enterHandler);
@@ -710,14 +719,18 @@ function LoginPopup(props) {
                 {languageIndex === 0 ? 'Sign in' : 'サインイン'}
               </p>
             </div>
-            <div className="login-popup__google">
-              <GoogleLogin
-                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                buttonText={signingUp ? 'Sign up with Google' : 'Sign in with Google'}
-                onSuccess={onGoogleSuccess}
-                onFailure={onGoogleFailure}
-                cookiePolicy={'single_host_origin'}
-              ></GoogleLogin>
+            <div>
+              {signingUp
+                ? languageIndex === 0
+                  ? 'Sign up with'
+                  : 'に登録する'
+                : languageIndex === 0
+                ? 'Sign in with'
+                : 'でサインイン'}
+            </div>
+            <div className="login-popup__logo-container">
+              <img src={googleLogo} alt="" className="small" onClick={loginHandler.bind('google')}></img>
+              <img src={appleLogo} alt="" onClick={loginHandler.bind('apple')}></img>
             </div>
             <div className="login-popup__seperator"></div>
             <input

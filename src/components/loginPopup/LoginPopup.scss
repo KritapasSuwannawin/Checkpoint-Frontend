@@ -49,18 +49,22 @@
     margin-bottom: 1rem;
   }
 
-  &__google {
-    button,
-    div {
+  &__logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 2rem;
+
+    img {
       height: 3.6rem;
-    }
 
-    div {
-      margin: 0 !important;
-    }
+      &.small {
+        height: 3.4rem;
+      }
 
-    button {
-      color: #555 !important;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 

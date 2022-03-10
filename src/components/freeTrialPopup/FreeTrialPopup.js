@@ -15,10 +15,15 @@ function FreeTrialPopup(props) {
           {languageIndex === 0 ? 'Your 3-Day Free Trial Has' : '3日間の無料トライアルを'} <br></br>{' '}
           <span>{languageIndex === 0 ? 'Started!' : '開始しました！'}</span>
         </p>
-        <p className="free-trial-popup__sub-title">
-          You can now enjoy Premium perks<br></br>
-          with full customization and much more contents
-        </p>
+        {languageIndex === 0 ? (
+          <p className="free-trial-popup__sub-title">
+            You can now enjoy Premium perks with full customization and much more contents
+          </p>
+        ) : (
+          <p className="free-trial-popup__sub-title">
+            フルカスタマイズが可能なプレミアム特典や、<br></br>より充実したコンテンツをお楽しみいただけます
+          </p>
+        )}
         <div className="free-trial-popup__img-container">
           <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
             <img src={oneMonthImg} alt=""></img>
@@ -28,7 +33,7 @@ function FreeTrialPopup(props) {
           </a>
         </div>
         <div className="free-trial-popup__btn" onClick={props.closeHandler}>
-          Later
+          {languageIndex === 0 ? 'Later' : '後で読む'}
         </div>
       </div>
     </div>
