@@ -22,13 +22,7 @@ function SliderCard(props) {
     setImageArr((imageArr) => {
       return [
         ...imageArr,
-        <img
-          key={imageIndex}
-          src={imageUrl}
-          onClick={imageClickHandler}
-          alt=""
-          className="slider-card-upgrade__slide--image"
-        ></img>,
+        <img key={imageIndex} src={imageUrl} onClick={imageClickHandler} alt="" className="slider-card-upgrade__slide--image"></img>,
       ];
     });
 

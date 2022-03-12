@@ -105,9 +105,7 @@ function FeedbackPopup(props) {
         <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref4}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0
-            ? 'How long have you been using Checkpoint.tokyo?'
-            : 'Checkpoint.tokyoを使い始めてどのくらいになりますか？'}
+          {languageIndex === 0 ? 'How long have you been using Checkpoint.tokyo?' : 'Checkpoint.tokyoを使い始めてどのくらいになりますか？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="radio" ref={ref5} name="duration"></input>
@@ -131,21 +129,15 @@ function FeedbackPopup(props) {
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref9}></input>
-          <label>
-            {languageIndex === 0 ? 'With full-screen browser on my computer' : 'パソコンのフルスクリーンブラウザで'}
-          </label>
+          <label>{languageIndex === 0 ? 'With full-screen browser on my computer' : 'パソコンのフルスクリーンブラウザで'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref10}></input>
-          <label>
-            {languageIndex === 0 ? 'With minimized browser on my computer' : 'パソコンの最小化されたブラウザで'}
-          </label>
+          <label>{languageIndex === 0 ? 'With minimized browser on my computer' : 'パソコンの最小化されたブラウザで'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref11}></input>
-          <label>
-            {languageIndex === 0 ? 'With half-screen browser on my computer' : 'パソコンの半画面ブラウザで'}
-          </label>
+          <label>{languageIndex === 0 ? 'With half-screen browser on my computer' : 'パソコンの半画面ブラウザで'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref12}></input>
@@ -161,9 +153,7 @@ function FeedbackPopup(props) {
         )}
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref13}></input>
-          <label>
-            {languageIndex === 0 ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}
-          </label>
+          <label>{languageIndex === 0 ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref14}></input>

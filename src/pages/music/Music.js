@@ -32,10 +32,7 @@ function Music() {
   );
 
   useEffect(() => {
-    if (
-      JSON.stringify(availableMusicArrRef.current) === JSON.stringify(availableMusicArr) &&
-      categoryRef.current === category
-    ) {
+    if (JSON.stringify(availableMusicArrRef.current) === JSON.stringify(availableMusicArr) && categoryRef.current === category) {
       return;
     }
 

@@ -5,7 +5,8 @@ import './UpgradePopup.scss';
 import SliderCard from './SliderCard';
 
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
-import buyPremiumBtn from '../../svg/50px/buy-premium-button.png';
+import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
+import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 import communityreview from './img/Community Review For Web.png';
 
 function UpgradePopup(props) {
@@ -87,7 +88,11 @@ function UpgradePopup(props) {
                   ${process.env.REACT_APP_SUBSCRIPTION_PRICE} <span>/mo</span>
                 </p>
                 <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
-                  <img src={buyPremiumBtn} alt="" className="upgrade-popup__cards--buy-premium"></img>
+                  <img
+                    src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                    alt=""
+                    className="upgrade-popup__cards--buy-premium"
+                  ></img>
                 </a>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
@@ -99,7 +104,7 @@ function UpgradePopup(props) {
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {languageIndex === 0 ? '15 Realistic Ambience' : 'リアルなアンビエンス'}
+                  {languageIndex === 0 ? '15 Realistic Ambience' : '１５リアルなアンビエンス'}
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
@@ -121,9 +126,7 @@ function UpgradePopup(props) {
           </div>
         </div>
         <div className="upgrade-popup__community-review">
-          <p className="upgrade-popup__community-review--title">
-            {languageIndex === 0 ? 'Community Review' : 'コミュニティレビュー'}
-          </p>
+          <p className="upgrade-popup__community-review--title">{languageIndex === 0 ? 'Community Review' : 'コミュニティレビュー'}</p>
           <img src={communityreview} alt="" className="upgrade-popup__community-review--img"></img>
         </div>
       </div>

@@ -12,8 +12,10 @@ import { avatarActions } from '../../store/avatarSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
 import spinner from '../../svg/20px/spinner-solid.svg';
-import googleLogo from '../../svg/36px/google-logo.svg';
-import appleLogo from '../../svg/36px/apple-brands.svg';
+import googleSigninBtn from './icon/Google Sign in button Web.svg';
+import appleSigninBtn from './icon/Apple Sign in button Web.svg';
+import googleSignupBtn from './icon/Google Sign up button Web.svg';
+import appleSignupBtn from './icon/Apple Sign up button Web.svg';
 
 function LoginPopup(props) {
   const languageIndex = useSelector((store) => store.language.languageIndex);
@@ -165,7 +167,7 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountAlreadyExist(false);
 
-      const data = { email, loginMethod: 'email' };
+      const data = { email, loginMethod: 'email', isJapanese: languageIndex ? true : false };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/verification`, {
         method: 'POST',
@@ -364,7 +366,7 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountNotExist(false);
 
-      const data = { email };
+      const data = { email, isJapanese: languageIndex ? true : false };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/forget-password`, {
         method: 'POST',
@@ -398,9 +400,7 @@ function LoginPopup(props) {
   function forgetPasswordCheckCodeHandler() {
     if (
       resetPasswordVerificationCodeRef.current.value ===
-      crypto.AES.decrypt(resetPasswordVerificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(
-        crypto.enc.Utf8
-      )
+      crypto.AES.decrypt(resetPasswordVerificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(crypto.enc.Utf8)
     ) {
       setInvalidResetPasswordVerificationCode(false);
       setAllowEnterNewPassword(true);
@@ -573,9 +573,7 @@ function LoginPopup(props) {
           <div className="login-popup__title-container">
             {!props.signIn && (
               <p
-                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${
-                  languageIndex !== 0 ? 'small' : ''
-                }`}
+                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
                 onClick={signUpClickHandler.bind(true)}
               >
                 {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
@@ -590,21 +588,30 @@ function LoginPopup(props) {
           </div>
           <p className={`login-popup__sub-title`}>{languageIndex === 0 ? 'Reset Password' : 'パスワードの再設定'}</p>
           {!resetPasswordVerificationCode ? (
-            <input
-              className="login-popup__input"
-              type="text"
-              id="email"
-              ref={resetPasswordEmailRef}
-              placeholder={languageIndex === 0 ? 'Email' : 'メール'}
-            ></input>
+            <>
+              {languageIndex === 0 ? (
+                <p className="login-popup__description">
+                  Please enter your email address<br></br>and we'll send you a link to reset your password.
+                </p>
+              ) : (
+                <p className="login-popup__description">
+                  ご利用中のメールアドレスを入力してください。 <br></br>パスワード再設定のためのURLをお送りします。
+                </p>
+              )}
+              <input
+                className="login-popup__input"
+                type="text"
+                id="email"
+                ref={resetPasswordEmailRef}
+                placeholder={languageIndex === 0 ? 'Email' : 'メール'}
+              ></input>
+            </>
           ) : !allowEnterNewPassword ? (
             <input
               className="login-popup__input"
               type="text"
               ref={resetPasswordVerificationCodeRef}
-              placeholder={
-                languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'
-              }
+              placeholder={languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
             ></input>
           ) : (
             <>
@@ -622,19 +629,13 @@ function LoginPopup(props) {
               ></input>
             </>
           )}
-          {invalidEmail && (
-            <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>
-          )}
+          {invalidEmail && <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>}
           {newPasswordNotMatch && (
-            <p className="login-popup__error-msg">
-              {languageIndex === 0 ? 'Passwords do not match' : 'パスワードが一致していません'}
-            </p>
+            <p className="login-popup__error-msg">{languageIndex === 0 ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
           )}
           {invalidNewPassword && (
             <p className="login-popup__error-msg">
-              {languageIndex === 0
-                ? 'Password must contain at least 6 characters'
-                : '>パスワードには6文字以上が含まれている必要があります'}
+              {languageIndex === 0 ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
             </p>
           )}
           {languageIndex === 0 ? (
@@ -650,38 +651,22 @@ function LoginPopup(props) {
           )}
           {!resetPasswordVerificationCode ? (
             <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
-              {loading ? (
-                <img className="login-popup__spinner" src={spinner} alt=""></img>
-              ) : languageIndex === 0 ? (
-                'Send'
-              ) : (
-                '送信'
-              )}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : languageIndex === 0 ? 'Send' : '送信'}
             </div>
           ) : (
             <div
               className="login-popup__submit-btn no-margin"
               onClick={allowEnterNewPassword ? resetPasswordHandler : forgetPasswordCheckCodeHandler}
             >
-              {loading ? (
-                <img className="login-popup__spinner" src={spinner} alt=""></img>
-              ) : languageIndex === 0 ? (
-                'Submit'
-              ) : (
-                '送信'
-              )}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : languageIndex === 0 ? 'Submit' : '送信'}
             </div>
           )}
           {invalidResetPasswordVerificationCode && (
-            <p className="login-popup__error-msg">
-              {languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}
-            </p>
+            <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}</p>
           )}
           {accountNotExist && (
             <p className="login-popup__error-msg">
-              {languageIndex === 0
-                ? 'Account does not exist, please sign up'
-                : 'アカウントが存在しません。サインアップしてください'}
+              {languageIndex === 0 ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
             </p>
           )}
           {errorDuringAuthen && (
@@ -704,9 +689,7 @@ function LoginPopup(props) {
             <div className="login-popup__title-container">
               {!props.signIn && (
                 <p
-                  className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${
-                    languageIndex !== 0 ? 'small' : ''
-                  }`}
+                  className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
                   onClick={signUpClickHandler.bind(true)}
                 >
                   {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
@@ -719,19 +702,8 @@ function LoginPopup(props) {
                 {languageIndex === 0 ? 'Sign in' : 'サインイン'}
               </p>
             </div>
-            <div>
-              {signingUp
-                ? languageIndex === 0
-                  ? 'Sign up with'
-                  : 'に登録する'
-                : languageIndex === 0
-                ? 'Sign in with'
-                : 'でサインイン'}
-            </div>
-            <div className="login-popup__logo-container">
-              <img src={googleLogo} alt="" className="small" onClick={loginHandler.bind('google')}></img>
-              <img src={appleLogo} alt="" onClick={loginHandler.bind('apple')}></img>
-            </div>
+            <img src={signingUp ? googleSignupBtn : googleSigninBtn} alt="" className="small" onClick={loginHandler.bind('google')}></img>
+            <img src={signingUp ? appleSignupBtn : appleSigninBtn} alt="" onClick={loginHandler.bind('apple')}></img>
             <div className="login-popup__seperator"></div>
             <input
               className="login-popup__input"
@@ -740,9 +712,7 @@ function LoginPopup(props) {
               id="email"
               ref={emailRef}
             ></input>
-            {invalidEmail && (
-              <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>
-            )}
+            {invalidEmail && <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>}
             <input
               className="login-popup__input"
               type="password"
@@ -759,15 +729,11 @@ function LoginPopup(props) {
             {!signingUp && (
               <>
                 {incorrectPassword && (
-                  <p className="login-popup__error-msg">
-                    {languageIndex === 0 ? 'Incorect password' : '間違ったパスワード'}
-                  </p>
+                  <p className="login-popup__error-msg">{languageIndex === 0 ? 'Incorect password' : '間違ったパスワード'}</p>
                 )}
                 {accountNotExist && (
                   <p className="login-popup__error-msg">
-                    {languageIndex === 0
-                      ? 'Account does not exist, please sign up'
-                      : 'アカウントが存在しません。サインアップしてください'}
+                    {languageIndex === 0 ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
                   </p>
                 )}
               </>
@@ -787,9 +753,7 @@ function LoginPopup(props) {
                 )}
                 {accountAlreadyExist && (
                   <p className="login-popup__error-msg">
-                    {languageIndex === 0
-                      ? 'Account already exists, please sign in'
-                      : 'アカウントは既に存在します。サインインしてください'}
+                    {languageIndex === 0 ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
                   </p>
                 )}
                 <div className="login-popup__privacy-container margin-top">
@@ -797,19 +761,11 @@ function LoginPopup(props) {
                   {languageIndex === 0 ? (
                     <p>
                       By registering, you agree to the{' '}
-                      <a
-                        href={`${window.location.href.replace('premium', '')}term-condition`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
                         Terms<br></br>
                       </a>
                       and{' '}
-                      <a
-                        href={`${window.location.href.replace('premium', '')}term-condition`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
                         Privacy Policy
                       </a>
                       .
@@ -817,19 +773,11 @@ function LoginPopup(props) {
                   ) : (
                     <p>
                       登録することで、
-                      <a
-                        href={`${window.location.href.replace('premium', '')}term-condition`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
                         利用規約
                       </a>
                       と
-                      <a
-                        href={`${window.location.href.replace('premium', '')}term-condition`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
                         プライバシーポリシー
                       </a>
                       <br></br>
@@ -888,26 +836,22 @@ function LoginPopup(props) {
           </>
         ) : (
           <>
-            <p className={`login-popup__title`}>{languageIndex === 0 ? 'Email Verification' : 'メールによる確認'}</p>
+            <p className={`login-popup__title ${languageIndex !== 0 ? 'small' : ''}`}>
+              {languageIndex === 0 ? 'Email Verification' : 'メールによる確認'}
+            </p>
             <input
               className="login-popup__input"
               type="text"
               ref={verificationCodeRef}
-              placeholder={
-                languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'
-              }
+              placeholder={languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
             ></input>
             {accountAlreadyExist && (
               <p className="login-popup__error-msg">
-                {languageIndex === 0
-                  ? 'Account already exists, please sign in'
-                  : 'アカウントは既に存在します。サインインしてください'}
+                {languageIndex === 0 ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
               </p>
             )}
             {invalidCode && (
-              <p className="login-popup__error-msg">
-                {languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}
-              </p>
+              <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}</p>
             )}
             <div className="login-popup__submit-btn no-margin" onClick={verifyHandler}>
               {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Verify'}

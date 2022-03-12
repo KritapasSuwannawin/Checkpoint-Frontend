@@ -49,12 +49,7 @@ function FavouriteMusicCard(props) {
       </div>
       <div className="favourite-music-card__right">
         <p className="favourite-music-card__right--category-name">{music.category}</p>
-        <img
-          src={heartFullSvg25}
-          alt=""
-          className="favourite-music-card__right--favourite-btn"
-          onClick={removeFavouriteMusicHandler}
-        ></img>
+        <img src={heartFullSvg25} alt="" className="favourite-music-card__right--favourite-btn" onClick={removeFavouriteMusicHandler}></img>
       </div>
     </div>
   );

@@ -16,10 +16,7 @@ function SliderCard(props) {
 
   useEffect(() => {
     setImageArr((imageArr) => {
-      return [
-        ...imageArr,
-        <img key={props.page} src={imageUrl} alt="" className="slider-card-tutorial__slide--image"></img>,
-      ];
+      return [...imageArr, <img key={props.page} src={imageUrl} alt="" className="slider-card-tutorial__slide--image"></img>];
     });
 
     const timeout = setTimeout(() => {

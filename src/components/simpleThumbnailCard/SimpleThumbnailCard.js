@@ -24,11 +24,7 @@ function SimpleThumbnailCard(props) {
   }, [props.thumbnailUrl]);
 
   const className = `simple-thumbnail-card ${
-    props.ambient
-      ? `ambient-card ${
-          currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''
-        }`
-      : ''
+    props.ambient ? `ambient-card ${currentAmbientArr.findIndex((ambient) => ambient.id === props.id) >= 0 ? 'current-ambient' : ''}` : ''
   } ${props.background ? `background-card ${currentBackground.id === props.id ? 'current-background' : ''}` : ''} ${
     props.avatar ? `avatar-card ${currentAvatar.id === props.id ? 'current-avatar' : ''}` : ''
   }`;

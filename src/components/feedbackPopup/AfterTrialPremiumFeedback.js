@@ -148,9 +148,7 @@ function AfterTrialPremiumFeedback(props) {
         <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref16}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0
-            ? 'The unique value of our service?'
-            : 'Checkpointのサービスのユニークな価値は何だと思いますか？'}
+          {languageIndex === 0 ? 'The unique value of our service?' : 'Checkpointのサービスのユニークな価値は何だと思いますか？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>
@@ -158,9 +156,7 @@ function AfterTrialPremiumFeedback(props) {
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref8}></input>
-          <label>
-            {languageIndex === 0 ? 'All-in-one relaxing platform' : 'オールインワンリラックスプラットフォーム'}
-          </label>
+          <label>{languageIndex === 0 ? 'All-in-one relaxing platform' : 'オールインワンリラックスプラットフォーム'}</label>
         </div>
         <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref9}></input>
 

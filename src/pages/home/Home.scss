@@ -585,6 +585,10 @@
       }
     }
   }
+
+  .cookie-popup {
+    font-size: 1.1rem;
+  }
 }
 
 @media (max-width: 860px) {
@@ -650,6 +654,16 @@
   .music-control {
     display: none;
   }
+
+  .cookie-popup {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 715px) {
+  .cookie-popup {
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 680px) {
@@ -690,12 +704,6 @@
   }
 }
 
-@media (max-width: 610px) {
-  .cookie-popup {
-    font-size: 1.2rem;
-  }
-}
-
 @media (max-width: 540px) {
   .nav {
     &__logo {
@@ -703,10 +711,6 @@
         width: 15rem;
       }
     }
-  }
-
-  .cookie-popup {
-    font-size: 1.1rem;
   }
 
   .player {

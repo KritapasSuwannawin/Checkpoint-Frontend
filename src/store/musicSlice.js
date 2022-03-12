@@ -45,9 +45,7 @@ const musicSlice = createSlice({
       }
 
       if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
-        availableMusicArr = state.favouriteMusicIdArr.map((id) =>
-          state.availableMusicArr.find((music) => music.id === id)
-        );
+        availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
       }
 
       if (availableMusicArr.length === 1) {
@@ -86,9 +84,7 @@ const musicSlice = createSlice({
       }
 
       if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
-        availableMusicArr = state.favouriteMusicIdArr.map((id) =>
-          state.availableMusicArr.find((music) => music.id === id)
-        );
+        availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
       }
 
       if (availableMusicArr.length === 1) {

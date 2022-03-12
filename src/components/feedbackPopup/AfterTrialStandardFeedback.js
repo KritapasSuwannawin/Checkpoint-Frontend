@@ -97,24 +97,18 @@ function AfterTrialStandardFeedback(props) {
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref4}></input>
           <label>
-            {languageIndex === 0
-              ? "I've decided to use another similar service"
-              : '他の似たようなサービスを利用することにした'}
+            {languageIndex === 0 ? "I've decided to use another similar service" : '他の似たようなサービスを利用することにした'}
           </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
           <label>
-            {languageIndex === 0
-              ? "I don't think Premium subscription is worth the money"
-              : 'プレミアムプランはお金を払う価値がないと思う'}
+            {languageIndex === 0 ? "I don't think Premium subscription is worth the money" : 'プレミアムプランはお金を払う価値がないと思う'}
           </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>
-            {languageIndex === 0 ? "I wasn't looking for this service" : 'このサービスを探していたわけではありません'}
-          </label>
+          <label>{languageIndex === 0 ? "I wasn't looking for this service" : 'このサービスを探していたわけではありません'}</label>
         </div>
         <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref7}></input>
 

@@ -109,9 +109,7 @@ function ActivationPopup(props) {
         </div>
         {errorDuringAuthen && (
           <p className="activation-popup__error-msg">
-            {languageIndex === 0
-              ? 'Error occured, please try again later'
-              : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
+            {languageIndex === 0 ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
           </p>
         )}
         {languageIndex === 0 ? (
@@ -140,8 +138,8 @@ function ActivationPopup(props) {
         )}
         {languageIndex === 0 ? (
           <p className="activation-popup__ps">
-            If you have any problems, feel free to contact us at{' '}
-            <span onClick={props.helpSupportClickHandler}>Help & Support</span>.<br></br>
+            If you have any problems, feel free to contact us at <span onClick={props.helpSupportClickHandler}>Help & Support</span>.
+            <br></br>
             We'll get back to you as soon as possible!
           </p>
         ) : (

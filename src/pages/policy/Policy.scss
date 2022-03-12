@@ -3,6 +3,10 @@
 .policy {
   margin-left: 3rem;
 
+  a {
+    text-decoration: none;
+  }
+
   ul li {
     list-style-type: circle;
     font-size: 1.6rem;

@@ -2,7 +2,8 @@ import { useSelector } from 'react-redux';
 
 import './SubscriptionPopup.scss';
 
-import buyPremiumBtn from '../../svg/50px/buy-premium-button.png';
+import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
+import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 
@@ -14,9 +15,7 @@ function SubscriptionPopup(props) {
     <div className="subscription-popup">
       <div className="subscription-popup__container">
         <div className="subscription-popup__container--close-btn" onClick={props.closeHandler}></div>
-        <p className="subscription-popup__container--title">
-          {languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}
-        </p>
+        <p className="subscription-popup__container--title">{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
         <div className="subscription-popup__plan">
           <img src={isPremium ? logoPremium50 : logo50} alt=""></img>
           <p className={`subscription-popup__plan--title ${isOntrial ? 'small' : ''}`}>
@@ -34,11 +33,9 @@ function SubscriptionPopup(props) {
           </p>
           <p className="subscription-popup__plan--desc">
             {isPremium
-              ? `${languageIndex === 0 ? 'Will expire on' : '有効期限は'} ${new Date(
+              ? `${languageIndex === 0 ? 'Will expire on' : '有効期限は'} ${new Date(premiumExpirationDate).getDate()}/${new Date(
                   premiumExpirationDate
-                ).getDate()}/${new Date(premiumExpirationDate).getMonth()}/${new Date(
-                  premiumExpirationDate
-                ).getFullYear()} ${languageIndex === 0 ? '' : 'です'}`
+                ).getMonth()}/${new Date(premiumExpirationDate).getFullYear()} ${languageIndex === 0 ? '' : 'です'}`
               : languageIndex === 0
               ? 'Free lifetime'
               : 'ライフタイム無料'}
@@ -61,9 +58,7 @@ function SubscriptionPopup(props) {
               : '別のデジタルクーポンを購入し、プレミアムを延長する'}
           </p>
         ) : languageIndex === 0 ? (
-          <p className="subscription-popup__container--desc">
-            Upgrade to Premium to enjoy full customization and much more content
-          </p>
+          <p className="subscription-popup__container--desc">Upgrade to Premium to enjoy full customization and much more content</p>
         ) : (
           <p className="subscription-popup__container--desc">
             プレミアムにアップグレードすると、フルカスタマイズが可能になり、<br></br>
@@ -72,7 +67,7 @@ function SubscriptionPopup(props) {
         )}
         <img
           className="subscription-popup__container--buy-premium"
-          src={buyPremiumBtn}
+          src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
           alt=""
           onClick={props.upgradeHandler}
         ></img>

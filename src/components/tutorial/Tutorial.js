@@ -6,7 +6,8 @@ import SliderCard from './SliderCard';
 import './Tutorial.scss';
 
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
-import buyPremiumBtn from '../../svg/50px/buy-premium-button.png';
+import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
+import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 
 function Tutorial(props) {
   const [page, setPage] = useState(0);
@@ -58,18 +59,12 @@ function Tutorial(props) {
         <p className="tutorial__container--content">{content[page]}</p>
         {page !== 4 ? (
           <div className="tutorial__container--btn" onClick={nextPageHandler}>
-            {page === 0
-              ? languageIndex === 0
-                ? '4-Step Tutorial'
-                : '4ステップのチュートリアル'
-              : languageIndex === 0
-              ? 'Next'
-              : '次へ'}
+            {page === 0 ? (languageIndex === 0 ? '4-Step Tutorial' : '4ステップのチュートリアル') : languageIndex === 0 ? 'Next' : '次へ'}
           </div>
         ) : (
           <img
             className="tutorial__container--buy-premium"
-            src={buyPremiumBtn}
+            src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
             onClick={props.openUpgradePopupHandler}
             alt=""
           ></img>

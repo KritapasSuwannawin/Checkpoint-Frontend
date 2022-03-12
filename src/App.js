@@ -108,10 +108,7 @@ function App() {
               return {
                 ...ambient,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.filePath.replaceAll(' ', '+')}`,
-                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.thumbnailFilePath.replaceAll(
-                  ' ',
-                  '+'
-                )}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.thumbnailFilePath.replaceAll(' ', '+')}`,
               };
             })
           )
@@ -122,10 +119,7 @@ function App() {
               return {
                 ...background,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.filePath.replaceAll(' ', '+')}`,
-                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.thumbnailFilePath.replaceAll(
-                  ' ',
-                  '+'
-                )}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${background.thumbnailFilePath.replaceAll(' ', '+')}`,
               };
             })
           )
@@ -136,10 +130,7 @@ function App() {
               return {
                 ...music,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.filePath.replaceAll(' ', '+')}`,
-                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.thumbnailFilePath.replaceAll(
-                  ' ',
-                  '+'
-                )}`,
+                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${music.thumbnailFilePath.replaceAll(' ', '+')}`,
               };
             })
           )
@@ -155,12 +146,7 @@ function App() {
           )
         );
 
-        if (
-          ambient.name !== 'error' &&
-          background.name !== 'error' &&
-          music.name !== 'error' &&
-          avatar.name !== 'error'
-        ) {
+        if (ambient.name !== 'error' && background.name !== 'error' && music.name !== 'error' && avatar.name !== 'error') {
           setDoneInitialize(true);
         } else {
           window.location.reload();
@@ -311,17 +297,7 @@ function App() {
         })
         .catch(() => {});
     }
-  }, [
-    memberId,
-    currentBackground,
-    currentMusic,
-    musicCategory,
-    favouriteMusicIdArr,
-    playFromPlaylist,
-    deviceId,
-    startTime,
-    dispatch,
-  ]);
+  }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist, deviceId, startTime, dispatch]);
 
   useEffect(() => {
     if (memberId && currentAvatar) {
@@ -394,24 +370,16 @@ function App() {
     <>
       <Route exact path="/">
         <Loading></Loading>
-        {showFiveMinuteFeedback && (
-          <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>
-        )}
-        {showTrialLastDayFeedback && (
-          <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>
-        )}
+        {showFiveMinuteFeedback && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
+        {showTrialLastDayFeedback && <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>}
         {showAfterTrialStandardFeedback && (
-          <AfterTrialStandardFeedback
-            closeHandler={closeAfterTrialStandardFeedbackHandler}
-          ></AfterTrialStandardFeedback>
+          <AfterTrialStandardFeedback closeHandler={closeAfterTrialStandardFeedbackHandler}></AfterTrialStandardFeedback>
         )}
         {showAfterTrialPremiumFeedback && (
           <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
         )}
         {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
-        {showTutorial && (
-          <Tutorial closeHandler={closeTutorialHandler} openUpgradePopupHandler={openUpgradePopupHandler}></Tutorial>
-        )}
+        {showTutorial && <Tutorial closeHandler={closeTutorialHandler} openUpgradePopupHandler={openUpgradePopupHandler}></Tutorial>}
         {doneInitialize && (
           <>
             <Home

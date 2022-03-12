@@ -59,9 +59,7 @@ function FiveMinuteFeedback(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">
-          {languageIndex === 0 ? 'First Impression Feedback' : '第一印象のフィードバック'}
-        </p>
+        <p className="feedback-popup__form--heading">{languageIndex === 0 ? 'First Impression Feedback' : '第一印象のフィードバック'}</p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -72,9 +70,7 @@ function FiveMinuteFeedback(props) {
         </div>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0
-            ? 'How did you first know about Checkpoint.tokyo?'
-            : 'Checkpoint.tokyo を知ったきっかけは？'}
+          {languageIndex === 0 ? 'How did you first know about Checkpoint.tokyo?' : 'Checkpoint.tokyo を知ったきっかけは？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
@@ -86,22 +82,16 @@ function FiveMinuteFeedback(props) {
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>
-            {languageIndex === 0 ? 'Posts on social media (ads excluded)' : 'ソーシャルメディア上の投稿（広告を除く）'}
-          </label>
+          <label>{languageIndex === 0 ? 'Posts on social media (ads excluded)' : 'ソーシャルメディア上の投稿（広告を除く）'}</label>
         </div>
         <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref4}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0
-            ? 'Why are you interested in Checkpoint.tokyo?'
-            : 'なぜCheckpoint.tokyoに興味を持たれたのでしょうか？'}
+          {languageIndex === 0 ? 'Why are you interested in Checkpoint.tokyo?' : 'なぜCheckpoint.tokyoに興味を持たれたのでしょうか？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>
-            {languageIndex === 0 ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}
-          </label>
+          <label>{languageIndex === 0 ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>

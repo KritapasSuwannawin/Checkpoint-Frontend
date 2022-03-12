@@ -25,7 +25,8 @@ import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
 
-import buyPremiumBtn from '../../svg/50px/buy-premium-button.png';
+import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
+import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
@@ -125,9 +126,7 @@ function Home(props) {
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
-      const filteredBackgroundVideoArr = backgroundVideoArr.filter(
-        (background) => background.key !== currentBackground.id
-      );
+      const filteredBackgroundVideoArr = backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
       return [
         ...filteredBackgroundVideoArr,
         <div key={currentBackground.id}>
@@ -226,9 +225,7 @@ function Home(props) {
       );
     });
 
-    setAmbientThumbnailArr((ambientThumbnailArr) =>
-      ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2)
-    );
+    setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2));
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
   useEffect(() => {
@@ -459,10 +456,7 @@ function Home(props) {
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
       {showActivationPopup && (
-        <ActivationPopup
-          closeHandler={closeActivationPopup}
-          helpSupportClickHandler={openHelpSupportHandler}
-        ></ActivationPopup>
+        <ActivationPopup closeHandler={closeActivationPopup} helpSupportClickHandler={openHelpSupportHandler}></ActivationPopup>
       )}
       {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
       {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
@@ -479,18 +473,36 @@ function Home(props) {
       {showCookiePopup && (
         <div className="cookie-popup">
           <p>
-            This site uses cookie to store information on your computer. Some of these cookies are essential to make our
-            site work and others help us improve by giving us some insight into how the site is being used.<br></br>
-            By using our site, you agree to our{' '}
-            <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
-              Cookie
-            </a>{' '}
-            and{' '}
-            <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
-              Privacy Policy
-            </a>
+            {languageIndex === 0
+              ? 'This site uses cookie to store information on your computer. Some of these cookies are essential to make our site work and others help us improve by giving us some insight into how the site is being used.'
+              : 'このサイトでは、お客様のコンピュータに情報を保存するためにクッキーを使用しています。これらのクッキーの中には、当サイトの運営に必要不可欠なものもあれば、サイトの利用状況を把握することで改善に役立てるものもあります。'}
+            <br></br>
+            {languageIndex === 0 ? (
+              <>
+                By using our site, you agree to our{' '}
+                <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
+                  Cookie
+                </a>{' '}
+                and{' '}
+                <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
+                  Privacy Policy
+                </a>
+              </>
+            ) : (
+              <>
+                このサイトを利用することにより、お客様は当社の
+                <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
+                  クッキー
+                </a>
+                および
+                <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
+                  プライバシーポリシー
+                </a>
+                に同意したものとみなされます。
+              </>
+            )}
           </p>
-          <div onClick={closeCookiePopupHandler}>I understand</div>
+          <div onClick={closeCookiePopupHandler}>{languageIndex === 0 ? 'I understand' : 'わかりました'}</div>
         </div>
       )}
       <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
@@ -505,7 +517,12 @@ function Home(props) {
           <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
           {(isPremium === false || isOntrial) && (
             <>
-              <img className="nav__logo--upgrade-btn" onClick={navBtnClickHandler} src={buyPremiumBtn} alt=""></img>
+              <img
+                className="nav__logo--upgrade-btn"
+                onClick={navBtnClickHandler}
+                src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                alt=""
+              ></img>
               <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
                 {languageIndex === 0 ? 'Activate Premium' : 'プレミアム有効化'}
               </div>
@@ -513,17 +530,12 @@ function Home(props) {
           )}
         </div>
         <div className="nav__links">
-          <div
-            onClick={props.showTutorialHandler}
-            className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}
-          >
+          <div onClick={props.showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
             {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
           </div>
           <div
             onClick={musicClickHander}
-            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${
-              languageIndex === 1 ? 'japanese' : ''
-            }`}
+            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${languageIndex === 1 ? 'japanese' : ''}`}
           >
             <img src={musicSvg30} alt="" className="nav__links--icon"></img>
             {dictionary.music[languageIndex]}
@@ -562,14 +574,14 @@ function Home(props) {
                     <img
                       className="nav__logo--upgrade-btn"
                       onClick={navBtnClickHandler}
-                      src={buyPremiumBtn}
+                      src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
                       alt=""
                     ></img>
                     <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
                       {isPremium && !isOntrial
                         ? languageIndex === 0
                           ? 'Extend Premium'
-                          : 'プレミアムの延長'
+                          : 'プレミアム延長'
                         : languageIndex === 0
                         ? 'Activate Premium'
                         : 'プレミアム有効化'}
@@ -579,17 +591,13 @@ function Home(props) {
                     <div className="nav__outside-links--icon-container">
                       <img src={png1} alt="" className="small"></img>
                     </div>
-                    <p onClick={openSubscriptionHandler}>
-                      {languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}
-                    </p>
+                    <p onClick={openSubscriptionHandler}>{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={png2} alt=""></img>
                     </div>
-                    <p onClick={openHelpSupportHandler}>
-                      {languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}
-                    </p>
+                    <p onClick={openHelpSupportHandler}>{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
@@ -635,20 +643,11 @@ function Home(props) {
           )}
         </div>
       </nav>
-      <div
-        className={`background-control ${
-          currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''
-        }`}
-      >
-        <img
-          src={backgroundThumbnailUrl}
-          alt=""
-          onClick={openBackgroundPageHander}
-          className="background-control__thumbnail"
-        ></img>
+      <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
+        <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
         <div className="background-control__ambient-container">
           <div className="background-control__ambient-volume">
-            <p>{languageIndex === 0 ? 'Ambience' : '雰囲気'}</p>
+            <p>{languageIndex === 0 ? 'Ambience' : 'アンビエンス'}</p>
             <img src={speakerSvg15} alt=""></img>
             <input
               type="range"
@@ -675,7 +674,7 @@ function Home(props) {
           <>
             <div className="music-control__title">
               <img src={heartFullSvg30} alt=""></img>
-              <p>{languageIndex === 0 ? 'Favorite music' : '好きな音楽'}</p>
+              <p>{languageIndex === 0 ? 'Favorite music' : 'お気に入り'}</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
               <p>Your music playlist is empty</p>
@@ -813,12 +812,7 @@ function Home(props) {
           <img src={musicLibrarySvg36} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
           <div className="player__volume-control--volume">
             <div className="player__volume-control--section">
-              <img
-                src={iTunesSvg30}
-                onClick={toggleMuteMusicHandler}
-                className="player__volume-control--mute"
-                alt=""
-              ></img>
+              <img src={iTunesSvg30} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
               <input
                 type="range"
                 min="0"
@@ -830,12 +824,7 @@ function Home(props) {
               ></input>
             </div>
             <div className="player__volume-control--section">
-              <img
-                src={ambientSvg30}
-                onClick={toggleMuteAmbientHandler}
-                className="player__volume-control--mute"
-                alt=""
-              ></img>
+              <img src={ambientSvg30} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
               <input
                 type="range"
                 min="0"

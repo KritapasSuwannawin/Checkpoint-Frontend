@@ -16,9 +16,7 @@ function FreeTrialPopup(props) {
           <span>{languageIndex === 0 ? 'Started!' : '開始しました！'}</span>
         </p>
         {languageIndex === 0 ? (
-          <p className="free-trial-popup__sub-title">
-            You can now enjoy Premium perks with full customization and much more contents
-          </p>
+          <p className="free-trial-popup__sub-title">You can now enjoy Premium perks with full customization and much more contents</p>
         ) : (
           <p className="free-trial-popup__sub-title">
             フルカスタマイズが可能なプレミアム特典や、<br></br>より充実したコンテンツをお楽しみいただけます

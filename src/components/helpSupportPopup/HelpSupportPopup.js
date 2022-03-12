@@ -41,19 +41,17 @@ function HelpSupportPopup(props) {
       <div className="help-support-popup__form">
         <div className="help-support-popup__form--close-btn" onClick={closePopupHandler}></div>
         <img src={logo} alt="" className="help-support-popup__form--logo"></img>
-        <p className="help-support-popup__form--heading">
-          {languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}
-        </p>
+        <p className="help-support-popup__form--heading">{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
 
         <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Your email' : 'メール'}</p>
         <input type="text" placeholder={languageIndex === 0 ? 'Email' : 'メール'} id="email" ref={ref1}></input>
 
-        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Subject' : '主題'}</p>
-        <input type="text" placeholder={languageIndex === 0 ? 'Subject' : '主題'} ref={ref2}></input>
+        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Subject' : '件名'}</p>
+        <input type="text" placeholder={languageIndex === 0 ? 'Subject' : '件名'} ref={ref2}></input>
 
-        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Detail' : '詳細'}</p>
+        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Detail' : 'お問合せ'}</p>
         <textarea
-          placeholder={languageIndex === 0 ? 'Detail' : '詳細'}
+          placeholder={languageIndex === 0 ? 'Detail' : 'お問合せ'}
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
@@ -61,7 +59,7 @@ function HelpSupportPopup(props) {
         ></textarea>
 
         <p className="help-support-popup__form--ps">
-          {languageIndex === 0 ? "We'll get back to you as soon as possible!" : 'できるだけ早くご連絡いたします!'}
+          {languageIndex === 0 ? "We'll get back to you as soon as possible!" : 'できるだけ早くご返信いたします。'}
         </p>
 
         <div className="help-support-popup__form--submit-btn" onClick={submitHandler}>
