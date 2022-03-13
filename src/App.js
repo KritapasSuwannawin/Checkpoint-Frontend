@@ -289,6 +289,10 @@ function App() {
         .then((result) => {
           const errorMessage = result.message;
           if (errorMessage === 'new device has logged in') {
+            localStorage.removeItem('CheckpointEmail');
+            localStorage.removeItem('CheckpointPassword');
+            localStorage.removeItem('CheckpointLoginMethod');
+
             dispatch(memberActions.logout());
             dispatch(pageActions.closePageHandler());
             dispatch(musicActions.setMusicPlaying(false));
