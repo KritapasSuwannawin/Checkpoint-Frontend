@@ -702,8 +702,18 @@ function LoginPopup(props) {
                 {languageIndex === 0 ? 'Sign in' : 'サインイン'}
               </p>
             </div>
-            <img src={signingUp ? googleSignupBtn : googleSigninBtn} alt="" className="small" onClick={loginHandler.bind('google')}></img>
-            <img src={signingUp ? appleSignupBtn : appleSigninBtn} alt="" onClick={loginHandler.bind('apple')}></img>
+            <img
+              src={signingUp ? googleSignupBtn : googleSigninBtn}
+              alt=""
+              className="login-popup__google"
+              onClick={loginHandler.bind('google')}
+            ></img>
+            <img
+              src={signingUp ? appleSignupBtn : appleSigninBtn}
+              alt=""
+              className="login-popup__apple"
+              onClick={loginHandler.bind('apple')}
+            ></img>
             <div className="login-popup__seperator"></div>
             <input
               className="login-popup__input"

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -85,12 +85,12 @@ function App() {
   );
 
   useEffect(() => {
-    if (isMobileDevice && window.location.pathname === '/') {
-      window.location.replace(`${window.location.href}about`);
-    }
-
     if (window.location.protocol === 'http:' && !window.location.href.includes('http://localhost:3000/')) {
       window.location.replace(window.location.href.replace('http:', 'https:'));
+    }
+
+    if (isMobileDevice && window.location.pathname === '/') {
+      return;
     }
 
     if (window.navigator.userLanguage === 'ja' || window.navigator.language === 'ja') {
@@ -368,6 +368,10 @@ function App() {
 
   function closeUpgradePopupHandler() {
     setShowUpgradePopup(false);
+  }
+
+  if (isMobileDevice && window.location.pathname === '/') {
+    return <Redirect to="/about"></Redirect>;
   }
 
   return (

@@ -1,10 +1,12 @@
 import './About.scss';
 
 import aboutUsLanding from './aboutus-landing.png';
-import fb from '../../svg/20px/facebook.png';
-import ig from '../../svg/20px/instagram.png';
-import yt from '../../svg/20px/youtube.png';
-import tw from '../../svg/20px/twitter.png';
+import appStore from './App Store.svg';
+import googlePlay from './Google Play.svg';
+import fb from '../../svg/20px/facebook.svg';
+import ig from '../../svg/20px/instagram.svg';
+import yt from '../../svg/20px/youtube.svg';
+import tw from '../../svg/20px/twitter.svg';
 
 function About(props) {
   return (
@@ -19,6 +21,14 @@ function About(props) {
             Thank you very much for checking out this page! Since you clicked this page, I assume that you probably want to know more about
             Checkpoint. If so, you have come to the right place!
           </p>
+        </div>
+        <div className="mobile-links">
+          <a href={process.env.REACT_APP_APP_STORE_LINK}>
+            <img src={appStore} alt=""></img>
+          </a>
+          <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
+            <img src={googlePlay} alt=""></img>
+          </a>
         </div>
         <div className="landing-links">
           <a href="https://twitter.com/CheckpointTokyo" target="_blank" rel="noreferrer">

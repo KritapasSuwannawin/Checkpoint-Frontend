@@ -53,22 +53,10 @@
     }
   }
 
-  &__logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 2rem;
-
-    img {
-      height: 3.6rem;
-
-      &.small {
-        height: 3.4rem;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
+  &__google,
+  &__apple {
+    &:hover {
+      cursor: pointer;
     }
   }
 

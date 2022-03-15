@@ -33,9 +33,9 @@ function SubscriptionPopup(props) {
           </p>
           <p className="subscription-popup__plan--desc">
             {isPremium
-              ? `${languageIndex === 0 ? 'Will expire on' : '有効期限は'} ${new Date(premiumExpirationDate).getDate()}/${new Date(
-                  premiumExpirationDate
-                ).getMonth()}/${new Date(premiumExpirationDate).getFullYear()} ${languageIndex === 0 ? '' : 'です'}`
+              ? `${languageIndex === 0 ? 'Will expire on' : '有効期限は'} ${new Date(premiumExpirationDate).getDate()}/${
+                  new Date(premiumExpirationDate).getMonth() + 1
+                }/${new Date(premiumExpirationDate).getFullYear()} ${languageIndex === 0 ? '' : 'です'}`
               : languageIndex === 0
               ? 'Free lifetime'
               : 'ライフタイム無料'}

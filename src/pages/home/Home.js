@@ -783,7 +783,9 @@ function Home(props) {
           <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
           <div>
             <p className="player__music-data--music-name">{currentMusic.musicName}</p>
-            <p className="player__music-data--artist-name">{currentMusic.artistName}</p>
+            <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
+              {currentMusic.artistName}
+            </a>
           </div>
         </div>
         <div className="player__music-control">
