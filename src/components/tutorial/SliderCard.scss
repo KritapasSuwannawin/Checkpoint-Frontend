@@ -3,7 +3,6 @@
 .slider-card-tutorial {
   width: 100%;
   margin-bottom: 2rem;
-  border-radius: 0.5rem;
 
   &__slide {
     position: relative;
@@ -19,7 +18,7 @@
       left: 0;
       width: 100%;
       object-fit: cover;
-      border-radius: 0.5rem;
+      border-radius: 2rem;
       animation: fade-in 0.3s ease;
     }
 

@@ -677,7 +677,7 @@ function Home(props) {
               <p>{languageIndex === 0 ? 'Favorite music' : 'お気に入り'}</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
-              <p>Your music playlist is empty</p>
+              <p>{languageIndex === 0 ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
             ) : (
               favouriteMusicIdArr.map((id) => (
                 <div key={id} className="music-control__cards">
