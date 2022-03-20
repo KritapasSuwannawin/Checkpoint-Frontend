@@ -471,7 +471,7 @@ function LoginPopup(props) {
 
     signInWithPopupHandler(provider)
       .then((result) => {
-        const { email, uid } = result.user.providerData[0];
+        const { email } = result.user.providerData[0];
 
         if (signingUp) {
           if (!checkboxRef1.current.checked) {
@@ -485,7 +485,7 @@ function LoginPopup(props) {
           setErrorDuringAuthen(false);
           setAccountAlreadyExist(false);
 
-          const data = { email, password: uid, loginMethod: this, receiveNews: checkboxRef2.current.checked };
+          const data = { email, password: this, loginMethod: this, receiveNews: checkboxRef2.current.checked };
 
           fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
             method: 'POST',
@@ -505,7 +505,7 @@ function LoginPopup(props) {
               if (!errorMessage) {
                 dispatch(deviceActions.setNewDevice());
                 dispatch(memberActions.setMember(result.data[0]));
-                setLocalStorage(data);
+                setLocalStorage({ email, password: this, loginMethod: this });
                 document.removeEventListener('keyup', enterHandler);
                 props.closeHandler(true);
               }
@@ -520,7 +520,7 @@ function LoginPopup(props) {
           setIncorrectPassword(false);
           setAccountNotExist(false);
 
-          const data = { email, password: uid, loginMethod: this };
+          const data = { email, password: this, loginMethod: this };
 
           fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
             method: 'POST',
@@ -548,7 +548,7 @@ function LoginPopup(props) {
                 dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
                 dispatch(avatarActions.changeAvatarHandler(data.avatarId));
                 dispatch(memberActions.setMember(data));
-                setLocalStorage({ email, password: uid, loginMethod: this });
+                setLocalStorage({ email, password: this, loginMethod: this });
                 document.removeEventListener('keyup', enterHandler);
                 props.closeHandler(false);
               } else {
@@ -767,7 +767,7 @@ function LoginPopup(props) {
                   </p>
                 )}
                 <div className="login-popup__privacy-container margin-top">
-                  <input type="checkbox" ref={checkboxRef1}></input>
+                  <input type="checkbox" ref={checkboxRef1} defaultChecked></input>
                   {languageIndex === 0 ? (
                     <p>
                       By registering, you agree to the{' '}
@@ -801,7 +801,7 @@ function LoginPopup(props) {
                   </p>
                 )}
                 <div className="login-popup__privacy-container">
-                  <input type="checkbox" ref={checkboxRef2}></input>
+                  <input type="checkbox" ref={checkboxRef2} defaultChecked></input>
                   {languageIndex === 0 ? (
                     <p>
                       I agree to receive news and updates<br></br>from Checkpoint.
