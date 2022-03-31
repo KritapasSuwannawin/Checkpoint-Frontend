@@ -30,6 +30,12 @@ function About(props) {
             <img src={googlePlay} alt=""></img>
           </a>
         </div> */}
+        <div className="mobile-text">
+          <p>
+            <span className="available">Available on PC</span>
+            <br></br>Mobile application is coming soon.
+          </p>
+        </div>
         <div className="landing-links">
           <a href="https://twitter.com/CheckpointTokyo" target="_blank" rel="noreferrer">
             <img src={tw} alt=""></img>
