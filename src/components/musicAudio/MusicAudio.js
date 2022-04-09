@@ -59,7 +59,6 @@ function MusicAudio(props) {
 
   function errorHandler() {
     setTimeout(() => {
-      console.log('Error occured during loading', currentMusic.musicName);
       dispatch(musicActions.nextMusicHandler());
     }, 100);
   }

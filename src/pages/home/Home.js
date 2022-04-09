@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
@@ -361,13 +361,13 @@ function Home(props) {
     }
   }
 
-  function closeLoginPopup(showFreeTrialModal) {
+  const closeLoginPopup = useCallback((showFreeTrialModal) => {
     setShowLoginPopup(false);
 
     if (showFreeTrialModal) {
       setShowFreeTrialModal(true);
     }
-  }
+  }, []);
 
   function showUpgradePopupHandler() {
     setShowUpgradePopup(true);

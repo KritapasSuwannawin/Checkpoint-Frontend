@@ -65,7 +65,7 @@ function Tutorial(props) {
           <img
             className="tutorial__container--buy-premium"
             src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
-            onClick={props.openUpgradePopupHandler}
+            onClick={props.showUpgradePopupHandler}
             alt=""
           ></img>
         )}

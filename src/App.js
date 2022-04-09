@@ -361,7 +361,7 @@ function App() {
     setShowTutorial(false);
   }
 
-  function openUpgradePopupHandler() {
+  function showUpgradePopupHandler() {
     setShowTutorial(false);
     setShowUpgradePopup(true);
   }
@@ -387,7 +387,7 @@ function App() {
           <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
         )}
         {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
-        {showTutorial && <Tutorial closeHandler={closeTutorialHandler} openUpgradePopupHandler={openUpgradePopupHandler}></Tutorial>}
+        {showTutorial && <Tutorial closeHandler={closeTutorialHandler} showUpgradePopupHandler={showUpgradePopupHandler}></Tutorial>}
         {doneInitialize && (
           <>
             <Home
@@ -400,7 +400,7 @@ function App() {
             ></Home>
             <Background></Background>
             <Music></Music>
-            <Ambient openUpgradePopupHandler={openUpgradePopupHandler}></Ambient>
+            <Ambient showUpgradePopupHandler={showUpgradePopupHandler}></Ambient>
             <Avatar></Avatar>
           </>
         )}

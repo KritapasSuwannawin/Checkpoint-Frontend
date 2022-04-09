@@ -49,7 +49,7 @@ function Ambient(props) {
       {thumbnailArr}
       {!isPremium && (
         <div className="ambient__overlay">
-          <img src={overlay} alt="" onClick={props.openUpgradePopupHandler}></img>
+          <img src={overlay} alt="" onClick={props.showUpgradePopupHandler}></img>
         </div>
       )}
     </div>
