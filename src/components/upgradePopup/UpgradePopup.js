@@ -55,7 +55,9 @@ function UpgradePopup(props) {
         <div className="upgrade-popup__cards">
           <div className="upgrade-popup__standard">
             <p className="upgrade-popup__cards--title">{languageIndex === 0 ? 'Standard' : 'スタンダード'}</p>
-            <p className="upgrade-popup__cards--price">$0</p>
+            <p className="upgrade-popup__cards--price">
+              <span className="price">$0</span>
+            </p>
             <div className="upgrade-popup__cards--btn" onClick={closeHandler}>
               {languageIndex === 0 ? 'Use Standard' : 'スタンダードで使用する'}
             </div>
@@ -84,8 +86,12 @@ function UpgradePopup(props) {
             <div className="upgrade-popup__premium--container">
               <div className="upgrade-popup__premium--content">
                 <p className="upgrade-popup__cards--title">{languageIndex === 0 ? 'Premium' : 'プレミアム'}</p>
-                <p className="upgrade-popup__cards--price">
-                  ${process.env.REACT_APP_SUBSCRIPTION_PRICE} <span>/mo</span>
+                <p className="upgrade-popup__cards--price line-through">
+                  <span className="price line-through">${process.env.REACT_APP_SUBSCRIPTION_PRICE}</span>
+                  <span className="small"> /mo</span>
+                </p>
+                <p className="upgrade-popup__cards--celebration">
+                  <span>Early Launch Celebration!</span>*promotion until 31 May 2022
                 </p>
                 <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
                   <img

@@ -80,12 +80,43 @@
     }
 
     &--price {
-      color: #f580eb;
-      margin-top: 1.4rem;
+      &.line-through {
+        position: relative;
+        margin: 2rem 0 1rem 0;
 
-      span {
+        &::after {
+          content: '$1.99';
+          position: absolute;
+          top: -1rem;
+          left: 0.5rem;
+          font-size: 2rem;
+        }
+      }
+
+      span.price {
+        display: inline-block;
+        color: #f580eb;
+        margin-top: 1.4rem;
+
+        &.line-through {
+          text-decoration: line-through;
+        }
+      }
+
+      span.small {
         font-size: 1.2rem;
         color: white;
+      }
+    }
+
+    &--celebration {
+      text-align: center;
+      font-size: 1.2rem;
+
+      span {
+        display: block;
+        font-weight: 700;
+        font-size: 1.5rem;
       }
     }
 

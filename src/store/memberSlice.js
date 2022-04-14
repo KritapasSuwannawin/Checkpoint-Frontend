@@ -26,7 +26,7 @@ const memberSlice = createSlice({
       const premiumExpirationTime = new Date(premiumExpirationDate).getTime();
       const dateDifference = Math.floor((premiumExpirationTime - registrationTime) / (1000 * 60 * 60 * 24));
 
-      if (isPremium && dateDifference === 3) {
+      if (isPremium && dateDifference === 7) {
         const currentTime = new Date().getTime();
         const dateDifference = Math.floor((currentTime - registrationTime) / (1000 * 60 * 60 * 24));
 

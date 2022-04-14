@@ -236,7 +236,7 @@ function Home(props) {
         setShowCookiePopup(true);
       }
 
-      if (dayOfTrial === 3 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
+      if (dayOfTrial === 7 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
         setShowLastDayTrialModal(true);
       } else if (!isPremium && !localStorage.getItem('checkpointShowExpirationPopup')) {
         setShowExpirationPopup(true);

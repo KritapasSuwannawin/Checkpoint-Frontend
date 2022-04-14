@@ -204,7 +204,7 @@ function App() {
   }, [memberId, spacebarHandler]);
 
   useEffect(() => {
-    if (memberId && dayOfTrial === 3) {
+    if (memberId && dayOfTrial === 7) {
       const data = { memberId, tableName: 'feedback_trial_last_day' };
 
       fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {

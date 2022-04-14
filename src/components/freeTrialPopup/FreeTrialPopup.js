@@ -12,7 +12,7 @@ function FreeTrialPopup(props) {
     <div className="free-trial-popup">
       <div className="free-trial-popup__container">
         <p className="free-trial-popup__title">
-          {languageIndex === 0 ? 'Your 3-Day Free Trial Has' : '3日間の無料トライアルを'} <br></br>{' '}
+          {languageIndex === 0 ? 'Your 7-Day Free Trial Has' : '7日間の無料トライアルを'} <br></br>{' '}
           <span>{languageIndex === 0 ? 'Started!' : '開始しました！'}</span>
         </p>
         {languageIndex === 0 ? (
