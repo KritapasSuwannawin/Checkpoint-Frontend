@@ -25,7 +25,7 @@ function ActivationPopup(props) {
   function verifyHandler() {
     const activationCode = activationCodeRef.current.value;
 
-    if (activationCode.length !== 10) {
+    if (activationCode.length < 10) {
       setInvalidCode(true);
       return;
     } else {
