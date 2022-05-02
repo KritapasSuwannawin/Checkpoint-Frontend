@@ -17,6 +17,7 @@ import Gdpr from './pages/policy/Gdpr';
 import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
+import Mobile from './pages/mobile/Mobile';
 
 import FiveMinuteFeedback from './components/feedbackPopup/FiveMinuteFeedback';
 import TrialLastDayFeedback from './components/feedbackPopup/TrialLastDayFeedback';
@@ -371,7 +372,7 @@ function App() {
   }
 
   if (isMobileDevice && window.location.pathname === '/') {
-    return <Redirect to="/about"></Redirect>;
+    return <Redirect to="/mobile"></Redirect>;
   }
 
   return (
@@ -432,6 +433,10 @@ function App() {
 
       <Route exact path="/about">
         <About></About>
+      </Route>
+
+      <Route exact path="/mobile">
+        <Mobile></Mobile>
       </Route>
     </>
   );
