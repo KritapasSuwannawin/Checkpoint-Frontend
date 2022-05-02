@@ -107,3 +107,19 @@
     }
   }
 }
+
+@media (max-width: 500px) {
+  .about {
+    .section {
+      padding: 0 5rem 5rem 5rem;
+
+      &__content {
+        padding-top: 5rem;
+      }
+
+      .landing-content {
+        width: 80%;
+      }
+    }
+  }
+}
