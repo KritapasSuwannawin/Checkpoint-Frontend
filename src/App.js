@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -52,6 +52,9 @@ function App() {
   const [doneInitialize, setDoneInitialize] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showUpgradePopup, setShowUpgradePopup] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const mainPageRef = useRef();
 
   function mobileOrTabletCheck() {
     let check = false;
@@ -371,6 +374,26 @@ function App() {
     setShowUpgradePopup(false);
   }
 
+  function fullScreenClickHander() {
+    if (!document.fullscreenElement) {
+      if (mainPageRef.current.requestFullscreen) {
+        mainPageRef.current.requestFullscreen();
+        setIsFullScreen(true);
+      }
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
+  }
+
+  document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+      setIsFullScreen(true);
+    } else {
+      setIsFullScreen(false);
+    }
+  });
+
   if (isMobileDevice && window.location.pathname === '/') {
     return <Redirect to="/mobile"></Redirect>;
   }
@@ -378,33 +401,37 @@ function App() {
   return (
     <>
       <Route exact path="/">
-        <Loading></Loading>
-        {showFiveMinuteFeedback && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
-        {showTrialLastDayFeedback && <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>}
-        {showAfterTrialStandardFeedback && (
-          <AfterTrialStandardFeedback closeHandler={closeAfterTrialStandardFeedbackHandler}></AfterTrialStandardFeedback>
-        )}
-        {showAfterTrialPremiumFeedback && (
-          <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
-        )}
-        {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
-        {showTutorial && <Tutorial closeHandler={closeTutorialHandler} showUpgradePopupHandler={showUpgradePopupHandler}></Tutorial>}
-        {doneInitialize && (
-          <>
-            <Home
-              showFeedbackPopup={showFeedbackPopup}
-              showFeedbackPopupHandler={showFeedbackPopupHandler}
-              closeFeedbackPopupHandler={closeFeedbackPopupHandler}
-              showUpgradePopup={showUpgradePopup}
-              closeUpgradePopupHandler={closeUpgradePopupHandler}
-              showTutorialHandler={showTutorialHandler}
-            ></Home>
-            <Background></Background>
-            <Music></Music>
-            <Ambient showUpgradePopupHandler={showUpgradePopupHandler}></Ambient>
-            <Avatar></Avatar>
-          </>
-        )}
+        <div ref={mainPageRef}>
+          <Loading></Loading>
+          {showFiveMinuteFeedback && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
+          {showTrialLastDayFeedback && <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>}
+          {showAfterTrialStandardFeedback && (
+            <AfterTrialStandardFeedback closeHandler={closeAfterTrialStandardFeedbackHandler}></AfterTrialStandardFeedback>
+          )}
+          {showAfterTrialPremiumFeedback && (
+            <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
+          )}
+          {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
+          {showTutorial && <Tutorial closeHandler={closeTutorialHandler} showUpgradePopupHandler={showUpgradePopupHandler}></Tutorial>}
+          {doneInitialize && (
+            <>
+              <Home
+                showFeedbackPopup={showFeedbackPopup}
+                showFeedbackPopupHandler={showFeedbackPopupHandler}
+                closeFeedbackPopupHandler={closeFeedbackPopupHandler}
+                showUpgradePopup={showUpgradePopup}
+                closeUpgradePopupHandler={closeUpgradePopupHandler}
+                showTutorialHandler={showTutorialHandler}
+                isFullScreen={isFullScreen}
+                fullScreenClickHander={fullScreenClickHander}
+              ></Home>
+              <Background></Background>
+              <Music></Music>
+              <Ambient showUpgradePopupHandler={showUpgradePopupHandler}></Ambient>
+              <Avatar></Avatar>
+            </>
+          )}
+        </div>
       </Route>
 
       <Route exact path="/policy">

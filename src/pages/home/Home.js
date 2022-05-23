@@ -46,6 +46,8 @@ import heartFullSvg30 from '../../svg/30px/Heart.svg';
 import heartSvg30 from '../../svg/30px/Hearts.svg';
 import ambientSvg30 from '../../svg/30px/Organic Food.svg';
 import iTunesSvg30 from '../../svg/30px/iTunes-1.svg';
+import fullScreenSvg30 from '../../svg/30px/Fullscreen.svg';
+import minimizeSvg30 from '../../svg/30px/Minimize.svg';
 import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
 import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
@@ -451,6 +453,10 @@ function Home(props) {
     setShowCookiePopup(false);
   }
 
+  function fullScreenClickHander() {
+    props.fullScreenClickHander();
+  }
+
   return (
     <div className="home">
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
@@ -838,6 +844,12 @@ function Home(props) {
               ></input>
             </div>
           </div>
+          <img
+            src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+            onClick={fullScreenClickHander}
+            className="player__full-screen"
+            alt=""
+          ></img>
         </div>
       </div>
     </div>
