@@ -15,6 +15,7 @@ import ActivationPopup from '../../components/activationPopup/ActivationPopup';
 import HelpSupportPopup from '../../components/helpSupportPopup/HelpSupportPopup';
 import FeedbackPopup from '../../components/feedbackPopup/FeedbackPopup';
 import SubscriptionPopup from '../../components/subscriptionPopup/SubscriptionPopup';
+import Timer from '../../components/timer/Timer';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -41,6 +42,7 @@ import snowySvg36 from '../../svg/36px/Winter.svg';
 import musicLibrarySvg36 from '../../svg/36px/Music Library.svg';
 import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
 import musicSvg30 from '../../svg/30px/Music30px.svg';
+import timerSvg30 from '../../svg/30px/Timer.svg';
 import globe30 from '../../svg/30px/Globe30px.png';
 import heartFullSvg30 from '../../svg/30px/Heart.svg';
 import heartSvg30 from '../../svg/30px/Hearts.svg';
@@ -116,6 +118,7 @@ function Home(props) {
   const [showHelpSupportPopup, setShowHelpSupportPopup] = useState(false);
   const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
   const [showCookiePopup, setShowCookiePopup] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
@@ -305,6 +308,7 @@ function Home(props) {
       dispatch(pageActions.closePageHandler());
       return;
     }
+    setShowTimer(false);
     setShowOutsideLink(false);
     dispatch(pageActions.changePageHandler('background'));
   }
@@ -314,6 +318,7 @@ function Home(props) {
       dispatch(pageActions.closePageHandler());
       return;
     }
+    setShowTimer(false);
     setShowOutsideLink(false);
     dispatch(pageActions.changePageHandler('music'));
   }
@@ -344,6 +349,7 @@ function Home(props) {
 
   function outsideLinkToggleHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink((state) => !state);
   }
 
@@ -353,6 +359,7 @@ function Home(props) {
 
   function navBtnClickHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink(false);
 
     if (isPremium === undefined) {
@@ -405,6 +412,7 @@ function Home(props) {
 
     dispatch(memberActions.logout());
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     dispatch(musicActions.setMusicPlaying(false));
     dispatch(avatarActions.changeAvatarHandler(1));
     setShowOutsideLink(false);
@@ -412,6 +420,7 @@ function Home(props) {
 
   function activationBtnClickHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink(false);
     setShowSubscriptionPopup(false);
     setShowActivationPopup(true);
@@ -423,6 +432,7 @@ function Home(props) {
 
   function openHelpSupportHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink(false);
     setShowActivationPopup(false);
     setShowHelpSupportPopup(true);
@@ -434,12 +444,14 @@ function Home(props) {
 
   function openFeedbackHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink(false);
     props.showFeedbackPopupHandler();
   }
 
   function openSubscriptionHandler() {
     dispatch(pageActions.closePageHandler());
+    setShowTimer(false);
     setShowOutsideLink(false);
     setShowSubscriptionPopup(true);
   }
@@ -455,6 +467,23 @@ function Home(props) {
 
   function fullScreenClickHander() {
     props.fullScreenClickHander();
+  }
+
+  function closeTimerHandler() {
+    setShowTimer(false);
+  }
+
+  function timerClickHandler() {
+    setShowTimer((showTimer) => {
+      const newValue = !showTimer;
+
+      if (newValue) {
+        dispatch(pageActions.closePageHandler());
+        setShowOutsideLink(false);
+      }
+
+      return newValue;
+    });
   }
 
   return (
@@ -539,6 +568,15 @@ function Home(props) {
           <div onClick={props.showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
             {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
           </div>
+          {isPremium && (
+            <div className="nav__links--timer-container">
+              <div onClick={timerClickHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
+                <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
+                {languageIndex === 0 ? 'Timer' : 'タイマー'}
+              </div>
+              <Timer closeHandler={closeTimerHandler} showTimer={showTimer}></Timer>
+            </div>
+          )}
           <div
             onClick={musicClickHander}
             className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${languageIndex === 1 ? 'japanese' : ''}`}

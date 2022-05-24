@@ -1,0 +1,131 @@
+@import '../../scss/main.scss';
+
+.timer {
+  position: absolute;
+  top: calc(100% + 3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5rem);
+  border-radius: 2rem;
+  padding: 2rem 2.5rem;
+  color: #fff;
+  @include flex-column-center;
+
+  p {
+    cursor: default;
+  }
+
+  &.hide {
+    display: none;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgba(196, 196, 196, 0.7);
+    border-radius: 50%;
+  }
+
+  .heading {
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+
+    &.long-break {
+      margin-top: 2rem;
+      margin-bottom: 0.7rem;
+    }
+  }
+
+  .main-timer {
+    font-weight: 700;
+    font-size: 6.4rem;
+    line-height: 7.5rem;
+  }
+
+  .start-btn {
+    width: 8.2rem;
+    background-color: #fff;
+    border-radius: 0.8rem;
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+    color: #111;
+    padding: 0.5rem 0;
+    text-align: center;
+    transition: background-color ease 0.5s;
+
+    &.pause {
+      background-color: #111;
+      color: #fff;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .icon {
+    width: 2rem;
+
+    &.light {
+      opacity: 0.4;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .btn-container,
+  .input-container {
+    @include flex-row-center;
+    column-gap: 1.5rem;
+  }
+
+  .input-container {
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: solid rgba(255, 255, 255, 0.5) 1px;
+  }
+
+  .input {
+    width: 10.8rem;
+    border-radius: 0.8rem;
+    padding-top: 0.2rem;
+    border: 0;
+    outline: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    text-align: center;
+    margin-top: 0.2rem;
+    @include flex-row-center;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &.margin-top {
+      margin-top: 1.2rem;
+    }
+  }
+
+  .secondary-timer {
+    font-weight: 700;
+    font-size: 3.6rem;
+    line-height: 4.2rem;
+  }
+}
+
+@media (max-width: 1240px) {
+  .timer {
+    display: none;
+  }
+}

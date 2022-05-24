@@ -69,6 +69,10 @@
     column-gap: 1.8rem;
     white-space: nowrap;
 
+    &--timer-container {
+      position: relative;
+    }
+
     &--link {
       padding: 0.5rem;
       @include flex-row-center;
@@ -117,6 +121,11 @@
 
     &--icon {
       margin-right: 0.5rem;
+      width: 3rem;
+
+      &.small {
+        width: 2.5rem;
+      }
     }
 
     &--about-us {
@@ -576,7 +585,7 @@
   }
 }
 
-@media (max-width: 1135px) {
+@media (max-width: 1240px) {
   .nav {
     &__links {
       &--link {
