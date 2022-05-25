@@ -18,9 +18,10 @@ function FavouriteMusicCard(props) {
   }
 
   const music = availableMusicArr.find((music) => music.id === props.id);
+  const isMusicPlaying = musicPlaying && currentMusic.id === props.id;
 
   function playPauseClickHandler() {
-    if (musicPlaying && currentMusic.id === props.id) {
+    if (isMusicPlaying) {
       dispatch(musicActions.setMusicPlaying(false));
     } else {
       dispatch(musicActions.changeMusicHandler(props.id));
@@ -36,7 +37,7 @@ function FavouriteMusicCard(props) {
     <div className="favourite-music-card">
       <div className="favourite-music-card__left">
         <img
-          src={musicPlaying && currentMusic.id === props.id ? pauseSvg30 : playSvg30}
+          src={isMusicPlaying ? pauseSvg30 : playSvg30}
           alt=""
           className="favourite-music-card__left--play-pause-btn"
           onClick={playPauseClickHandler}

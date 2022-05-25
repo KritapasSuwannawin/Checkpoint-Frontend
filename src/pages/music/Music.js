@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import MusicThumbnailCard from '../../components/musicThumbnailCard/MusicThumbnailCard';
 import MusicCategoryCard from '../../components/musicCategoryCard/MusicCategoryCard';
+import MoodCard from '../../components/moodCard/MoodCard';
 import './Music.scss';
 
 import { musicActions } from '../../store/musicSlice';
@@ -13,20 +14,32 @@ function Music() {
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
+  const availableMoodArr = useSelector((store) => store.music.availableMoodArr);
   const languageIndex = useSelector((store) => store.language.languageIndex);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const [categoryArr, setCategoryArr] = useState([]);
   const [category, setCategory] = useState(null);
 
+  const [moodCardArr, setMoodCardArr] = useState([]);
+
   const availableMusicArrRef = useRef();
   const categoryRef = useRef();
+
+  useEffect(() => {
+    setMoodCardArr(
+      availableMoodArr.map((mood) => (
+        <div key={mood.id}>
+          <MoodCard id={mood.id} name={mood.name} url={mood.url}></MoodCard>
+        </div>
+      ))
+    );
+  }, [availableMoodArr]);
 
   const musicClickHandler = useCallback(
     (id) => {
       dispatch(musicActions.changeMusicHandler(id));
       dispatch(musicActions.setMusicCategory(category));
-      dispatch(musicActions.setPlayFromPlaylist(false));
     },
     [dispatch, category]
   );
@@ -110,7 +123,10 @@ function Music() {
           <p>{category}</p>
         </div>
       ) : (
-        <p className="music__title">{languageIndex === 0 ? 'New Release' : '新しいリリース'}</p>
+        <>
+          <div className="music__mood-card-container">{moodCardArr}</div>
+          <p className="music__title">{languageIndex === 0 ? 'New Release' : '新しいリリース'}</p>
+        </>
       )}
       {thumbnailArr}
       {!category && <div className="music__category-container">{categoryArr}</div>}

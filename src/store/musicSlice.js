@@ -13,6 +13,8 @@ const musicSlice = createSlice({
     musicCategory: null,
     favouriteMusicIdArr: [],
     playFromPlaylist: false,
+    currentMoodId: null,
+    availableMoodArr: [],
   },
   reducers: {
     changeMusicHandler(state, action) {
@@ -40,12 +42,16 @@ const musicSlice = createSlice({
     backMusicHandler(state, action) {
       let availableMusicArr = [...state.availableMusicArr];
 
-      if (state.musicCategory) {
-        availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
-      }
+      if (state.currentMoodId) {
+        availableMusicArr = availableMusicArr.filter((music) => music.moodIdArr.includes(state.currentMoodId));
+      } else {
+        if (state.musicCategory) {
+          availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
+        }
 
-      if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
-        availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
+        if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
+          availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
+        }
       }
 
       if (availableMusicArr.length === 1) {
@@ -79,12 +85,16 @@ const musicSlice = createSlice({
     nextMusicHandler(state, action) {
       let availableMusicArr = [...state.availableMusicArr];
 
-      if (state.musicCategory) {
-        availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
-      }
+      if (state.currentMoodId) {
+        availableMusicArr = availableMusicArr.filter((music) => music.moodIdArr.includes(state.currentMoodId));
+      } else {
+        if (state.musicCategory) {
+          availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
+        }
 
-      if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
-        availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
+        if (state.playFromPlaylist && state.favouriteMusicIdArr.length > 0) {
+          availableMusicArr = state.favouriteMusicIdArr.map((id) => state.availableMusicArr.find((music) => music.id === id));
+        }
       }
 
       if (availableMusicArr.length === 1) {
@@ -136,12 +146,14 @@ const musicSlice = createSlice({
     setMusicPlaying(state, action) {
       state.musicPlaying = action.payload;
     },
-    setAvailableMusic(state, action) {
+    setAvailableMusicArr(state, action) {
       state.availableMusicArr = action.payload;
       state.currentMusic = action.payload.find((music) => music.id === 13);
     },
     setMusicCategory(state, action) {
       state.musicCategory = action.payload;
+      state.playFromPlaylist = false;
+      state.currentMoodId = null;
     },
     favouriteBtnClickHandler(state, action) {
       const favouriteMusicIdArr = state.favouriteMusicIdArr;
@@ -157,6 +169,27 @@ const musicSlice = createSlice({
     },
     setPlayFromPlaylist(state, action) {
       state.playFromPlaylist = action.payload;
+      state.musicCategory = null;
+      state.currentMoodId = null;
+    },
+    setAvailableMoodArr(state, action) {
+      state.availableMoodArr = action.payload;
+    },
+    moodSelectHandler(state, action) {
+      if (state.currentMoodId !== action.payload) {
+        state.shuffleMusic = true;
+        state.loopMusic = false;
+        state.shuffledMusicArr = [];
+
+        const availableMusicArr = state.availableMusicArr.filter((music) => music.moodIdArr.includes(action.payload));
+        const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
+        state.currentMusic = randomMusic;
+
+        state.currentMoodId = action.payload;
+        state.musicPlaying = true;
+      } else {
+        state.musicPlaying = true;
+      }
     },
   },
 });

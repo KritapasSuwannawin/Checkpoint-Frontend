@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { musicActions } from '../../store/musicSlice';
@@ -16,11 +15,7 @@ function MusicThumbnailCard(props) {
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
   const isPremium = useSelector((store) => store.member.isPremium);
 
-  const [thumbnailUrl, setThumbnailUrl] = useState();
-
-  useEffect(() => {
-    setThumbnailUrl(props.thumbnailUrl);
-  }, [props.thumbnailUrl]);
+  const isMusicPlaying = currentMusic.id === props.id && musicPlaying;
 
   function clickHandler() {
     if (this) {
@@ -28,18 +23,18 @@ function MusicThumbnailCard(props) {
       return;
     }
 
-    if (!(currentMusic.id === props.id) || !musicPlaying) {
+    if (!isMusicPlaying) {
       props.onClickHandler(props.id);
     }
   }
 
   function pauseMusicSpecificHandler() {
-    if (currentMusic.id === props.id && musicPlaying) {
+    if (isMusicPlaying) {
       dispatch(musicActions.setMusicPlaying(false));
     }
   }
 
-  if (!thumbnailUrl) {
+  if (!props.thumbnailUrl) {
     return <div className="music-thumbnail-placeholder"></div>;
   }
 
@@ -56,14 +51,14 @@ function MusicThumbnailCard(props) {
           className="music-thumbnail-card__favourite-btn"
         ></img>
       )}
-      <img src={thumbnailUrl} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
+      <img src={props.thumbnailUrl} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
       <div onClick={clickHandler} className="music-thumbnail-card__description">
         <div>
           <p className="music-thumbnail-card__music-name">{musicName}</p>
           <p className="music-thumbnail-card__artist-name">{artistName}</p>
         </div>
         <img
-          src={currentMusic.id === props.id && musicPlaying ? pauseSvg25 : playSvg25}
+          src={isMusicPlaying ? pauseSvg25 : playSvg25}
           alt=""
           onClick={pauseMusicSpecificHandler}
           className="music-thumbnail-card__play-pause-btn"

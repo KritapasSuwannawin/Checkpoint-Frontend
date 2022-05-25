@@ -104,7 +104,7 @@ function App() {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
       .then((response) => response.json())
       .then((result) => {
-        const { ambient, background, music, avatar } = result.data;
+        const { ambient, background, music, avatar, mood } = result.data;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -129,7 +129,7 @@ function App() {
           )
         );
         dispatch(
-          musicActions.setAvailableMusic(
+          musicActions.setAvailableMusicArr(
             music.map((music) => {
               return {
                 ...music,
@@ -145,6 +145,16 @@ function App() {
               return {
                 ...avatar,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${avatar.filePath.replaceAll(' ', '+')}`,
+              };
+            })
+          )
+        );
+        dispatch(
+          musicActions.setAvailableMoodArr(
+            mood.map((mood) => {
+              return {
+                ...mood,
+                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${mood.filePath.replaceAll(' ', '+')}`,
               };
             })
           )
