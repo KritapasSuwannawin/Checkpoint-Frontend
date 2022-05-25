@@ -358,9 +358,7 @@ function Home(props) {
   }
 
   function navBtnClickHandler() {
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    closeTimerMusicBackgroundProfile();
 
     if (isPremium === undefined) {
       setShowLoginPopup(true);
@@ -411,17 +409,13 @@ function Home(props) {
     localStorage.removeItem('CheckpointLoginMethod');
 
     dispatch(memberActions.logout());
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
+    closeTimerMusicBackgroundProfile();
     dispatch(musicActions.setMusicPlaying(false));
     dispatch(avatarActions.changeAvatarHandler(1));
-    setShowOutsideLink(false);
   }
 
   function activationBtnClickHandler() {
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    closeTimerMusicBackgroundProfile();
     setShowSubscriptionPopup(false);
     setShowActivationPopup(true);
   }
@@ -431,9 +425,7 @@ function Home(props) {
   }
 
   function openHelpSupportHandler() {
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    closeTimerMusicBackgroundProfile();
     setShowActivationPopup(false);
     setShowHelpSupportPopup(true);
   }
@@ -443,16 +435,12 @@ function Home(props) {
   }
 
   function openFeedbackHandler() {
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    closeTimerMusicBackgroundProfile();
     props.showFeedbackPopupHandler();
   }
 
   function openSubscriptionHandler() {
-    dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    closeTimerMusicBackgroundProfile();
     setShowSubscriptionPopup(true);
   }
 
@@ -466,6 +454,7 @@ function Home(props) {
   }
 
   function fullScreenClickHander() {
+    closeTimerMusicBackgroundProfile();
     props.fullScreenClickHander();
   }
 
@@ -486,410 +475,426 @@ function Home(props) {
     });
   }
 
+  function closeTimerMusicBackgroundProfile() {
+    setShowTimer(false);
+    dispatch(pageActions.closePageHandler());
+    setShowOutsideLink(false);
+  }
+
   return (
     <div className="home">
-      {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
-      {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
-      {showActivationPopup && (
-        <ActivationPopup closeHandler={closeActivationPopup} helpSupportClickHandler={openHelpSupportHandler}></ActivationPopup>
-      )}
-      {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
-      {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
-      {showExpirationPopup && <ExpirationPopup closeHandler={closeExpirationPopup}></ExpirationPopup>}
-      {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
-      {props.showFeedbackPopup && <FeedbackPopup closeHandler={props.closeFeedbackPopupHandler}></FeedbackPopup>}
-      {showSubscriptionPopup && (
-        <SubscriptionPopup
-          closeHandler={closeSubscriptionHandler}
-          activateHandler={activationBtnClickHandler}
-          upgradeHandler={navBtnClickHandler}
-        ></SubscriptionPopup>
-      )}
-      {showCookiePopup && (
-        <div className="cookie-popup">
-          <p>
-            {languageIndex === 0
-              ? 'This site uses cookie to store information on your computer. Some of these cookies are essential to make our site work and others help us improve by giving us some insight into how the site is being used.'
-              : 'このサイトでは、お客様のコンピュータに情報を保存するためにクッキーを使用しています。これらのクッキーの中には、当サイトの運営に必要不可欠なものもあれば、サイトの利用状況を把握することで改善に役立てるものもあります。'}
-            <br></br>
-            {languageIndex === 0 ? (
-              <>
-                By using our site, you agree to our{' '}
-                <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
-                  Cookie
-                </a>{' '}
-                and{' '}
-                <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
-                  Privacy Policy
-                </a>
-              </>
-            ) : (
-              <>
-                このサイトを利用することにより、お客様は当社の
-                <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
-                  クッキー
-                </a>
-                および
-                <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
-                  プライバシーポリシー
-                </a>
-                に同意したものとみなされます。
-              </>
-            )}
-          </p>
-          <div onClick={closeCookiePopupHandler}>{languageIndex === 0 ? 'I understand' : 'わかりました'}</div>
-        </div>
-      )}
-      <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
-        <div className="home__overlay--left" onClick={overlayClickHandler}></div>
-        <div className="home__overlay--right"></div>
-      </div>
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
       {ambientAudioArr}
-      <nav className="nav">
-        <div onClick={overlayClickHandler} className="nav__logo">
-          <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
-          {(isPremium === false || isOntrial) && (
-            <>
-              <img
-                className="nav__logo--upgrade-btn"
-                onClick={navBtnClickHandler}
-                src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
-                alt=""
-              ></img>
-              <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                {languageIndex === 0 ? 'Activate Premium' : 'プレミアム有効化'}
-              </div>
-            </>
+      {!props.isFullScreen && (
+        <>
+          {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
+          {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
+          {showActivationPopup && (
+            <ActivationPopup closeHandler={closeActivationPopup} helpSupportClickHandler={openHelpSupportHandler}></ActivationPopup>
           )}
-        </div>
-        <div className="nav__links">
-          <div onClick={props.showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
-            {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
-          </div>
-          {isPremium && (
-            <div className="nav__links--timer-container">
-              <div onClick={timerClickHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
-                <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
-                {languageIndex === 0 ? 'Timer' : 'タイマー'}
-              </div>
-              <Timer closeHandler={closeTimerHandler} showTimer={showTimer}></Timer>
+          {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
+          {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
+          {showExpirationPopup && <ExpirationPopup closeHandler={closeExpirationPopup}></ExpirationPopup>}
+          {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
+          {props.showFeedbackPopup && <FeedbackPopup closeHandler={props.closeFeedbackPopupHandler}></FeedbackPopup>}
+          {showSubscriptionPopup && (
+            <SubscriptionPopup
+              closeHandler={closeSubscriptionHandler}
+              activateHandler={activationBtnClickHandler}
+              upgradeHandler={navBtnClickHandler}
+            ></SubscriptionPopup>
+          )}
+          {showCookiePopup && (
+            <div className="cookie-popup">
+              <p>
+                {languageIndex === 0
+                  ? 'This site uses cookie to store information on your computer. Some of these cookies are essential to make our site work and others help us improve by giving us some insight into how the site is being used.'
+                  : 'このサイトでは、お客様のコンピュータに情報を保存するためにクッキーを使用しています。これらのクッキーの中には、当サイトの運営に必要不可欠なものもあれば、サイトの利用状況を把握することで改善に役立てるものもあります。'}
+                <br></br>
+                {languageIndex === 0 ? (
+                  <>
+                    By using our site, you agree to our{' '}
+                    <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
+                      Cookie
+                    </a>{' '}
+                    and{' '}
+                    <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
+                      Privacy Policy
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    このサイトを利用することにより、お客様は当社の
+                    <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
+                      クッキー
+                    </a>
+                    および
+                    <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
+                      プライバシーポリシー
+                    </a>
+                    に同意したものとみなされます。
+                  </>
+                )}
+              </p>
+              <div onClick={closeCookiePopupHandler}>{languageIndex === 0 ? 'I understand' : 'わかりました'}</div>
             </div>
           )}
-          <div
-            onClick={musicClickHander}
-            className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${languageIndex === 1 ? 'japanese' : ''}`}
-          >
-            <img src={musicSvg30} alt="" className="nav__links--icon"></img>
-            {dictionary.music[languageIndex]}
+          <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
+            <div className="home__overlay--left" onClick={overlayClickHandler}></div>
+            <div className="home__overlay--right"></div>
           </div>
-          <div
-            onClick={backgroundClickHander}
-            className={`nav__links--link fixed-width ${languageIndex === 1 ? 'japanese' : ''} ${
-              currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
-            }`}
-          >
-            <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
-            {dictionary.background[languageIndex]}
-          </div>
-          <div className="nav__links--link language" onClick={languageChangeHandler}>
-            <img className="nav__links--icon" src={globe30} alt=""></img>
-            {dictionary.language[languageIndex]}
-          </div>
-          <img
-            className={`nav__links--link profile ${languageIndex === 1 ? 'japanese' : ''}`}
-            src={currentAvatar.url}
-            alt=""
-            onClick={outsideLinkToggleHandler}
-          ></img>
-          {showOutsideLink && (
-            <div className="nav__outside-links">
-              {memberId && (
+          <nav className="nav">
+            <div onClick={overlayClickHandler} className="nav__logo">
+              <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
+              {(isPremium === false || isOntrial) && (
                 <>
-                  <div className="nav__outside-links--profile-container">
-                    <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
-                    <div>
-                      <p className="nav__outside-links--username">{username}</p>
-                      <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
-                    </div>
-                  </div>
-                  <div className="nav__outside-links--btn-container">
-                    <img
-                      className="nav__logo--upgrade-btn"
-                      onClick={navBtnClickHandler}
-                      src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
-                      alt=""
-                    ></img>
-                    <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                      {isPremium && !isOntrial
-                        ? languageIndex === 0
-                          ? 'Extend Premium'
-                          : 'プレミアム延長'
-                        : languageIndex === 0
-                        ? 'Activate Premium'
-                        : 'プレミアム有効化'}
-                    </div>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png1} alt="" className="small"></img>
-                    </div>
-                    <p onClick={openSubscriptionHandler}>{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png2} alt=""></img>
-                    </div>
-                    <p onClick={openHelpSupportHandler}>{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png3} alt=""></img>
-                    </div>
-                    <p onClick={openFeedbackHandler}>{languageIndex === 0 ? 'Feedback' : 'ご意見・ご感想'}</p>
+                  <img
+                    className="nav__logo--upgrade-btn"
+                    onClick={navBtnClickHandler}
+                    src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                    alt=""
+                  ></img>
+                  <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                    {languageIndex === 0 ? 'Activate Premium' : 'プレミアム有効化'}
                   </div>
                 </>
               )}
-              <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
-                <div className="nav__outside-links--icon-container">
-                  <img src={png4} alt=""></img>
-                </div>
-                <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
-                  {dictionary.aboutUs[languageIndex]}
-                </a>
+            </div>
+            <div className="nav__links">
+              <div onClick={props.showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
+                {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
               </div>
-              <div className="nav__outside-links--container">
-                <div className="nav__outside-links--icon-container">
-                  <img src={png6} alt=""></img>
+              <div className="nav__links--timer-container">
+                <div onClick={timerClickHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
+                  <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
+                  {languageIndex === 0 ? 'Timer' : 'タイマー'}
                 </div>
-                <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                  {languageIndex === 0 ? 'For Artist' : 'アーティスト向け'}
-                </a>
+                <Timer closeHandler={closeTimerHandler} showTimer={showTimer}></Timer>
               </div>
-              <div className="nav__outside-links--container">
-                <div className="nav__outside-links--icon-container">
-                  <img src={png5} alt=""></img>
-                </div>
-                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                  {dictionary.policy[languageIndex]}
-                </a>
+              <div
+                onClick={musicClickHander}
+                className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${languageIndex === 1 ? 'japanese' : ''}`}
+              >
+                <img src={musicSvg30} alt="" className="nav__links--icon"></img>
+                {dictionary.music[languageIndex]}
               </div>
-              {memberId && (
-                <div className="nav__outside-links--container border-top">
-                  <div className="nav__outside-links--icon-container">
-                    <img src={png7} alt=""></img>
+              <div
+                onClick={backgroundClickHander}
+                className={`nav__links--link fixed-width ${languageIndex === 1 ? 'japanese' : ''} ${
+                  currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
+                }`}
+              >
+                <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
+                {dictionary.background[languageIndex]}
+              </div>
+              <div className="nav__links--link language" onClick={languageChangeHandler}>
+                <img className="nav__links--icon" src={globe30} alt=""></img>
+                {dictionary.language[languageIndex]}
+              </div>
+              <img
+                className={`nav__links--link profile ${languageIndex === 1 ? 'japanese' : ''}`}
+                src={currentAvatar.url}
+                alt=""
+                onClick={outsideLinkToggleHandler}
+              ></img>
+              {showOutsideLink && (
+                <div className="nav__outside-links">
+                  {memberId && (
+                    <>
+                      <div className="nav__outside-links--profile-container">
+                        <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
+                        <div>
+                          <p className="nav__outside-links--username">{username}</p>
+                          <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
+                        </div>
+                      </div>
+                      <div className="nav__outside-links--btn-container">
+                        <img
+                          className="nav__logo--upgrade-btn"
+                          onClick={navBtnClickHandler}
+                          src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                          alt=""
+                        ></img>
+                        <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                          {isPremium && !isOntrial
+                            ? languageIndex === 0
+                              ? 'Extend Premium'
+                              : 'プレミアム延長'
+                            : languageIndex === 0
+                            ? 'Activate Premium'
+                            : 'プレミアム有効化'}
+                        </div>
+                      </div>
+                      <div className="nav__outside-links--container">
+                        <div className="nav__outside-links--icon-container">
+                          <img src={png1} alt="" className="small"></img>
+                        </div>
+                        <p onClick={openSubscriptionHandler}>{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
+                      </div>
+                      <div className="nav__outside-links--container">
+                        <div className="nav__outside-links--icon-container">
+                          <img src={png2} alt=""></img>
+                        </div>
+                        <p onClick={openHelpSupportHandler}>{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
+                      </div>
+                      <div className="nav__outside-links--container">
+                        <div className="nav__outside-links--icon-container">
+                          <img src={png3} alt=""></img>
+                        </div>
+                        <p onClick={openFeedbackHandler}>{languageIndex === 0 ? 'Feedback' : 'ご意見・ご感想'}</p>
+                      </div>
+                    </>
+                  )}
+                  <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png4} alt=""></img>
+                    </div>
+                    <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
+                      {dictionary.aboutUs[languageIndex]}
+                    </a>
                   </div>
-                  <p onClick={logoutHandler}>{languageIndex === 0 ? 'Logout' : 'ログアウト'}</p>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png6} alt=""></img>
+                    </div>
+                    <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
+                      {languageIndex === 0 ? 'For Artist' : 'アーティスト向け'}
+                    </a>
+                  </div>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png5} alt=""></img>
+                    </div>
+                    <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
+                      {dictionary.policy[languageIndex]}
+                    </a>
+                  </div>
+                  {memberId && (
+                    <div className="nav__outside-links--container border-top">
+                      <div className="nav__outside-links--icon-container">
+                        <img src={png7} alt=""></img>
+                      </div>
+                      <p onClick={logoutHandler}>{languageIndex === 0 ? 'Logout' : 'ログアウト'}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
-        </div>
-      </nav>
-      <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
-        <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
-        <div className="background-control__ambient-container">
-          <div className="background-control__ambient-volume">
-            <p>{languageIndex === 0 ? 'Ambience' : 'アンビエンス'}</p>
-            <img src={speakerSvg15} alt=""></img>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={ambientVolume * 100}
-              onChange={volumeAmbientChangeHandler}
-              ref={ambientVolumeSliderRef}
-              className="background-control__ambient-volume--slider"
-            ></input>
-          </div>
-          {ambientThumbnailArr}
-          <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
-            <img src={addSvg20} alt=""></img>
-          </div>
-        </div>
-      </div>
-      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
-        {isPremium === undefined ? (
-          <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
-            Join us to have your own music playlist
-          </p>
-        ) : (
-          <>
-            <div className="music-control__title">
-              <img src={heartFullSvg30} alt=""></img>
-              <p>{languageIndex === 0 ? 'Favorite music' : 'お気に入り'}</p>
+          </nav>
+          <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
+            <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
+            <div className="background-control__ambient-container">
+              <div className="background-control__ambient-volume">
+                <p>{languageIndex === 0 ? 'Ambience' : 'アンビエンス'}</p>
+                <img src={speakerSvg15} alt=""></img>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={ambientVolume * 100}
+                  onChange={volumeAmbientChangeHandler}
+                  ref={ambientVolumeSliderRef}
+                  className="background-control__ambient-volume--slider"
+                ></input>
+              </div>
+              {ambientThumbnailArr}
+              <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
+                <img src={addSvg20} alt=""></img>
+              </div>
             </div>
-            {favouriteMusicIdArr.length === 0 ? (
-              <p>{languageIndex === 0 ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
+          </div>
+          <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
+            {isPremium === undefined ? (
+              <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
+                Join us to have your own music playlist
+              </p>
             ) : (
-              favouriteMusicIdArr.map((id) => (
-                <div key={id} className="music-control__cards">
-                  <FavouriteMusicCard id={id}></FavouriteMusicCard>
+              <>
+                <div className="music-control__title">
+                  <img src={heartFullSvg30} alt=""></img>
+                  <p>{languageIndex === 0 ? 'Favorite music' : 'お気に入り'}</p>
                 </div>
-              ))
+                {favouriteMusicIdArr.length === 0 ? (
+                  <p>{languageIndex === 0 ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
+                ) : (
+                  favouriteMusicIdArr.map((id) => (
+                    <div key={id} className="music-control__cards">
+                      <FavouriteMusicCard id={id}></FavouriteMusicCard>
+                    </div>
+                  ))
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
-      <div className={`mood ${!memberId ? 'not-show' : ''}`}>
-        <div className="mood__section">
-          <img
-            src={daySvg36}
-            alt=""
-            onClick={changeBackgroundTimeHandler.bind(1)}
-            className={currentBackground.id.slice(2, 3) !== '1' ? 'mood__section--not-current-mood' : ''}
-          ></img>
-          <img
-            src={eveningSvg36}
-            alt=""
-            onClick={changeBackgroundTimeHandler.bind(2)}
-            className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
-          ></img>
-          <div className={isPremium ? '' : 'mood__section--premium'}>
-            <img
-              src={nightSvg36}
-              alt=""
-              title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : showUpgradePopupHandler}
-              className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-            ></img>
-            {!isPremium && (
+          </div>
+          <div className={`mood ${!memberId ? 'not-show' : ''}`}>
+            <div className="mood__section">
               <img
-                src={lockSvg15}
+                src={daySvg36}
                 alt=""
-                title="For premium member"
-                className="mood__section--lock"
-                onClick={showUpgradePopupHandler}
+                onClick={changeBackgroundTimeHandler.bind(1)}
+                className={currentBackground.id.slice(2, 3) !== '1' ? 'mood__section--not-current-mood' : ''}
               ></img>
-            )}
-          </div>
-        </div>
-        <div className="mood__section">
-          <img
-            src={cloudySvg36}
-            alt=""
-            onClick={changeBackgroundWeatherHandler.bind(1)}
-            className={currentBackground.id.slice(3) !== '1' ? 'mood__section--not-current-mood' : ''}
-          ></img>
-          <img
-            src={rainySvg36}
-            alt=""
-            onClick={changeBackgroundWeatherHandler.bind(2)}
-            className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
-          ></img>
-          <div className={isPremium ? '' : 'mood__section--premium'}>
-            <img
-              src={thunderSvg36}
-              alt=""
-              title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : showUpgradePopupHandler}
-              className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-            ></img>
-            {!isPremium && (
               <img
-                src={lockSvg15}
+                src={eveningSvg36}
                 alt=""
-                title="For premium member"
-                className="mood__section--lock"
-                onClick={showUpgradePopupHandler}
+                onClick={changeBackgroundTimeHandler.bind(2)}
+                className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
-            )}
-          </div>
-          <div className={isPremium ? '' : 'mood__section--premium'}>
-            <img
-              src={snowySvg36}
-              alt=""
-              title={`${!isPremium ? 'For premium member' : ''}`}
-              onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : showUpgradePopupHandler}
-              className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
-            ></img>
-            {!isPremium && (
-              <img
-                src={lockSvg15}
-                alt=""
-                title="For premium member"
-                className="mood__section--lock"
-                onClick={showUpgradePopupHandler}
-              ></img>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="player">
-        <div className="player__music-data">
-          <img
-            src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg30 : heartSvg30}
-            alt=""
-            className="player__music-data--favourite-btn"
-            onClick={favouriteBtnClickHandler}
-          ></img>
-          <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
-          <div>
-            <p className="player__music-data--music-name">{currentMusic.musicName}</p>
-            <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
-              {currentMusic.artistName}
-            </a>
-          </div>
-        </div>
-        <div className="player__music-control">
-          <img
-            src={shuffleSvg25}
-            onClick={toggleShuffleMusicHandler}
-            alt=""
-            className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
-          ></img>
-          <img src={backwardSvg25} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
-          <img
-            src={musicPlaying ? pauseSvg50 : playSvg50}
-            onClick={playPauseMusicHandler}
-            alt=""
-            className="player__music-control--play-pause"
-          ></img>
-          <img src={forwardSvg25} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
-          <img
-            src={loopSvg25}
-            onClick={toggleLoopMusicHandler}
-            alt=""
-            className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
-          ></img>
-        </div>
-        <div className="player__volume-control">
-          <img src={musicLibrarySvg36} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
-          <div className="player__volume-control--volume">
-            <div className="player__volume-control--section">
-              <img src={iTunesSvg30} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={musicVolume * 100}
-                onChange={volumeMusicChangeHandler}
-                ref={musicVolumeSliderRef}
-                className="player__volume-control--volume-slider"
-              ></input>
+              <div className={isPremium ? '' : 'mood__section--premium'}>
+                <img
+                  src={nightSvg36}
+                  alt=""
+                  title={`${!isPremium ? 'For premium member' : ''}`}
+                  onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : showUpgradePopupHandler}
+                  className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+                {!isPremium && (
+                  <img
+                    src={lockSvg15}
+                    alt=""
+                    title="For premium member"
+                    className="mood__section--lock"
+                    onClick={showUpgradePopupHandler}
+                  ></img>
+                )}
+              </div>
             </div>
-            <div className="player__volume-control--section">
-              <img src={ambientSvg30} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={ambientVolume * 100}
-                onChange={volumeAmbientChangeHandler}
-                ref={ambientVolumeSliderRef}
-                className="player__volume-control--volume-slider"
-              ></input>
+            <div className="mood__section">
+              <img
+                src={cloudySvg36}
+                alt=""
+                onClick={changeBackgroundWeatherHandler.bind(1)}
+                className={currentBackground.id.slice(3) !== '1' ? 'mood__section--not-current-mood' : ''}
+              ></img>
+              <img
+                src={rainySvg36}
+                alt=""
+                onClick={changeBackgroundWeatherHandler.bind(2)}
+                className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
+              ></img>
+              <div className={isPremium ? '' : 'mood__section--premium'}>
+                <img
+                  src={thunderSvg36}
+                  alt=""
+                  title={`${!isPremium ? 'For premium member' : ''}`}
+                  onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : showUpgradePopupHandler}
+                  className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+                {!isPremium && (
+                  <img
+                    src={lockSvg15}
+                    alt=""
+                    title="For premium member"
+                    className="mood__section--lock"
+                    onClick={showUpgradePopupHandler}
+                  ></img>
+                )}
+              </div>
+              <div className={isPremium ? '' : 'mood__section--premium'}>
+                <img
+                  src={snowySvg36}
+                  alt=""
+                  title={`${!isPremium ? 'For premium member' : ''}`}
+                  onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : showUpgradePopupHandler}
+                  className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+                {!isPremium && (
+                  <img
+                    src={lockSvg15}
+                    alt=""
+                    title="For premium member"
+                    className="mood__section--lock"
+                    onClick={showUpgradePopupHandler}
+                  ></img>
+                )}
+              </div>
             </div>
           </div>
-          <img
-            src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
-            onClick={fullScreenClickHander}
-            className="player__full-screen"
-            alt=""
-          ></img>
-        </div>
-      </div>
+          <div className="player">
+            <div className="player__music-data">
+              <img
+                src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg30 : heartSvg30}
+                alt=""
+                className="player__music-data--favourite-btn"
+                onClick={favouriteBtnClickHandler}
+              ></img>
+              <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
+              <div>
+                <p className="player__music-data--music-name">{currentMusic.musicName}</p>
+                <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
+                  {currentMusic.artistName}
+                </a>
+              </div>
+            </div>
+            <div className="player__music-control">
+              <img
+                src={shuffleSvg25}
+                onClick={toggleShuffleMusicHandler}
+                alt=""
+                className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
+              ></img>
+              <img src={backwardSvg25} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
+              <img
+                src={musicPlaying ? pauseSvg50 : playSvg50}
+                onClick={playPauseMusicHandler}
+                alt=""
+                className="player__music-control--play-pause"
+              ></img>
+              <img src={forwardSvg25} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
+              <img
+                src={loopSvg25}
+                onClick={toggleLoopMusicHandler}
+                alt=""
+                className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
+              ></img>
+            </div>
+            <div className="player__volume-control">
+              <img src={musicLibrarySvg36} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
+              <div className="player__volume-control--volume">
+                <div className="player__volume-control--section">
+                  <img src={iTunesSvg30} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={musicVolume * 100}
+                    onChange={volumeMusicChangeHandler}
+                    ref={musicVolumeSliderRef}
+                    className="player__volume-control--volume-slider"
+                  ></input>
+                </div>
+                <div className="player__volume-control--section">
+                  <img src={ambientSvg30} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={ambientVolume * 100}
+                    onChange={volumeAmbientChangeHandler}
+                    ref={ambientVolumeSliderRef}
+                    className="player__volume-control--volume-slider"
+                  ></input>
+                </div>
+              </div>
+              <img
+                src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+                onClick={fullScreenClickHander}
+                className="player__full-screen"
+                alt=""
+              ></img>
+            </div>
+          </div>
+        </>
+      )}
+      {props.isFullScreen && (
+        <img
+          src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+          onClick={fullScreenClickHander}
+          className="player__full-screen fullscreen"
+          alt=""
+        ></img>
+      )}
     </div>
   );
 }

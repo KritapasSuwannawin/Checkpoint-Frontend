@@ -118,18 +118,15 @@ function Timer(props) {
 
         if (Number(shortBreakInputRef.current.value) === 0) {
           setAudioUrl(alarmStudyEnd);
-          audioRef.current.play();
           setMainTimer(Number(studyInputRef.current.value) * 60);
           return false;
         }
 
         if (newValue) {
           setAudioUrl(alarmStudyEnd);
-          audioRef.current.play();
           setMainTimer(Number(shortBreakInputRef.current.value) * 60);
         } else {
           setAudioUrl(alarmBreakEnd);
-          audioRef.current.play();
           setMainTimer(Number(studyInputRef.current.value) * 60);
         }
 
@@ -141,9 +138,12 @@ function Timer(props) {
       setSecondaryTimerRunning(false);
       setSecondaryTimer(Number(longBreakInputRef.current.value) * 60);
       setAudioUrl(alarmBreakEnd);
-      audioRef.current.play();
     }
   }, [mainTimer, secondaryTimer]);
+
+  useEffect(() => {
+    audioRef.current.play();
+  }, [audioUrl]);
 
   function resetMainTimerHandler() {
     setMainTimerRunning(false);
@@ -165,6 +165,8 @@ function Timer(props) {
     <div className={`timer ${!props.showTimer ? 'hide' : ''}`}>
       <div className="close-btn" onClick={props.closeHandler}></div>
       <audio src={audioUrl} preload="auto" autoPlay={true} muted={isAudioMuted} ref={audioRef}></audio>
+      <audio src={alarmStudyEnd} preload="auto" autoPlay={true} muted={true}></audio>
+      <audio src={alarmBreakEnd} preload="auto" autoPlay={true} muted={true}></audio>
       <p className="heading">{!isBegun ? 'Pomodoro' : !isShortBreak ? 'Study/Work' : 'Short Break'}</p>
       <p className="main-timer">{secondToMinute(mainTimer)}</p>
       <div className="btn-container">

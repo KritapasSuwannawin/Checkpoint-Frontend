@@ -28,6 +28,10 @@
     height: 1.5rem;
     background-color: rgba(196, 196, 196, 0.7);
     border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .heading {
