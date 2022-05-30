@@ -10,10 +10,19 @@
   border-radius: 2rem;
   padding: 2rem 2.5rem;
   color: #fff;
-  @include flex-column-center;
+  max-height: calc(100vh - 26rem);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   p {
     cursor: default;
+    text-align: center;
   }
 
   &.hide {
@@ -118,6 +127,11 @@
 
     &.margin-top {
       margin-top: 1.2rem;
+    }
+
+    &.center {
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 

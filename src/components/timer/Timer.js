@@ -210,7 +210,7 @@ function Timer(props) {
         <img src={resetSvg} className="icon" alt="" onClick={resetSecondaryTimerHandler}></img>
       </div>
       <input
-        className="input margin-top"
+        className="input margin-top center"
         type="number"
         defaultValue={30}
         ref={longBreakInputRef}
