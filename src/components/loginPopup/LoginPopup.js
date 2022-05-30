@@ -22,7 +22,7 @@ function LoginPopup(props) {
 
   const dispatch = useDispatch();
 
-  const [signingUp, setSigningUp] = useState(props.signIn ? false : true);
+  const [signingUp, setSigningUp] = useState(true);
   const [verificationCode, setVerificationCode] = useState(undefined);
   const [resetPasswordVerificationCode, setResetPasswordVerificationCode] = useState(undefined);
 
@@ -567,16 +567,14 @@ function LoginPopup(props) {
   if (forgetPassword) {
     return (
       <div className="login-popup">
-        <div className="login-popup__form">
+        <form className="login-popup__form">
           <div className="login-popup__title-container">
-            {!props.signIn && (
-              <p
-                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
-                onClick={signUpClickHandler.bind(true)}
-              >
-                {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
-              </p>
-            )}
+            <p
+              className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+              onClick={signUpClickHandler.bind(true)}
+            >
+              {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
+            </p>
             <p
               className={`login-popup__title ${signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
               onClick={signUpClickHandler.bind(false)}
@@ -617,12 +615,14 @@ function LoginPopup(props) {
                 className="login-popup__input"
                 type="password"
                 ref={newPasswordRef}
+                autoComplete="on"
                 placeholder={languageIndex === 0 ? 'New Password' : '新しいパスワード'}
               ></input>
               <input
                 className="login-popup__input"
                 type="password"
                 ref={confirmNewPasswordRef}
+                autoComplete="on"
                 placeholder={languageIndex === 0 ? 'Confirm new password' : '新しいパスワードの確認'}
               ></input>
             </>
@@ -674,25 +674,23 @@ function LoginPopup(props) {
                 : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
             </p>
           )}
-        </div>
+        </form>
       </div>
     );
   }
 
   return (
     <div className="login-popup">
-      <div className="login-popup__form">
+      <form className="login-popup__form">
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">
-              {!props.signIn && (
-                <p
-                  className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
-                  onClick={signUpClickHandler.bind(true)}
-                >
-                  {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
-                </p>
-              )}
+              <p
+                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+                onClick={signUpClickHandler.bind(true)}
+              >
+                {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
+              </p>
               <p
                 className={`login-popup__title ${signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
                 onClick={signUpClickHandler.bind(false)}
@@ -725,6 +723,7 @@ function LoginPopup(props) {
               className="login-popup__input"
               type="password"
               placeholder={languageIndex === 0 ? 'Password' : 'パスワード'}
+              autoComplete="on"
               ref={passwordRef1}
             ></input>
             {invalidPassword && (
@@ -752,6 +751,7 @@ function LoginPopup(props) {
                   className="login-popup__input"
                   type="password"
                   placeholder={languageIndex === 0 ? 'Confirm password' : 'パスワードの確認'}
+                  autoComplete="on"
                   ref={passwordRef2}
                 ></input>
                 {passwordNotMatch && (
@@ -873,7 +873,7 @@ function LoginPopup(props) {
             )}
           </>
         )}
-      </div>
+      </form>
     </div>
   );
 }

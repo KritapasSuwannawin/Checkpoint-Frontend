@@ -142,7 +142,8 @@ function Timer(props) {
   }, [mainTimer, secondaryTimer]);
 
   useEffect(() => {
-    audioRef.current.play();
+    const promise = audioRef.current.play();
+    promise.catch(() => {});
   }, [audioUrl]);
 
   function resetMainTimerHandler() {

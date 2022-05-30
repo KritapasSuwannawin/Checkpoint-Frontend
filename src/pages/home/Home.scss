@@ -438,39 +438,6 @@
   }
 }
 
-.cookie-popup {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 8.6rem;
-  background-color: rgba(17, 17, 17, 0.5);
-  backdrop-filter: blur(5rem);
-  padding: 0 2.5rem;
-  color: white;
-  font-size: 1.4rem;
-  z-index: 1;
-
-  a {
-    color: white;
-  }
-
-  div {
-    margin-left: 1rem;
-    border: 1px solid white;
-    padding: 0.7rem 1.5rem;
-    border-radius: 1rem;
-    white-space: nowrap;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
 .player {
   display: flex;
   align-items: center;

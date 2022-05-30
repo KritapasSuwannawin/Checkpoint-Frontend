@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
@@ -6,15 +6,6 @@ import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
 import AmbientControl from '../../components/ambientControl/AmbientControl';
 import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMusicCard';
-import LoginPopup from '../../components/loginPopup/LoginPopup';
-import UpgradePopup from '../../components/upgradePopup/UpgradePopup';
-import FreeTrialPopup from '../../components/freeTrialPopup/FreeTrialPopup';
-import LastDayTrialPopup from '../../components/freeTrialPopup/LastDayTrialPopup';
-import ExpirationPopup from '../../components/freeTrialPopup/ExpirationPopup';
-import ActivationPopup from '../../components/activationPopup/ActivationPopup';
-import HelpSupportPopup from '../../components/helpSupportPopup/HelpSupportPopup';
-import FeedbackPopup from '../../components/feedbackPopup/FeedbackPopup';
-import SubscriptionPopup from '../../components/subscriptionPopup/SubscriptionPopup';
 import Timer from '../../components/timer/Timer';
 import './Home.scss';
 
@@ -25,6 +16,7 @@ import { musicActions } from '../../store/musicSlice';
 import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
+import { popupActions } from '../../store/popupSlice';
 
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
 import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
@@ -95,6 +87,8 @@ function Home(props) {
   const isOntrial = useSelector((store) => store.member.isOntrial);
   const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
+  const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
+  const showOutsideLinkPopup = useSelector((store) => store.popup.showOutsideLinkPopup);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
@@ -108,26 +102,21 @@ function Home(props) {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
-  const [showOutsideLink, setShowOutsideLink] = useState(false);
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
-  const [showUpgradePopup, setShowUpgradePopup] = useState(false);
-  const [showFreeTrialModal, setShowFreeTrialModal] = useState(false);
-  const [showLastDayTrialModal, setShowLastDayTrialModal] = useState(false);
-  const [showExpirationPopup, setShowExpirationPopup] = useState(false);
-  const [showActivationPopup, setShowActivationPopup] = useState(false);
-  const [showHelpSupportPopup, setShowHelpSupportPopup] = useState(false);
-  const [showSubscriptionPopup, setShowSubscriptionPopup] = useState(false);
-  const [showCookiePopup, setShowCookiePopup] = useState(false);
-  const [showTimer, setShowTimer] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const backgroundFilePathRef = useRef();
 
+  const homeRef = useRef();
+
   useEffect(() => {
-    if (props.showUpgradePopup) {
-      setShowUpgradePopup(true);
-      dispatch(pageActions.closePageHandler());
-    }
-  }, [props.showUpgradePopup, dispatch]);
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        setIsFullScreen(true);
+      } else {
+        setIsFullScreen(false);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
@@ -235,19 +224,19 @@ function Home(props) {
 
   useEffect(() => {
     if (!memberId) {
-      setShowLoginPopup(true);
+      dispatch(popupActions.setShowLoginPopup(true));
     } else {
       if (!localStorage.getItem('checkpointShowCookie')) {
-        setShowCookiePopup(true);
+        dispatch(popupActions.setShowCookiePopup(true));
       }
 
       if (dayOfTrial === 7 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
-        setShowLastDayTrialModal(true);
+        dispatch(popupActions.setShowLastDayTrialPopup(true));
       } else if (!isPremium && !localStorage.getItem('checkpointShowExpirationPopup')) {
-        setShowExpirationPopup(true);
+        dispatch(popupActions.setShowExpirationPopup(true));
       }
     }
-  }, [memberId, dayOfTrial, isPremium]);
+  }, [dispatch, memberId, dayOfTrial, isPremium]);
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -308,8 +297,8 @@ function Home(props) {
       dispatch(pageActions.closePageHandler());
       return;
     }
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    dispatch(popupActions.setShowTimerPopup(false));
+    dispatch(popupActions.setShowOutsideLinkPopup(false));
     dispatch(pageActions.changePageHandler('background'));
   }
 
@@ -318,8 +307,8 @@ function Home(props) {
       dispatch(pageActions.closePageHandler());
       return;
     }
-    setShowTimer(false);
-    setShowOutsideLink(false);
+    dispatch(popupActions.setShowTimerPopup(false));
+    dispatch(popupActions.setShowOutsideLinkPopup(false));
     dispatch(pageActions.changePageHandler('music'));
   }
 
@@ -349,8 +338,8 @@ function Home(props) {
 
   function outsideLinkToggleHandler() {
     dispatch(pageActions.closePageHandler());
-    setShowTimer(false);
-    setShowOutsideLink((state) => !state);
+    dispatch(popupActions.setShowTimerPopup(false));
+    dispatch(popupActions.toggleShowOutsideLinkPopup());
   }
 
   function languageChangeHandler() {
@@ -358,45 +347,16 @@ function Home(props) {
   }
 
   function navBtnClickHandler() {
-    closeTimerMusicBackgroundProfile();
-
     if (isPremium === undefined) {
-      setShowLoginPopup(true);
+      dispatch(popupActions.setShowLoginPopup(true));
     } else {
-      setShowUpgradePopup(true);
-      setShowSubscriptionPopup(false);
+      dispatch(popupActions.setShowUpgradePopup(true));
+      dispatch(popupActions.setShowSubscriptionPopup(false));
     }
   }
-
-  const closeLoginPopup = useCallback((showFreeTrialModal) => {
-    setShowLoginPopup(false);
-
-    if (showFreeTrialModal) {
-      setShowFreeTrialModal(true);
-    }
-  }, []);
 
   function showUpgradePopupHandler() {
-    setShowUpgradePopup(true);
-  }
-
-  function closeUpgradePopup() {
-    setShowUpgradePopup(false);
-    props.closeUpgradePopupHandler();
-  }
-
-  function closeFreeTrialPopup() {
-    setShowFreeTrialModal(false);
-  }
-
-  function closeLastDayTrialPopup() {
-    localStorage.setItem('checkpointShowLastDayTrialPopup', 1);
-    setShowLastDayTrialModal(false);
-  }
-
-  function closeExpirationPopup() {
-    localStorage.setItem('checkpointShowExpirationPopup', 1);
-    setShowExpirationPopup(false);
+    dispatch(popupActions.setShowUpgradePopup(true));
   }
 
   function favouriteBtnClickHandler() {
@@ -409,137 +369,62 @@ function Home(props) {
     localStorage.removeItem('CheckpointLoginMethod');
 
     dispatch(memberActions.logout());
-    closeTimerMusicBackgroundProfile();
     dispatch(musicActions.setMusicPlaying(false));
     dispatch(avatarActions.changeAvatarHandler(1));
+    dispatch(popupActions.setShowOutsideLinkPopup(false));
   }
 
   function activationBtnClickHandler() {
-    closeTimerMusicBackgroundProfile();
-    setShowSubscriptionPopup(false);
-    setShowActivationPopup(true);
-  }
-
-  function closeActivationPopup() {
-    setShowActivationPopup(false);
+    dispatch(popupActions.setShowSubscriptionPopup(false));
+    dispatch(popupActions.setShowActivationPopup(true));
   }
 
   function openHelpSupportHandler() {
-    closeTimerMusicBackgroundProfile();
-    setShowActivationPopup(false);
-    setShowHelpSupportPopup(true);
-  }
-
-  function closeHelpSupportHandler() {
-    setShowHelpSupportPopup(false);
+    dispatch(popupActions.setShowHelpSupportPopup(true));
+    dispatch(popupActions.setShowActivationPopup(false));
   }
 
   function openFeedbackHandler() {
-    closeTimerMusicBackgroundProfile();
-    props.showFeedbackPopupHandler();
+    dispatch(popupActions.setShowFeedbackPopup(true));
   }
 
   function openSubscriptionHandler() {
-    closeTimerMusicBackgroundProfile();
-    setShowSubscriptionPopup(true);
-  }
-
-  function closeSubscriptionHandler() {
-    setShowSubscriptionPopup(false);
-  }
-
-  function closeCookiePopupHandler() {
-    localStorage.setItem('checkpointShowCookie', '1');
-    setShowCookiePopup(false);
-  }
-
-  function fullScreenClickHander() {
-    closeTimerMusicBackgroundProfile();
-    props.fullScreenClickHander();
+    dispatch(popupActions.setShowSubscriptionPopup(true));
   }
 
   function closeTimerHandler() {
-    setShowTimer(false);
+    dispatch(popupActions.setShowTimerPopup(false));
   }
 
   function timerClickHandler() {
-    setShowTimer((showTimer) => {
-      const newValue = !showTimer;
-
-      if (newValue) {
-        dispatch(pageActions.closePageHandler());
-        setShowOutsideLink(false);
-      }
-
-      return newValue;
-    });
+    dispatch(pageActions.closePageHandler());
+    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.toggleShowTimerPopup());
   }
 
-  function closeTimerMusicBackgroundProfile() {
-    setShowTimer(false);
-    dispatch(pageActions.closePageHandler());
-    setShowOutsideLink(false);
+  function showTutorialHandler() {
+    dispatch(popupActions.setShowTutorialPopup(true));
+  }
+
+  function fullScreenClickHander() {
+    if (!document.fullscreenElement) {
+      if (homeRef.current.requestFullscreen) {
+        homeRef.current.requestFullscreen();
+        setIsFullScreen(true);
+      }
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
   }
 
   return (
-    <div className="home">
+    <div className="home" ref={homeRef}>
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
       {ambientAudioArr}
-      {!props.isFullScreen && (
+      {!isFullScreen && (
         <>
-          {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
-          {showUpgradePopup && <UpgradePopup closeHandler={closeUpgradePopup}></UpgradePopup>}
-          {showActivationPopup && (
-            <ActivationPopup closeHandler={closeActivationPopup} helpSupportClickHandler={openHelpSupportHandler}></ActivationPopup>
-          )}
-          {showFreeTrialModal && <FreeTrialPopup closeHandler={closeFreeTrialPopup}></FreeTrialPopup>}
-          {showLastDayTrialModal && <LastDayTrialPopup closeHandler={closeLastDayTrialPopup}></LastDayTrialPopup>}
-          {showExpirationPopup && <ExpirationPopup closeHandler={closeExpirationPopup}></ExpirationPopup>}
-          {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
-          {props.showFeedbackPopup && <FeedbackPopup closeHandler={props.closeFeedbackPopupHandler}></FeedbackPopup>}
-          {showSubscriptionPopup && (
-            <SubscriptionPopup
-              closeHandler={closeSubscriptionHandler}
-              activateHandler={activationBtnClickHandler}
-              upgradeHandler={navBtnClickHandler}
-            ></SubscriptionPopup>
-          )}
-          {showCookiePopup && (
-            <div className="cookie-popup">
-              <p>
-                {languageIndex === 0
-                  ? 'This site uses cookie to store information on your computer. Some of these cookies are essential to make our site work and others help us improve by giving us some insight into how the site is being used.'
-                  : 'このサイトでは、お客様のコンピュータに情報を保存するためにクッキーを使用しています。これらのクッキーの中には、当サイトの運営に必要不可欠なものもあれば、サイトの利用状況を把握することで改善に役立てるものもあります。'}
-                <br></br>
-                {languageIndex === 0 ? (
-                  <>
-                    By using our site, you agree to our{' '}
-                    <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
-                      Cookie
-                    </a>{' '}
-                    and{' '}
-                    <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
-                      Privacy Policy
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    このサイトを利用することにより、お客様は当社の
-                    <a href={`${window.location.href}cookie-policy`} target="_blank" rel="noreferrer">
-                      クッキー
-                    </a>
-                    および
-                    <a href={`${window.location.href}privacy-policy`} target="_blank" rel="noreferrer">
-                      プライバシーポリシー
-                    </a>
-                    に同意したものとみなされます。
-                  </>
-                )}
-              </p>
-              <div onClick={closeCookiePopupHandler}>{languageIndex === 0 ? 'I understand' : 'わかりました'}</div>
-            </div>
-          )}
           <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
             <div className="home__overlay--left" onClick={overlayClickHandler}></div>
             <div className="home__overlay--right"></div>
@@ -562,7 +447,7 @@ function Home(props) {
               )}
             </div>
             <div className="nav__links">
-              <div onClick={props.showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
+              <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
                 {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
               </div>
               <div className="nav__links--timer-container">
@@ -570,7 +455,7 @@ function Home(props) {
                   <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
                   {languageIndex === 0 ? 'Timer' : 'タイマー'}
                 </div>
-                <Timer closeHandler={closeTimerHandler} showTimer={showTimer}></Timer>
+                <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
               </div>
               <div
                 onClick={musicClickHander}
@@ -598,7 +483,7 @@ function Home(props) {
                 alt=""
                 onClick={outsideLinkToggleHandler}
               ></img>
-              {showOutsideLink && (
+              {showOutsideLinkPopup && (
                 <div className="nav__outside-links">
                   {memberId && (
                     <>
@@ -878,7 +763,7 @@ function Home(props) {
                 </div>
               </div>
               <img
-                src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+                src={!isFullScreen ? fullScreenSvg30 : minimizeSvg30}
                 onClick={fullScreenClickHander}
                 className="player__full-screen"
                 alt=""
@@ -887,9 +772,9 @@ function Home(props) {
           </div>
         </>
       )}
-      {props.isFullScreen && (
+      {isFullScreen && (
         <img
-          src={!props.isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+          src={!isFullScreen ? fullScreenSvg30 : minimizeSvg30}
           onClick={fullScreenClickHander}
           className="player__full-screen fullscreen"
           alt=""

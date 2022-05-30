@@ -6,6 +6,7 @@ import './SimpleThumbnailCard.scss';
 import { ambientActions } from '../../store/ambientSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { avatarActions } from '../../store/avatarSlice';
+import { popupActions } from '../../store/popupSlice';
 
 import lockSvg from '../../svg/15px/Lock.svg';
 
@@ -49,6 +50,10 @@ function SimpleThumbnailCard(props) {
     }
   }
 
+  function showUpgradePopupHandler() {
+    dispatch(popupActions.setShowUpgradePopup(true));
+  }
+
   if (!thumbnailUrl) {
     return <div className={placeholderClassName}></div>;
   }
@@ -56,7 +61,7 @@ function SimpleThumbnailCard(props) {
   return (
     <div className={className}>
       {(props.background || props.ambient) && props.isPremium && !isPremium && (
-        <div className="simple-thumbnail-card__premium" title="For premium member">
+        <div className="simple-thumbnail-card__premium" title="For premium member" onClick={showUpgradePopupHandler}>
           <div className="simple-thumbnail-card__premium-overlay"></div>
           <img src={lockSvg} alt="" className={`simple-thumbnail-card__lock-svg ${props.ambient ? 'small' : ''}`}></img>
         </div>

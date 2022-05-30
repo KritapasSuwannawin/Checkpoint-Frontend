@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import Background from './pages/background/Background';
 import Music from './pages/music/Music';
 import Ambient from './pages/ambient/Ambient';
 import Avatar from './pages/avatar/Avatar';
+import Popup from './components/popup/Popup';
 
 import Policy from './pages/policy/Policy';
 import PrivacyPolicy from './pages/policy/PrivacyPolicy';
@@ -19,13 +20,6 @@ import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 import About from './pages/about/About';
 import Mobile from './pages/mobile/Mobile';
 
-import FiveMinuteFeedback from './components/feedbackPopup/FiveMinuteFeedback';
-import TrialLastDayFeedback from './components/feedbackPopup/TrialLastDayFeedback';
-import AfterTrialPremiumFeedback from './components/feedbackPopup/AfterTrialPremiumFeedback';
-import AfterTrialStandardFeedback from './components/feedbackPopup/AfterTrialStandardFeedback';
-import SafariGuide from './components/safariGuide/SafariGuide';
-import Tutorial from './components/tutorial/Tutorial';
-
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
@@ -33,28 +27,25 @@ import { avatarActions } from './store/avatarSlice';
 import { languageActions } from './store/languageSlice';
 import { memberActions } from './store/memberSlice';
 import { pageActions } from './store/pageSlice';
+import { popupActions } from './store/popupSlice';
 
 function App() {
   const dispatch = useDispatch();
 
-  const { currentBackground } = useSelector((store) => store.background);
-  const { currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist } = useSelector((store) => store.music);
-  const { memberId, dayOfTrial, isPremium, isOntrial } = useSelector((store) => store.member);
-  const { currentAvatar } = useSelector((store) => store.avatar);
-  const { deviceId, startTime } = useSelector((store) => store.device);
+  const currentBackground = useSelector((store) => store.background.currentBackground);
+  const currentMusic = useSelector((store) => store.music.currentMusic);
+  const musicCategory = useSelector((store) => store.music.musicCategory);
+  const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
+  const playFromPlaylist = useSelector((store) => store.music.playFromPlaylist);
+  const memberId = useSelector((store) => store.member.memberId);
+  const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
+  const isPremium = useSelector((store) => store.member.isPremium);
+  const isOntrial = useSelector((store) => store.member.isOntrial);
+  const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
+  const deviceId = useSelector((store) => store.device.deviceId);
+  const startTime = useSelector((store) => store.device.startTime);
 
-  const [showFiveMinuteFeedback, setShowFiveMinuteFeedback] = useState(false);
-  const [showAfterTrialStandardFeedback, setShowAfterTrialStandardFeedback] = useState(false);
-  const [showTrialLastDayFeedback, setShowTrialLastDayFeedback] = useState(false);
-  const [showAfterTrialPremiumFeedback, setShowAfterTrialPremiumFeedback] = useState(false);
-  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
-  const [showSafariGuide, setShowSafariGuide] = useState(false);
   const [doneInitialize, setDoneInitialize] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
-  const [showUpgradePopup, setShowUpgradePopup] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
-  const mainPageRef = useRef();
 
   function mobileOrTabletCheck() {
     let check = false;
@@ -162,13 +153,9 @@ function App() {
 
         if (ambient.name !== 'error' && background.name !== 'error' && music.name !== 'error' && avatar.name !== 'error') {
           setDoneInitialize(true);
-        } else {
-          window.location.reload();
         }
       })
-      .catch(() => {
-        window.location.reload();
-      });
+      .catch(() => {});
 
     document.addEventListener('keyup', spacebarHandler);
   }, [isMobileDevice, spacebarHandler, dispatch]);
@@ -180,15 +167,15 @@ function App() {
       !navigator.userAgent.includes('Chrome') &&
       !localStorage.getItem('checkpointShowSafariPopup')
     ) {
-      setShowSafariGuide(true);
+      dispatch(popupActions.setShowSafariGuidePopup(true));
       localStorage.setItem('checkpointShowSafariPopup', '1');
     }
 
     if (memberId && !localStorage.getItem('checkpointShowTutorial')) {
-      setShowTutorial(true);
+      dispatch(popupActions.setShowTutorialPopup(true));
       localStorage.setItem('checkpointShowTutorial', '1');
     }
-  }, [memberId]);
+  }, [dispatch, memberId]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -206,7 +193,7 @@ function App() {
           .then((result) => {
             if (result.message !== 'done') {
               document.removeEventListener('keyup', spacebarHandler);
-              setShowFiveMinuteFeedback(true);
+              dispatch(popupActions.setShowFiveMinuteFeedbackPopup(true));
             }
           });
       }
@@ -215,7 +202,7 @@ function App() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [memberId, spacebarHandler]);
+  }, [dispatch, memberId, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && dayOfTrial === 7) {
@@ -232,11 +219,11 @@ function App() {
         .then((result) => {
           if (result.message !== 'done') {
             document.removeEventListener('keyup', spacebarHandler);
-            setShowTrialLastDayFeedback(true);
+            dispatch(popupActions.setShowTrialLastDayFeedbackPopup(true));
           }
         });
     }
-  }, [memberId, dayOfTrial, spacebarHandler]);
+  }, [dispatch, memberId, dayOfTrial, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && !isPremium) {
@@ -253,11 +240,11 @@ function App() {
         .then((result) => {
           if (result.message !== 'done') {
             document.removeEventListener('keyup', spacebarHandler);
-            setShowAfterTrialStandardFeedback(true);
+            dispatch(popupActions.setShowAfterTrialStandardFeedbackPopup(true));
           }
         });
     }
-  }, [memberId, isPremium, spacebarHandler]);
+  }, [dispatch, memberId, isPremium, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && isPremium && !isOntrial) {
@@ -274,11 +261,11 @@ function App() {
         .then((result) => {
           if (result.message !== 'done') {
             document.removeEventListener('keyup', spacebarHandler);
-            setShowAfterTrialPremiumFeedback(true);
+            dispatch(popupActions.setShowAfterTrialPremiumFeedbackPopup(true));
           }
         });
     }
-  }, [memberId, isPremium, isOntrial, spacebarHandler]);
+  }, [dispatch, memberId, isPremium, isOntrial, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && currentBackground && currentMusic) {
@@ -333,77 +320,6 @@ function App() {
     }
   }, [memberId, currentAvatar]);
 
-  function closeFiveMinuteFeedbackHandler() {
-    document.addEventListener('keyup', spacebarHandler);
-    setShowFiveMinuteFeedback(false);
-  }
-
-  function closeTrialLastDayFeedbackHandler() {
-    document.addEventListener('keyup', spacebarHandler);
-    setShowTrialLastDayFeedback(false);
-  }
-
-  function closeAfterTrialPremiumFeedbackHandler() {
-    document.addEventListener('keyup', spacebarHandler);
-    setShowAfterTrialPremiumFeedback(false);
-  }
-
-  function closeAfterTrialStandardFeedbackHandler() {
-    document.addEventListener('keyup', spacebarHandler);
-    setShowAfterTrialStandardFeedback(false);
-  }
-
-  function showFeedbackPopupHandler() {
-    document.removeEventListener('keyup', spacebarHandler);
-    setShowFeedbackPopup(true);
-  }
-
-  function closeFeedbackPopupHandler() {
-    document.addEventListener('keyup', spacebarHandler);
-    setShowFeedbackPopup(false);
-  }
-
-  function closeSafariGuideHandler() {
-    setShowSafariGuide(false);
-  }
-
-  function showTutorialHandler() {
-    setShowTutorial(true);
-  }
-
-  function closeTutorialHandler() {
-    setShowTutorial(false);
-  }
-
-  function showUpgradePopupHandler() {
-    setShowTutorial(false);
-    setShowUpgradePopup(true);
-  }
-
-  function closeUpgradePopupHandler() {
-    setShowUpgradePopup(false);
-  }
-
-  function fullScreenClickHander() {
-    if (!document.fullscreenElement) {
-      if (mainPageRef.current.requestFullscreen) {
-        mainPageRef.current.requestFullscreen();
-        setIsFullScreen(true);
-      }
-    } else {
-      document.exitFullscreen();
-      setIsFullScreen(false);
-    }
-  }
-
-  document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-      setIsFullScreen(true);
-    } else {
-      setIsFullScreen(false);
-    }
-  });
-
   if (isMobileDevice && window.location.pathname === '/') {
     return <Redirect to="/mobile"></Redirect>;
   }
@@ -411,37 +327,17 @@ function App() {
   return (
     <>
       <Route exact path="/">
-        <div ref={mainPageRef}>
-          <Loading></Loading>
-          {showFiveMinuteFeedback && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
-          {showTrialLastDayFeedback && <TrialLastDayFeedback closeHandler={closeTrialLastDayFeedbackHandler}></TrialLastDayFeedback>}
-          {showAfterTrialStandardFeedback && (
-            <AfterTrialStandardFeedback closeHandler={closeAfterTrialStandardFeedbackHandler}></AfterTrialStandardFeedback>
-          )}
-          {showAfterTrialPremiumFeedback && (
-            <AfterTrialPremiumFeedback closeHandler={closeAfterTrialPremiumFeedbackHandler}></AfterTrialPremiumFeedback>
-          )}
-          {showSafariGuide && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
-          {showTutorial && <Tutorial closeHandler={closeTutorialHandler} showUpgradePopupHandler={showUpgradePopupHandler}></Tutorial>}
-          {doneInitialize && (
-            <>
-              <Home
-                showFeedbackPopup={showFeedbackPopup}
-                showFeedbackPopupHandler={showFeedbackPopupHandler}
-                closeFeedbackPopupHandler={closeFeedbackPopupHandler}
-                showUpgradePopup={showUpgradePopup}
-                closeUpgradePopupHandler={closeUpgradePopupHandler}
-                showTutorialHandler={showTutorialHandler}
-                isFullScreen={isFullScreen}
-                fullScreenClickHander={fullScreenClickHander}
-              ></Home>
-              <Background></Background>
-              <Music></Music>
-              <Ambient showUpgradePopupHandler={showUpgradePopupHandler}></Ambient>
-              <Avatar></Avatar>
-            </>
-          )}
-        </div>
+        <Loading></Loading>
+        {doneInitialize && (
+          <>
+            <Popup spacebarHandler={spacebarHandler}></Popup>
+            <Home></Home>
+            <Background></Background>
+            <Music></Music>
+            <Ambient></Ambient>
+            <Avatar></Avatar>
+          </>
+        )}
       </Route>
 
       <Route exact path="/policy">

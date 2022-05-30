@@ -8,6 +8,7 @@ import languageReducer from './languageSlice';
 import memberReducer from './memberSlice';
 import avatarReducer from './avatarSlice';
 import deviceReducer from './deviceSlice';
+import popupReducer from './popupSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     member: memberReducer,
     avatar: avatarReducer,
     device: deviceReducer,
+    popup: popupReducer,
   },
 });
 
