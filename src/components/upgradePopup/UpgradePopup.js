@@ -91,7 +91,7 @@ function UpgradePopup(props) {
                   <span className="small"> /mo</span>
                 </p>
                 <p className="upgrade-popup__cards--celebration">
-                  <span>Early Launch Celebration!</span>*promotion until 31 May 2022
+                  <span>Early Launch Celebration!</span>
                 </p>
                 <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
                   <img
