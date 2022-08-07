@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -38,6 +38,7 @@ function App() {
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
   const playFromPlaylist = useSelector((store) => store.music.playFromPlaylist);
   const memberId = useSelector((store) => store.member.memberId);
+  const username = useSelector((store) => store.member.username);
   const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
   const isPremium = useSelector((store) => store.member.isPremium);
   const isOntrial = useSelector((store) => store.member.isOntrial);
@@ -46,6 +47,9 @@ function App() {
   const startTime = useSelector((store) => store.device.startTime);
 
   const [doneInitialize, setDoneInitialize] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const homeRef = useRef();
 
   function mobileOrTabletCheck() {
     let check = false;
@@ -92,10 +96,20 @@ function App() {
       dispatch(languageActions.languageChangeHandler());
     }
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resource`)
-      .then((response) => response.json())
-      .then((result) => {
-        const { ambient, background, music, avatar, mood } = result.data;
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/resource`)
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode, data } = body;
+
+        if (statusCode !== 2001) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+
+        const { ambient, background, music, avatar, mood } = data;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -151,9 +165,7 @@ function App() {
           )
         );
 
-        if (ambient.name !== 'error' && background.name !== 'error' && music.name !== 'error' && avatar.name !== 'error') {
-          setDoneInitialize(true);
-        }
+        setDoneInitialize(true);
       })
       .catch(() => {});
 
@@ -180,22 +192,27 @@ function App() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (memberId) {
-        const data = { memberId, tableName: 'feedback_five_minute' };
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_five_minute`)
+          .then((res) => res.json())
+          .then((body) => {
+            const { statusCode, data } = body;
 
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.message !== 'done') {
+            if (statusCode !== 2001) {
+              if (statusCode === 4000) {
+                throw new Error();
+              }
+
+              return;
+            }
+
+            const { feedbackStatus } = data;
+
+            if (feedbackStatus === 'not done') {
               document.removeEventListener('keyup', spacebarHandler);
               dispatch(popupActions.setShowFiveMinuteFeedbackPopup(true));
             }
-          });
+          })
+          .catch(() => {});
       }
     }, 300000);
 
@@ -206,98 +223,122 @@ function App() {
 
   useEffect(() => {
     if (memberId && dayOfTrial === 7) {
-      const data = { memberId, tableName: 'feedback_trial_last_day' };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_trial_last_day`)
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.message !== 'done') {
+          if (statusCode !== 2001) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            return;
+          }
+
+          const { feedbackStatus } = data;
+
+          if (feedbackStatus === 'not done') {
             document.removeEventListener('keyup', spacebarHandler);
             dispatch(popupActions.setShowTrialLastDayFeedbackPopup(true));
           }
-        });
+        })
+        .catch(() => {});
     }
   }, [dispatch, memberId, dayOfTrial, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && !isPremium) {
-      const data = { memberId, tableName: 'feedback_after_trial_standard' };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_after_trial_standard`)
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.message !== 'done') {
+          if (statusCode !== 2001) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            return;
+          }
+
+          const { feedbackStatus } = data;
+
+          if (feedbackStatus === 'not done') {
             document.removeEventListener('keyup', spacebarHandler);
             dispatch(popupActions.setShowAfterTrialStandardFeedbackPopup(true));
           }
-        });
+        })
+        .catch(() => {});
     }
   }, [dispatch, memberId, isPremium, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && isPremium && !isOntrial) {
-      const data = { memberId, tableName: 'feedback_after_trial_premium' };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_after_trial_premium`)
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/check-feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.message !== 'done') {
+          if (statusCode !== 2001) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            return;
+          }
+
+          const { feedbackStatus } = data;
+
+          if (feedbackStatus === 'not done') {
             document.removeEventListener('keyup', spacebarHandler);
             dispatch(popupActions.setShowAfterTrialPremiumFeedbackPopup(true));
           }
-        });
+        })
+        .catch(() => {});
     }
   }, [dispatch, memberId, isPremium, isOntrial, spacebarHandler]);
 
   useEffect(() => {
     if (memberId && currentBackground && currentMusic) {
-      const data = {
+      const requestData = {
         backgroundId: currentBackground.id,
         musicId: currentMusic.id,
         musicCategory,
         memberId,
         favouriteMusicIdArr,
-        playFromPlaylist,
+        isPlayFromPlaylist: playFromPlaylist,
         deviceId,
         onlineDuration: Date.now() - startTime,
       };
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/setting`, {
-        method: 'POST',
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/setting`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestData),
       })
-        .then((response) => response.json())
-        .then((result) => {
-          const errorMessage = result.message;
-          if (errorMessage === 'new device has logged in') {
-            localStorage.removeItem('CheckpointEmail');
-            localStorage.removeItem('CheckpointPassword');
-            localStorage.removeItem('CheckpointLoginMethod');
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode } = body;
 
-            dispatch(memberActions.logout());
-            dispatch(pageActions.closePageHandler());
-            dispatch(musicActions.setMusicPlaying(false));
-            dispatch(avatarActions.changeAvatarHandler(1));
+          if (statusCode !== 2001) {
+            if (statusCode === 3003) {
+              localStorage.removeItem('CheckpointEmail');
+              localStorage.removeItem('CheckpointPassword');
+              localStorage.removeItem('CheckpointLoginMethod');
+
+              dispatch(memberActions.logout());
+              dispatch(pageActions.closePageHandler());
+              dispatch(musicActions.setMusicPlaying(false));
+              dispatch(avatarActions.changeAvatarHandler(1));
+            }
+
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            return;
           }
         })
         .catch(() => {});
@@ -309,16 +350,54 @@ function App() {
       const data = {
         memberId,
         avatarId: currentAvatar.id,
+        username,
       };
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/profile`, {
-        method: 'POST',
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/profile`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode } = body;
+
+          if (statusCode !== 2000) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+          }
+        })
+        .catch(() => {});
     }
-  }, [memberId, currentAvatar]);
+  }, [username, memberId, currentAvatar]);
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        setIsFullScreen(true);
+      } else {
+        setIsFullScreen(false);
+      }
+    });
+  }, []);
+
+  function fullScreenClickHander() {
+    if (document.fullscreenElement || document.webkitIsFullScreen) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+    } else {
+      if (homeRef.current.requestFullscreen) {
+        homeRef.current.requestFullscreen();
+      } else if (homeRef.current.webkitRequestFullScreen) {
+        homeRef.current.webkitRequestFullScreen();
+      }
+    }
+  }
 
   if (isMobileDevice && window.location.pathname === '/') {
     return <Redirect to="/mobile"></Redirect>;
@@ -329,14 +408,14 @@ function App() {
       <Route exact path="/">
         <Loading></Loading>
         {doneInitialize && (
-          <>
+          <div ref={homeRef}>
             <Popup spacebarHandler={spacebarHandler}></Popup>
-            <Home></Home>
+            <Home isFullScreen={isFullScreen} fullScreenClickHander={fullScreenClickHander}></Home>
             <Background></Background>
             <Music></Music>
             <Ambient></Ambient>
             <Avatar></Avatar>
-          </>
+          </div>
         )}
       </Route>
 

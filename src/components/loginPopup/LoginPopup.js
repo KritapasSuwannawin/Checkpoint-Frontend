@@ -18,7 +18,7 @@ import googleSignupBtn from './icon/Google Sign up button Web.svg';
 import appleSignupBtn from './icon/Apple Sign up button Web.svg';
 
 function LoginPopup(props) {
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const dispatch = useDispatch();
 
@@ -103,38 +103,36 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountAlreadyExist(false);
 
-      const data = { email, loginMethod: 'email', isJapanese: languageIndex ? true : false };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/email/verify?email=${email}&is_japanese=${isJapanese}`)
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/verification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
+          if (statusCode !== 2001) {
+            if (statusCode === 3000) {
+              setAccountAlreadyExist(true);
+            }
 
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setAccountAlreadyExist(errorMessage === 'account already exist');
+            if (statusCode === 4000) {
+              throw new Error();
+            }
 
-          if (!errorMessage) {
-            emailRef.current.value = '';
-
-            setEmail(email);
-            setPassword(password);
-            setReceiveNews(checkboxRef2.current.checked);
-            setVerificationCode(result.verificationCode);
+            return;
           }
+
+          const { verificationCode } = data;
+
+          emailRef.current.value = '';
+
+          setEmail(email);
+          setPassword(password);
+          setReceiveNews(checkboxRef2.current.checked);
+          setVerificationCode(verificationCode);
         })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
+        .catch(() => setErrorDuringAuthen(true))
+        .finally(() => setLoading(false));
     }
-  }, [languageIndex, loading]);
+  }, [isJapanese, loading]);
 
   const verifyHandler = useCallback(() => {
     if (loading || !verificationCodeRef.current) {
@@ -150,34 +148,38 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountAlreadyExist(false);
 
-      const data = { email, password, loginMethod: 'email', receiveNews };
+      const requestData = { email, password, loginMethod: 'email', isReceiveNews: receiveNews };
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestData),
       })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setAccountAlreadyExist(errorMessage === 'account already exist');
+          if (statusCode !== 2001) {
+            if (statusCode === 3000) {
+              setAccountAlreadyExist(true);
+            }
 
-          if (!errorMessage) {
-            dispatch(deviceActions.setNewDevice());
-            dispatch(memberActions.setMember(result.data[0]));
-            setLocalStorage(data);
-            closeHandler(true);
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            return;
           }
+
+          dispatch(deviceActions.setNewDevice());
+          dispatch(memberActions.setMember(data.memberData));
+          setLocalStorage(requestData);
+          closeHandler(true);
         })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
+        .catch(() => setErrorDuringAuthen(true))
+        .finally(() => setLoading(false));
     } else {
       setInvalidCode(true);
     }
@@ -211,44 +213,50 @@ function LoginPopup(props) {
       setIncorrectPassword(false);
       setAccountNotExist(false);
 
-      const data = { email, password, loginMethod: 'email' };
+      const requestData = { email, password, loginMethod: 'email' };
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestData),
       })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setIncorrectPassword(errorMessage === 'incorrect password');
-          setAccountNotExist(errorMessage === 'account not exist');
+          if (statusCode !== 2001) {
+            if (statusCode === 3001) {
+              setAccountNotExist(true);
+            }
 
-          if (!errorMessage) {
-            const data = result.data[0];
-            dispatch(deviceActions.setNewDevice());
-            dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
-            dispatch(musicActions.setInitialMusic(data.musicId));
-            dispatch(musicActions.setMusicCategory(data.musicCategory));
-            dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
-            dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
-            dispatch(avatarActions.changeAvatarHandler(data.avatarId));
-            dispatch(memberActions.setMember(data));
-            setLocalStorage({ email, password, loginMethod: 'email' });
-            closeHandler(false);
-          } else {
+            if (statusCode === 3002) {
+              setIncorrectPassword(true);
+            }
+
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
             clearLocalStorage();
+            return;
           }
+
+          const { memberData } = data;
+          dispatch(deviceActions.setNewDevice());
+          dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
+          dispatch(musicActions.setInitialMusic(memberData.musicId));
+          dispatch(musicActions.setMusicCategory(memberData.musicCategory));
+          dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
+          dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
+          dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
+          dispatch(memberActions.setMember(memberData));
+          setLocalStorage(requestData);
+          closeHandler(false);
         })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
+        .catch(() => setErrorDuringAuthen(true))
+        .finally(() => setLoading(false));
     }
   }, [closeHandler, dispatch, loading]);
 
@@ -258,49 +266,44 @@ function LoginPopup(props) {
       localStorage.getItem('CheckpointPassword') &&
       localStorage.getItem('CheckpointLoginMethod')
     ) {
-      const data = {
+      const requestData = {
         email: localStorage.getItem('CheckpointEmail'),
         password: localStorage.getItem('CheckpointPassword'),
         loginMethod: localStorage.getItem('CheckpointLoginMethod'),
       };
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestData),
       })
-        .then((response) => response.json())
-        .then((result) => {
-          const errorMessage = result.message;
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setIncorrectPassword(errorMessage === 'incorrect password');
-          setAccountNotExist(errorMessage === 'account not exist');
+          if (statusCode !== 2001) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
 
-          if (!errorMessage) {
-            const data = result.data[0];
-            dispatch(deviceActions.setNewDevice());
-            dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
-            dispatch(musicActions.setInitialMusic(data.musicId));
-            dispatch(musicActions.setMusicCategory(data.musicCategory));
-            dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
-            dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
-            dispatch(avatarActions.changeAvatarHandler(data.avatarId));
-            dispatch(memberActions.setMember(data));
-            setLocalStorage({
-              email: localStorage.getItem('CheckpointEmail'),
-              password: localStorage.getItem('CheckpointPassword'),
-              loginMethod: localStorage.getItem('CheckpointLoginMethod'),
-            });
-            closeHandler(false);
-          } else {
             clearLocalStorage();
+            return;
           }
+
+          const { memberData } = data;
+          dispatch(deviceActions.setNewDevice());
+          dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
+          dispatch(musicActions.setInitialMusic(memberData.musicId));
+          dispatch(musicActions.setMusicCategory(memberData.musicCategory));
+          dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
+          dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
+          dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
+          dispatch(memberActions.setMember(memberData));
+          closeHandler(false);
         })
         .catch(() => {
-          setLoading(false);
           setErrorDuringAuthen(true);
         });
     }
@@ -354,32 +357,30 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountNotExist(false);
 
-      const data = { email, isJapanese: languageIndex ? true : false };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password/forget?email=${email}&is_japanese=${isJapanese}`)
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/forget-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          const errorMessage = result.message;
+          if (statusCode !== 2001) {
+            if (statusCode === 3001) {
+              setAccountNotExist(true);
+            }
 
-          setErrorDuringAuthen(errorMessage === 'error during authentication');
-          setAccountNotExist(errorMessage === 'account not exist');
+            if (statusCode === 4000) {
+              throw new Error();
+            }
 
-          if (!errorMessage) {
-            resetPasswordEmailRef.current.value = '';
-            setResetPasswordVerificationCode(result.verificationCode);
+            return;
           }
+
+          const { verificationCode } = data;
+
+          resetPasswordEmailRef.current.value = '';
+          setResetPasswordVerificationCode(verificationCode);
         })
-        .catch(() => {
-          setLoading(false);
-          setErrorDuringAuthen(true);
-        });
+        .catch(() => setErrorDuringAuthen(true))
+        .finally(() => setLoading(false));
     } else {
       setInvalidEmail(true);
     }
@@ -424,29 +425,30 @@ function LoginPopup(props) {
 
     const data = { email, newPassword };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/reset-password`, {
-      method: 'POST',
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        const errorMessage = result.message;
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode } = body;
 
-        setErrorDuringAuthen(errorMessage === 'error during authentication');
+        if (statusCode !== 2000) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
 
-        if (!errorMessage) {
-          clearLocalStorage();
-          setForgetPassword(false);
+          return;
         }
+
+        clearLocalStorage();
+        setForgetPassword(false);
       })
-      .catch(() => {
-        setLoading(false);
-        setErrorDuringAuthen(true);
-      });
+      .catch(() => setErrorDuringAuthen(true))
+      .finally(() => setLoading(false));
   }
 
   function loginHandler() {
@@ -473,78 +475,88 @@ function LoginPopup(props) {
           setErrorDuringAuthen(false);
           setAccountAlreadyExist(false);
 
-          const data = { email, password: this, loginMethod: this, receiveNews: checkboxRef2.current.checked };
+          const requestData = { email, password: this, loginMethod: this, isReceiveNews: checkboxRef2.current.checked };
 
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signup`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signup`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(requestData),
           })
-            .then((response) => response.json())
-            .then((result) => {
-              setLoading(false);
-              const errorMessage = result.message;
+            .then((res) => res.json())
+            .then((body) => {
+              const { statusCode, data } = body;
 
-              setErrorDuringAuthen(errorMessage === 'error during authentication');
-              setAccountAlreadyExist(errorMessage === 'account already exist');
+              if (statusCode !== 2001) {
+                if (statusCode === 3000) {
+                  setAccountAlreadyExist(true);
+                }
 
-              if (!errorMessage) {
-                dispatch(deviceActions.setNewDevice());
-                dispatch(memberActions.setMember(result.data[0]));
-                setLocalStorage({ email, password: this, loginMethod: this });
-                closeHandler(true);
+                if (statusCode === 4000) {
+                  throw new Error();
+                }
+
+                return;
               }
+
+              dispatch(deviceActions.setNewDevice());
+              dispatch(memberActions.setMember(data.memberData));
+              setLocalStorage(requestData);
+              closeHandler(true);
             })
-            .catch(() => {
-              setLoading(false);
-              setErrorDuringAuthen(true);
-            });
+            .catch(() => setErrorDuringAuthen(true))
+            .finally(() => setLoading(false));
         } else {
           setLoading(true);
           setErrorDuringAuthen(false);
           setIncorrectPassword(false);
           setAccountNotExist(false);
 
-          const data = { email, password: this, loginMethod: this };
+          const requestData = { email, password: this, loginMethod: this };
 
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/signin`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(requestData),
           })
-            .then((response) => response.json())
-            .then((result) => {
-              setLoading(false);
-              const errorMessage = result.message;
+            .then((res) => res.json())
+            .then((body) => {
+              const { statusCode, data } = body;
 
-              setErrorDuringAuthen(errorMessage === 'error during authentication');
-              setIncorrectPassword(errorMessage === 'incorrect password');
-              setAccountNotExist(errorMessage === 'account not exist');
+              if (statusCode !== 2001) {
+                if (statusCode === 3001) {
+                  setAccountNotExist(true);
+                }
 
-              if (!errorMessage) {
-                const data = result.data[0];
-                dispatch(deviceActions.setNewDevice());
-                dispatch(backgroundActions.changeBackgroundHandler(data.backgroundId));
-                dispatch(musicActions.setInitialMusic(data.musicId));
-                dispatch(musicActions.setMusicCategory(data.musicCategory));
-                dispatch(musicActions.setFavouriteMusicIdArr(data.favouriteMusicIdArr));
-                dispatch(musicActions.setPlayFromPlaylist(data.playFromPlaylist));
-                dispatch(avatarActions.changeAvatarHandler(data.avatarId));
-                dispatch(memberActions.setMember(data));
-                setLocalStorage({ email, password: this, loginMethod: this });
-                closeHandler(false);
-              } else {
+                if (statusCode === 3002) {
+                  setIncorrectPassword(true);
+                }
+
+                if (statusCode === 4000) {
+                  throw new Error();
+                }
+
                 clearLocalStorage();
+                return;
               }
+
+              const { memberData } = data;
+              dispatch(deviceActions.setNewDevice());
+              dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
+              dispatch(musicActions.setInitialMusic(memberData.musicId));
+              dispatch(musicActions.setMusicCategory(memberData.musicCategory));
+              dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
+              dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
+              dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
+              dispatch(memberActions.setMember(memberData));
+              setLocalStorage(requestData);
+              closeHandler(false);
             })
-            .catch(() => {
-              setLoading(false);
-              setErrorDuringAuthen(true);
-            });
+            .catch(() => setErrorDuringAuthen(true))
+            .finally(() => setLoading(false));
         }
       })
       .catch(() => setErrorDuringAuthen(true));
@@ -570,22 +582,22 @@ function LoginPopup(props) {
         <form className="login-popup__form">
           <div className="login-popup__title-container">
             <p
-              className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+              className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
               onClick={signUpClickHandler.bind(true)}
             >
-              {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
+              {!isJapanese ? 'Sign up' : 'サインアップ'}
             </p>
             <p
-              className={`login-popup__title ${signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+              className={`login-popup__title ${signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
               onClick={signUpClickHandler.bind(false)}
             >
-              {languageIndex === 0 ? 'Sign in' : 'サインイン'}
+              {!isJapanese ? 'Sign in' : 'サインイン'}
             </p>
           </div>
-          <p className={`login-popup__sub-title`}>{languageIndex === 0 ? 'Reset Password' : 'パスワードの再設定'}</p>
+          <p className={`login-popup__sub-title`}>{!isJapanese ? 'Reset Password' : 'パスワードの再設定'}</p>
           {!resetPasswordVerificationCode ? (
             <>
-              {languageIndex === 0 ? (
+              {!isJapanese ? (
                 <p className="login-popup__description">
                   Please enter your email address<br></br>and we'll send you a link to reset your password.
                 </p>
@@ -599,7 +611,7 @@ function LoginPopup(props) {
                 type="text"
                 id="email"
                 ref={resetPasswordEmailRef}
-                placeholder={languageIndex === 0 ? 'Email' : 'メール'}
+                placeholder={!isJapanese ? 'Email' : 'メール'}
               ></input>
             </>
           ) : !allowEnterNewPassword ? (
@@ -607,7 +619,7 @@ function LoginPopup(props) {
               className="login-popup__input"
               type="text"
               ref={resetPasswordVerificationCodeRef}
-              placeholder={languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
+              placeholder={!isJapanese ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
             ></input>
           ) : (
             <>
@@ -616,27 +628,27 @@ function LoginPopup(props) {
                 type="password"
                 ref={newPasswordRef}
                 autoComplete="on"
-                placeholder={languageIndex === 0 ? 'New Password' : '新しいパスワード'}
+                placeholder={!isJapanese ? 'New Password' : '新しいパスワード'}
               ></input>
               <input
                 className="login-popup__input"
                 type="password"
                 ref={confirmNewPasswordRef}
                 autoComplete="on"
-                placeholder={languageIndex === 0 ? 'Confirm new password' : '新しいパスワードの確認'}
+                placeholder={!isJapanese ? 'Confirm new password' : '新しいパスワードの確認'}
               ></input>
             </>
           )}
-          {invalidEmail && <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>}
+          {invalidEmail && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid email' : '無効なメール'}</p>}
           {newPasswordNotMatch && (
-            <p className="login-popup__error-msg">{languageIndex === 0 ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
+            <p className="login-popup__error-msg">{!isJapanese ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
           )}
           {invalidNewPassword && (
             <p className="login-popup__error-msg">
-              {languageIndex === 0 ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
+              {!isJapanese ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
             </p>
           )}
-          {languageIndex === 0 ? (
+          {!isJapanese ? (
             <p className="login-popup__contact">
               If you need any help, please contact <br></br>
               <span>inquiry@checkpoint.tokyo</span>
@@ -649,29 +661,27 @@ function LoginPopup(props) {
           )}
           {!resetPasswordVerificationCode ? (
             <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : languageIndex === 0 ? 'Send' : '送信'}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Send' : '送信'}
             </div>
           ) : (
             <div
               className="login-popup__submit-btn no-margin"
               onClick={allowEnterNewPassword ? resetPasswordHandler : forgetPasswordCheckCodeHandler}
             >
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : languageIndex === 0 ? 'Submit' : '送信'}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Submit' : '送信'}
             </div>
           )}
           {invalidResetPasswordVerificationCode && (
-            <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}</p>
+            <p className="login-popup__error-msg">{!isJapanese ? 'Invalid verification code' : '無効な検証コード'}</p>
           )}
           {accountNotExist && (
             <p className="login-popup__error-msg">
-              {languageIndex === 0 ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
+              {!isJapanese ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
             </p>
           )}
           {errorDuringAuthen && (
             <p className="login-popup__error-msg">
-              {languageIndex === 0
-                ? 'Error occured, please try again later'
-                : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
+              {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
             </p>
           )}
         </form>
@@ -686,16 +696,16 @@ function LoginPopup(props) {
           <>
             <div className="login-popup__title-container">
               <p
-                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
                 onClick={signUpClickHandler.bind(true)}
               >
-                {languageIndex === 0 ? 'Sign up' : 'サインアップ'}
+                {!isJapanese ? 'Sign up' : 'サインアップ'}
               </p>
               <p
-                className={`login-popup__title ${signingUp ? 'not-current' : ''} ${languageIndex !== 0 ? 'small' : ''}`}
+                className={`login-popup__title ${signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
                 onClick={signUpClickHandler.bind(false)}
               >
-                {languageIndex === 0 ? 'Sign in' : 'サインイン'}
+                {!isJapanese ? 'Sign in' : 'サインイン'}
               </p>
             </div>
             <img
@@ -714,33 +724,29 @@ function LoginPopup(props) {
             <input
               className="login-popup__input"
               type="text"
-              placeholder={languageIndex === 0 ? 'Email' : 'メール'}
+              placeholder={!isJapanese ? 'Email' : 'メール'}
               id="email"
               ref={emailRef}
             ></input>
-            {invalidEmail && <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid email' : '無効なメール'}</p>}
+            {invalidEmail && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid email' : '無効なメール'}</p>}
             <input
               className="login-popup__input"
               type="password"
-              placeholder={languageIndex === 0 ? 'Password' : 'パスワード'}
+              placeholder={!isJapanese ? 'Password' : 'パスワード'}
               autoComplete="on"
               ref={passwordRef1}
             ></input>
             {invalidPassword && (
               <p className="login-popup__error-msg">
-                {languageIndex === 0
-                  ? 'Password must contain at least 6 characters'
-                  : '>パスワードには6文字以上が含まれている必要があります'}
+                {!isJapanese ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
               </p>
             )}
             {!signingUp && (
               <>
-                {incorrectPassword && (
-                  <p className="login-popup__error-msg">{languageIndex === 0 ? 'Incorect password' : '間違ったパスワード'}</p>
-                )}
+                {incorrectPassword && <p className="login-popup__error-msg">{!isJapanese ? 'Incorect password' : '間違ったパスワード'}</p>}
                 {accountNotExist && (
                   <p className="login-popup__error-msg">
-                    {languageIndex === 0 ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
+                    {!isJapanese ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
                   </p>
                 )}
               </>
@@ -750,23 +756,21 @@ function LoginPopup(props) {
                 <input
                   className="login-popup__input"
                   type="password"
-                  placeholder={languageIndex === 0 ? 'Confirm password' : 'パスワードの確認'}
+                  placeholder={!isJapanese ? 'Confirm password' : 'パスワードの確認'}
                   autoComplete="on"
                   ref={passwordRef2}
                 ></input>
                 {passwordNotMatch && (
-                  <p className="login-popup__error-msg">
-                    {languageIndex === 0 ? 'Passwords do not match' : 'パスワードが一致していません'}
-                  </p>
+                  <p className="login-popup__error-msg">{!isJapanese ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
                 )}
                 {accountAlreadyExist && (
                   <p className="login-popup__error-msg">
-                    {languageIndex === 0 ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
+                    {!isJapanese ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
                   </p>
                 )}
                 <div className="login-popup__privacy-container margin-top">
                   <input type="checkbox" ref={checkboxRef1} defaultChecked></input>
-                  {languageIndex === 0 ? (
+                  {!isJapanese ? (
                     <p>
                       By registering, you agree to the{' '}
                       <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
@@ -794,13 +798,11 @@ function LoginPopup(props) {
                   )}
                 </div>
                 {signingUp && agreeToPolicy === false && (
-                  <p className="login-popup__error-msg">
-                    {languageIndex === 0 ? 'Please agree to the policy' : 'ポリシーに同意してください'}
-                  </p>
+                  <p className="login-popup__error-msg">{!isJapanese ? 'Please agree to the policy' : 'ポリシーに同意してください'}</p>
                 )}
                 <div className="login-popup__privacy-container">
                   <input type="checkbox" ref={checkboxRef2} defaultChecked></input>
-                  {languageIndex === 0 ? (
+                  {!isJapanese ? (
                     <p>
                       I agree to receive news and updates<br></br>from Checkpoint.
                     </p>
@@ -816,14 +818,14 @@ function LoginPopup(props) {
               {signingUp ? (
                 loading ? (
                   <img className="login-popup__spinner" src={spinner} alt=""></img>
-                ) : languageIndex === 0 ? (
+                ) : !isJapanese ? (
                   'Sign up'
                 ) : (
                   'サインアップ'
                 )
               ) : loading ? (
                 <img className="login-popup__spinner" src={spinner} alt=""></img>
-              ) : languageIndex === 0 ? (
+              ) : !isJapanese ? (
                 'Sign in'
               ) : (
                 'サインイン'
@@ -831,44 +833,36 @@ function LoginPopup(props) {
             </div>
             {!signingUp && (
               <div className="login-popup__forget-password" onClick={forgetPasswordHandler}>
-                {languageIndex === 0 ? 'Forgot your password?' : 'パスワードをお忘れですか？'}
+                {!isJapanese ? 'Forgot your password?' : 'パスワードをお忘れですか？'}
               </div>
             )}
             {errorDuringAuthen && (
               <p className="login-popup__error-msg">
-                {languageIndex === 0
-                  ? 'Error occured, please try again later'
-                  : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
+                {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
               </p>
             )}
           </>
         ) : (
           <>
-            <p className={`login-popup__title ${languageIndex !== 0 ? 'small' : ''}`}>
-              {languageIndex === 0 ? 'Email Verification' : 'メールによる確認'}
-            </p>
+            <p className={`login-popup__title ${isJapanese ? 'small' : ''}`}>{!isJapanese ? 'Email Verification' : 'メールによる確認'}</p>
             <input
               className="login-popup__input"
               type="text"
               ref={verificationCodeRef}
-              placeholder={languageIndex === 0 ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
+              placeholder={!isJapanese ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
             ></input>
             {accountAlreadyExist && (
               <p className="login-popup__error-msg">
-                {languageIndex === 0 ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
+                {!isJapanese ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
               </p>
             )}
-            {invalidCode && (
-              <p className="login-popup__error-msg">{languageIndex === 0 ? 'Invalid verification code' : '無効な検証コード'}</p>
-            )}
+            {invalidCode && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid verification code' : '無効な検証コード'}</p>}
             <div className="login-popup__submit-btn no-margin" onClick={verifyHandler}>
               {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Verify'}
             </div>
             {errorDuringAuthen && (
               <p className="login-popup__error-msg">
-                {languageIndex === 0
-                  ? 'Error occured, please try again later'
-                  : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
+                {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
               </p>
             )}
           </>

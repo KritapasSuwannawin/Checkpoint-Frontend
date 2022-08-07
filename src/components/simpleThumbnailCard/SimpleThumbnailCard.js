@@ -15,7 +15,7 @@ function SimpleThumbnailCard(props) {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
   const isPremium = useSelector((store) => store.member.isPremium);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -69,7 +69,7 @@ function SimpleThumbnailCard(props) {
       <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>
       {props.name && (
         <p onClick={clickHandler} className="simple-thumbnail-card__overlay-name">
-          {languageIndex === 0 ? props.name : props.nameJapanese}
+          {!isJapanese ? props.name : props.nameJapanese}
         </p>
       )}
     </div>

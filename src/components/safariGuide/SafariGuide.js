@@ -8,7 +8,7 @@ import imageUrl from './Safari minigame.png';
 function SafariGuide(props) {
   const [showGuide, setShowGuide] = useState(true);
   const loading = useSelector((store) => store.page.loading);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   if (!showGuide || loading) {
     props.closeHandler();
@@ -22,7 +22,7 @@ function SafariGuide(props) {
     <div className="safari-guide">
       <div className="safari-guide__content">
         <p>
-          {languageIndex === 0
+          {!isJapanese
             ? 'For Safari users, please adjust the settings for the best experience!'
             : 'Safariをご利用の方は、設定を変更してください！'}
         </p>

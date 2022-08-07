@@ -8,7 +8,7 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function TrialLastDayFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [star, setStar] = useState(3);
 
@@ -48,13 +48,26 @@ function TrialLastDayFeedback(props) {
       other_strength: ref14.current.value,
     };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/feedback`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).catch(() => {});
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode } = body;
+
+        if (statusCode !== 2000) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+      })
+      .catch(() => {});
 
     props.closeHandler();
   }
@@ -72,7 +85,7 @@ function TrialLastDayFeedback(props) {
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
         <p className="feedback-popup__form--heading">
-          {languageIndex === 0 ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
+          {!isJapanese ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
         </p>
 
         <div className="feedback-popup__form--star-container">
@@ -84,65 +97,65 @@ function TrialLastDayFeedback(props) {
         </div>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0 ? 'What do you think should be improved?' : '改善すべき点は何だと思いますか？'}
+          {!isJapanese ? 'What do you think should be improved?' : '改善すべき点は何だと思いますか？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
-          <label>{languageIndex === 0 ? 'Selections of music' : '音楽の選択'}</label>
+          <label>{!isJapanese ? 'Selections of music' : '音楽の選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>{languageIndex === 0 ? 'Selections of ambience' : 'アンビアンスの選択'}</label>
+          <label>{!isJapanese ? 'Selections of ambience' : 'アンビアンスの選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>{languageIndex === 0 ? 'Selections of background' : '背景の選択'}</label>
+          <label>{!isJapanese ? 'Selections of background' : '背景の選択'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref4}></input>
-          <label>{languageIndex === 0 ? 'Music quality' : '音楽の質'}</label>
+          <label>{!isJapanese ? 'Music quality' : '音楽の質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>{languageIndex === 0 ? 'Ambience quality' : 'アンビエンスの質'}</label>
+          <label>{!isJapanese ? 'Ambience quality' : 'アンビエンスの質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>{languageIndex === 0 ? 'Background quality' : '背景の質'}</label>
+          <label>{!isJapanese ? 'Background quality' : '背景の質'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>
-          <label>{languageIndex === 0 ? 'Interface' : 'インターフェース'}</label>
+          <label>{!isJapanese ? 'Interface' : 'インターフェース'}</label>
         </div>
-        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref8}></input>
+        <input type="text" placeholder={!isJapanese ? 'Others' : 'その他'} ref={ref8}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0 ? 'What do you think is our strength?' : 'Checkpointの強みは何だと思いますか？'}
+          {!isJapanese ? 'What do you think is our strength?' : 'Checkpointの強みは何だと思いますか？'}
         </p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref9}></input>
-          <label>{languageIndex === 0 ? 'Ambience customization' : 'カスタマイズ可能なアンビアンス'}</label>
+          <label>{!isJapanese ? 'Ambience customization' : 'カスタマイズ可能なアンビアンス'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref10}></input>
-          <label>{languageIndex === 0 ? 'Background customization' : 'カスタマイズ可能な背景'}</label>
+          <label>{!isJapanese ? 'Background customization' : 'カスタマイズ可能な背景'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref11}></input>
-          <label>{languageIndex === 0 ? 'Easy to use' : '使いやすさ'}</label>
+          <label>{!isJapanese ? 'Easy to use' : '使いやすさ'}</label>
         </div>
-        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref14}></input>
+        <input type="text" placeholder={!isJapanese ? 'Others' : 'その他'} ref={ref14}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0 ? 'What do you want to see more in the future?' : '今後、さらに期待することは何ですか？'}
+          {!isJapanese ? 'What do you want to see more in the future?' : '今後、さらに期待することは何ですか？'}
         </p>
-        <input type="text" placeholder={languageIndex === 0 ? 'Optional' : '任意'} ref={ref13}></input>
+        <input type="text" placeholder={!isJapanese ? 'Optional' : '任意'} ref={ref13}></input>
 
         <p className="feedback-popup__form--sub-heading">
-          {languageIndex === 0 ? 'Do you have any suggestions for us?' : '私たちに何かご提案がありますか？'}
+          {!isJapanese ? 'Do you have any suggestions for us?' : '私たちに何かご提案がありますか？'}
         </p>
         <textarea
-          placeholder={languageIndex === 0 ? 'Optional' : '任意'}
+          placeholder={!isJapanese ? 'Optional' : '任意'}
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
@@ -150,7 +163,7 @@ function TrialLastDayFeedback(props) {
         ></textarea>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          {languageIndex === 0 ? 'Send' : '送信'}
+          {!isJapanese ? 'Send' : '送信'}
         </div>
       </div>
     </div>

@@ -68,6 +68,8 @@ const dictionary = {
 };
 
 function Home(props) {
+  const { isFullScreen, fullScreenClickHander } = props;
+
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const currentBackground = useSelector((store) => store.background.currentBackground);
@@ -80,7 +82,7 @@ function Home(props) {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
   const isPremium = useSelector((store) => store.member.isPremium);
@@ -102,21 +104,7 @@ function Home(props) {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
-
   const backgroundFilePathRef = useRef();
-
-  const homeRef = useRef();
-
-  useEffect(() => {
-    document.addEventListener('fullscreenchange', () => {
-      if (document.fullscreenElement) {
-        setIsFullScreen(true);
-      } else {
-        setIsFullScreen(false);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
@@ -406,20 +394,8 @@ function Home(props) {
     dispatch(popupActions.setShowTutorialPopup(true));
   }
 
-  function fullScreenClickHander() {
-    if (!document.fullscreenElement) {
-      if (homeRef.current.requestFullscreen) {
-        homeRef.current.requestFullscreen();
-        setIsFullScreen(true);
-      }
-    } else {
-      document.exitFullscreen();
-      setIsFullScreen(false);
-    }
-  }
-
   return (
-    <div className="home" ref={homeRef}>
+    <div className="home">
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
       {ambientAudioArr}
@@ -437,48 +413,48 @@ function Home(props) {
                   <img
                     className="nav__logo--upgrade-btn"
                     onClick={navBtnClickHandler}
-                    src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                    src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
                     alt=""
                   ></img>
                   <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                    {languageIndex === 0 ? 'Activate Premium' : 'プレミアム有効化'}
+                    {!isJapanese ? 'Activate Premium' : 'プレミアム有効化'}
                   </div>
                 </>
               )}
             </div>
             <div className="nav__links">
-              <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
-                {languageIndex === 0 ? 'Tutorial' : 'チュートリアル'}
+              <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
+                {!isJapanese ? 'Tutorial' : 'チュートリアル'}
               </div>
               <div className="nav__links--timer-container">
-                <div onClick={timerClickHandler} className={`nav__links--link margin-right ${languageIndex === 1 ? 'japanese' : ''}`}>
+                <div onClick={timerClickHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
                   <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
-                  {languageIndex === 0 ? 'Timer' : 'タイマー'}
+                  {!isJapanese ? 'Timer' : 'タイマー'}
                 </div>
                 <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
               </div>
               <div
                 onClick={musicClickHander}
-                className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${languageIndex === 1 ? 'japanese' : ''}`}
+                className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${isJapanese ? 'japanese' : ''}`}
               >
                 <img src={musicSvg30} alt="" className="nav__links--icon"></img>
-                {dictionary.music[languageIndex]}
+                {dictionary.music[!isJapanese ? 0 : 1]}
               </div>
               <div
                 onClick={backgroundClickHander}
-                className={`nav__links--link fixed-width ${languageIndex === 1 ? 'japanese' : ''} ${
+                className={`nav__links--link fixed-width ${isJapanese ? 'japanese' : ''} ${
                   currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
                 }`}
               >
                 <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
-                {dictionary.background[languageIndex]}
+                {dictionary.background[!isJapanese ? 0 : 1]}
               </div>
               <div className="nav__links--link language" onClick={languageChangeHandler}>
                 <img className="nav__links--icon" src={globe30} alt=""></img>
-                {dictionary.language[languageIndex]}
+                {dictionary.language[!isJapanese ? 0 : 1]}
               </div>
               <img
-                className={`nav__links--link profile ${languageIndex === 1 ? 'japanese' : ''}`}
+                className={`nav__links--link profile ${isJapanese ? 'japanese' : ''}`}
                 src={currentAvatar.url}
                 alt=""
                 onClick={outsideLinkToggleHandler}
@@ -498,15 +474,15 @@ function Home(props) {
                         <img
                           className="nav__logo--upgrade-btn"
                           onClick={navBtnClickHandler}
-                          src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+                          src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
                           alt=""
                         ></img>
                         <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
                           {isPremium && !isOntrial
-                            ? languageIndex === 0
+                            ? !isJapanese
                               ? 'Extend Premium'
                               : 'プレミアム延長'
-                            : languageIndex === 0
+                            : !isJapanese
                             ? 'Activate Premium'
                             : 'プレミアム有効化'}
                         </div>
@@ -515,19 +491,19 @@ function Home(props) {
                         <div className="nav__outside-links--icon-container">
                           <img src={png1} alt="" className="small"></img>
                         </div>
-                        <p onClick={openSubscriptionHandler}>{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
+                        <p onClick={openSubscriptionHandler}>{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
                       </div>
                       <div className="nav__outside-links--container">
                         <div className="nav__outside-links--icon-container">
                           <img src={png2} alt=""></img>
                         </div>
-                        <p onClick={openHelpSupportHandler}>{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
+                        <p onClick={openHelpSupportHandler}>{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
                       </div>
                       <div className="nav__outside-links--container">
                         <div className="nav__outside-links--icon-container">
                           <img src={png3} alt=""></img>
                         </div>
-                        <p onClick={openFeedbackHandler}>{languageIndex === 0 ? 'Feedback' : 'ご意見・ご感想'}</p>
+                        <p onClick={openFeedbackHandler}>{!isJapanese ? 'Feedback' : 'ご意見・ご感想'}</p>
                       </div>
                     </>
                   )}
@@ -536,7 +512,7 @@ function Home(props) {
                       <img src={png4} alt=""></img>
                     </div>
                     <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
-                      {dictionary.aboutUs[languageIndex]}
+                      {dictionary.aboutUs[!isJapanese ? 0 : 1]}
                     </a>
                   </div>
                   <div className="nav__outside-links--container">
@@ -544,7 +520,7 @@ function Home(props) {
                       <img src={png6} alt=""></img>
                     </div>
                     <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                      {languageIndex === 0 ? 'For Artist' : 'アーティスト向け'}
+                      {!isJapanese ? 'For Artist' : 'アーティスト向け'}
                     </a>
                   </div>
                   <div className="nav__outside-links--container">
@@ -552,7 +528,7 @@ function Home(props) {
                       <img src={png5} alt=""></img>
                     </div>
                     <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                      {dictionary.policy[languageIndex]}
+                      {dictionary.policy[!isJapanese ? 0 : 1]}
                     </a>
                   </div>
                   {memberId && (
@@ -560,7 +536,7 @@ function Home(props) {
                       <div className="nav__outside-links--icon-container">
                         <img src={png7} alt=""></img>
                       </div>
-                      <p onClick={logoutHandler}>{languageIndex === 0 ? 'Logout' : 'ログアウト'}</p>
+                      <p onClick={logoutHandler}>{!isJapanese ? 'Logout' : 'ログアウト'}</p>
                     </div>
                   )}
                 </div>
@@ -571,7 +547,7 @@ function Home(props) {
             <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
             <div className="background-control__ambient-container">
               <div className="background-control__ambient-volume">
-                <p>{languageIndex === 0 ? 'Ambience' : 'アンビエンス'}</p>
+                <p>{!isJapanese ? 'Ambience' : 'アンビエンス'}</p>
                 <img src={speakerSvg15} alt=""></img>
                 <input
                   type="range"
@@ -598,10 +574,10 @@ function Home(props) {
               <>
                 <div className="music-control__title">
                   <img src={heartFullSvg30} alt=""></img>
-                  <p>{languageIndex === 0 ? 'Favorite music' : 'お気に入り'}</p>
+                  <p>{!isJapanese ? 'Favorite music' : 'お気に入り'}</p>
                 </div>
                 {favouriteMusicIdArr.length === 0 ? (
-                  <p>{languageIndex === 0 ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
+                  <p>{!isJapanese ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
                 ) : (
                   favouriteMusicIdArr.map((id) => (
                     <div key={id} className="music-control__cards">

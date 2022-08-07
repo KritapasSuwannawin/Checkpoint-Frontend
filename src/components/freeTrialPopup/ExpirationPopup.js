@@ -6,16 +6,16 @@ import oneMonthImg from './img/Premium Card 1m.png';
 import threeMonthImg from './img/Premium Card 3m.png';
 
 function ExpirationPopup(props) {
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   return (
     <div className="free-trial-popup">
       <div className="free-trial-popup__container">
         <p className="free-trial-popup__title">
-          {languageIndex === 0 ? 'Your Free Trial Has' : '無料トライアルは'} <br></br>{' '}
-          <span className="red">{languageIndex === 0 ? 'Expired!' : '終了しました！'}</span>
+          {!isJapanese ? 'Your Free Trial Has' : '無料トライアルは'} <br></br>{' '}
+          <span className="red">{!isJapanese ? 'Expired!' : '終了しました！'}</span>
         </p>
-        {languageIndex === 0 ? (
+        {!isJapanese ? (
           <p className="free-trial-popup__sub-title">
             To continue enjoying Premium features, <br></br>
             buy a digital coupon here.
@@ -35,7 +35,7 @@ function ExpirationPopup(props) {
           </a>
         </div>
         <div className="free-trial-popup__btn" onClick={props.closeHandler}>
-          {languageIndex === 0 ? 'Later' : '後で読む'}
+          {!isJapanese ? 'Later' : '後で読む'}
         </div>
       </div>
     </div>

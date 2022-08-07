@@ -7,7 +7,7 @@ import logo from '../../svg/50px/Checkpoint with text 50px.svg';
 
 function HelpSupportPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -21,13 +21,26 @@ function HelpSupportPopup(props) {
       detail: ref3.current.value,
     };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/issue`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/issue`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).catch(() => {});
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode } = body;
+
+        if (statusCode !== 2000) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+      })
+      .catch(() => {});
 
     props.closeHandler();
   }
@@ -41,17 +54,17 @@ function HelpSupportPopup(props) {
       <div className="help-support-popup__form">
         <div className="help-support-popup__form--close-btn" onClick={closePopupHandler}></div>
         <img src={logo} alt="" className="help-support-popup__form--logo"></img>
-        <p className="help-support-popup__form--heading">{languageIndex === 0 ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
+        <p className="help-support-popup__form--heading">{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
 
-        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Your email' : 'メール'}</p>
-        <input type="text" placeholder={languageIndex === 0 ? 'Email' : 'メール'} id="email" ref={ref1}></input>
+        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Your email' : 'メール'}</p>
+        <input type="text" placeholder={!isJapanese ? 'Email' : 'メール'} id="email" ref={ref1}></input>
 
-        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Subject' : '件名'}</p>
-        <input type="text" placeholder={languageIndex === 0 ? 'Subject' : '件名'} ref={ref2}></input>
+        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Subject' : '件名'}</p>
+        <input type="text" placeholder={!isJapanese ? 'Subject' : '件名'} ref={ref2}></input>
 
-        <p className="help-support-popup__form--sub-heading">{languageIndex === 0 ? 'Detail' : 'お問合せ'}</p>
+        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Detail' : 'お問合せ'}</p>
         <textarea
-          placeholder={languageIndex === 0 ? 'Detail' : 'お問合せ'}
+          placeholder={!isJapanese ? 'Detail' : 'お問合せ'}
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
@@ -59,11 +72,11 @@ function HelpSupportPopup(props) {
         ></textarea>
 
         <p className="help-support-popup__form--ps">
-          {languageIndex === 0 ? "We'll get back to you as soon as possible!" : 'できるだけ早くご返信いたします。'}
+          {!isJapanese ? "We'll get back to you as soon as possible!" : 'できるだけ早くご返信いたします。'}
         </p>
 
         <div className="help-support-popup__form--submit-btn" onClick={submitHandler}>
-          {languageIndex === 0 ? 'Send' : '送信'}
+          {!isJapanese ? 'Send' : '送信'}
         </div>
       </div>
     </div>

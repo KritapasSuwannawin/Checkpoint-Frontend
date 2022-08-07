@@ -9,40 +9,40 @@ import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 
 function SubscriptionPopup(props) {
   const { isPremium, isOntrial, premiumExpirationDate } = useSelector((store) => store.member);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   return (
     <div className="subscription-popup">
       <div className="subscription-popup__container">
         <div className="subscription-popup__container--close-btn" onClick={props.closeHandler}></div>
-        <p className="subscription-popup__container--title">{languageIndex === 0 ? 'Subscription' : 'サブスクリプション'}</p>
+        <p className="subscription-popup__container--title">{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
         <div className="subscription-popup__plan">
           <img src={isPremium ? logoPremium50 : logo50} alt=""></img>
           <p className={`subscription-popup__plan--title ${isOntrial ? 'small' : ''}`}>
             {isOntrial
-              ? languageIndex === 0
+              ? !isJapanese
                 ? 'Free Trial Premium Plan'
                 : 'プレミアムプラン無料体験'
               : isPremium
-              ? languageIndex === 0
+              ? !isJapanese
                 ? 'Premium Plan'
                 : 'プレミアムプラン'
-              : languageIndex === 0
+              : !isJapanese
               ? 'Standard Plan'
               : 'スタンダードプラン'}
           </p>
           <p className="subscription-popup__plan--desc">
             {isPremium
-              ? `${languageIndex === 0 ? 'Will expire on' : '有効期限は'} ${new Date(premiumExpirationDate).getDate()}/${
+              ? `${!isJapanese ? 'Will expire on' : '有効期限は'} ${new Date(premiumExpirationDate).getDate()}/${
                   new Date(premiumExpirationDate).getMonth() + 1
-                }/${new Date(premiumExpirationDate).getFullYear()} ${languageIndex === 0 ? '' : 'です'}`
-              : languageIndex === 0
+                }/${new Date(premiumExpirationDate).getFullYear()} ${!isJapanese ? '' : 'です'}`
+              : !isJapanese
               ? 'Free lifetime'
               : 'ライフタイム無料'}
           </p>
         </div>
         {isOntrial ? (
-          languageIndex === 0 ? (
+          !isJapanese ? (
             <p className="subscription-popup__container--desc">
               Buy a digital coupon to continue enjoying <br></br> Premium perks after free-trial ends
             </p>
@@ -53,11 +53,11 @@ function SubscriptionPopup(props) {
           )
         ) : isPremium ? (
           <p className="subscription-popup__container--desc">
-            {languageIndex === 0
+            {!isJapanese
               ? 'Buy another digital coupon to extend your Premium subscription'
               : '別のデジタルクーポンを購入し、プレミアムを延長する'}
           </p>
-        ) : languageIndex === 0 ? (
+        ) : !isJapanese ? (
           <p className="subscription-popup__container--desc">Upgrade to Premium to enjoy full customization and much more content</p>
         ) : (
           <p className="subscription-popup__container--desc">
@@ -67,20 +67,14 @@ function SubscriptionPopup(props) {
         )}
         <img
           className="subscription-popup__container--buy-premium"
-          src={languageIndex === 0 ? buyPremiumBtn : buyPremiumBtnJP}
+          src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
           alt=""
           onClick={props.upgradeHandler}
         ></img>
         <div className="subscription-popup__container--btn" onClick={props.activateHandler}>
-          {isPremium
-            ? languageIndex === 0
-              ? 'Extend Premium'
-              : 'プレミアムの延長'
-            : languageIndex === 0
-            ? 'Activate Premium'
-            : 'プレミアムの有効化'}
+          {isPremium ? (!isJapanese ? 'Extend Premium' : 'プレミアムの延長') : !isJapanese ? 'Activate Premium' : 'プレミアムの有効化'}
         </div>
-        {languageIndex === 0 ? (
+        {!isJapanese ? (
           <p className="subscription-popup__container--ps">
             By continuing, you agree to our<br></br>
             <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">

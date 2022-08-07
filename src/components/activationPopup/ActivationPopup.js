@@ -13,7 +13,7 @@ function ActivationPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);
   const isPremium = useSelector((store) => store.member.isPremium);
   const isOntrial = useSelector((store) => store.member.isOntrial);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [invalidCode, setInvalidCode] = useState(false);
   const [codeAlreadyUsed, setCodeAlreadyUsed] = useState(false);
@@ -39,31 +39,40 @@ function ActivationPopup(props) {
 
     const data = { memberId, activationCode };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/activation`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/account/activate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        const { message: errorMessage, premiumExpirationDate } = result;
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode, data } = body;
 
-        setErrorDuringAuthen(errorMessage === 'error during authentication');
-        setInvalidCode(errorMessage === 'invalid code');
-        setCodeAlreadyUsed(errorMessage === 'code already used');
+        if (statusCode !== 2001) {
+          if (statusCode === 3004) {
+            setCodeAlreadyUsed(true);
+          }
 
-        if (!errorMessage) {
-          dispatch(memberActions.upgradeMember({ premiumExpirationDate }));
-          props.closeHandler();
+          if (statusCode === 3005) {
+            setInvalidCode(true);
+          }
+
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
         }
+
+        const { premiumExpirationDate } = data;
+
+        dispatch(memberActions.upgradeMember({ premiumExpirationDate }));
+        props.closeHandler();
       })
-      .catch(() => {
-        setLoading(false);
-        setErrorDuringAuthen(true);
-      });
+      .catch(() => setErrorDuringAuthen(true))
+      .finally(() => setLoading(false));
   }
 
   function closeHandler() {
@@ -76,43 +85,37 @@ function ActivationPopup(props) {
         <div className="activation-popup__close-btn" onClick={closeHandler}></div>
         <img src={logoPremium50} alt=""></img>
         {!isPremium || isOntrial ? (
-          <p className={`activation-popup__title`}>{languageIndex === 0 ? 'Activate Premium' : 'プレミアムの有効化'}</p>
+          <p className={`activation-popup__title`}>{!isJapanese ? 'Activate Premium' : 'プレミアムの有効化'}</p>
         ) : (
-          <p className={`activation-popup__title`}>{languageIndex === 0 ? 'Extend Premium' : 'プレミアムの延長'}</p>
+          <p className={`activation-popup__title`}>{!isJapanese ? 'Extend Premium' : 'プレミアムの延長'}</p>
         )}
         <input
           className="activation-popup__input"
           type="text"
           ref={activationCodeRef}
-          placeholder={languageIndex === 0 ? 'Insert code here...' : 'ここにコードを入力してください...'}
+          placeholder={!isJapanese ? 'Insert code here...' : 'ここにコードを入力してください...'}
         ></input>
         {invalidCode && (
           <p className="activation-popup__error-msg">
-            {languageIndex === 0
+            {!isJapanese
               ? 'Your code is invalid. Please make sure that you input the correct code.'
               : 'コードが無効です。正しいコードを入力してください'}
           </p>
         )}
         {codeAlreadyUsed && (
           <p className="activation-popup__error-msg">
-            {languageIndex === 0 ? 'This code has already been used' : 'このコードはすでに使われています'}
+            {!isJapanese ? 'This code has already been used' : 'このコードはすでに使われています'}
           </p>
         )}
-        <div className={`activation-popup__submit-btn ${languageIndex !== 0 ? 'small' : ''}`} onClick={verifyHandler}>
-          {loading ? (
-            <img className="activation-popup__spinner" src={spinner} alt=""></img>
-          ) : languageIndex === 0 ? (
-            'Activate'
-          ) : (
-            'アクティベート'
-          )}
+        <div className={`activation-popup__submit-btn ${isJapanese ? 'small' : ''}`} onClick={verifyHandler}>
+          {loading ? <img className="activation-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Activate' : 'アクティベート'}
         </div>
         {errorDuringAuthen && (
           <p className="activation-popup__error-msg">
-            {languageIndex === 0 ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
+            {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
           </p>
         )}
-        {languageIndex === 0 ? (
+        {!isJapanese ? (
           <p className="activation-popup__ps">
             By continuing, you agree to our<br></br>
             <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
@@ -136,7 +139,7 @@ function ActivationPopup(props) {
             に同意したことになります
           </p>
         )}
-        {languageIndex === 0 ? (
+        {!isJapanese ? (
           <p className="activation-popup__ps">
             If you have any problems, feel free to contact us at <span onClick={props.helpSupportClickHandler}>Help & Support</span>.
             <br></br>

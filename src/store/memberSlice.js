@@ -13,11 +13,10 @@ const memberSlice = createSlice({
   },
   reducers: {
     setMember(state, action) {
-      state.memberId = action.payload.id;
-      state.username = action.payload.username;
+      const { id, username, registrationDate, premiumExpirationDate, isPremium } = action.payload;
 
-      const { registrationDate, premiumExpirationDate, isPremium } = action.payload;
-
+      state.memberId = id;
+      state.username = username;
       state.isPremium = isPremium;
       state.registrationDate = registrationDate;
       state.premiumExpirationDate = premiumExpirationDate;

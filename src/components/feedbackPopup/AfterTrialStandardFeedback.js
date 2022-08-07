@@ -8,7 +8,7 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function AfterTrialStandardFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
-  const languageIndex = useSelector((store) => store.language.languageIndex);
+  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [star, setStar] = useState(3);
 
@@ -34,13 +34,26 @@ function AfterTrialStandardFeedback(props) {
       star,
     };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/member/feedback`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).catch(() => {});
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode } = body;
+
+        if (statusCode !== 2000) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+      })
+      .catch(() => {});
 
     props.closeHandler();
   }
@@ -58,7 +71,7 @@ function AfterTrialStandardFeedback(props) {
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
         <p className="feedback-popup__form--heading">
-          {languageIndex === 0 ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
+          {!isJapanese ? 'Help us improve by giving us feedbacks!' : 'フィードバックで改善にご協力ください'}
         </p>
 
         <div className="feedback-popup__form--star-container">
@@ -69,7 +82,7 @@ function AfterTrialStandardFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        {languageIndex === 0 ? (
+        {!isJapanese ? (
           <p className="feedback-popup__form--sub-heading">
             Why you are sticking with standard plan <br></br> rather than going premium?
           </p>
@@ -81,39 +94,35 @@ function AfterTrialStandardFeedback(props) {
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
           <label>
-            {languageIndex === 0
-              ? 'The features I get from standard plan are already enough'
-              : 'スタンダードプランで得られる機能ですでに十分です'}
+            {!isJapanese ? 'The features I get from standard plan are already enough' : 'スタンダードプランで得られる機能ですでに十分です'}
           </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>{languageIndex === 0 ? 'Premium plan is too expensive' : 'プレミアムプランは高すぎる'}</label>
+          <label>{!isJapanese ? 'Premium plan is too expensive' : 'プレミアムプランは高すぎる'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>{languageIndex === 0 ? "I don't use the service very often" : 'あまり利用しないので'}</label>
+          <label>{!isJapanese ? "I don't use the service very often" : 'あまり利用しないので'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref4}></input>
-          <label>
-            {languageIndex === 0 ? "I've decided to use another similar service" : '他の似たようなサービスを利用することにした'}
-          </label>
+          <label>{!isJapanese ? "I've decided to use another similar service" : '他の似たようなサービスを利用することにした'}</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
           <label>
-            {languageIndex === 0 ? "I don't think Premium subscription is worth the money" : 'プレミアムプランはお金を払う価値がないと思う'}
+            {!isJapanese ? "I don't think Premium subscription is worth the money" : 'プレミアムプランはお金を払う価値がないと思う'}
           </label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>{languageIndex === 0 ? "I wasn't looking for this service" : 'このサービスを探していたわけではありません'}</label>
+          <label>{!isJapanese ? "I wasn't looking for this service" : 'このサービスを探していたわけではありません'}</label>
         </div>
-        <input type="text" placeholder={languageIndex === 0 ? 'Others' : 'その他'} ref={ref7}></input>
+        <input type="text" placeholder={!isJapanese ? 'Others' : 'その他'} ref={ref7}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          {languageIndex === 0 ? 'Send' : '送信'}
+          {!isJapanese ? 'Send' : '送信'}
         </div>
       </div>
     </div>
