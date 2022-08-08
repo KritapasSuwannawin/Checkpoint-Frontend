@@ -68,10 +68,11 @@ const dictionary = {
 };
 
 function Home(props) {
-  const { isFullScreen, fullScreenClickHander } = props;
+  const { fullScreenClickHander } = props;
 
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
+  const isFullScreen = useSelector((store) => store.page.isFullScreen);
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicVolume = useSelector((store) => store.music.musicVolume);

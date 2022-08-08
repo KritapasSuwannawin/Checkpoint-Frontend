@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const pageSlice = createSlice({
   name: 'page',
-  initialState: { currentPage: undefined, loading: true },
+  initialState: { currentPage: undefined, loading: true, isFullScreen: false },
   reducers: {
     changePageHandler(state, action) {
       state.currentPage = action.payload;
@@ -12,6 +12,9 @@ const pageSlice = createSlice({
     },
     doneLoading(state, action) {
       state.loading = false;
+    },
+    setIsFullScreen(state, action) {
+      state.isFullScreen = action.payload;
     },
   },
 });

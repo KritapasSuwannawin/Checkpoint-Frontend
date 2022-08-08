@@ -47,7 +47,6 @@ function App() {
   const startTime = useSelector((store) => store.device.startTime);
 
   const [doneInitialize, setDoneInitialize] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const homeRef = useRef();
 
@@ -375,13 +374,21 @@ function App() {
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', () => {
-      if (document.fullscreenElement) {
-        setIsFullScreen(true);
+      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
+        dispatch(pageActions.setIsFullScreen(false));
       } else {
-        setIsFullScreen(false);
+        dispatch(pageActions.setIsFullScreen(true));
       }
     });
-  }, []);
+
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
+        dispatch(pageActions.setIsFullScreen(false));
+      } else {
+        dispatch(pageActions.setIsFullScreen(true));
+      }
+    });
+  }, [dispatch]);
 
   function fullScreenClickHander() {
     if (document.fullscreenElement || document.webkitIsFullScreen) {
@@ -390,12 +397,14 @@ function App() {
       } else if (document.webkitCancelFullScreen) {
         document.webkitCancelFullScreen();
       }
+      dispatch(pageActions.setIsFullScreen(false));
     } else {
       if (homeRef.current.requestFullscreen) {
         homeRef.current.requestFullscreen();
       } else if (homeRef.current.webkitRequestFullScreen) {
         homeRef.current.webkitRequestFullScreen();
       }
+      dispatch(pageActions.setIsFullScreen(true));
     }
   }
 
@@ -410,7 +419,7 @@ function App() {
         {doneInitialize && (
           <div ref={homeRef}>
             <Popup spacebarHandler={spacebarHandler}></Popup>
-            <Home isFullScreen={isFullScreen} fullScreenClickHander={fullScreenClickHander}></Home>
+            <Home fullScreenClickHander={fullScreenClickHander}></Home>
             <Background></Background>
             <Music></Music>
             <Ambient></Ambient>
