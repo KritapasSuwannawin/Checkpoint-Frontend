@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import './Timer.scss';
 
-import alarmStudyEnd from './audio/Clock alarm ending study session.wav';
-import alarmBreakEnd from './audio/Clock alarm ending break session.wav';
-
 import resetSvg from '../../svg/20px/Reset.svg';
 import notiSvg from '../../svg/20px/Noti.svg';
+
+const alarmStudyEnd = 'https://d31dy2z9e98h27.cloudfront.net/others/Clock+alarm+ending+study+session.m4a';
+const alarmBreakEnd = 'https://d31dy2z9e98h27.cloudfront.net/others/Clock+alarm+ending+break+session.m4a';
 
 function Timer(props) {
   const [mainTimerRunning, setMainTimerRunning] = useState(false);
@@ -141,11 +141,6 @@ function Timer(props) {
     }
   }, [mainTimer, secondaryTimer]);
 
-  useEffect(() => {
-    const promise = audioRef.current.play();
-    promise.catch(() => {});
-  }, [audioUrl]);
-
   function resetMainTimerHandler() {
     setMainTimerRunning(false);
     setMainTimer(Number(studyInputRef.current.value) * 60);
@@ -162,12 +157,14 @@ function Timer(props) {
     setIsAudioMuted((current) => !current);
   }
 
+  function audioEndedHandler() {
+    setAudioUrl();
+  }
+
   return (
     <div className={`timer ${!props.showTimer ? 'hide' : ''}`}>
       <div className="close-btn" onClick={props.closeHandler}></div>
-      <audio src={audioUrl} preload="auto" autoPlay={true} muted={isAudioMuted} ref={audioRef}></audio>
-      <audio src={alarmStudyEnd} preload="auto" autoPlay={true} muted={true}></audio>
-      <audio src={alarmBreakEnd} preload="auto" autoPlay={true} muted={true}></audio>
+      <audio src={audioUrl} preload="auto" autoPlay={true} muted={isAudioMuted} onEnded={audioEndedHandler} ref={audioRef}></audio>
       <p className="heading">{!isBegun ? 'Pomodoro' : !isShortBreak ? 'Study/Work' : 'Short Break'}</p>
       <p className="main-timer">{secondToMinute(mainTimer)}</p>
       <div className="btn-container">

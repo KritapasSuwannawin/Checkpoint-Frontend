@@ -406,7 +406,11 @@ function Home(props) {
             <div className="home__overlay--left" onClick={overlayClickHandler}></div>
             <div className="home__overlay--right"></div>
           </div>
-          <nav className="nav">
+        </>
+      )}
+      <nav className="nav">
+        {!isFullScreen && (
+          <>
             <div onClick={overlayClickHandler} className="nav__logo">
               <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
               {(isPremium === false || isOntrial) && (
@@ -423,17 +427,25 @@ function Home(props) {
                 </>
               )}
             </div>
-            <div className="nav__links">
-              <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
-                {!isJapanese ? 'Tutorial' : 'チュートリアル'}
+          </>
+        )}
+        <div className="nav__links">
+          {!isFullScreen && (
+            <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
+              {!isJapanese ? 'Tutorial' : 'チュートリアル'}
+            </div>
+          )}
+          <div className="nav__links--timer-container">
+            {!isFullScreen && (
+              <div onClick={timerClickHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
+                <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
+                {!isJapanese ? 'Timer' : 'タイマー'}
               </div>
-              <div className="nav__links--timer-container">
-                <div onClick={timerClickHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
-                  <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
-                  {!isJapanese ? 'Timer' : 'タイマー'}
-                </div>
-                <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
-              </div>
+            )}
+            <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
+          </div>
+          {!isFullScreen && (
+            <>
               <div
                 onClick={musicClickHander}
                 className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${isJapanese ? 'japanese' : ''}`}
@@ -460,135 +472,139 @@ function Home(props) {
                 alt=""
                 onClick={outsideLinkToggleHandler}
               ></img>
-              {showOutsideLinkPopup && (
-                <div className="nav__outside-links">
-                  {memberId && (
-                    <>
-                      <div className="nav__outside-links--profile-container">
-                        <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
-                        <div>
-                          <p className="nav__outside-links--username">{username}</p>
-                          <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
-                        </div>
-                      </div>
-                      <div className="nav__outside-links--btn-container">
-                        <img
-                          className="nav__logo--upgrade-btn"
-                          onClick={navBtnClickHandler}
-                          src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
-                          alt=""
-                        ></img>
-                        <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                          {isPremium && !isOntrial
-                            ? !isJapanese
-                              ? 'Extend Premium'
-                              : 'プレミアム延長'
-                            : !isJapanese
-                            ? 'Activate Premium'
-                            : 'プレミアム有効化'}
-                        </div>
-                      </div>
-                      <div className="nav__outside-links--container">
-                        <div className="nav__outside-links--icon-container">
-                          <img src={png1} alt="" className="small"></img>
-                        </div>
-                        <p onClick={openSubscriptionHandler}>{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
-                      </div>
-                      <div className="nav__outside-links--container">
-                        <div className="nav__outside-links--icon-container">
-                          <img src={png2} alt=""></img>
-                        </div>
-                        <p onClick={openHelpSupportHandler}>{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
-                      </div>
-                      <div className="nav__outside-links--container">
-                        <div className="nav__outside-links--icon-container">
-                          <img src={png3} alt=""></img>
-                        </div>
-                        <p onClick={openFeedbackHandler}>{!isJapanese ? 'Feedback' : 'ご意見・ご感想'}</p>
-                      </div>
-                    </>
-                  )}
-                  <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
-                    <div className="nav__outside-links--icon-container">
-                      <img src={png4} alt=""></img>
+            </>
+          )}
+          {showOutsideLinkPopup && (
+            <div className="nav__outside-links">
+              {memberId && (
+                <>
+                  <div className="nav__outside-links--profile-container">
+                    <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
+                    <div>
+                      <p className="nav__outside-links--username">{username}</p>
+                      <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
                     </div>
-                    <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
-                      {dictionary.aboutUs[!isJapanese ? 0 : 1]}
-                    </a>
+                  </div>
+                  <div className="nav__outside-links--btn-container">
+                    <img
+                      className="nav__logo--upgrade-btn"
+                      onClick={navBtnClickHandler}
+                      src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
+                      alt=""
+                    ></img>
+                    <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
+                      {isPremium && !isOntrial
+                        ? !isJapanese
+                          ? 'Extend Premium'
+                          : 'プレミアム延長'
+                        : !isJapanese
+                        ? 'Activate Premium'
+                        : 'プレミアム有効化'}
+                    </div>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={png6} alt=""></img>
+                      <img src={png1} alt="" className="small"></img>
                     </div>
-                    <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                      {!isJapanese ? 'For Artist' : 'アーティスト向け'}
-                    </a>
+                    <p onClick={openSubscriptionHandler}>{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={png5} alt=""></img>
+                      <img src={png2} alt=""></img>
                     </div>
-                    <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                      {dictionary.policy[!isJapanese ? 0 : 1]}
-                    </a>
+                    <p onClick={openHelpSupportHandler}>{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
                   </div>
-                  {memberId && (
-                    <div className="nav__outside-links--container border-top">
-                      <div className="nav__outside-links--icon-container">
-                        <img src={png7} alt=""></img>
-                      </div>
-                      <p onClick={logoutHandler}>{!isJapanese ? 'Logout' : 'ログアウト'}</p>
+                  <div className="nav__outside-links--container">
+                    <div className="nav__outside-links--icon-container">
+                      <img src={png3} alt=""></img>
                     </div>
-                  )}
+                    <p onClick={openFeedbackHandler}>{!isJapanese ? 'Feedback' : 'ご意見・ご感想'}</p>
+                  </div>
+                </>
+              )}
+              <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
+                <div className="nav__outside-links--icon-container">
+                  <img src={png4} alt=""></img>
+                </div>
+                <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
+                  {dictionary.aboutUs[!isJapanese ? 0 : 1]}
+                </a>
+              </div>
+              <div className="nav__outside-links--container">
+                <div className="nav__outside-links--icon-container">
+                  <img src={png6} alt=""></img>
+                </div>
+                <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
+                  {!isJapanese ? 'For Artist' : 'アーティスト向け'}
+                </a>
+              </div>
+              <div className="nav__outside-links--container">
+                <div className="nav__outside-links--icon-container">
+                  <img src={png5} alt=""></img>
+                </div>
+                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
+                  {dictionary.policy[!isJapanese ? 0 : 1]}
+                </a>
+              </div>
+              {memberId && (
+                <div className="nav__outside-links--container border-top">
+                  <div className="nav__outside-links--icon-container">
+                    <img src={png7} alt=""></img>
+                  </div>
+                  <p onClick={logoutHandler}>{!isJapanese ? 'Logout' : 'ログアウト'}</p>
                 </div>
               )}
             </div>
-          </nav>
-          <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
-            <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
-            <div className="background-control__ambient-container">
-              <div className="background-control__ambient-volume">
-                <p>{!isJapanese ? 'Ambience' : 'アンビエンス'}</p>
-                <img src={speakerSvg15} alt=""></img>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={ambientVolume * 100}
-                  onChange={volumeAmbientChangeHandler}
-                  ref={ambientVolumeSliderRef}
-                  className="background-control__ambient-volume--slider"
-                ></input>
-              </div>
-              {ambientThumbnailArr}
-              <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
-                <img src={addSvg20} alt=""></img>
-              </div>
+          )}
+        </div>
+      </nav>
+      <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
+        <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
+        <div className="background-control__ambient-container">
+          <div className="background-control__ambient-volume">
+            <p>{!isJapanese ? 'Ambience' : 'アンビエンス'}</p>
+            <img src={speakerSvg15} alt=""></img>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={ambientVolume * 100}
+              onChange={volumeAmbientChangeHandler}
+              ref={ambientVolumeSliderRef}
+              className="background-control__ambient-volume--slider"
+            ></input>
+          </div>
+          {ambientThumbnailArr}
+          <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
+            <img src={addSvg20} alt=""></img>
+          </div>
+        </div>
+      </div>
+      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
+        {isPremium === undefined ? (
+          <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
+            Join us to have your own music playlist
+          </p>
+        ) : (
+          <>
+            <div className="music-control__title">
+              <img src={heartFullSvg30} alt=""></img>
+              <p>{!isJapanese ? 'Favorite music' : 'お気に入り'}</p>
             </div>
-          </div>
-          <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
-            {isPremium === undefined ? (
-              <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
-                Join us to have your own music playlist
-              </p>
+            {favouriteMusicIdArr.length === 0 ? (
+              <p>{!isJapanese ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
             ) : (
-              <>
-                <div className="music-control__title">
-                  <img src={heartFullSvg30} alt=""></img>
-                  <p>{!isJapanese ? 'Favorite music' : 'お気に入り'}</p>
+              favouriteMusicIdArr.map((id) => (
+                <div key={id} className="music-control__cards">
+                  <FavouriteMusicCard id={id}></FavouriteMusicCard>
                 </div>
-                {favouriteMusicIdArr.length === 0 ? (
-                  <p>{!isJapanese ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
-                ) : (
-                  favouriteMusicIdArr.map((id) => (
-                    <div key={id} className="music-control__cards">
-                      <FavouriteMusicCard id={id}></FavouriteMusicCard>
-                    </div>
-                  ))
-                )}
-              </>
+              ))
             )}
-          </div>
+          </>
+        )}
+      </div>
+      {!isFullScreen && (
+        <>
           <div className={`mood ${!memberId ? 'not-show' : ''}`}>
             <div className="mood__section">
               <img
