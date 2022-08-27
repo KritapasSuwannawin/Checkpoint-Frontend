@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 
 import { musicActions } from '../../store/musicSlice';
+import { popupActions } from '../../store/popupSlice';
 import './MusicThumbnailCard.scss';
 
 import playSvg25 from '../../svg/25px/Circled Play.svg';
@@ -13,12 +14,17 @@ function MusicThumbnailCard(props) {
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
-  const isPremium = useSelector((store) => store.member.isPremium);
+  const memberId = useSelector((store) => store.member.memberId);
 
   const isMusicPlaying = currentMusic.id === props.id && musicPlaying;
 
   function clickHandler() {
     if (this) {
+      if (!memberId) {
+        dispatch(popupActions.setShowLoginPopup(true));
+        return;
+      }
+
       dispatch(musicActions.favouriteBtnClickHandler(props.id));
       return;
     }
@@ -43,14 +49,12 @@ function MusicThumbnailCard(props) {
 
   return (
     <div className="music-thumbnail-card">
-      {isPremium !== undefined && (
-        <img
-          src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}
-          onClick={clickHandler.bind('fav')}
-          alt=""
-          className="music-thumbnail-card__favourite-btn"
-        ></img>
-      )}
+      <img
+        src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}
+        onClick={clickHandler.bind('fav')}
+        alt=""
+        className="music-thumbnail-card__favourite-btn"
+      ></img>
       <img src={props.thumbnailUrl} onClick={clickHandler} className="music-thumbnail-card__image" alt=""></img>
       <div onClick={clickHandler} className="music-thumbnail-card__description">
         <div>

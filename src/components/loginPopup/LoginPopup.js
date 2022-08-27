@@ -19,6 +19,7 @@ import appleSignupBtn from './icon/Apple Sign up button Web.svg';
 
 function LoginPopup(props) {
   const isJapanese = useSelector((store) => store.language.isJapanese);
+  const deviceId = useSelector((store) => store.device.deviceId);
 
   const dispatch = useDispatch();
 
@@ -59,6 +60,12 @@ function LoginPopup(props) {
   const confirmNewPasswordRef = useRef();
 
   const { closeHandler } = props;
+
+  useEffect(() => {
+    if (deviceId) {
+      closeHandler();
+    }
+  }, [deviceId, closeHandler]);
 
   const signUpSubmitHandler = useCallback(() => {
     if (loading || !emailRef.current || !passwordRef1.current || !passwordRef2.current || !checkboxRef1.current) {
@@ -176,14 +183,13 @@ function LoginPopup(props) {
           dispatch(deviceActions.setNewDevice());
           dispatch(memberActions.setMember(data.memberData));
           setLocalStorage(requestData);
-          closeHandler(true);
         })
         .catch(() => setErrorDuringAuthen(true))
         .finally(() => setLoading(false));
     } else {
       setInvalidCode(true);
     }
-  }, [closeHandler, dispatch, email, loading, password, receiveNews, verificationCode]);
+  }, [dispatch, email, loading, password, receiveNews, verificationCode]);
 
   const signInSubmitHandler = useCallback(() => {
     if (loading || !emailRef.current || !passwordRef1.current) {
@@ -239,87 +245,30 @@ function LoginPopup(props) {
               throw new Error();
             }
 
-            clearLocalStorage();
             return;
           }
 
           const { memberData } = data;
-          dispatch(deviceActions.setNewDevice());
+          dispatch(memberActions.setMember(memberData));
           dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
           dispatch(musicActions.setInitialMusic(memberData.musicId));
           dispatch(musicActions.setMusicCategory(memberData.musicCategory));
           dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
           dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
           dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
-          dispatch(memberActions.setMember(memberData));
+          dispatch(deviceActions.setNewDevice());
           setLocalStorage(requestData);
-          closeHandler(false);
         })
         .catch(() => setErrorDuringAuthen(true))
         .finally(() => setLoading(false));
     }
-  }, [closeHandler, dispatch, loading]);
-
-  useEffect(() => {
-    if (
-      localStorage.getItem('CheckpointEmail') &&
-      localStorage.getItem('CheckpointPassword') &&
-      localStorage.getItem('CheckpointLoginMethod')
-    ) {
-      const requestData = {
-        email: localStorage.getItem('CheckpointEmail'),
-        password: localStorage.getItem('CheckpointPassword'),
-        loginMethod: localStorage.getItem('CheckpointLoginMethod'),
-      };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      })
-        .then((res) => res.json())
-        .then((body) => {
-          const { statusCode, data } = body;
-
-          if (statusCode !== 2001) {
-            if (statusCode === 4000) {
-              throw new Error();
-            }
-
-            clearLocalStorage();
-            return;
-          }
-
-          const { memberData } = data;
-          dispatch(deviceActions.setNewDevice());
-          dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
-          dispatch(musicActions.setInitialMusic(memberData.musicId));
-          dispatch(musicActions.setMusicCategory(memberData.musicCategory));
-          dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
-          dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
-          dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
-          dispatch(memberActions.setMember(memberData));
-          closeHandler(false);
-        })
-        .catch(() => {
-          setErrorDuringAuthen(true);
-        });
-    }
-  }, [dispatch, closeHandler]);
+  }, [dispatch, loading]);
 
   function setLocalStorage(data) {
     const { email, password, loginMethod } = data;
     localStorage.setItem('CheckpointEmail', email);
     localStorage.setItem('CheckpointPassword', password);
     localStorage.setItem('CheckpointLoginMethod', loginMethod);
-  }
-
-  function clearLocalStorage() {
-    localStorage.removeItem('CheckpointEmail');
-    localStorage.removeItem('CheckpointPassword');
-    localStorage.removeItem('CheckpointLoginMethod');
   }
 
   function signUpClickHandler() {
@@ -444,7 +393,10 @@ function LoginPopup(props) {
           return;
         }
 
-        clearLocalStorage();
+        localStorage.removeItem('CheckpointEmail');
+        localStorage.removeItem('CheckpointPassword');
+        localStorage.removeItem('CheckpointLoginMethod');
+
         setForgetPassword(false);
       })
       .catch(() => setErrorDuringAuthen(true))
@@ -503,7 +455,6 @@ function LoginPopup(props) {
               dispatch(deviceActions.setNewDevice());
               dispatch(memberActions.setMember(data.memberData));
               setLocalStorage(requestData);
-              closeHandler(true);
             })
             .catch(() => setErrorDuringAuthen(true))
             .finally(() => setLoading(false));
@@ -539,21 +490,19 @@ function LoginPopup(props) {
                   throw new Error();
                 }
 
-                clearLocalStorage();
                 return;
               }
 
               const { memberData } = data;
-              dispatch(deviceActions.setNewDevice());
+              dispatch(memberActions.setMember(memberData));
               dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
               dispatch(musicActions.setInitialMusic(memberData.musicId));
               dispatch(musicActions.setMusicCategory(memberData.musicCategory));
               dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
               dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
               dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
-              dispatch(memberActions.setMember(memberData));
+              dispatch(deviceActions.setNewDevice());
               setLocalStorage(requestData);
-              closeHandler(false);
             })
             .catch(() => setErrorDuringAuthen(true))
             .finally(() => setLoading(false));
@@ -580,6 +529,7 @@ function LoginPopup(props) {
     return (
       <div className="login-popup">
         <form className="login-popup__form">
+          <div className="login-popup__close-btn" onClick={() => closeHandler()}></div>
           <div className="login-popup__title-container">
             <p
               className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
@@ -692,6 +642,7 @@ function LoginPopup(props) {
   return (
     <div className="login-popup">
       <form className="login-popup__form">
+        <div className="login-popup__close-btn" onClick={() => closeHandler()}></div>
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">

@@ -11,6 +11,10 @@ const deviceSlice = createSlice({
       state.deviceId = `${Math.random()}`;
       state.startTime = Date.now();
     },
+    clearDevice(state, action) {
+      state.deviceId = undefined;
+      state.startTime = undefined;
+    },
   },
 });
 

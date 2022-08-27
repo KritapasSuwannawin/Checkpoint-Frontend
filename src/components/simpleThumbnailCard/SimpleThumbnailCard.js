@@ -17,6 +17,7 @@ function SimpleThumbnailCard(props) {
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const isJapanese = useSelector((store) => store.language.isJapanese);
   const isPremium = useSelector((store) => store.member.isPremium);
+  const memberId = useSelector((store) => store.member.memberId);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
 
@@ -51,6 +52,11 @@ function SimpleThumbnailCard(props) {
   }
 
   function showUpgradePopupHandler() {
+    if (!memberId) {
+      dispatch(popupActions.setShowLoginPopup(true));
+      return;
+    }
+
     dispatch(popupActions.setShowUpgradePopup(true));
   }
 
@@ -60,7 +66,7 @@ function SimpleThumbnailCard(props) {
 
   return (
     <div className={className}>
-      {(props.background || props.ambient) && props.isPremium && !isPremium && (
+      {props.isPremium && !isPremium && (
         <div className="simple-thumbnail-card__premium" title="For premium member" onClick={showUpgradePopupHandler}>
           <div className="simple-thumbnail-card__premium-overlay"></div>
           <img src={lockSvg} alt="" className={`simple-thumbnail-card__lock-svg ${props.ambient ? 'small' : ''}`}></img>

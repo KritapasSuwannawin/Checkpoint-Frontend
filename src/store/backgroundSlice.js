@@ -31,7 +31,7 @@ const backgroundSlice = createSlice({
     },
     setAvailableBackground(state, action) {
       state.availableBackgroundArr = action.payload;
-      state.currentBackground = action.payload.find((background) => background.id === '0811');
+      state.currentBackground = action.payload.find((background) => background.id === '0211');
     },
   },
 });

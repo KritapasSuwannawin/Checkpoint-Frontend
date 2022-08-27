@@ -17,6 +17,7 @@ import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
 import { popupActions } from '../../store/popupSlice';
+import { deviceActions } from '../../store/deviceSlice';
 
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
 import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
@@ -24,6 +25,7 @@ import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
+import profileSvg50 from '../../svg/50px/Profile.svg';
 import daySvg36 from '../../svg/36px/Sun.svg';
 import eveningSvg36 from '../../svg/36px/Sunset.svg';
 import nightSvg36 from '../../svg/36px/Moon Symbol.svg';
@@ -47,8 +49,8 @@ import loopSvg25 from '../../svg/25px/Repeat.svg';
 import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
+import signInSvg20 from '../../svg/20px/SignIn.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
-import lockSvg15 from '../../svg/15px/Lock.svg';
 
 import png1 from '../../svg/20px/1.svg';
 import png2 from '../../svg/20px/2.svg';
@@ -92,6 +94,8 @@ function Home(props) {
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
   const showOutsideLinkPopup = useSelector((store) => store.popup.showOutsideLinkPopup);
+  const showLoginPopup = useSelector((store) => store.popup.showLoginPopup);
+  const showSafariGuidePopup = useSelector((store) => store.popup.showSafariGuidePopup);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
@@ -106,6 +110,55 @@ function Home(props) {
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
   const backgroundFilePathRef = useRef();
+
+  useEffect(() => {
+    if (
+      localStorage.getItem('CheckpointEmail') &&
+      localStorage.getItem('CheckpointPassword') &&
+      localStorage.getItem('CheckpointLoginMethod')
+    ) {
+      const requestData = {
+        email: localStorage.getItem('CheckpointEmail'),
+        password: localStorage.getItem('CheckpointPassword'),
+        loginMethod: localStorage.getItem('CheckpointLoginMethod'),
+      };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
+        .then((res) => res.json())
+        .then((body) => {
+          const { statusCode, data } = body;
+
+          if (statusCode !== 2001) {
+            if (statusCode === 4000) {
+              throw new Error();
+            }
+
+            localStorage.removeItem('CheckpointEmail');
+            localStorage.removeItem('CheckpointPassword');
+            localStorage.removeItem('CheckpointLoginMethod');
+
+            return;
+          }
+
+          const { memberData } = data;
+          dispatch(memberActions.setMember(memberData));
+          dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
+          dispatch(musicActions.setInitialMusic(memberData.musicId));
+          dispatch(musicActions.setMusicCategory(memberData.musicCategory));
+          dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
+          dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
+          dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
+          dispatch(deviceActions.setNewDevice());
+        })
+        .catch(() => {});
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     setBackgroundVideoArr((backgroundVideoArr) => {
@@ -139,8 +192,8 @@ function Home(props) {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (isPremium === false && currentBackground.isPremium) {
-      dispatch(backgroundActions.changeBackgroundHandler('0111'));
+    if (!isPremium && currentBackground.isPremium) {
+      dispatch(backgroundActions.changeBackgroundHandler('0211'));
     }
 
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
@@ -212,13 +265,7 @@ function Home(props) {
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
   useEffect(() => {
-    if (!memberId) {
-      dispatch(popupActions.setShowLoginPopup(true));
-    } else {
-      if (!localStorage.getItem('checkpointShowCookie')) {
-        dispatch(popupActions.setShowCookiePopup(true));
-      }
-
+    if (memberId) {
       if (dayOfTrial === 7 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
         dispatch(popupActions.setShowLastDayTrialPopup(true));
       } else if (!isPremium && !localStorage.getItem('checkpointShowExpirationPopup')) {
@@ -226,6 +273,13 @@ function Home(props) {
       }
     }
   }, [dispatch, memberId, dayOfTrial, isPremium]);
+
+  function checkMemberId() {
+    if (!memberId) {
+      dispatch(popupActions.setShowLoginPopup(true));
+      return false;
+    }
+  }
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -335,20 +389,20 @@ function Home(props) {
     dispatch(languageActions.languageChangeHandler());
   }
 
-  function navBtnClickHandler() {
-    if (isPremium === undefined) {
-      dispatch(popupActions.setShowLoginPopup(true));
-    } else {
-      dispatch(popupActions.setShowUpgradePopup(true));
-      dispatch(popupActions.setShowSubscriptionPopup(false));
+  function buyPremiumClickHandler() {
+    if (!checkMemberId()) {
+      return;
     }
-  }
 
-  function showUpgradePopupHandler() {
     dispatch(popupActions.setShowUpgradePopup(true));
+    dispatch(popupActions.setShowSubscriptionPopup(false));
   }
 
   function favouriteBtnClickHandler() {
+    if (!checkMemberId()) {
+      return;
+    }
+
     dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
   }
 
@@ -357,13 +411,24 @@ function Home(props) {
     localStorage.removeItem('CheckpointPassword');
     localStorage.removeItem('CheckpointLoginMethod');
 
-    dispatch(memberActions.logout());
+    dispatch(deviceActions.clearDevice());
+    dispatch(pageActions.closePageHandler());
     dispatch(musicActions.setMusicPlaying(false));
+    dispatch(musicActions.setFavouriteMusicIdArr([]));
     dispatch(avatarActions.changeAvatarHandler(1));
     dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(memberActions.logout());
+  }
+
+  function loginHandler() {
+    dispatch(popupActions.setShowLoginPopup(true));
   }
 
   function activationBtnClickHandler() {
+    if (!checkMemberId()) {
+      return;
+    }
+
     dispatch(popupActions.setShowSubscriptionPopup(false));
     dispatch(popupActions.setShowActivationPopup(true));
   }
@@ -386,6 +451,10 @@ function Home(props) {
   }
 
   function timerClickHandler() {
+    if (!checkMemberId()) {
+      return;
+    }
+
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowOutsideLinkPopup(false));
     dispatch(popupActions.toggleShowTimerPopup());
@@ -413,11 +482,11 @@ function Home(props) {
           <>
             <div onClick={overlayClickHandler} className="nav__logo">
               <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
-              {(isPremium === false || isOntrial) && (
+              {(!isPremium || isOntrial) && (
                 <>
                   <img
                     className="nav__logo--upgrade-btn"
-                    onClick={navBtnClickHandler}
+                    onClick={buyPremiumClickHandler}
                     src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
                     alt=""
                   ></img>
@@ -467,8 +536,8 @@ function Home(props) {
                 {dictionary.language[!isJapanese ? 0 : 1]}
               </div>
               <img
-                className={`nav__links--link profile ${isJapanese ? 'japanese' : ''}`}
-                src={currentAvatar.url}
+                className={`nav__links--link profile ${!memberId ? 'guest' : ''} ${isJapanese ? 'japanese' : ''}`}
+                src={memberId ? currentAvatar.url : profileSvg50}
                 alt=""
                 onClick={outsideLinkToggleHandler}
               ></img>
@@ -488,7 +557,7 @@ function Home(props) {
                   <div className="nav__outside-links--btn-container">
                     <img
                       className="nav__logo--upgrade-btn"
-                      onClick={navBtnClickHandler}
+                      onClick={buyPremiumClickHandler}
                       src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
                       alt=""
                     ></img>
@@ -546,14 +615,16 @@ function Home(props) {
                   {dictionary.policy[!isJapanese ? 0 : 1]}
                 </a>
               </div>
-              {memberId && (
-                <div className="nav__outside-links--container border-top">
-                  <div className="nav__outside-links--icon-container">
-                    <img src={png7} alt=""></img>
-                  </div>
-                  <p onClick={logoutHandler}>{!isJapanese ? 'Logout' : 'ログアウト'}</p>
+              <div className="nav__outside-links--container border-top">
+                <div className="nav__outside-links--icon-container">
+                  <img src={memberId ? png7 : signInSvg20} alt=""></img>
                 </div>
-              )}
+                {memberId ? (
+                  <p onClick={logoutHandler}>{!isJapanese ? 'Sign Out' : 'ログアウト'}</p>
+                ) : (
+                  <p onClick={loginHandler}>{!isJapanese ? 'Sign In' : 'ログイン'}</p>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -581,9 +652,9 @@ function Home(props) {
         </div>
       </div>
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
-        {isPremium === undefined ? (
+        {!memberId ? (
           <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
-            Join us to have your own music playlist
+            {!isJapanese ? 'Join us to have your own music playlist' : '参加して、自分だけの音楽プレイリストを作りましょう'}
           </p>
         ) : (
           <>
@@ -605,7 +676,7 @@ function Home(props) {
       </div>
       {!isFullScreen && (
         <>
-          <div className={`mood ${!memberId ? 'not-show' : ''}`}>
+          <div className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''}`}>
             <div className="mood__section">
               <img
                 src={daySvg36}
@@ -619,24 +690,12 @@ function Home(props) {
                 onClick={changeBackgroundTimeHandler.bind(2)}
                 className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
-              <div className={isPremium ? '' : 'mood__section--premium'}>
-                <img
-                  src={nightSvg36}
-                  alt=""
-                  title={`${!isPremium ? 'For premium member' : ''}`}
-                  onClick={isPremium ? changeBackgroundTimeHandler.bind(3) : showUpgradePopupHandler}
-                  className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-                {!isPremium && (
-                  <img
-                    src={lockSvg15}
-                    alt=""
-                    title="For premium member"
-                    className="mood__section--lock"
-                    onClick={showUpgradePopupHandler}
-                  ></img>
-                )}
-              </div>
+              <img
+                src={nightSvg36}
+                alt=""
+                onClick={changeBackgroundTimeHandler.bind(3)}
+                className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+              ></img>
             </div>
             <div className="mood__section">
               <img
@@ -651,42 +710,18 @@ function Home(props) {
                 onClick={changeBackgroundWeatherHandler.bind(2)}
                 className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
-              <div className={isPremium ? '' : 'mood__section--premium'}>
-                <img
-                  src={thunderSvg36}
-                  alt=""
-                  title={`${!isPremium ? 'For premium member' : ''}`}
-                  onClick={isPremium ? changeBackgroundWeatherHandler.bind(3) : showUpgradePopupHandler}
-                  className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-                {!isPremium && (
-                  <img
-                    src={lockSvg15}
-                    alt=""
-                    title="For premium member"
-                    className="mood__section--lock"
-                    onClick={showUpgradePopupHandler}
-                  ></img>
-                )}
-              </div>
-              <div className={isPremium ? '' : 'mood__section--premium'}>
-                <img
-                  src={snowySvg36}
-                  alt=""
-                  title={`${!isPremium ? 'For premium member' : ''}`}
-                  onClick={isPremium ? changeBackgroundWeatherHandler.bind(4) : showUpgradePopupHandler}
-                  className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-                {!isPremium && (
-                  <img
-                    src={lockSvg15}
-                    alt=""
-                    title="For premium member"
-                    className="mood__section--lock"
-                    onClick={showUpgradePopupHandler}
-                  ></img>
-                )}
-              </div>
+              <img
+                src={thunderSvg36}
+                alt=""
+                onClick={changeBackgroundWeatherHandler.bind(3)}
+                className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+              ></img>
+              <img
+                src={snowySvg36}
+                alt=""
+                onClick={changeBackgroundWeatherHandler.bind(4)}
+                className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+              ></img>
             </div>
           </div>
           <div className="player">

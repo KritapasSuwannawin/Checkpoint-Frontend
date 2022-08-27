@@ -114,6 +114,10 @@
           border: 0.3rem solid #f580eb;
           border-radius: 50%;
 
+          &.guest {
+            border: 0.3rem solid #ffae00;
+          }
+
           &.japanese {
             margin-left: -1rem;
           }
@@ -362,6 +366,7 @@
     }
 
     &__placeholder {
+      margin-top: 1rem;
       opacity: 0;
 
       &.show-control {
@@ -409,7 +414,7 @@
     &__section {
       background-color: rgba(17, 17, 17, 0.5);
       backdrop-filter: blur(0.5rem);
-      padding: 0.7rem 2rem;
+      padding: 0.8rem 2rem;
       border-radius: 0.8rem;
       @include flex-row-center;
       column-gap: 2.5rem;
@@ -420,21 +425,6 @@
 
       &--not-current-mood {
         opacity: 0.2;
-      }
-
-      &--premium {
-        position: relative;
-
-        &:hover {
-          cursor: not-allowed;
-        }
-      }
-
-      &--lock {
-        height: 1.5rem;
-        position: absolute;
-        top: 1.05rem;
-        left: 1.2rem;
       }
     }
   }

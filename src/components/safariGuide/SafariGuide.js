@@ -15,6 +15,7 @@ function SafariGuide(props) {
   }
 
   function submitHandler() {
+    localStorage.setItem('checkpointShowSafariPopup', '1');
     setShowGuide(false);
   }
 

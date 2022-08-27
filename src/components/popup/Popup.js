@@ -43,8 +43,6 @@ function Popup(props) {
   const showSafariGuidePopup = useSelector((store) => store.popup.showSafariGuidePopup);
   const showTutorialPopup = useSelector((store) => store.popup.showTutorialPopup);
 
-  const isPremium = useSelector((store) => store.member.isPremium);
-
   const closeNavPopupHandler = useCallback(() => {
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowTimerPopup(false));
@@ -158,26 +156,18 @@ function Popup(props) {
   }
 
   function openHelpSupportHandler() {
-    closeNavPopupHandler();
     dispatch(popupActions.setShowActivationPopup(false));
     dispatch(popupActions.setShowHelpSupportPopup(true));
   }
 
   function activationBtnClickHandler() {
-    closeNavPopupHandler();
     dispatch(popupActions.setShowSubscriptionPopup(false));
     dispatch(popupActions.setShowActivationPopup(true));
   }
 
-  function navBtnClickHandler() {
-    closeNavPopupHandler();
-
-    if (isPremium === undefined) {
-      dispatch(popupActions.setShowLoginPopup(true));
-    } else {
-      dispatch(popupActions.setShowUpgradePopup(true));
-      dispatch(popupActions.setShowSubscriptionPopup(false));
-    }
+  function buyPremiumClickHandler() {
+    dispatch(popupActions.setShowSubscriptionPopup(false));
+    dispatch(popupActions.setShowUpgradePopup(true));
   }
 
   function closeCookiePopupHandler() {
@@ -213,7 +203,7 @@ function Popup(props) {
         <SubscriptionPopup
           closeHandler={closeSubscriptionHandler}
           activateHandler={activationBtnClickHandler}
-          upgradeHandler={navBtnClickHandler}
+          upgradeHandler={buyPremiumClickHandler}
         ></SubscriptionPopup>
       )}
     </>

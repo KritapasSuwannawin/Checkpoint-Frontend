@@ -28,6 +28,7 @@ import { languageActions } from './store/languageSlice';
 import { memberActions } from './store/memberSlice';
 import { pageActions } from './store/pageSlice';
 import { popupActions } from './store/popupSlice';
+import { deviceActions } from './store/deviceSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -81,6 +82,41 @@ function App() {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    if (
+      navigator.userAgent.includes('Safari') &&
+      !navigator.userAgent.includes('Chrome') &&
+      !localStorage.getItem('checkpointShowSafariPopup')
+    ) {
+      dispatch(popupActions.setShowSafariGuidePopup(true));
+    }
+
+    if (!localStorage.getItem('checkpointShowTutorial')) {
+      dispatch(popupActions.setShowTutorialPopup(true));
+      localStorage.setItem('checkpointShowTutorial', '1');
+    }
+
+    if (!localStorage.getItem('checkpointShowCookie')) {
+      dispatch(popupActions.setShowCookiePopup(true));
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
+        dispatch(pageActions.setIsFullScreen(false));
+      } else {
+        dispatch(pageActions.setIsFullScreen(true));
+      }
+    });
+
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
+        dispatch(pageActions.setIsFullScreen(false));
+      } else {
+        dispatch(pageActions.setIsFullScreen(true));
+      }
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     if (window.location.protocol === 'http:' && !window.location.href.includes('http://localhost:3000/')) {
@@ -170,23 +206,6 @@ function App() {
 
     document.addEventListener('keyup', spacebarHandler);
   }, [isMobileDevice, spacebarHandler, dispatch]);
-
-  useEffect(() => {
-    if (
-      memberId &&
-      navigator.userAgent.includes('Safari') &&
-      !navigator.userAgent.includes('Chrome') &&
-      !localStorage.getItem('checkpointShowSafariPopup')
-    ) {
-      dispatch(popupActions.setShowSafariGuidePopup(true));
-      localStorage.setItem('checkpointShowSafariPopup', '1');
-    }
-
-    if (memberId && !localStorage.getItem('checkpointShowTutorial')) {
-      dispatch(popupActions.setShowTutorialPopup(true));
-      localStorage.setItem('checkpointShowTutorial', '1');
-    }
-  }, [dispatch, memberId]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -299,7 +318,7 @@ function App() {
   }, [dispatch, memberId, isPremium, isOntrial, spacebarHandler]);
 
   useEffect(() => {
-    if (memberId && currentBackground && currentMusic) {
+    if (deviceId && currentBackground && currentMusic) {
       const requestData = {
         backgroundId: currentBackground.id,
         musicId: currentMusic.id,
@@ -327,10 +346,12 @@ function App() {
               localStorage.removeItem('CheckpointPassword');
               localStorage.removeItem('CheckpointLoginMethod');
 
-              dispatch(memberActions.logout());
+              dispatch(deviceActions.clearDevice());
               dispatch(pageActions.closePageHandler());
               dispatch(musicActions.setMusicPlaying(false));
+              dispatch(musicActions.setFavouriteMusicIdArr([]));
               dispatch(avatarActions.changeAvatarHandler(1));
+              dispatch(memberActions.logout());
             }
 
             if (statusCode === 4000) {
@@ -345,7 +366,7 @@ function App() {
   }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist, deviceId, startTime, dispatch]);
 
   useEffect(() => {
-    if (memberId && currentAvatar) {
+    if (deviceId && currentAvatar) {
       const data = {
         memberId,
         avatarId: currentAvatar.id,
@@ -370,25 +391,7 @@ function App() {
         })
         .catch(() => {});
     }
-  }, [username, memberId, currentAvatar]);
-
-  useEffect(() => {
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
-        dispatch(pageActions.setIsFullScreen(false));
-      } else {
-        dispatch(pageActions.setIsFullScreen(true));
-      }
-    });
-
-    document.addEventListener('webkitfullscreenchange', () => {
-      if (!document.fullscreenElement && !document.webkitIsFullScreen) {
-        dispatch(pageActions.setIsFullScreen(false));
-      } else {
-        dispatch(pageActions.setIsFullScreen(true));
-      }
-    });
-  }, [dispatch]);
+  }, [username, memberId, deviceId, currentAvatar]);
 
   function fullScreenClickHander() {
     if (document.fullscreenElement || document.webkitIsFullScreen) {
