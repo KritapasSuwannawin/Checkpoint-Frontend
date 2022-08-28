@@ -8,7 +8,9 @@ import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 
 function SubscriptionPopup(props) {
-  const { isPremium, isOntrial, premiumExpirationDate } = useSelector((store) => store.member);
+  const isPremium = useSelector((store) => store.member.isPremium);
+  const isOntrial = useSelector((store) => store.member.isOntrial);
+  const premiumExpirationDate = useSelector((store) => store.member.premiumExpirationDate);
   const isJapanese = useSelector((store) => store.language.isJapanese);
 
   return (

@@ -71,6 +71,12 @@ function Popup(props) {
   ]);
 
   useEffect(() => {
+    if (showFreeTrialPopup) {
+      dispatch(popupActions.setShowUpgradePopup(false));
+    }
+  }, [dispatch, showFreeTrialPopup]);
+
+  useEffect(() => {
     if (showFeedbackPopup) {
       document.removeEventListener('keyup', spacebarHandler);
     }

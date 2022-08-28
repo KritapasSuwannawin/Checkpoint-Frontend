@@ -138,6 +138,10 @@
     &--buy-premium {
       margin: 1.3rem 0 2rem 0;
       height: 3.4rem;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     &--list {

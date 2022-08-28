@@ -5,50 +5,61 @@ const memberSlice = createSlice({
   initialState: {
     memberId: undefined,
     username: undefined,
-    isPremium: undefined,
     registrationDate: undefined,
     premiumExpirationDate: undefined,
+    trialStartDate: undefined,
+    isPremium: undefined,
     isOntrial: undefined,
     dayOfTrial: undefined,
   },
   reducers: {
     setMember(state, action) {
-      const { id, username, registrationDate, premiumExpirationDate, isPremium } = action.payload;
+      const { id, username, registrationDate, premiumExpirationDate, trialStartDate } = action.payload;
 
       state.memberId = id;
       state.username = username;
-      state.isPremium = isPremium;
       state.registrationDate = registrationDate;
       state.premiumExpirationDate = premiumExpirationDate;
+      state.trialStartDate = trialStartDate;
 
-      const registrationTime = new Date(registrationDate).getTime();
       const premiumExpirationTime = new Date(premiumExpirationDate).getTime();
-      const dateDifference = Math.floor((premiumExpirationTime - registrationTime) / (1000 * 60 * 60 * 24));
+      const currentTime = new Date().getTime();
 
-      if (isPremium && dateDifference === 7) {
-        const currentTime = new Date().getTime();
-        const dateDifference = Math.floor((currentTime - registrationTime) / (1000 * 60 * 60 * 24));
+      const isPremium = Math.floor((premiumExpirationTime - currentTime) / (1000 * 60 * 60 * 24)) > 0;
+      const trialStartTime = new Date(trialStartDate ? trialStartDate : registrationDate).getTime();
 
+      state.isPremium = isPremium;
+
+      if (isPremium && Math.floor((premiumExpirationTime - trialStartTime) / (1000 * 60 * 60 * 24)) === 7) {
         state.isOntrial = true;
-        state.dayOfTrial = dateDifference + 1;
+        state.dayOfTrial = Math.floor((currentTime - trialStartTime) / (1000 * 60 * 60 * 24)) + 1;
       } else {
         state.isOntrial = false;
       }
     },
     upgradeMember(state, action) {
+      state.premiumExpirationDate = action.payload.premiumExpirationDate;
       state.isPremium = true;
       state.isOntrial = false;
       state.dayOfTrial = undefined;
-      state.premiumExpirationDate = action.payload.premiumExpirationDate;
     },
     logout(state, action) {
       state.memberId = undefined;
       state.username = undefined;
-      state.isPremium = undefined;
       state.registrationDate = undefined;
       state.premiumExpirationDate = undefined;
+      state.trialStartDate = undefined;
+      state.isPremium = undefined;
       state.isOntrial = undefined;
       state.dayOfTrial = undefined;
+    },
+    startFreeTrial(state, action) {
+      const { premiumExpirationDate, trialStartDate } = action.payload;
+      state.premiumExpirationDate = premiumExpirationDate;
+      state.trialStartDate = trialStartDate;
+      state.isPremium = true;
+      state.isOntrial = true;
+      state.dayOfTrial = 1;
     },
   },
 });

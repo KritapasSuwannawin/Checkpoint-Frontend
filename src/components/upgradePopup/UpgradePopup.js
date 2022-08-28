@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './UpgradePopup.scss';
 
@@ -7,16 +8,69 @@ import SliderCard from './SliderCard';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
 import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
+import freeTrialBtn from '../../svg/50px/Free Trial Button.svg';
+
+import { memberActions } from '../../store/memberSlice';
+import { popupActions } from '../../store/popupSlice';
 
 const communityreview = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Community+Review+For+Web.png`;
 
 function UpgradePopup(props) {
+  const dispatch = useDispatch();
+
   const isJapanese = useSelector((store) => store.language.isJapanese);
   const ambientCount = useSelector((store) => store.ambient.count);
   const backgroundCount = useSelector((store) => store.background.count);
+  const memberId = useSelector((store) => store.member.memberId);
+  const registrationDate = useSelector((store) => store.member.registrationDate);
+  const premiumExpirationDate = useSelector((store) => store.member.premiumExpirationDate);
+  const trialStartDate = useSelector((store) => store.member.trialStartDate);
+  const isPremium = useSelector((store) => store.member.isPremium);
+
+  const [loading, setLoading] = useState(false);
+
+  let showFreeTrialBtn = false;
+  if (!isPremium && !trialStartDate && registrationDate === premiumExpirationDate) {
+    showFreeTrialBtn = true;
+  }
 
   function closeHandler() {
     props.closeHandler();
+  }
+
+  function freeTrialClickHandler() {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/account/trial/start`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ memberId }),
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode, data } = body;
+
+        if (statusCode !== 2001) {
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+
+        const { trialStartDate, premiumExpirationDate } = data;
+
+        dispatch(memberActions.startFreeTrial({ trialStartDate, premiumExpirationDate }));
+        dispatch(popupActions.setShowFreeTrialPopup(true));
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -102,9 +156,13 @@ function UpgradePopup(props) {
                 <p className="upgrade-popup__cards--celebration">
                   <span>Early Launch Celebration!</span>
                 </p>
-                <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
-                  <img src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP} alt="" className="upgrade-popup__cards--buy-premium"></img>
-                </a>
+                {showFreeTrialBtn ? (
+                  <img src={freeTrialBtn} alt="" className="upgrade-popup__cards--buy-premium" onClick={freeTrialClickHandler}></img>
+                ) : (
+                  <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
+                    <img src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP} alt="" className="upgrade-popup__cards--buy-premium"></img>
+                  </a>
+                )}
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
                   {!isJapanese ? 'Ad-Free' : '広告なし'}

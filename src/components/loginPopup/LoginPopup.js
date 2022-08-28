@@ -180,8 +180,9 @@ function LoginPopup(props) {
             return;
           }
 
-          dispatch(deviceActions.setNewDevice());
           dispatch(memberActions.setMember(data.memberData));
+          dispatch(backgroundActions.changeBackgroundHandler('0411'));
+          dispatch(deviceActions.setNewDevice());
           setLocalStorage(requestData);
         })
         .catch(() => setErrorDuringAuthen(true))
@@ -452,8 +453,9 @@ function LoginPopup(props) {
                 return;
               }
 
-              dispatch(deviceActions.setNewDevice());
               dispatch(memberActions.setMember(data.memberData));
+              dispatch(backgroundActions.changeBackgroundHandler('0411'));
+              dispatch(deviceActions.setNewDevice());
               setLocalStorage(requestData);
             })
             .catch(() => setErrorDuringAuthen(true))
