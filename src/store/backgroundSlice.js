@@ -5,6 +5,7 @@ const backgroundSlice = createSlice({
   initialState: {
     availableBackgroundArr: [],
     currentBackground: null,
+    count: 0,
   },
   reducers: {
     changeBackgroundHandler(state, action) {
@@ -32,6 +33,7 @@ const backgroundSlice = createSlice({
     setAvailableBackground(state, action) {
       state.availableBackgroundArr = action.payload;
       state.currentBackground = action.payload.find((background) => background.id === '0211');
+      state.count = action.payload.filter((background) => background.id.slice(2) === '11').length;
     },
   },
 });

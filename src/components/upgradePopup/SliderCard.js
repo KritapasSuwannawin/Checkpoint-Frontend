@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import './SliderCard.scss';
 
-import img1 from './img/Upgrade Image Showcase 1.jpg';
-import img2 from './img/Upgrade Image Showcase 2.jpg';
-import img3 from './img/Upgrade Image Showcase 3.jpg';
-import img4 from './img/Upgrade Image Showcase 4.jpg';
-import img5 from './img/Upgrade Image Showcase 5.jpg';
-import img6 from './img/Upgrade Image Showcase 6.jpg';
-import img7 from './img/Upgrade Image Showcase 7.jpg';
-import img8 from './img/Upgrade Image Showcase 8.jpg';
+const img1 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+1.jpg`;
+const img2 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+2.jpg`;
+const img3 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+3.jpg`;
+const img4 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+4.jpg`;
+const img5 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+5.jpg`;
+const img6 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+6.jpg`;
+const img7 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+7.jpg`;
+const img8 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Upgrade+Image+Showcase+8.jpg`;
 const imageSrcArr = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 function SliderCard(props) {

@@ -7,10 +7,13 @@ import SliderCard from './SliderCard';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
 import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
-import communityreview from './img/Community Review For Web.png';
+
+const communityreview = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Community+Review+For+Web.png`;
 
 function UpgradePopup(props) {
   const isJapanese = useSelector((store) => store.language.isJapanese);
+  const ambientCount = useSelector((store) => store.ambient.count);
+  const backgroundCount = useSelector((store) => store.background.count);
 
   function closeHandler() {
     props.closeHandler();
@@ -18,7 +21,13 @@ function UpgradePopup(props) {
 
   return (
     <div className="upgrade-popup">
-      <div className="upgrade-popup__container">
+      <div
+        className="upgrade-popup__container"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)),
+      url('${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Premium+Card+Background.jpg')`,
+        }}
+      >
         <div className="upgrade-popup__close-btn" onClick={closeHandler}></div>
         <div className="upgrade-popup__nav">
           <div>
@@ -67,11 +76,11 @@ function UpgradePopup(props) {
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn"></div>
-              {!isJapanese ? '2 Peaceful Background' : '２平和な背景'}
+              {!isJapanese ? '4 Peaceful Background' : '4平和な背景'}
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn"></div>
-              {!isJapanese ? '6 Realistic Ambience' : '6リアルなアンビエンス '}
+              {!isJapanese ? `${ambientCount} Realistic Ambience` : `${ambientCount}リアルなアンビエンス `}
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn-hollow"></div>
@@ -102,11 +111,11 @@ function UpgradePopup(props) {
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? '7 Peaceful Background' : '７平和な背景'}
+                  {!isJapanese ? `${backgroundCount} Peaceful Background` : `${backgroundCount}平和な背景`}
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? '15 Realistic Ambience' : '１５リアルなアンビエンス'}
+                  {!isJapanese ? `${ambientCount} Realistic Ambience` : `${ambientCount}リアルなアンビエンス `}
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>

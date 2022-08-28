@@ -50,15 +50,14 @@ import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 import signInSvg20 from '../../svg/20px/SignIn.svg';
+import creditCardSvg20 from '../../svg/20px/Credit Card.svg';
+import questionMarkSvg20 from '../../svg/20px/Question Mark.svg';
+import paperPlaneSvg20 from '../../svg/20px/Paper Plane.svg';
+import informationIconSvg20 from '../../svg/20px/Information Icon.svg';
+import checkpointLogoSvg20 from '../../svg/20px/Checkpoint Logo.svg';
+import policySvg20 from '../../svg/20px/Policy.svg';
+import logoutSvg20 from '../../svg/20px/Logout.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
-
-import png1 from '../../svg/20px/1.svg';
-import png2 from '../../svg/20px/2.svg';
-import png3 from '../../svg/20px/3.svg';
-import png4 from '../../svg/20px/4.png';
-import png5 from '../../svg/20px/5.png';
-import png6 from '../../svg/20px/6.png';
-import png7 from '../../svg/20px/7.png';
 
 const dictionary = {
   language: ['EN', 'JP'],
@@ -192,12 +191,12 @@ function Home(props) {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (!isPremium && currentBackground.isPremium) {
+    if (!isPremium && (memberId && ['03', '04'].includes(currentBackground.id.slice(0, 2)) ? false : currentBackground.isPremium)) {
       dispatch(backgroundActions.changeBackgroundHandler('0211'));
     }
 
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
-  }, [currentBackground, dispatch, isPremium]);
+  }, [currentBackground, dispatch, isPremium, memberId]);
 
   useEffect(() => {
     setAmbientAudioArr(
@@ -279,6 +278,8 @@ function Home(props) {
       dispatch(popupActions.setShowLoginPopup(true));
       return false;
     }
+
+    return true;
   }
 
   function playPauseMusicHandler() {
@@ -573,19 +574,19 @@ function Home(props) {
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={png1} alt="" className="small"></img>
+                      <img src={creditCardSvg20} alt="" className="small"></img>
                     </div>
                     <p onClick={openSubscriptionHandler}>{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={png2} alt=""></img>
+                      <img src={questionMarkSvg20} alt=""></img>
                     </div>
                     <p onClick={openHelpSupportHandler}>{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={png3} alt=""></img>
+                      <img src={paperPlaneSvg20} alt=""></img>
                     </div>
                     <p onClick={openFeedbackHandler}>{!isJapanese ? 'Feedback' : 'ご意見・ご感想'}</p>
                   </div>
@@ -593,7 +594,7 @@ function Home(props) {
               )}
               <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
                 <div className="nav__outside-links--icon-container">
-                  <img src={png4} alt=""></img>
+                  <img src={informationIconSvg20} alt=""></img>
                 </div>
                 <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
                   {dictionary.aboutUs[!isJapanese ? 0 : 1]}
@@ -601,7 +602,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={png6} alt=""></img>
+                  <img src={policySvg20} alt=""></img>
                 </div>
                 <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
                   {!isJapanese ? 'For Artist' : 'アーティスト向け'}
@@ -609,7 +610,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={png5} alt=""></img>
+                  <img src={checkpointLogoSvg20} alt=""></img>
                 </div>
                 <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
                   {dictionary.policy[!isJapanese ? 0 : 1]}
@@ -617,7 +618,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container border-top">
                 <div className="nav__outside-links--icon-container">
-                  <img src={memberId ? png7 : signInSvg20} alt=""></img>
+                  <img src={memberId ? logoutSvg20 : signInSvg20} alt=""></img>
                 </div>
                 {memberId ? (
                   <p onClick={logoutHandler}>{!isJapanese ? 'Sign Out' : 'ログアウト'}</p>

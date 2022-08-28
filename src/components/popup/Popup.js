@@ -118,16 +118,9 @@ function Popup(props) {
     dispatch(popupActions.setShowUpgradePopup(false));
   }
 
-  const closeLoginPopup = useCallback(
-    (showFreeTrialPopup) => {
-      dispatch(popupActions.setShowLoginPopup(false));
-
-      if (showFreeTrialPopup) {
-        dispatch(popupActions.setShowFreeTrialPopup(true));
-      }
-    },
-    [dispatch]
-  );
+  const closeLoginPopup = useCallback(() => {
+    dispatch(popupActions.setShowLoginPopup(false));
+  }, [dispatch]);
 
   function closeFreeTrialPopup() {
     dispatch(popupActions.setShowFreeTrialPopup(false));

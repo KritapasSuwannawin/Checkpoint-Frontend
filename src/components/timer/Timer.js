@@ -4,8 +4,8 @@ import './Timer.scss';
 import resetSvg from '../../svg/20px/Reset.svg';
 import notiSvg from '../../svg/20px/Noti.svg';
 
-const alarmStudyEnd = 'https://d31dy2z9e98h27.cloudfront.net/others/Clock+alarm+ending+study+session.m4a';
-const alarmBreakEnd = 'https://d31dy2z9e98h27.cloudfront.net/others/Clock+alarm+ending+break+session.m4a';
+const alarmStudyEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+alarm+ending+study+session.m4a`;
+const alarmBreakEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+alarm+ending+break+session.m4a`;
 
 function Timer(props) {
   const [mainTimerRunning, setMainTimerRunning] = useState(false);

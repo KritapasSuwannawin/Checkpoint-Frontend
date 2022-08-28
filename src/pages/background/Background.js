@@ -8,13 +8,20 @@ function Background() {
   const currentPage = useSelector((store) => store.page.currentPage);
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const availableBackgroundArr = useSelector((store) => store.background.availableBackgroundArr);
+  const deviceId = useSelector((store) => store.device.deviceId);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
 
   useEffect(() => {
-    availableBackgroundArr.forEach((background) => {
+    availableBackgroundArr.forEach((temp) => {
+      const background = { ...temp };
+
       if (background.id.slice(2) !== currentBackground.id.slice(2)) {
         return;
+      }
+
+      if (deviceId && ['03', '04'].includes(background.id.slice(0, 2))) {
+        background.isPremium = false;
       }
 
       setThumbnailArr((thumbnailArr) => {
@@ -35,7 +42,7 @@ function Background() {
         ];
       });
     });
-  }, [availableBackgroundArr, currentBackground]);
+  }, [availableBackgroundArr, currentBackground, deviceId]);
 
   return <div className={`background ${currentPage === 'background' ? 'current-page' : ''}`}>{thumbnailArr}</div>;
 }
