@@ -1,10 +1,10 @@
 @import '../../scss/main.scss';
 
 .home {
-  .home__overlay {
+  &__overlay {
     @include fixed-whole-screen;
     display: flex;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
     z-index: -1;
     opacity: 0;
 
@@ -35,11 +35,16 @@
 
     &__logo {
       @include flex-row-center;
+      justify-content: flex-start;
       column-gap: 1.8rem;
-      margin-left: -0.4rem;
 
-      &--img:hover {
-        cursor: pointer;
+      &--img {
+        height: 100%;
+        display: block;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       &--text-btn {
@@ -49,6 +54,7 @@
         border-radius: 2rem;
         font-size: 1.2rem;
         font-weight: 500;
+        white-space: nowrap;
 
         &:hover {
           cursor: pointer;
@@ -111,11 +117,10 @@
           width: 5rem;
           height: 5rem;
           padding: 0;
-          border: 0.3rem solid #f580eb;
           border-radius: 50%;
 
-          &.guest {
-            border: 0.3rem solid #ffae00;
+          &.premium {
+            border: 0.3rem solid #f580eb;
           }
 
           &.japanese {
@@ -177,10 +182,13 @@
         align-items: center;
 
         img {
-          width: 6.5rem;
-          height: 6.5rem;
-          border: 0.3rem solid #f580eb;
+          width: 6rem;
+          height: 6rem;
           border-radius: 50%;
+
+          &.premium {
+            border: 0.3rem solid #f580eb;
+          }
 
           &:hover {
             cursor: pointer;
@@ -563,7 +571,7 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1020px) {
   .home {
     &__overlay {
       &--left {

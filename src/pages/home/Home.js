@@ -537,7 +537,7 @@ function Home(props) {
                 {dictionary.language[!isJapanese ? 0 : 1]}
               </div>
               <img
-                className={`nav__links--link profile ${!memberId ? 'guest' : ''} ${isJapanese ? 'japanese' : ''}`}
+                className={`nav__links--link profile ${isPremium ? 'premium' : ''} ${isJapanese ? 'japanese' : ''}`}
                 src={memberId ? currentAvatar.url : profileSvg50}
                 alt=""
                 onClick={outsideLinkToggleHandler}
@@ -549,7 +549,7 @@ function Home(props) {
               {memberId && (
                 <>
                   <div className="nav__outside-links--profile-container">
-                    <img src={currentAvatar.url} alt="" onClick={openAvatarPageHander}></img>
+                    <img src={currentAvatar.url} className={`${isPremium ? 'premium' : ''}`} alt="" onClick={openAvatarPageHander}></img>
                     <div>
                       <p className="nav__outside-links--username">{username}</p>
                       <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
