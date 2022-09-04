@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -266,32 +266,6 @@ function App() {
   }, [dispatch, memberId, dayOfTrial, spacebarHandler]);
 
   useEffect(() => {
-    if (memberId && !isPremium) {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_after_trial_standard`)
-        .then((res) => res.json())
-        .then((body) => {
-          const { statusCode, data } = body;
-
-          if (statusCode !== 2001) {
-            if (statusCode === 4000) {
-              throw new Error();
-            }
-
-            return;
-          }
-
-          const { feedbackStatus } = data;
-
-          if (feedbackStatus === 'not done') {
-            document.removeEventListener('keyup', spacebarHandler);
-            dispatch(popupActions.setShowAfterTrialStandardFeedbackPopup(true));
-          }
-        })
-        .catch(() => {});
-    }
-  }, [dispatch, memberId, isPremium, spacebarHandler]);
-
-  useEffect(() => {
     if (memberId && isPremium && !isOntrial) {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/feedback/status?member_id=${memberId}&table_name=feedback_after_trial_premium`)
         .then((res) => res.json())
@@ -416,7 +390,7 @@ function App() {
   }
 
   return (
-    <>
+    <Switch>
       <Route exact path="/">
         <Loading></Loading>
         {doneInitialize && (
@@ -462,7 +436,11 @@ function App() {
       <Route exact path="/mobile">
         <Mobile></Mobile>
       </Route>
-    </>
+
+      <Route path="/">
+        <Redirect to="/"></Redirect>
+      </Route>
+    </Switch>
   );
 }
 
