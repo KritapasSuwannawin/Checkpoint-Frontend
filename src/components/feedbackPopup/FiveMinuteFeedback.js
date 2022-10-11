@@ -8,7 +8,6 @@ import starSolid from '../../svg/30px/star-solid.svg';
 
 function FiveMinuteFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [star, setStar] = useState(3);
 
@@ -72,7 +71,7 @@ function FiveMinuteFeedback(props) {
     <div className="feedback-popup">
       <div className="feedback-popup__form">
         <div className="feedback-popup__form--close-btn" onClick={closePopupHandler}></div>
-        <p className="feedback-popup__form--heading">{!isJapanese ? 'First Impression Feedback' : '第一印象のフィードバック'}</p>
+        <p className="feedback-popup__form--heading">First Impression Feedback</p>
 
         <div className="feedback-popup__form--star-container">
           <img src={star > 0 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(1)}></img>
@@ -82,42 +81,38 @@ function FiveMinuteFeedback(props) {
           <img src={star > 4 ? starSolid : starRegular} alt="" onClick={setReviewStar.bind(5)}></img>
         </div>
 
-        <p className="feedback-popup__form--sub-heading">
-          {!isJapanese ? 'How did you first know about Checkpoint.tokyo?' : 'Checkpoint.tokyo を知ったきっかけは？'}
-        </p>
+        <p className="feedback-popup__form--sub-heading">How did you first know about Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref1}></input>
-          <label>{!isJapanese ? 'Advertisements' : '広告の掲載'}</label>
+          <label>Advertisements</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref3}></input>
-          <label>{!isJapanese ? 'Recommendation from friends/family' : '友人・家族からの勧め'}</label>
+          <label>Recommendation from friends/family</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref2}></input>
-          <label>{!isJapanese ? 'Posts on social media (ads excluded)' : 'ソーシャルメディア上の投稿（広告を除く）'}</label>
+          <label>Posts on social media (ads excluded)</label>
         </div>
-        <input type="text" placeholder={!isJapanese ? 'Others' : 'その他'} ref={ref4}></input>
+        <input type="text" placeholder="Others" ref={ref4}></input>
 
-        <p className="feedback-popup__form--sub-heading">
-          {!isJapanese ? 'Why are you interested in Checkpoint.tokyo?' : 'なぜCheckpoint.tokyoに興味を持たれたのでしょうか？'}
-        </p>
+        <p className="feedback-popup__form--sub-heading">Why are you interested in Checkpoint.tokyo?</p>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref5}></input>
-          <label>{!isJapanese ? 'Checkpoint improves my sleep quality' : 'Checkpointは睡眠の質を向上させる'}</label>
+          <label>Checkpoint improves my sleep quality</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref6}></input>
-          <label>{!isJapanese ? 'Checkpoint increases my productivity' : '生産性の向上'}</label>
+          <label>Checkpoint increases my productivity</label>
         </div>
         <div className="feedback-popup__form--checkbox-container">
           <input type="checkbox" ref={ref7}></input>
-          <label>{!isJapanese ? 'Checkpoint makes me feel relaxed' : 'リラックスできる'}</label>
+          <label>Checkpoint makes me feel relaxed</label>
         </div>
-        <input type="text" placeholder={!isJapanese ? 'Others' : 'その他'} ref={ref8}></input>
+        <input type="text" placeholder="Others" ref={ref8}></input>
 
         <div className="feedback-popup__form--submit-btn" onClick={submitHandler}>
-          {!isJapanese ? 'Send' : '送信'}
+          Send
         </div>
       </div>
     </div>

@@ -73,7 +73,7 @@
     &__links {
       @include flex-row-center;
       font-size: 1.8rem;
-      column-gap: 1.8rem;
+      column-gap: 5.5rem;
       white-space: nowrap;
 
       &--timer-container {
@@ -93,24 +93,8 @@
           margin-right: 2rem;
         }
 
-        &.japanese {
-          font-size: 1.4rem;
-        }
-
         &.current-page {
           font-weight: bold;
-        }
-
-        &.fixed-width {
-          width: 14rem;
-
-          &.japanese {
-            margin: 0 -1.1rem;
-          }
-        }
-
-        &.language {
-          z-index: 2;
         }
 
         &.profile {
@@ -118,13 +102,10 @@
           height: 5rem;
           padding: 0;
           border-radius: 50%;
+          margin-left: 0.5rem;
 
           &.premium {
             border: 0.3rem solid #f580eb;
-          }
-
-          &.japanese {
-            margin-left: -1rem;
           }
         }
       }
@@ -134,7 +115,7 @@
         width: 3rem;
 
         &.small {
-          width: 2.5rem;
+          width: 2.2rem;
         }
       }
 
@@ -557,12 +538,12 @@
   }
 }
 
-@media (max-width: 1240px) {
+@media (max-width: 1290px) {
   .home {
     .nav {
       &__links {
         &--link {
-          &.margin-right {
+          &.nav-tutorial {
             display: none;
           }
         }
@@ -571,7 +552,21 @@
   }
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1180px) {
+  .home {
+    .nav {
+      &__links {
+        &--link {
+          &.nav-timer {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1030px) {
   .home {
     &__overlay {
       &--left {
@@ -589,6 +584,10 @@
     }
 
     .nav {
+      &__links {
+        column-gap: 4rem;
+      }
+
       &__logo {
         &--text-btn {
           display: none;
@@ -608,7 +607,7 @@
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 840px) {
   .home {
     .nav {
       &__logo {
@@ -622,20 +621,6 @@
 
 @media (max-width: 790px) {
   .home {
-    .nav {
-      &__links {
-        &--link {
-          &.language {
-            display: none;
-          }
-        }
-
-        &--icon {
-          display: none;
-        }
-      }
-    }
-
     .player {
       &__music-data {
         &--thumbnail {
@@ -675,15 +660,19 @@
 @media (max-width: 680px) {
   .home {
     .nav {
+      &__links {
+        column-gap: 2.5rem;
+
+        &--icon {
+          display: none;
+        }
+      }
+    }
+
+    .nav {
       &__logo {
         &--img {
           width: 20rem;
-        }
-      }
-
-      &__links {
-        &--link.fixed-width {
-          margin-left: -2rem;
         }
       }
     }

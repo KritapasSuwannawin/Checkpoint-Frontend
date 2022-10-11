@@ -4,7 +4,6 @@ import pageReducer from './pageSlice';
 import backgroundReducer from './backgroundSlice';
 import musicReducer from './musicSlice';
 import ambientReducer from './ambientSlice';
-import languageReducer from './languageSlice';
 import memberReducer from './memberSlice';
 import avatarReducer from './avatarSlice';
 import deviceReducer from './deviceSlice';
@@ -16,7 +15,6 @@ const store = configureStore({
     background: backgroundReducer,
     music: musicReducer,
     ambient: ambientReducer,
-    language: languageReducer,
     member: memberReducer,
     avatar: avatarReducer,
     device: deviceReducer,

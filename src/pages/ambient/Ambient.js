@@ -25,7 +25,6 @@ function Ambient(props) {
             <SimpleThumbnailCard
               id={ambient.id}
               name={ambient.name}
-              nameJapanese={ambient.nameJapanese}
               thumbnailUrl={ambient.thumbnailUrl}
               volume={ambient.volume}
               ambient

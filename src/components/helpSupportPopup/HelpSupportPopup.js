@@ -7,7 +7,6 @@ import logo from '../../svg/50px/Checkpoint with text 50px.svg';
 
 function HelpSupportPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -54,29 +53,21 @@ function HelpSupportPopup(props) {
       <div className="help-support-popup__form">
         <div className="help-support-popup__form--close-btn" onClick={closePopupHandler}></div>
         <img src={logo} alt="" className="help-support-popup__form--logo"></img>
-        <p className="help-support-popup__form--heading">{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
+        <p className="help-support-popup__form--heading">Help & Support</p>
 
-        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Your email' : 'メール'}</p>
-        <input type="text" placeholder={!isJapanese ? 'Email' : 'メール'} id="email" ref={ref1}></input>
+        <p className="help-support-popup__form--sub-heading">Your email</p>
+        <input type="text" placeholder="Email" id="email" ref={ref1}></input>
 
-        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Subject' : '件名'}</p>
-        <input type="text" placeholder={!isJapanese ? 'Subject' : '件名'} ref={ref2}></input>
+        <p className="help-support-popup__form--sub-heading">Subject</p>
+        <input type="text" placeholder="Subject" ref={ref2}></input>
 
-        <p className="help-support-popup__form--sub-heading">{!isJapanese ? 'Detail' : 'お問合せ'}</p>
-        <textarea
-          placeholder={!isJapanese ? 'Detail' : 'お問合せ'}
-          data-gramm="false"
-          data-gramm_editor="false"
-          data-enable-grammarly="false"
-          ref={ref3}
-        ></textarea>
+        <p className="help-support-popup__form--sub-heading">Detail</p>
+        <textarea placeholder="Detail" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" ref={ref3}></textarea>
 
-        <p className="help-support-popup__form--ps">
-          {!isJapanese ? "We'll get back to you as soon as possible!" : 'できるだけ早くご返信いたします。'}
-        </p>
+        <p className="help-support-popup__form--ps">We'll get back to you as soon as possible!</p>
 
         <div className="help-support-popup__form--submit-btn" onClick={submitHandler}>
-          {!isJapanese ? 'Send' : '送信'}
+          Send
         </div>
       </div>
     </div>

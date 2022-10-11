@@ -20,7 +20,6 @@ function AmbientControl(props) {
       <SimpleThumbnailCard
         id={props.id}
         name={props.name}
-        nameJapanese={props.nameJapanese}
         url={props.url}
         thumbnailUrl={props.thumbnailUrl}
         volume={props.volume}

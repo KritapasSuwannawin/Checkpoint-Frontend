@@ -13,7 +13,6 @@ function ActivationPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);
   const isPremium = useSelector((store) => store.member.isPremium);
   const isOntrial = useSelector((store) => store.member.isOntrial);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [invalidCode, setInvalidCode] = useState(false);
   const [codeAlreadyUsed, setCodeAlreadyUsed] = useState(false);
@@ -85,74 +84,33 @@ function ActivationPopup(props) {
         <div className="activation-popup__close-btn" onClick={closeHandler}></div>
         <img src={logoPremium50} alt=""></img>
         {!isPremium || isOntrial ? (
-          <p className={`activation-popup__title`}>{!isJapanese ? 'Activate Premium' : 'プレミアムの有効化'}</p>
+          <p className={`activation-popup__title`}>Activate Premium</p>
         ) : (
-          <p className={`activation-popup__title`}>{!isJapanese ? 'Extend Premium' : 'プレミアムの延長'}</p>
+          <p className={`activation-popup__title`}>Extend Premium</p>
         )}
-        <input
-          className="activation-popup__input"
-          type="text"
-          ref={activationCodeRef}
-          placeholder={!isJapanese ? 'Insert code here...' : 'ここにコードを入力してください...'}
-        ></input>
+        <input className="activation-popup__input" type="text" ref={activationCodeRef} placeholder="Insert code here..."></input>
         {invalidCode && (
-          <p className="activation-popup__error-msg">
-            {!isJapanese
-              ? 'Your code is invalid. Please make sure that you input the correct code.'
-              : 'コードが無効です。正しいコードを入力してください'}
-          </p>
+          <p className="activation-popup__error-msg">Your code is invalid. Please make sure that you input the correct code.</p>
         )}
-        {codeAlreadyUsed && (
-          <p className="activation-popup__error-msg">
-            {!isJapanese ? 'This code has already been used' : 'このコードはすでに使われています'}
-          </p>
-        )}
-        <div className={`activation-popup__submit-btn ${isJapanese ? 'small' : ''}`} onClick={verifyHandler}>
-          {loading ? <img className="activation-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Activate' : 'アクティベート'}
+        {codeAlreadyUsed && <p className="activation-popup__error-msg">This code has already been used</p>}
+        <div className={`activation-popup__submit-btn`} onClick={verifyHandler}>
+          {loading ? <img className="activation-popup__spinner" src={spinner} alt=""></img> : 'Activate'}
         </div>
-        {errorDuringAuthen && (
-          <p className="activation-popup__error-msg">
-            {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
-          </p>
-        )}
-        {!isJapanese ? (
-          <p className="activation-popup__ps">
-            By continuing, you agree to our<br></br>
-            <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
-              Terms & Conditions
-            </a>{' '}
-            and{' '}
-            <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
-              Cancellation & Refund Policy
-            </a>
-          </p>
-        ) : (
-          <p className="activation-popup__ps">
-            継続することにより、お客様は当社の<br></br>
-            <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
-              利用規約
-            </a>
-            と
-            <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
-              キャンセル・返金ポリシー
-            </a>
-            に同意したことになります
-          </p>
-        )}
-        {!isJapanese ? (
-          <p className="activation-popup__ps">
-            If you have any problems, feel free to contact us at <span onClick={props.helpSupportClickHandler}>Help & Support</span>.
-            <br></br>
-            We'll get back to you as soon as possible!
-          </p>
-        ) : (
-          <p className="activation-popup__ps">
-            何か問題がある場合は、
-            <span onClick={props.helpSupportClickHandler}>ヘルプ＆サポート</span>
-            <br></br>
-            までお気軽にお問い合わせください。できるだけ早くご返信いたします
-          </p>
-        )}
+        {errorDuringAuthen && <p className="activation-popup__error-msg">Error occured, please try again later</p>}
+        <p className="activation-popup__ps">
+          By continuing, you agree to our<br></br>
+          <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+            Terms & Conditions
+          </a>{' '}
+          and{' '}
+          <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
+            Cancellation & Refund Policy
+          </a>
+        </p>
+        <p className="activation-popup__ps">
+          If you have any problems, feel free to contact us at <span onClick={props.helpSupportClickHandler}>Help & Support</span>.<br></br>
+          We'll get back to you as soon as possible!
+        </p>
       </div>
     </div>
   );

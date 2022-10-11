@@ -24,7 +24,6 @@ import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
 import { musicActions } from './store/musicSlice';
 import { avatarActions } from './store/avatarSlice';
-import { languageActions } from './store/languageSlice';
 import { memberActions } from './store/memberSlice';
 import { pageActions } from './store/pageSlice';
 import { popupActions } from './store/popupSlice';
@@ -125,10 +124,6 @@ function App() {
 
     if (isMobileDevice && window.location.pathname === '/') {
       return;
-    }
-
-    if (window.navigator.userLanguage === 'ja' || window.navigator.language === 'ja') {
-      dispatch(languageActions.languageChangeHandler());
     }
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/resource`)

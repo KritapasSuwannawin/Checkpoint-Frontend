@@ -15,7 +15,6 @@ function Music() {
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
   const availableMoodArr = useSelector((store) => store.music.availableMoodArr);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const [categoryArr, setCategoryArr] = useState([]);
@@ -125,7 +124,7 @@ function Music() {
       ) : (
         <>
           <div className="music__mood-card-container">{moodCardArr}</div>
-          <p className="music__title">{!isJapanese ? 'New Release' : '新しいリリース'}</p>
+          <p className="music__title">New Release</p>
         </>
       )}
       {thumbnailArr}

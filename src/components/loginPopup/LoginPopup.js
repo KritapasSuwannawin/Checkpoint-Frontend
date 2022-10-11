@@ -18,7 +18,6 @@ import googleSignupBtn from './icon/Google Sign up button Web.svg';
 import appleSignupBtn from './icon/Apple Sign up button Web.svg';
 
 function LoginPopup(props) {
-  const isJapanese = useSelector((store) => store.language.isJapanese);
   const deviceId = useSelector((store) => store.device.deviceId);
 
   const dispatch = useDispatch();
@@ -110,7 +109,7 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountAlreadyExist(false);
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/email/verify?email=${email}&is_japanese=${isJapanese}`)
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/email/verify?email=${email}`)
         .then((res) => res.json())
         .then((body) => {
           const { statusCode, data } = body;
@@ -139,7 +138,7 @@ function LoginPopup(props) {
         .catch(() => setErrorDuringAuthen(true))
         .finally(() => setLoading(false));
     }
-  }, [isJapanese, loading]);
+  }, [loading]);
 
   const verifyHandler = useCallback(() => {
     if (loading || !verificationCodeRef.current) {
@@ -307,7 +306,7 @@ function LoginPopup(props) {
       setErrorDuringAuthen(false);
       setAccountNotExist(false);
 
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password/forget?email=${email}&is_japanese=${isJapanese}`)
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password/forget?email=${email}`)
         .then((res) => res.json())
         .then((body) => {
           const { statusCode, data } = body;
@@ -533,45 +532,27 @@ function LoginPopup(props) {
         <form className="login-popup__form">
           <div className="login-popup__close-btn" onClick={() => closeHandler()}></div>
           <div className="login-popup__title-container">
-            <p
-              className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
-              onClick={signUpClickHandler.bind(true)}
-            >
-              {!isJapanese ? 'Sign up' : 'サインアップ'}
+            <p className={`login-popup__title ${!signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(true)}>
+              Sign up
             </p>
-            <p
-              className={`login-popup__title ${signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
-              onClick={signUpClickHandler.bind(false)}
-            >
-              {!isJapanese ? 'Sign in' : 'サインイン'}
+            <p className={`login-popup__title ${signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(false)}>
+              Sign in
             </p>
           </div>
-          <p className={`login-popup__sub-title`}>{!isJapanese ? 'Reset Password' : 'パスワードの再設定'}</p>
+          <p className={`login-popup__sub-title`}>Reset Password</p>
           {!resetPasswordVerificationCode ? (
             <>
-              {!isJapanese ? (
-                <p className="login-popup__description">
-                  Please enter your email address<br></br>and we'll send you a link to reset your password.
-                </p>
-              ) : (
-                <p className="login-popup__description">
-                  ご利用中のメールアドレスを入力してください。 <br></br>パスワード再設定のためのURLをお送りします。
-                </p>
-              )}
-              <input
-                className="login-popup__input"
-                type="text"
-                id="email"
-                ref={resetPasswordEmailRef}
-                placeholder={!isJapanese ? 'Email' : 'メール'}
-              ></input>
+              <p className="login-popup__description">
+                Please enter your email address<br></br>and we'll send you a link to reset your password.
+              </p>
+              <input className="login-popup__input" type="text" id="email" ref={resetPasswordEmailRef} placeholder="Email"></input>
             </>
           ) : !allowEnterNewPassword ? (
             <input
               className="login-popup__input"
               type="text"
               ref={resetPasswordVerificationCodeRef}
-              placeholder={!isJapanese ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
+              placeholder="Verification code (check your email)"
             ></input>
           ) : (
             <>
@@ -580,62 +561,39 @@ function LoginPopup(props) {
                 type="password"
                 ref={newPasswordRef}
                 autoComplete="on"
-                placeholder={!isJapanese ? 'New Password' : '新しいパスワード'}
+                placeholder="New Password"
               ></input>
               <input
                 className="login-popup__input"
                 type="password"
                 ref={confirmNewPasswordRef}
                 autoComplete="on"
-                placeholder={!isJapanese ? 'Confirm new password' : '新しいパスワードの確認'}
+                placeholder="Confirm new password"
               ></input>
             </>
           )}
-          {invalidEmail && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid email' : '無効なメール'}</p>}
-          {newPasswordNotMatch && (
-            <p className="login-popup__error-msg">{!isJapanese ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
-          )}
-          {invalidNewPassword && (
-            <p className="login-popup__error-msg">
-              {!isJapanese ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
-            </p>
-          )}
-          {!isJapanese ? (
-            <p className="login-popup__contact">
-              If you need any help, please contact <br></br>
-              <span>inquiry@checkpoint.tokyo</span>
-            </p>
-          ) : (
-            <p className="login-popup__contact">
-              何かお困りのことがありましたら、<br></br>
-              <span>support@checkpoint.tokyo</span> までご連絡ください。
-            </p>
-          )}
+          {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
+          {newPasswordNotMatch && <p className="login-popup__error-msg">Passwords do not match</p>}
+          {invalidNewPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
+          <p className="login-popup__contact">
+            If you need any help, please contact<br></br>
+            <span>inquiry@checkpoint.tokyo</span>
+          </p>
           {!resetPasswordVerificationCode ? (
             <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Send' : '送信'}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Send'}
             </div>
           ) : (
             <div
               className="login-popup__submit-btn no-margin"
               onClick={allowEnterNewPassword ? resetPasswordHandler : forgetPasswordCheckCodeHandler}
             >
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : !isJapanese ? 'Submit' : '送信'}
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Submit'}
             </div>
           )}
-          {invalidResetPasswordVerificationCode && (
-            <p className="login-popup__error-msg">{!isJapanese ? 'Invalid verification code' : '無効な検証コード'}</p>
-          )}
-          {accountNotExist && (
-            <p className="login-popup__error-msg">
-              {!isJapanese ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
-            </p>
-          )}
-          {errorDuringAuthen && (
-            <p className="login-popup__error-msg">
-              {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
-            </p>
-          )}
+          {invalidResetPasswordVerificationCode && <p className="login-popup__error-msg">Invalid verification code</p>}
+          {accountNotExist && <p className="login-popup__error-msg">Account does not exist, please sign up</p>}
+          {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
         </form>
       </div>
     );
@@ -648,17 +606,11 @@ function LoginPopup(props) {
         {!verificationCode ? (
           <>
             <div className="login-popup__title-container">
-              <p
-                className={`login-popup__title ${!signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
-                onClick={signUpClickHandler.bind(true)}
-              >
-                {!isJapanese ? 'Sign up' : 'サインアップ'}
+              <p className={`login-popup__title ${!signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(true)}>
+                Sign up
               </p>
-              <p
-                className={`login-popup__title ${signingUp ? 'not-current' : ''} ${isJapanese ? 'small' : ''}`}
-                onClick={signUpClickHandler.bind(false)}
-              >
-                {!isJapanese ? 'Sign in' : 'サインイン'}
+              <p className={`login-popup__title ${signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(false)}>
+                Sign in
               </p>
             </div>
             <img
@@ -674,34 +626,14 @@ function LoginPopup(props) {
               onClick={loginHandler.bind('apple')}
             ></img>
             <div className="login-popup__seperator"></div>
-            <input
-              className="login-popup__input"
-              type="text"
-              placeholder={!isJapanese ? 'Email' : 'メール'}
-              id="email"
-              ref={emailRef}
-            ></input>
-            {invalidEmail && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid email' : '無効なメール'}</p>}
-            <input
-              className="login-popup__input"
-              type="password"
-              placeholder={!isJapanese ? 'Password' : 'パスワード'}
-              autoComplete="on"
-              ref={passwordRef1}
-            ></input>
-            {invalidPassword && (
-              <p className="login-popup__error-msg">
-                {!isJapanese ? 'Password must contain at least 6 characters' : '>パスワードには6文字以上が含まれている必要があります'}
-              </p>
-            )}
+            <input className="login-popup__input" type="text" placeholder="Email" id="email" ref={emailRef}></input>
+            {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
+            <input className="login-popup__input" type="password" placeholder="Password" autoComplete="on" ref={passwordRef1}></input>
+            {invalidPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
             {!signingUp && (
               <>
-                {incorrectPassword && <p className="login-popup__error-msg">{!isJapanese ? 'Incorect password' : '間違ったパスワード'}</p>}
-                {accountNotExist && (
-                  <p className="login-popup__error-msg">
-                    {!isJapanese ? 'Account does not exist, please sign up' : 'アカウントが存在しません。サインアップしてください'}
-                  </p>
-                )}
+                {incorrectPassword && <p className="login-popup__error-msg">Incorect password</p>}
+                {accountNotExist && <p className="login-popup__error-msg">Account does not exist, please sign up</p>}
               </>
             )}
             {signingUp && (
@@ -709,61 +641,32 @@ function LoginPopup(props) {
                 <input
                   className="login-popup__input"
                   type="password"
-                  placeholder={!isJapanese ? 'Confirm password' : 'パスワードの確認'}
+                  placeholder="Confirm password"
                   autoComplete="on"
                   ref={passwordRef2}
                 ></input>
-                {passwordNotMatch && (
-                  <p className="login-popup__error-msg">{!isJapanese ? 'Passwords do not match' : 'パスワードが一致していません'}</p>
-                )}
-                {accountAlreadyExist && (
-                  <p className="login-popup__error-msg">
-                    {!isJapanese ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
-                  </p>
-                )}
+                {passwordNotMatch && <p className="login-popup__error-msg">Passwords do not match</p>}
+                {accountAlreadyExist && <p className="login-popup__error-msg">Account already exists, please sign in</p>}
                 <div className="login-popup__privacy-container margin-top">
                   <input type="checkbox" ref={checkboxRef1} defaultChecked></input>
-                  {!isJapanese ? (
-                    <p>
-                      By registering, you agree to the{' '}
-                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
-                        Terms<br></br>
-                      </a>
-                      and{' '}
-                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
-                        Privacy Policy
-                      </a>
-                      .
-                    </p>
-                  ) : (
-                    <p>
-                      登録することで、
-                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
-                        利用規約
-                      </a>
-                      と
-                      <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
-                        プライバシーポリシー
-                      </a>
-                      <br></br>
-                      に同意したことになります。
-                    </p>
-                  )}
+                  <p>
+                    By registering, you agree to the{' '}
+                    <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
+                      Terms<br></br>
+                    </a>
+                    and{' '}
+                    <a href={`${window.location.href.replace('premium', '')}term-condition`} target="_blank" rel="noreferrer">
+                      Privacy Policy
+                    </a>
+                    .
+                  </p>
                 </div>
-                {signingUp && agreeToPolicy === false && (
-                  <p className="login-popup__error-msg">{!isJapanese ? 'Please agree to the policy' : 'ポリシーに同意してください'}</p>
-                )}
+                {signingUp && agreeToPolicy === false && <p className="login-popup__error-msg">Please agree to the policy</p>}
                 <div className="login-popup__privacy-container">
                   <input type="checkbox" ref={checkboxRef2} defaultChecked></input>
-                  {!isJapanese ? (
-                    <p>
-                      I agree to receive news and updates<br></br>from Checkpoint.
-                    </p>
-                  ) : (
-                    <p>
-                      Checkpointからのニュースやアップデートの<br></br>受信を希望します。
-                    </p>
-                  )}
+                  <p>
+                    I agree to receive news and updates<br></br>from Checkpoint.
+                  </p>
                 </div>
               </>
             )}
@@ -771,53 +674,37 @@ function LoginPopup(props) {
               {signingUp ? (
                 loading ? (
                   <img className="login-popup__spinner" src={spinner} alt=""></img>
-                ) : !isJapanese ? (
-                  'Sign up'
                 ) : (
-                  'サインアップ'
+                  'Sign up'
                 )
               ) : loading ? (
                 <img className="login-popup__spinner" src={spinner} alt=""></img>
-              ) : !isJapanese ? (
-                'Sign in'
               ) : (
-                'サインイン'
+                'Sign in'
               )}
             </div>
             {!signingUp && (
               <div className="login-popup__forget-password" onClick={forgetPasswordHandler}>
-                {!isJapanese ? 'Forgot your password?' : 'パスワードをお忘れですか？'}
+                Forgot your password?
               </div>
             )}
-            {errorDuringAuthen && (
-              <p className="login-popup__error-msg">
-                {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
-              </p>
-            )}
+            {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>
         ) : (
           <>
-            <p className={`login-popup__title ${isJapanese ? 'small' : ''}`}>{!isJapanese ? 'Email Verification' : 'メールによる確認'}</p>
+            <p className={`login-popup__title`}>Email Verification</p>
             <input
               className="login-popup__input"
               type="text"
               ref={verificationCodeRef}
-              placeholder={!isJapanese ? 'Verification code (check your email)' : '検証コード（メールを確認してください）'}
+              placeholder="Verification code (check your email)"
             ></input>
-            {accountAlreadyExist && (
-              <p className="login-popup__error-msg">
-                {!isJapanese ? 'Account already exists, please sign in' : 'アカウントは既に存在します。サインインしてください'}
-              </p>
-            )}
-            {invalidCode && <p className="login-popup__error-msg">{!isJapanese ? 'Invalid verification code' : '無効な検証コード'}</p>}
+            {accountAlreadyExist && <p className="login-popup__error-msg">Account already exists, please sign in</p>}
+            {invalidCode && <p className="login-popup__error-msg">Invalid verification code</p>}
             <div className="login-popup__submit-btn no-margin" onClick={verifyHandler}>
               {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Verify'}
             </div>
-            {errorDuringAuthen && (
-              <p className="login-popup__error-msg">
-                {!isJapanese ? 'Error occured, please try again later' : 'エラーが発生しました。しばらくしてからもう一度お試しください'}
-              </p>
-            )}
+            {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>
         )}
       </form>

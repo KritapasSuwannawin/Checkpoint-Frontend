@@ -8,8 +8,6 @@ import imageUrl from './Safari minigame.png';
 function SafariGuide(props) {
   const [showGuide, setShowGuide] = useState(true);
   const loading = useSelector((store) => store.page.loading);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
-
   if (!showGuide || loading) {
     props.closeHandler();
   }
@@ -22,11 +20,7 @@ function SafariGuide(props) {
   return (
     <div className="safari-guide">
       <div className="safari-guide__content">
-        <p>
-          {!isJapanese
-            ? 'For Safari users, please adjust the settings for the best experience!'
-            : 'Safariをご利用の方は、設定を変更してください！'}
-        </p>
+        <p>For Safari users, please adjust the settings for the best experience!</p>
         <img src={imageUrl} alt=""></img>
         <div className="safari-guide__done" onClick={submitHandler}>
           Done

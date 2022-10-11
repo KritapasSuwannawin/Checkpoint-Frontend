@@ -13,14 +13,12 @@ import { pageActions } from '../../store/pageSlice';
 import { backgroundActions } from '../../store/backgroundSlice';
 import { ambientActions } from '../../store/ambientSlice';
 import { musicActions } from '../../store/musicSlice';
-import { languageActions } from '../../store/languageSlice';
 import { memberActions } from '../../store/memberSlice';
 import { avatarActions } from '../../store/avatarSlice';
 import { popupActions } from '../../store/popupSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
-import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
@@ -37,7 +35,6 @@ import musicLibrarySvg36 from '../../svg/36px/Music Library.svg';
 import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
 import musicSvg30 from '../../svg/30px/Music30px.svg';
 import timerSvg30 from '../../svg/30px/Timer.svg';
-import globe30 from '../../svg/30px/Globe30px.png';
 import heartFullSvg30 from '../../svg/30px/Heart.svg';
 import heartSvg30 from '../../svg/30px/Hearts.svg';
 import ambientSvg30 from '../../svg/30px/Organic Food.svg';
@@ -59,15 +56,6 @@ import policySvg20 from '../../svg/20px/Policy.svg';
 import logoutSvg20 from '../../svg/20px/Logout.svg';
 import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
 
-const dictionary = {
-  language: ['EN', 'JP'],
-  music: ['Music', 'ミュージック'],
-  background: ['Background', 'バックグラウンド'],
-  aboutUs: ['About Us', 'Checkpointについて'],
-  policy: ['Policy', 'プライバシーポリシー'],
-  donate: ['Donate', '寄付する'],
-};
-
 function Home(props) {
   const { fullScreenClickHander } = props;
 
@@ -84,7 +72,6 @@ function Home(props) {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
-  const isJapanese = useSelector((store) => store.language.isJapanese);
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
   const isPremium = useSelector((store) => store.member.isPremium);
@@ -386,10 +373,6 @@ function Home(props) {
     dispatch(popupActions.toggleShowOutsideLinkPopup());
   }
 
-  function languageChangeHandler() {
-    dispatch(languageActions.languageChangeHandler());
-  }
-
   function buyPremiumClickHandler() {
     if (!checkMemberId()) {
       return;
@@ -485,14 +468,9 @@ function Home(props) {
               <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
               {(!isPremium || isOntrial) && (
                 <>
-                  <img
-                    className="nav__logo--upgrade-btn"
-                    onClick={buyPremiumClickHandler}
-                    src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
-                    alt=""
-                  ></img>
+                  <img className="nav__logo--upgrade-btn" onClick={buyPremiumClickHandler} src={buyPremiumBtn} alt=""></img>
                   <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                    {!isJapanese ? 'Activate Premium' : 'プレミアム有効化'}
+                    Activate Premium
                   </div>
                 </>
               )}
@@ -501,43 +479,34 @@ function Home(props) {
         )}
         <div className="nav__links">
           {!isFullScreen && (
-            <div onClick={showTutorialHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
-              {!isJapanese ? 'Tutorial' : 'チュートリアル'}
+            <div onClick={showTutorialHandler} className="nav__links--link nav-tutorial">
+              Tutorial
             </div>
           )}
           <div className="nav__links--timer-container">
             {!isFullScreen && (
-              <div onClick={timerClickHandler} className={`nav__links--link margin-right ${isJapanese ? 'japanese' : ''}`}>
+              <div onClick={timerClickHandler} className="nav__links--link nav-timer">
                 <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
-                {!isJapanese ? 'Timer' : 'タイマー'}
+                Timer
               </div>
             )}
             <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
           </div>
           {!isFullScreen && (
             <>
-              <div
-                onClick={musicClickHander}
-                className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''} ${isJapanese ? 'japanese' : ''}`}
-              >
+              <div onClick={musicClickHander} className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}>
                 <img src={musicSvg30} alt="" className="nav__links--icon"></img>
-                {dictionary.music[!isJapanese ? 0 : 1]}
+                Music
               </div>
               <div
                 onClick={backgroundClickHander}
-                className={`nav__links--link fixed-width ${isJapanese ? 'japanese' : ''} ${
-                  currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''
-                }`}
+                className={`nav__links--link ${currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''}`}
               >
                 <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
-                {dictionary.background[!isJapanese ? 0 : 1]}
-              </div>
-              <div className="nav__links--link language" onClick={languageChangeHandler}>
-                <img className="nav__links--icon" src={globe30} alt=""></img>
-                {dictionary.language[!isJapanese ? 0 : 1]}
+                Background
               </div>
               <img
-                className={`nav__links--link profile ${isPremium ? 'premium' : ''} ${isJapanese ? 'japanese' : ''}`}
+                className={`nav__links--link profile ${isPremium ? 'premium' : ''}`}
                 src={memberId ? currentAvatar.url : profileSvg50}
                 alt=""
                 onClick={outsideLinkToggleHandler}
@@ -556,39 +525,28 @@ function Home(props) {
                     </div>
                   </div>
                   <div className="nav__outside-links--btn-container">
-                    <img
-                      className="nav__logo--upgrade-btn"
-                      onClick={buyPremiumClickHandler}
-                      src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP}
-                      alt=""
-                    ></img>
+                    <img className="nav__logo--upgrade-btn" onClick={buyPremiumClickHandler} src={buyPremiumBtn} alt=""></img>
                     <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                      {isPremium && !isOntrial
-                        ? !isJapanese
-                          ? 'Extend Premium'
-                          : 'プレミアム延長'
-                        : !isJapanese
-                        ? 'Activate Premium'
-                        : 'プレミアム有効化'}
+                      {isPremium && !isOntrial ? 'Extend Premium' : 'Activate Premium'}
                     </div>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={creditCardSvg20} alt="" className="small"></img>
                     </div>
-                    <p onClick={openSubscriptionHandler}>{!isJapanese ? 'Subscription' : 'サブスクリプション'}</p>
+                    <p onClick={openSubscriptionHandler}>Subscription</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={questionMarkSvg20} alt=""></img>
                     </div>
-                    <p onClick={openHelpSupportHandler}>{!isJapanese ? 'Help & Support' : 'ヘルプ＆サポート'}</p>
+                    <p onClick={openHelpSupportHandler}>Help & Support</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
                       <img src={paperPlaneSvg20} alt=""></img>
                     </div>
-                    <p onClick={openFeedbackHandler}>{!isJapanese ? 'Feedback' : 'ご意見・ご感想'}</p>
+                    <p onClick={openFeedbackHandler}>Feedback</p>
                   </div>
                 </>
               )}
@@ -597,7 +555,7 @@ function Home(props) {
                   <img src={informationIconSvg20} alt=""></img>
                 </div>
                 <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
-                  {dictionary.aboutUs[!isJapanese ? 0 : 1]}
+                  About Us
                 </a>
               </div>
               <div className="nav__outside-links--container">
@@ -605,7 +563,7 @@ function Home(props) {
                   <img src={policySvg20} alt=""></img>
                 </div>
                 <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                  {!isJapanese ? 'For Artist' : 'アーティスト向け'}
+                  For Artist
                 </a>
               </div>
               <div className="nav__outside-links--container">
@@ -613,18 +571,14 @@ function Home(props) {
                   <img src={checkpointLogoSvg20} alt=""></img>
                 </div>
                 <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                  {dictionary.policy[!isJapanese ? 0 : 1]}
+                  Policy
                 </a>
               </div>
               <div className="nav__outside-links--container border-top">
                 <div className="nav__outside-links--icon-container">
                   <img src={memberId ? logoutSvg20 : signInSvg20} alt=""></img>
                 </div>
-                {memberId ? (
-                  <p onClick={logoutHandler}>{!isJapanese ? 'Sign Out' : 'ログアウト'}</p>
-                ) : (
-                  <p onClick={loginHandler}>{!isJapanese ? 'Sign In' : 'ログイン'}</p>
-                )}
+                {memberId ? <p onClick={logoutHandler}>Sign Out</p> : <p onClick={loginHandler}>Sign In</p>}
               </div>
             </div>
           )}
@@ -634,7 +588,7 @@ function Home(props) {
         <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
         <div className="background-control__ambient-container">
           <div className="background-control__ambient-volume">
-            <p>{!isJapanese ? 'Ambience' : 'アンビエンス'}</p>
+            <p>Ambience</p>
             <img src={speakerSvg15} alt=""></img>
             <input
               type="range"
@@ -655,16 +609,16 @@ function Home(props) {
       <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
         {!memberId ? (
           <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
-            {!isJapanese ? 'Join us to have your own music playlist' : '参加して、自分だけの音楽プレイリストを作りましょう'}
+            Join us to have your own music playlist
           </p>
         ) : (
           <>
             <div className="music-control__title">
               <img src={heartFullSvg30} alt=""></img>
-              <p>{!isJapanese ? 'Favorite music' : 'お気に入り'}</p>
+              <p>Favorite music</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
-              <p>{!isJapanese ? 'Your music playlist is empty.' : 'お気に入りの曲はまだありません。'}</p>
+              <p>Your music playlist is empty.</p>
             ) : (
               favouriteMusicIdArr.map((id) => (
                 <div key={id} className="music-control__cards">

@@ -7,7 +7,6 @@ import SliderCard from './SliderCard';
 
 import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
-import buyPremiumBtnJP from '../../svg/50px/Buy Premium Button JP.svg';
 import freeTrialBtn from '../../svg/50px/Free Trial Button.svg';
 
 import { memberActions } from '../../store/memberSlice';
@@ -17,8 +16,6 @@ const communityreview = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Commu
 
 function UpgradePopup(props) {
   const dispatch = useDispatch();
-
-  const isJapanese = useSelector((store) => store.language.isJapanese);
   const ambientCount = useSelector((store) => store.ambient.count);
   const backgroundCount = useSelector((store) => store.background.count);
   const memberId = useSelector((store) => store.member.memberId);
@@ -85,70 +82,53 @@ function UpgradePopup(props) {
         <div className="upgrade-popup__close-btn" onClick={closeHandler}></div>
         <div className="upgrade-popup__nav">
           <div>
-            <p className="upgrade-popup__nav--title">
-              {!isJapanese ? 'Upgrade to Checkpoint Premium' : 'Checkpointプレミアムへのアップグレード'}
+            <p className="upgrade-popup__nav--title">Upgrade to Checkpoint Premium</p>
+            <p className="upgrade-popup__nav--sub-title">
+              By continuing, you agree to our{' '}
+              <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
+                Terms & Conditions
+              </a>{' '}
+              and{' '}
+              <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
+                Cancellation & Refund Policy
+              </a>
             </p>
-            {!isJapanese ? (
-              <p className="upgrade-popup__nav--sub-title">
-                By continuing, you agree to our{' '}
-                <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
-                  Terms & Conditions
-                </a>{' '}
-                and{' '}
-                <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
-                  Cancellation & Refund Policy
-                </a>
-              </p>
-            ) : (
-              <p className="upgrade-popup__nav--sub-title">
-                継続することにより、お客様は当社の
-                <a href={`${window.location.href}term-condition`} target="_blank" rel="noreferrer">
-                  利用規約
-                </a>
-                と
-                <a href={`${window.location.href}cancellation-refund-policy`} target="_blank" rel="noreferrer">
-                  キャンセル・返金ポリシー
-                </a>
-                に同意したことになります
-              </p>
-            )}
           </div>
           <img src={logoPremium50} alt=""></img>
         </div>
         <div className="upgrade-popup__cards">
           <div className="upgrade-popup__standard">
-            <p className="upgrade-popup__cards--title">{!isJapanese ? 'Standard' : 'スタンダード'}</p>
+            <p className="upgrade-popup__cards--title">Standard</p>
             <p className="upgrade-popup__cards--price">
               <span className="price">$0</span>
             </p>
             <div className="upgrade-popup__cards--btn" onClick={closeHandler}>
-              {!isJapanese ? 'Use Standard' : 'スタンダードで使用する'}
+              Use Standard
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn"></div>
-              {!isJapanese ? 'Ad-Free' : '広告なし'}
+              Ad-Free
+            </div>
+            <div className="upgrade-popup__cards--list">
+              <div className="upgrade-popup__cards--list-btn"></div>4 Peaceful Background
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn"></div>
-              {!isJapanese ? '4 Peaceful Background' : '4平和な背景'}
-            </div>
-            <div className="upgrade-popup__cards--list">
-              <div className="upgrade-popup__cards--list-btn"></div>
-              {!isJapanese ? `${ambientCount} Realistic Ambience` : `${ambientCount}リアルなアンビエンス `}
+              {`${ambientCount} Realistic Ambience`}
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn-hollow"></div>
-              {!isJapanese ? 'Fully Customizable Background' : 'フルカスタマイズ可能な背景'}
+              Fully Customizable Background
             </div>
             <div className="upgrade-popup__cards--list">
               <div className="upgrade-popup__cards--list-btn-hollow"></div>
-              {!isJapanese ? 'Fully Customizable Ambience' : 'フルカスタマイズ可能なアンビエンス'}
+              Fully Customizable Ambience
             </div>
           </div>
           <div className="upgrade-popup__premium">
             <div className="upgrade-popup__premium--container">
               <div className="upgrade-popup__premium--content">
-                <p className="upgrade-popup__cards--title">{!isJapanese ? 'Premium' : 'プレミアム'}</p>
+                <p className="upgrade-popup__cards--title">Premium</p>
                 <p className="upgrade-popup__cards--price line-through">
                   <span className="price line-through">${process.env.REACT_APP_SUBSCRIPTION_PRICE}</span>
                   <span className="small"> /mo</span>
@@ -160,42 +140,37 @@ function UpgradePopup(props) {
                   <img src={freeTrialBtn} alt="" className="upgrade-popup__cards--buy-premium" onClick={freeTrialClickHandler}></img>
                 ) : (
                   <a href={process.env.REACT_APP_UPGRADE_LINK} target="_blank" rel="noreferrer">
-                    <img src={!isJapanese ? buyPremiumBtn : buyPremiumBtnJP} alt="" className="upgrade-popup__cards--buy-premium"></img>
+                    <img src={buyPremiumBtn} alt="" className="upgrade-popup__cards--buy-premium"></img>
                   </a>
                 )}
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? 'Ad-Free' : '広告なし'}
+                  Ad-Free
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? `${backgroundCount} Peaceful Background` : `${backgroundCount}平和な背景`}
+                  {`${backgroundCount} Peaceful Background`}
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? `${ambientCount} Realistic Ambience` : `${ambientCount}リアルなアンビエンス `}
+                  {`${ambientCount} Realistic Ambience`}
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? 'Fully Customizable Background' : 'フルカスタマイズ可能な背景'}
+                  Fully Customizable Background
                 </div>
                 <div className="upgrade-popup__cards--list">
                   <div className="upgrade-popup__cards--list-btn"></div>
-                  {!isJapanese ? 'Fully Customizable Ambience' : 'フルカスタマイズ可能なアンビエンス'}
+                  Fully Customizable Ambience
                 </div>
               </div>
               <SliderCard></SliderCard>
             </div>
-            <p className="upgrade-popup__premium--ps">
-              *
-              {!isJapanese
-                ? '0.01$ of every sale supports mental health organizations worldwide'
-                : '売上高の0.01$は、世界中のメンタルヘルス関連団体を支援しています'}
-            </p>
+            <p className="upgrade-popup__premium--ps">*0.01$ of every sale supports mental health organizations worldwide</p>
           </div>
         </div>
         <div className="upgrade-popup__community-review">
-          <p className="upgrade-popup__community-review--title">{!isJapanese ? 'Community Review' : 'コミュニティレビュー'}</p>
+          <p className="upgrade-popup__community-review--title">Community Review</p>
           <img src={communityreview} alt="" className="upgrade-popup__community-review--img"></img>
         </div>
       </div>
