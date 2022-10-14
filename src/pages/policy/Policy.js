@@ -24,11 +24,6 @@ function Policy(props) {
             GDPR, Singapore, Japan Statement (GDPR、シンガポール、日本声明)
           </a>
         </li>
-        <li>
-          <a href={window.location.href.replace('policy', 'cancellation-refund-policy')} target="_blank" rel="noreferrer">
-            Cancellation & Refund Policy (キャンセル・返金ポリシー)
-          </a>
-        </li>
       </ul>
     </div>
   );

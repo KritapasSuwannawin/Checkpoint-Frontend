@@ -15,7 +15,6 @@ import PrivacyPolicy from './pages/policy/PrivacyPolicy';
 import TermCondition from './pages/policy/TermCondition';
 import CookiePolicy from './pages/policy/CookiePolicy';
 import Gdpr from './pages/policy/Gdpr';
-import CancellationRefundPolicy from './pages/policy/CancellationRefundPolicy';
 
 import About from './pages/about/About';
 import Mobile from './pages/mobile/Mobile';
@@ -409,7 +408,6 @@ function App() {
       <Route path="/term-condition" element={<TermCondition></TermCondition>}></Route>
       <Route path="/cookie-policy" element={<CookiePolicy></CookiePolicy>}></Route>
       <Route path="/gdpr-singapore-japan-statement" element={<Gdpr></Gdpr>}></Route>
-      <Route path="/cancellation-refund-policy" element={<CancellationRefundPolicy></CancellationRefundPolicy>}></Route>
       <Route path="/about" element={<About></About>}></Route>
       <Route path="/mobile" element={<Mobile></Mobile>}></Route>
       <Route path="/*" element={<Navigate replace to="/"></Navigate>}></Route>

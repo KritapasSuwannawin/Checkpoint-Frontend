@@ -15,7 +15,6 @@ function SimpleThumbnailCard(props) {
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
-  const isPremium = useSelector((store) => store.member.isPremium);
   const memberId = useSelector((store) => store.member.memberId);
 
   const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -37,7 +36,8 @@ function SimpleThumbnailCard(props) {
     (props.avatar ? 'avatar-placeholder' : '');
 
   function clickHandler() {
-    if (props.isPremium && !isPremium) {
+    if (props.isMember && !memberId) {
+      showLoginPopupHandler();
       return;
     }
 
@@ -50,13 +50,8 @@ function SimpleThumbnailCard(props) {
     }
   }
 
-  function showUpgradePopupHandler() {
-    if (!memberId) {
-      dispatch(popupActions.setShowLoginPopup(true));
-      return;
-    }
-
-    dispatch(popupActions.setShowUpgradePopup(true));
+  function showLoginPopupHandler() {
+    dispatch(popupActions.setShowLoginPopup(true));
   }
 
   if (!thumbnailUrl) {
@@ -65,8 +60,8 @@ function SimpleThumbnailCard(props) {
 
   return (
     <div className={className}>
-      {props.isPremium && !isPremium && (
-        <div className="simple-thumbnail-card__premium" title="For premium member" onClick={showUpgradePopupHandler}>
+      {props.isMember && !memberId && (
+        <div className="simple-thumbnail-card__premium" title="For premium member" onClick={showLoginPopupHandler}>
           <div className="simple-thumbnail-card__premium-overlay"></div>
           <img src={lockSvg} alt="" className={`simple-thumbnail-card__lock-svg ${props.ambient ? 'small' : ''}`}></img>
         </div>

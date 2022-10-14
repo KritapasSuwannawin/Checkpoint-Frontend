@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import './SliderCard.scss';
 
-import img1 from './img/Tutorial Image Page 1.jpg';
-import img2 from './img/Tutorial Image Page 2.jpg';
-import img3 from './img/Tutorial Image Page 3.jpg';
-import img4 from './img/Tutorial Image Page 4.jpg';
-import img5 from './img/Tutorial Image Page 5.jpg';
-const imageSrcArr = [img1, img2, img3, img4, img5];
+const img1 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Tutorial+Image+Page+1.jpg`;
+const img2 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Tutorial+Image+Page+2.jpg`;
+const img3 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Tutorial+Image+Page+3.jpg`;
+const img4 = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Tutorial+Image+Page+4.jpg`;
+const imageSrcArr = [img1, img2, img3, img4];
 
 function SliderCard(props) {
   const [imageArr, setImageArr] = useState([]);

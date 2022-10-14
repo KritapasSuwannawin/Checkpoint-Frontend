@@ -20,10 +20,6 @@ function Background() {
         return;
       }
 
-      if (deviceId && ['03', '04'].includes(background.id.slice(0, 2))) {
-        background.isPremium = false;
-      }
-
       setThumbnailArr((thumbnailArr) => {
         const filteredThumbnailArr = thumbnailArr.filter(
           (thumbnail) => thumbnail.key !== background.id && thumbnail.key.slice(2) === currentBackground.id.slice(2)
@@ -35,7 +31,7 @@ function Background() {
               id={background.id}
               url={background.url}
               thumbnailUrl={background.thumbnailUrl}
-              isPremium={background.isPremium}
+              isMember={background.isPremium}
               background
             ></SimpleThumbnailCard>
           </div>,

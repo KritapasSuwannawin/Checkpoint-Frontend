@@ -18,9 +18,7 @@ import { avatarActions } from '../../store/avatarSlice';
 import { popupActions } from '../../store/popupSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
-import buyPremiumBtn from '../../svg/50px/Buy Premium Button.svg';
 import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
-import logoPremium50 from '../../svg/50px/Checkpoint premium 50px.svg';
 import playSvg50 from '../../svg/50px/Circled Play.svg';
 import pauseSvg50 from '../../svg/50px/Pause Button.svg';
 import profileSvg50 from '../../svg/50px/Profile.svg';
@@ -47,7 +45,6 @@ import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
 import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
 import addSvg20 from '../../svg/20px/Add20px.svg';
 import signInSvg20 from '../../svg/20px/SignIn.svg';
-import creditCardSvg20 from '../../svg/20px/Credit Card.svg';
 import questionMarkSvg20 from '../../svg/20px/Question Mark.svg';
 import paperPlaneSvg20 from '../../svg/20px/Paper Plane.svg';
 import informationIconSvg20 from '../../svg/20px/Information Icon.svg';
@@ -75,7 +72,6 @@ function Home(props) {
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
   const isPremium = useSelector((store) => store.member.isPremium);
-  const isOntrial = useSelector((store) => store.member.isOntrial);
   const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
@@ -178,12 +174,8 @@ function Home(props) {
   }, [currentBackground]);
 
   useEffect(() => {
-    if (!isPremium && (memberId && ['03', '04'].includes(currentBackground.id.slice(0, 2)) ? false : currentBackground.isPremium)) {
-      dispatch(backgroundActions.changeBackgroundHandler('0211'));
-    }
-
     setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
-  }, [currentBackground, dispatch, isPremium, memberId]);
+  }, [currentBackground]);
 
   useEffect(() => {
     setAmbientAudioArr(
@@ -373,15 +365,6 @@ function Home(props) {
     dispatch(popupActions.toggleShowOutsideLinkPopup());
   }
 
-  function buyPremiumClickHandler() {
-    if (!checkMemberId()) {
-      return;
-    }
-
-    dispatch(popupActions.setShowUpgradePopup(true));
-    dispatch(popupActions.setShowSubscriptionPopup(false));
-  }
-
   function favouriteBtnClickHandler() {
     if (!checkMemberId()) {
       return;
@@ -401,20 +384,12 @@ function Home(props) {
     dispatch(musicActions.setFavouriteMusicIdArr([]));
     dispatch(avatarActions.changeAvatarHandler(1));
     dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(backgroundActions.changeBackgroundHandler('0211'));
     dispatch(memberActions.logout());
   }
 
   function loginHandler() {
     dispatch(popupActions.setShowLoginPopup(true));
-  }
-
-  function activationBtnClickHandler() {
-    if (!checkMemberId()) {
-      return;
-    }
-
-    dispatch(popupActions.setShowSubscriptionPopup(false));
-    dispatch(popupActions.setShowActivationPopup(true));
   }
 
   function openHelpSupportHandler() {
@@ -424,10 +399,6 @@ function Home(props) {
 
   function openFeedbackHandler() {
     dispatch(popupActions.setShowFeedbackPopup(true));
-  }
-
-  function openSubscriptionHandler() {
-    dispatch(popupActions.setShowSubscriptionPopup(true));
   }
 
   function closeTimerHandler() {
@@ -465,15 +436,7 @@ function Home(props) {
         {!isFullScreen && (
           <>
             <div onClick={overlayClickHandler} className="nav__logo">
-              <img src={isPremium ? logoPremium50 : logo50} alt="" className="nav__logo--img"></img>
-              {(!isPremium || isOntrial) && (
-                <>
-                  <img className="nav__logo--upgrade-btn" onClick={buyPremiumClickHandler} src={buyPremiumBtn} alt=""></img>
-                  <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                    Activate Premium
-                  </div>
-                </>
-              )}
+              <img src={logo50} alt="" className="nav__logo--img"></img>
             </div>
           </>
         )}
@@ -506,7 +469,7 @@ function Home(props) {
                 Background
               </div>
               <img
-                className={`nav__links--link profile ${isPremium ? 'premium' : ''}`}
+                className={`nav__links--link profile ${memberId ? 'premium' : ''}`}
                 src={memberId ? currentAvatar.url : profileSvg50}
                 alt=""
                 onClick={outsideLinkToggleHandler}
@@ -518,25 +481,13 @@ function Home(props) {
               {memberId && (
                 <>
                   <div className="nav__outside-links--profile-container">
-                    <img src={currentAvatar.url} className={`${isPremium ? 'premium' : ''}`} alt="" onClick={openAvatarPageHander}></img>
+                    <img src={currentAvatar.url} className={`${memberId ? 'premium' : ''}`} alt="" onClick={openAvatarPageHander}></img>
                     <div>
                       <p className="nav__outside-links--username">{username}</p>
                       <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
                     </div>
                   </div>
-                  <div className="nav__outside-links--btn-container">
-                    <img className="nav__logo--upgrade-btn" onClick={buyPremiumClickHandler} src={buyPremiumBtn} alt=""></img>
-                    <div className="nav__logo--text-btn" onClick={activationBtnClickHandler}>
-                      {isPremium && !isOntrial ? 'Extend Premium' : 'Activate Premium'}
-                    </div>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={creditCardSvg20} alt="" className="small"></img>
-                    </div>
-                    <p onClick={openSubscriptionHandler}>Subscription</p>
-                  </div>
-                  <div className="nav__outside-links--container">
+                  <div className="nav__outside-links--container border-top">
                     <div className="nav__outside-links--icon-container">
                       <img src={questionMarkSvg20} alt=""></img>
                     </div>
@@ -550,7 +501,7 @@ function Home(props) {
                   </div>
                 </>
               )}
-              <div className={`nav__outside-links--container ${memberId ? 'border-top' : ''}`}>
+              <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
                   <img src={informationIconSvg20} alt=""></img>
                 </div>
