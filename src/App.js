@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -381,61 +381,39 @@ function App() {
   }
 
   if (isMobileDevice && window.location.pathname === '/') {
-    return <Redirect to="/mobile"></Redirect>;
+    return <Navigate replace to="/mobile"></Navigate>;
   }
 
   return (
-    <Switch>
-      <Route exact path="/">
-        <Loading></Loading>
-        {doneInitialize && (
-          <div ref={homeRef}>
-            <Popup spacebarHandler={spacebarHandler}></Popup>
-            <Home fullScreenClickHander={fullScreenClickHander}></Home>
-            <Background></Background>
-            <Music></Music>
-            <Ambient></Ambient>
-            <Avatar></Avatar>
-          </div>
-        )}
-      </Route>
-
-      <Route exact path="/policy">
-        <Policy></Policy>
-      </Route>
-
-      <Route exact path="/privacy-policy">
-        <PrivacyPolicy></PrivacyPolicy>
-      </Route>
-
-      <Route exact path="/term-condition">
-        <TermCondition></TermCondition>
-      </Route>
-
-      <Route exact path="/cookie-policy">
-        <CookiePolicy></CookiePolicy>
-      </Route>
-
-      <Route exact path="/gdpr-singapore-japan-statement">
-        <Gdpr></Gdpr>
-      </Route>
-
-      <Route exact path="/cancellation-refund-policy">
-        <CancellationRefundPolicy></CancellationRefundPolicy>
-      </Route>
-
-      <Route exact path="/about">
-        <About></About>
-      </Route>
-
-      <Route exact path="/mobile">
-        <Mobile></Mobile>
-      </Route>
-
-      <Route path="/">
-        <Redirect to="/"></Redirect>
-      </Route>
-    </Switch>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <Loading></Loading>
+            {doneInitialize && (
+              <div ref={homeRef}>
+                <Popup spacebarHandler={spacebarHandler}></Popup>
+                <Home fullScreenClickHander={fullScreenClickHander}></Home>
+                <Background></Background>
+                <Music></Music>
+                <Ambient></Ambient>
+                <Avatar></Avatar>
+              </div>
+            )}
+          </>
+        }
+      ></Route>
+      <Route path="/policy" element={<Policy></Policy>}></Route>
+      <Route path="/privacy-policy" element={<PrivacyPolicy></PrivacyPolicy>}></Route>
+      <Route path="/term-condition" element={<TermCondition></TermCondition>}></Route>
+      <Route path="/cookie-policy" element={<CookiePolicy></CookiePolicy>}></Route>
+      <Route path="/gdpr-singapore-japan-statement" element={<Gdpr></Gdpr>}></Route>
+      <Route path="/cancellation-refund-policy" element={<CancellationRefundPolicy></CancellationRefundPolicy>}></Route>
+      <Route path="/about" element={<About></About>}></Route>
+      <Route path="/mobile" element={<Mobile></Mobile>}></Route>
+      <Route path="/*" element={<Navigate replace to="/"></Navigate>}></Route>
+    </Routes>
   );
 }
 
