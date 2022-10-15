@@ -71,8 +71,6 @@ function Home(props) {
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
   const memberId = useSelector((store) => store.member.memberId);
   const username = useSelector((store) => store.member.username);
-  const isPremium = useSelector((store) => store.member.isPremium);
-  const dayOfTrial = useSelector((store) => store.member.dayOfTrial);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
   const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
   const showOutsideLinkPopup = useSelector((store) => store.popup.showOutsideLinkPopup);
@@ -241,16 +239,6 @@ function Home(props) {
 
     setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2));
   }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
-
-  useEffect(() => {
-    if (memberId) {
-      if (dayOfTrial === 7 && !localStorage.getItem('checkpointShowLastDayTrialPopup')) {
-        dispatch(popupActions.setShowLastDayTrialPopup(true));
-      } else if (!isPremium && !localStorage.getItem('checkpointShowExpirationPopup')) {
-        dispatch(popupActions.setShowExpirationPopup(true));
-      }
-    }
-  }, [dispatch, memberId, dayOfTrial, isPremium]);
 
   function checkMemberId() {
     if (!memberId) {

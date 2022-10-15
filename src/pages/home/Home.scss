@@ -46,28 +46,6 @@
           cursor: pointer;
         }
       }
-
-      &--text-btn {
-        color: black;
-        background-color: white;
-        padding: 0.8rem 1.2rem;
-        border-radius: 2rem;
-        font-size: 1.2rem;
-        font-weight: 500;
-        white-space: nowrap;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      &--upgrade-btn {
-        height: 3.4rem;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
     }
 
     &__links {
@@ -587,12 +565,6 @@
       &__links {
         column-gap: 4rem;
       }
-
-      &__logo {
-        &--text-btn {
-          display: none;
-        }
-      }
     }
 
     .cookie-popup {
@@ -602,18 +574,6 @@
     .player {
       &__full-screen {
         display: none;
-      }
-    }
-  }
-}
-
-@media (max-width: 840px) {
-  .home {
-    .nav {
-      &__logo {
-        &--upgrade-btn {
-          display: none;
-        }
       }
     }
   }

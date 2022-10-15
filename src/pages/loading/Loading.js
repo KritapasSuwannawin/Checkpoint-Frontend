@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import './Loading.scss';
 
-import videoUrl from './Checkpoint loading 150px.mp4';
+const videoUrl = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Checkpoint+loading+150px.mp4`;
 
 function Loading() {
   const loading = useSelector((store) => store.page.loading);

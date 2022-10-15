@@ -1,32 +1,31 @@
-import React from 'react';
-import './Banner.scss';
-import RealPhone from './images/Realistic_Smartphone.jpg';
-import BetterSleep from './images/Better Sleep.jpg';
-import FocusMore from './images/More Productive.jpg';
-import EffectiveRelax from './images/Powerful Relax.jpg';
-import Ambience_icon from './images/Ambience_icon.svg';
-import Ambience from './images/ambience.jpg';
-import { AiFillHeart } from 'react-icons/ai';
-import { IoIosMusicalNotes } from 'react-icons/io';
-import VirtualSpace from './images/VirtualSpace.svg';
-import Mood from './images/mood.jpg';
-import EnvironmentIcon from './images/Environment_icon.svg';
-import RelaxingMusicIcon from './images/RelaxingMusic_icon.svg';
-import MusicImg from './images/Music.jpg';
-import Usecase from './images/Usecase.png';
-import CheckpointIcon from './images/checkpoint-icon.svg';
-import FeedbackImg from './images/Community Review For Mobile.png';
-// import PremiumCard from "./images/Premium Card.png";
-// import MobileMockup from "./images/Mobile Mockup.png";
-import CheckpointApp from './images/180px logo Checkpoint.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import checkpoint_logo_white from './images/Checkpoint logo white.svg';
-import VirtualShowcase from './images/Virtual.jpg';
-import DesktopShowcase from './images/Desktop.jpg';
-import OneMonthCoupon from './images/Premium Card 1m 50.png';
-import ThreeMonthCoupon from './images/Premium Card 3m 50.png';
 import { faYoutube, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
+import { AiFillHeart } from 'react-icons/ai';
+import { IoIosMusicalNotes } from 'react-icons/io';
+
+import './Banner.scss';
+
+import Ambience_icon from './icons/Ambience_icon.svg';
+import VirtualSpace from './icons/VirtualSpace.svg';
+import EnvironmentIcon from './icons/Environment_icon.svg';
+import RelaxingMusicIcon from './icons/RelaxingMusic_icon.svg';
+import CheckpointIcon from './icons/checkpoint-icon.svg';
+import checkpoint_logo_white from './icons/Checkpoint logo white.svg';
+
+const RealPhone = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Realistic_Smartphone.jpg`;
+const BetterSleep = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Better+Sleep.jpg`;
+const FocusMore = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/More+Productive.jpg`;
+const EffectiveRelax = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Powerful+Relax.jpg`;
+const Ambience = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/ambience.jpg`;
+const Mood = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/mood.jpg`;
+const MusicImg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Music.jpg`;
+const VirtualShowcase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Virtual.jpg`;
+const DesktopShowcase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Desktop.jpg`;
+
+const Usecase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Usecase.png`;
+const FeedbackImg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Community+Review+For+Mobile.png`;
+const CheckpointApp = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/180px+logo+Checkpoint.png`;
 
 let bannerData = {
   title_1: 'Design',
@@ -179,42 +178,6 @@ function Banner() {
                 <div className="mobile-showcase-image">
                   <br />
                   <img src={Usecase} alt=""></img>
-                </div>
-              </section>
-            </div>
-
-            <div className="content">
-              <section>
-                <div className="center-icon-less-padding"> </div>
-                <div className="text-center">
-                  <div className="get-premium-header">
-                    <p>Get Premium</p>
-                  </div>
-                  <h2>50% Discount</h2>
-                  <p>to support us and unlock more perks</p>
-                </div>
-                <div className="mobile-showcase-image">
-                  <br />
-                  <a href="https://bit.ly/3Kx8XLs" target="_blank" rel="noreferrer">
-                    <img src={OneMonthCoupon} width="250px" height="auto" alt=""></img>
-                  </a>
-                </div>
-
-                <div className="mobile-showcase-image">
-                  <br />
-                  <a href="https://bit.ly/3Kx8XLs" target="_blank" rel="noreferrer">
-                    <img src={ThreeMonthCoupon} width="250px" height="auto" alt=""></img>
-                  </a>
-                </div>
-
-                <div className="text-center">
-                  <div className="promotion-tag">
-                    <br></br>
-                    <p>
-                      Get Coupon Code in <strong>Buy Me a Coffee</strong> to
-                    </p>
-                    <p>activate Premium in Checkpoint.tokyo</p>
-                  </div>
                 </div>
               </section>
             </div>

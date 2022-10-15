@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInWithPopupHandler, googleProvider, appleProvider } from '../../firebase/app';
 import crypto from 'crypto-js';
 
+import ForgetPassword from './ForgetPassword';
 import './LoginPopup.scss';
 
 import { memberActions } from '../../store/memberSlice';
@@ -24,14 +25,11 @@ function LoginPopup(props) {
 
   const [signingUp, setSigningUp] = useState(true);
   const [verificationCode, setVerificationCode] = useState(undefined);
-  const [resetPasswordVerificationCode, setResetPasswordVerificationCode] = useState(undefined);
 
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
-  const [invalidResetPasswordVerificationCode, setInvalidResetPasswordVerificationCode] = useState(false);
-  const [allowEnterNewPassword, setAllowEnterNewPassword] = useState(false);
 
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [errorDuringAuthen, setErrorDuringAuthen] = useState(false);
@@ -40,8 +38,6 @@ function LoginPopup(props) {
   const [accountAlreadyExist, setAccountAlreadyExist] = useState(false);
   const [agreeToPolicy, setAgreeToPolicy] = useState(undefined);
   const [invalidCode, setInvalidCode] = useState(false);
-  const [newPasswordNotMatch, setNewPasswordNotMatch] = useState(false);
-  const [invalidNewPassword, setInvalidNewPassword] = useState(false);
 
   const [email, setEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
@@ -53,10 +49,6 @@ function LoginPopup(props) {
   const checkboxRef1 = useRef();
   const checkboxRef2 = useRef();
   const verificationCodeRef = useRef();
-  const resetPasswordEmailRef = useRef();
-  const resetPasswordVerificationCodeRef = useRef();
-  const newPasswordRef = useRef();
-  const confirmNewPasswordRef = useRef();
 
   const { closeHandler } = props;
 
@@ -66,7 +58,29 @@ function LoginPopup(props) {
     }
   }, [deviceId, closeHandler]);
 
-  const signUpSubmitHandler = useCallback(() => {
+  function setLocalStorage(data) {
+    const { email, password, loginMethod } = data;
+    localStorage.setItem('CheckpointEmail', email);
+    localStorage.setItem('CheckpointPassword', password);
+    localStorage.setItem('CheckpointLoginMethod', loginMethod);
+  }
+
+  function signUpClickHandler() {
+    setSigningUp(this);
+
+    setInvalidEmail(false);
+    setInvalidPassword(false);
+    setForgetPassword(false);
+
+    setPasswordNotMatch(false);
+    setErrorDuringAuthen(false);
+    setIncorrectPassword(false);
+    setAccountNotExist(false);
+    setAccountAlreadyExist(false);
+    setAgreeToPolicy(undefined);
+  }
+
+  function verifyHandler() {
     if (loading || !emailRef.current || !passwordRef1.current || !passwordRef2.current || !checkboxRef1.current) {
       return;
     }
@@ -138,9 +152,94 @@ function LoginPopup(props) {
         .catch(() => setErrorDuringAuthen(true))
         .finally(() => setLoading(false));
     }
-  }, [loading]);
+  }
 
-  const verifyHandler = useCallback(() => {
+  function signupHandler(requestData) {
+    setLoading(true);
+    setErrorDuringAuthen(false);
+    setAccountAlreadyExist(false);
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode, data } = body;
+
+        if (statusCode !== 2001) {
+          if (statusCode === 3000) {
+            setAccountAlreadyExist(true);
+          }
+
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+
+        dispatch(memberActions.setMember(data.memberData));
+        dispatch(backgroundActions.changeBackgroundHandler('0411'));
+        dispatch(deviceActions.setNewDevice());
+        setLocalStorage(requestData);
+      })
+      .catch(() => setErrorDuringAuthen(true))
+      .finally(() => setLoading(false));
+  }
+
+  function signinHandler(requestData) {
+    setLoading(true);
+    setErrorDuringAuthen(false);
+    setIncorrectPassword(false);
+    setAccountNotExist(false);
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        const { statusCode, data } = body;
+
+        if (statusCode !== 2001) {
+          if (statusCode === 3001) {
+            setAccountNotExist(true);
+          }
+
+          if (statusCode === 3002) {
+            setIncorrectPassword(true);
+          }
+
+          if (statusCode === 4000) {
+            throw new Error();
+          }
+
+          return;
+        }
+
+        const { memberData } = data;
+        dispatch(memberActions.setMember(memberData));
+        dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
+        dispatch(musicActions.setInitialMusic(memberData.musicId));
+        dispatch(musicActions.setMusicCategory(memberData.musicCategory));
+        dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
+        dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
+        dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
+        dispatch(deviceActions.setNewDevice());
+        setLocalStorage(requestData);
+      })
+      .catch(() => setErrorDuringAuthen(true))
+      .finally(() => setLoading(false));
+  }
+
+  function signUpSubmitHandler() {
     if (loading || !verificationCodeRef.current) {
       return;
     }
@@ -149,49 +248,15 @@ function LoginPopup(props) {
       verificationCodeRef.current.value ===
       crypto.AES.decrypt(verificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(crypto.enc.Utf8)
     ) {
-      setLoading(true);
       setInvalidCode(false);
-      setErrorDuringAuthen(false);
-      setAccountAlreadyExist(false);
 
-      const requestData = { email, password, loginMethod: 'email', isReceiveNews: receiveNews };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      })
-        .then((res) => res.json())
-        .then((body) => {
-          const { statusCode, data } = body;
-
-          if (statusCode !== 2001) {
-            if (statusCode === 3000) {
-              setAccountAlreadyExist(true);
-            }
-
-            if (statusCode === 4000) {
-              throw new Error();
-            }
-
-            return;
-          }
-
-          dispatch(memberActions.setMember(data.memberData));
-          dispatch(backgroundActions.changeBackgroundHandler('0411'));
-          dispatch(deviceActions.setNewDevice());
-          setLocalStorage(requestData);
-        })
-        .catch(() => setErrorDuringAuthen(true))
-        .finally(() => setLoading(false));
+      signupHandler({ email, password, loginMethod: 'email', isReceiveNews: receiveNews });
     } else {
       setInvalidCode(true);
     }
-  }, [dispatch, email, loading, password, receiveNews, verificationCode]);
+  }
 
-  const signInSubmitHandler = useCallback(() => {
+  function signInSubmitHandler() {
     if (loading || !emailRef.current || !passwordRef1.current) {
       return;
     }
@@ -214,196 +279,20 @@ function LoginPopup(props) {
     }
 
     if (!invalidEmail && !invalidPassword) {
-      setLoading(true);
-      setErrorDuringAuthen(false);
-      setIncorrectPassword(false);
-      setAccountNotExist(false);
-
-      const requestData = { email, password, loginMethod: 'email' };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      })
-        .then((res) => res.json())
-        .then((body) => {
-          const { statusCode, data } = body;
-
-          if (statusCode !== 2001) {
-            if (statusCode === 3001) {
-              setAccountNotExist(true);
-            }
-
-            if (statusCode === 3002) {
-              setIncorrectPassword(true);
-            }
-
-            if (statusCode === 4000) {
-              throw new Error();
-            }
-
-            return;
-          }
-
-          const { memberData } = data;
-          dispatch(memberActions.setMember(memberData));
-          dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
-          dispatch(musicActions.setInitialMusic(memberData.musicId));
-          dispatch(musicActions.setMusicCategory(memberData.musicCategory));
-          dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
-          dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
-          dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
-          dispatch(deviceActions.setNewDevice());
-          setLocalStorage(requestData);
-        })
-        .catch(() => setErrorDuringAuthen(true))
-        .finally(() => setLoading(false));
+      signinHandler({ email, password, loginMethod: 'email' });
     }
-  }, [dispatch, loading]);
-
-  function setLocalStorage(data) {
-    const { email, password, loginMethod } = data;
-    localStorage.setItem('CheckpointEmail', email);
-    localStorage.setItem('CheckpointPassword', password);
-    localStorage.setItem('CheckpointLoginMethod', loginMethod);
-  }
-
-  function signUpClickHandler() {
-    setSigningUp(this);
-
-    setInvalidEmail(false);
-    setInvalidPassword(false);
-    setForgetPassword(false);
-
-    setPasswordNotMatch(false);
-    setErrorDuringAuthen(false);
-    setIncorrectPassword(false);
-    setAccountNotExist(false);
-    setAccountAlreadyExist(false);
-    setAgreeToPolicy(undefined);
-  }
-
-  function forgetPasswordHandler() {
-    setForgetPassword(true);
-    setInvalidEmail(false);
-    setInvalidPassword(false);
-  }
-
-  function forgetPasswordEmailSendHandler() {
-    if (loading) {
-      return;
-    }
-
-    const email = resetPasswordEmailRef.current.value;
-
-    if (email.includes('@')) {
-      setEmail(email);
-      setInvalidEmail(false);
-      setLoading(true);
-      setErrorDuringAuthen(false);
-      setAccountNotExist(false);
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password/forget?email=${email}`)
-        .then((res) => res.json())
-        .then((body) => {
-          const { statusCode, data } = body;
-
-          if (statusCode !== 2001) {
-            if (statusCode === 3001) {
-              setAccountNotExist(true);
-            }
-
-            if (statusCode === 4000) {
-              throw new Error();
-            }
-
-            return;
-          }
-
-          const { verificationCode } = data;
-
-          resetPasswordEmailRef.current.value = '';
-          setResetPasswordVerificationCode(verificationCode);
-        })
-        .catch(() => setErrorDuringAuthen(true))
-        .finally(() => setLoading(false));
-    } else {
-      setInvalidEmail(true);
-    }
-  }
-
-  function forgetPasswordCheckCodeHandler() {
-    if (
-      resetPasswordVerificationCodeRef.current.value ===
-      crypto.AES.decrypt(resetPasswordVerificationCode, process.env.REACT_APP_CHECKPOINT_SECURITY_KEY).toString(crypto.enc.Utf8)
-    ) {
-      setInvalidResetPasswordVerificationCode(false);
-      setAllowEnterNewPassword(true);
-    } else {
-      setInvalidResetPasswordVerificationCode(true);
-    }
-  }
-
-  function resetPasswordHandler() {
-    if (loading) {
-      return;
-    }
-
-    const newPassword = newPasswordRef.current.value;
-    const confirmNewPassword = confirmNewPasswordRef.current.value;
-
-    if (newPassword !== confirmNewPassword) {
-      setNewPasswordNotMatch(true);
-      return;
-    } else {
-      setNewPasswordNotMatch(false);
-    }
-
-    if (newPassword.length < 6) {
-      setInvalidNewPassword(true);
-      return;
-    } else {
-      setInvalidNewPassword(false);
-    }
-
-    setLoading(true);
-    setErrorDuringAuthen(false);
-
-    const data = { email, newPassword };
-
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/password`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        const { statusCode } = body;
-
-        if (statusCode !== 2000) {
-          if (statusCode === 4000) {
-            throw new Error();
-          }
-
-          return;
-        }
-
-        localStorage.removeItem('CheckpointEmail');
-        localStorage.removeItem('CheckpointPassword');
-        localStorage.removeItem('CheckpointLoginMethod');
-
-        setForgetPassword(false);
-      })
-      .catch(() => setErrorDuringAuthen(true))
-      .finally(() => setLoading(false));
   }
 
   function loginHandler() {
+    if (signingUp) {
+      if (!checkboxRef1.current.checked) {
+        setAgreeToPolicy(false);
+        return;
+      }
+
+      setAgreeToPolicy(true);
+    }
+
     let provider;
     if (this === 'google') {
       provider = googleProvider;
@@ -416,194 +305,41 @@ function LoginPopup(props) {
         const { email } = result.user.providerData[0];
 
         if (signingUp) {
-          if (!checkboxRef1.current.checked) {
-            setAgreeToPolicy(false);
-            return;
-          } else {
-            setAgreeToPolicy(true);
-          }
-
-          setLoading(true);
-          setErrorDuringAuthen(false);
-          setAccountAlreadyExist(false);
-
-          const requestData = { email, password: this, loginMethod: this, isReceiveNews: checkboxRef2.current.checked };
-
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signup`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-          })
-            .then((res) => res.json())
-            .then((body) => {
-              const { statusCode, data } = body;
-
-              if (statusCode !== 2001) {
-                if (statusCode === 3000) {
-                  setAccountAlreadyExist(true);
-                }
-
-                if (statusCode === 4000) {
-                  throw new Error();
-                }
-
-                return;
-              }
-
-              dispatch(memberActions.setMember(data.memberData));
-              dispatch(backgroundActions.changeBackgroundHandler('0411'));
-              dispatch(deviceActions.setNewDevice());
-              setLocalStorage(requestData);
-            })
-            .catch(() => setErrorDuringAuthen(true))
-            .finally(() => setLoading(false));
+          signupHandler({ email, password: this, loginMethod: this, isReceiveNews: checkboxRef2.current.checked });
         } else {
-          setLoading(true);
-          setErrorDuringAuthen(false);
-          setIncorrectPassword(false);
-          setAccountNotExist(false);
-
-          const requestData = { email, password: this, loginMethod: this };
-
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/v1/member/signin`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-          })
-            .then((res) => res.json())
-            .then((body) => {
-              const { statusCode, data } = body;
-
-              if (statusCode !== 2001) {
-                if (statusCode === 3001) {
-                  setAccountNotExist(true);
-                }
-
-                if (statusCode === 3002) {
-                  setIncorrectPassword(true);
-                }
-
-                if (statusCode === 4000) {
-                  throw new Error();
-                }
-
-                return;
-              }
-
-              const { memberData } = data;
-              dispatch(memberActions.setMember(memberData));
-              dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
-              dispatch(musicActions.setInitialMusic(memberData.musicId));
-              dispatch(musicActions.setMusicCategory(memberData.musicCategory));
-              dispatch(musicActions.setFavouriteMusicIdArr(memberData.favouriteMusicIdArr));
-              dispatch(musicActions.setPlayFromPlaylist(memberData.playFromPlaylist));
-              dispatch(avatarActions.changeAvatarHandler(memberData.avatarId));
-              dispatch(deviceActions.setNewDevice());
-              setLocalStorage(requestData);
-            })
-            .catch(() => setErrorDuringAuthen(true))
-            .finally(() => setLoading(false));
+          signinHandler({ email, password: this, loginMethod: this });
         }
       })
       .catch(() => setErrorDuringAuthen(true));
   }
 
-  useEffect(() => {
-    document.addEventListener('keyup', (event) => {
-      if (event.key === 'Enter' && !forgetPassword) {
-        if (verificationCode) {
-          verifyHandler();
-        } else if (!signingUp) {
-          signInSubmitHandler();
-        } else if (signingUp) {
-          signUpSubmitHandler();
-        }
-      }
-    });
-  }, [forgetPassword, signInSubmitHandler, signUpSubmitHandler, signingUp, verificationCode, verifyHandler]);
+  function forgetPasswordHandler() {
+    setForgetPassword(true);
+    setInvalidEmail(false);
+    setInvalidPassword(false);
+  }
+
+  function submitHandler(e) {
+    e.preventDefault();
+
+    verificationCode ? signUpSubmitHandler() : signingUp ? verifyHandler() : signInSubmitHandler();
+  }
 
   if (forgetPassword) {
     return (
-      <div className="login-popup">
-        <form className="login-popup__form">
-          <div className="login-popup__close-btn" onClick={() => closeHandler()}></div>
-          <div className="login-popup__title-container">
-            <p className={`login-popup__title ${!signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(true)}>
-              Sign up
-            </p>
-            <p className={`login-popup__title ${signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(false)}>
-              Sign in
-            </p>
-          </div>
-          <p className={`login-popup__sub-title`}>Reset Password</p>
-          {!resetPasswordVerificationCode ? (
-            <>
-              <p className="login-popup__description">
-                Please enter your email address<br></br>and we'll send you a link to reset your password.
-              </p>
-              <input className="login-popup__input" type="text" id="email" ref={resetPasswordEmailRef} placeholder="Email"></input>
-            </>
-          ) : !allowEnterNewPassword ? (
-            <input
-              className="login-popup__input"
-              type="text"
-              ref={resetPasswordVerificationCodeRef}
-              placeholder="Verification code (check your email)"
-            ></input>
-          ) : (
-            <>
-              <input
-                className="login-popup__input"
-                type="password"
-                ref={newPasswordRef}
-                autoComplete="on"
-                placeholder="New Password"
-              ></input>
-              <input
-                className="login-popup__input"
-                type="password"
-                ref={confirmNewPasswordRef}
-                autoComplete="on"
-                placeholder="Confirm new password"
-              ></input>
-            </>
-          )}
-          {invalidEmail && <p className="login-popup__error-msg">Invalid email</p>}
-          {newPasswordNotMatch && <p className="login-popup__error-msg">Passwords do not match</p>}
-          {invalidNewPassword && <p className="login-popup__error-msg">Password must contain at least 6 characters</p>}
-          <p className="login-popup__contact">
-            If you need any help, please contact<br></br>
-            <span>inquiry@checkpoint.tokyo</span>
-          </p>
-          {!resetPasswordVerificationCode ? (
-            <div className="login-popup__submit-btn no-margin" onClick={forgetPasswordEmailSendHandler}>
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Send'}
-            </div>
-          ) : (
-            <div
-              className="login-popup__submit-btn no-margin"
-              onClick={allowEnterNewPassword ? resetPasswordHandler : forgetPasswordCheckCodeHandler}
-            >
-              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Submit'}
-            </div>
-          )}
-          {invalidResetPasswordVerificationCode && <p className="login-popup__error-msg">Invalid verification code</p>}
-          {accountNotExist && <p className="login-popup__error-msg">Account does not exist, please sign up</p>}
-          {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
-        </form>
-      </div>
+      <ForgetPassword
+        closeHandler={closeHandler}
+        signUpClickHandler={signUpClickHandler}
+        setForgetPasswordHandler={setForgetPassword}
+      ></ForgetPassword>
     );
   }
 
   return (
     <div className="login-popup">
-      <form className="login-popup__form">
-        <div className="login-popup__close-btn" onClick={() => closeHandler()}></div>
-        {!verificationCode ? (
+      <form className="login-popup__form" onSubmit={submitHandler}>
+        <div className="login-popup__close-btn" onClick={closeHandler}></div>
+        {!verificationCode && (
           <>
             <div className="login-popup__title-container">
               <p className={`login-popup__title ${!signingUp ? 'not-current' : ''}`} onClick={signUpClickHandler.bind(true)}>
@@ -670,19 +406,9 @@ function LoginPopup(props) {
                 </div>
               </>
             )}
-            <div className="login-popup__submit-btn" onClick={signingUp ? signUpSubmitHandler : signInSubmitHandler}>
-              {signingUp ? (
-                loading ? (
-                  <img className="login-popup__spinner" src={spinner} alt=""></img>
-                ) : (
-                  'Sign up'
-                )
-              ) : loading ? (
-                <img className="login-popup__spinner" src={spinner} alt=""></img>
-              ) : (
-                'Sign in'
-              )}
-            </div>
+            <button className="login-popup__submit-btn">
+              {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : signingUp ? 'Sign up' : 'Sign in'}
+            </button>
             {!signingUp && (
               <div className="login-popup__forget-password" onClick={forgetPasswordHandler}>
                 Forgot your password?
@@ -690,7 +416,9 @@ function LoginPopup(props) {
             )}
             {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>
-        ) : (
+        )}
+
+        {verificationCode && (
           <>
             <p className={`login-popup__title`}>Email Verification</p>
             <input
@@ -701,9 +429,9 @@ function LoginPopup(props) {
             ></input>
             {accountAlreadyExist && <p className="login-popup__error-msg">Account already exists, please sign in</p>}
             {invalidCode && <p className="login-popup__error-msg">Invalid verification code</p>}
-            <div className="login-popup__submit-btn no-margin" onClick={verifyHandler}>
+            <button className="login-popup__submit-btn no-margin">
               {loading ? <img className="login-popup__spinner" src={spinner} alt=""></img> : 'Verify'}
-            </div>
+            </button>
             {errorDuringAuthen && <p className="login-popup__error-msg">Error occured, please try again later</p>}
           </>
         )}

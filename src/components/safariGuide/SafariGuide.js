@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import './SafariGuide.scss';
 
-import imageUrl from './Safari minigame.png';
+const imageUrl = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Safari+minigame.png`;
 
 function SafariGuide(props) {
   const [showGuide, setShowGuide] = useState(true);
