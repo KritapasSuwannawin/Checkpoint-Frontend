@@ -19,6 +19,7 @@
     top: 0rem;
     right: 0rem;
     padding: 0.5rem;
+    width: 2.5rem;
   }
 
   &__image {
@@ -48,5 +49,9 @@
   &__artist-name {
     font-size: 0.9rem;
     color: #ddd;
+  }
+
+  &__play-pause-btn {
+    width: 2.5rem;
   }
 }

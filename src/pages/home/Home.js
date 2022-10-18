@@ -18,40 +18,40 @@ import { avatarActions } from '../../store/avatarSlice';
 import { popupActions } from '../../store/popupSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
-import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
-import playSvg50 from '../../svg/50px/Circled Play.svg';
-import pauseSvg50 from '../../svg/50px/Pause Button.svg';
-import profileSvg50 from '../../svg/50px/Profile.svg';
-import daySvg36 from '../../svg/36px/Sun.svg';
-import eveningSvg36 from '../../svg/36px/Sunset.svg';
-import nightSvg36 from '../../svg/36px/Moon Symbol.svg';
-import cloudySvg36 from '../../svg/36px/Partly Cloudy Day.svg';
-import rainySvg36 from '../../svg/36px/Moderate Rain.svg';
-import thunderSvg36 from '../../svg/36px/Storm.svg';
-import snowySvg36 from '../../svg/36px/Winter.svg';
-import musicLibrarySvg36 from '../../svg/36px/Music Library.svg';
-import backgroundSvg30 from '../../svg/30px/Bg30px.svg';
-import musicSvg30 from '../../svg/30px/Music30px.svg';
-import timerSvg30 from '../../svg/30px/Timer.svg';
-import heartFullSvg30 from '../../svg/30px/Heart.svg';
-import heartSvg30 from '../../svg/30px/Hearts.svg';
-import ambientSvg30 from '../../svg/30px/Organic Food.svg';
-import iTunesSvg30 from '../../svg/30px/iTunes-1.svg';
-import fullScreenSvg30 from '../../svg/30px/Fullscreen.svg';
-import minimizeSvg30 from '../../svg/30px/Minimize.svg';
-import shuffleSvg25 from '../../svg/25px/Shuffle.svg';
-import loopSvg25 from '../../svg/25px/Repeat.svg';
-import backwardSvg25 from '../../svg/25px/Rewind-1.svg';
-import forwardSvg25 from '../../svg/25px/Fast Forward-1.svg';
-import addSvg20 from '../../svg/20px/Add20px.svg';
-import signInSvg20 from '../../svg/20px/SignIn.svg';
-import questionMarkSvg20 from '../../svg/20px/Question Mark.svg';
-import paperPlaneSvg20 from '../../svg/20px/Paper Plane.svg';
-import informationIconSvg20 from '../../svg/20px/Information Icon.svg';
-import checkpointLogoSvg20 from '../../svg/20px/Checkpoint Logo.svg';
-import policySvg20 from '../../svg/20px/Policy.svg';
-import logoutSvg20 from '../../svg/20px/Logout.svg';
-import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
+const logo = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Checkpoint+with+text.svg`;
+const playSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Circled+Play.svg`;
+const pauseSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Pause+Button.svg`;
+const profileSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Profile.svg`;
+const daySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Sun.svg`;
+const eveningSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Sunset.svg`;
+const nightSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Moon+Symbol.svg`;
+const cloudySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Partly+Cloudy+Day.svg`;
+const rainySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Moderate+Rain.svg`;
+const thunderSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Storm.svg`;
+const snowySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Winter.svg`;
+const musicLibrarySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Music+Library.svg`;
+const backgroundSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Bg.svg`;
+const musicSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Music.svg`;
+const timerSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Timer.svg`;
+const heartFullSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Heart.svg`;
+const heartSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Hearts.svg`;
+const ambientSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Organic+Food.svg`;
+const iTunesSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/iTunes.svg`;
+const fullScreenSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Fullscreen.svg`;
+const minimizeSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Minimize.svg`;
+const shuffleSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Shuffle.svg`;
+const loopSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Repeat.svg`;
+const backwardSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Rewind.svg`;
+const forwardSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Fast+Forward.svg`;
+const addSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Add.svg`;
+const signInSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/SignIn.svg`;
+const questionMarkSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Question+Mark.svg`;
+const paperPlaneSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Paper Plane.svg`;
+const informationIconSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Information+Icon.svg`;
+const checkpointLogoSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Checkpoint+Logo.svg`;
+const policySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Policy.svg`;
+const logoutSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Logout.svg`;
+const speakerSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Speaker.svg`;
 
 function Home(props) {
   const { fullScreenClickHander } = props;
@@ -424,7 +424,7 @@ function Home(props) {
         {!isFullScreen && (
           <>
             <div onClick={overlayClickHandler} className="nav__logo">
-              <img src={logo50} alt="" className="nav__logo--img"></img>
+              <img src={logo} alt="" className="nav__logo--img"></img>
             </div>
           </>
         )}
@@ -437,7 +437,7 @@ function Home(props) {
           <div className="nav__links--timer-container">
             {!isFullScreen && (
               <div onClick={timerClickHandler} className="nav__links--link nav-timer">
-                <img src={timerSvg30} alt="" className="nav__links--icon small"></img>
+                <img src={timerSvg} alt="" className="nav__links--icon small"></img>
                 Timer
               </div>
             )}
@@ -446,19 +446,19 @@ function Home(props) {
           {!isFullScreen && (
             <>
               <div onClick={musicClickHander} className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}>
-                <img src={musicSvg30} alt="" className="nav__links--icon"></img>
+                <img src={musicSvg} alt="" className="nav__links--icon"></img>
                 Music
               </div>
               <div
                 onClick={backgroundClickHander}
                 className={`nav__links--link ${currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''}`}
               >
-                <img src={backgroundSvg30} alt="" className="nav__links--icon"></img>
+                <img src={backgroundSvg} alt="" className="nav__links--icon"></img>
                 Background
               </div>
               <img
                 className={`nav__links--link profile ${memberId ? 'premium' : ''}`}
-                src={memberId ? currentAvatar.url : profileSvg50}
+                src={memberId ? currentAvatar.url : profileSvg}
                 alt=""
                 onClick={outsideLinkToggleHandler}
               ></img>
@@ -477,13 +477,13 @@ function Home(props) {
                   </div>
                   <div className="nav__outside-links--container border-top">
                     <div className="nav__outside-links--icon-container">
-                      <img src={questionMarkSvg20} alt=""></img>
+                      <img src={questionMarkSvg} alt=""></img>
                     </div>
                     <p onClick={openHelpSupportHandler}>Help & Support</p>
                   </div>
                   <div className="nav__outside-links--container">
                     <div className="nav__outside-links--icon-container">
-                      <img src={paperPlaneSvg20} alt=""></img>
+                      <img src={paperPlaneSvg} alt=""></img>
                     </div>
                     <p onClick={openFeedbackHandler}>Feedback</p>
                   </div>
@@ -491,7 +491,7 @@ function Home(props) {
               )}
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={informationIconSvg20} alt=""></img>
+                  <img src={informationIconSvg} alt=""></img>
                 </div>
                 <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
                   About Us
@@ -499,7 +499,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={policySvg20} alt=""></img>
+                  <img src={policySvg} alt=""></img>
                 </div>
                 <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
                   For Artist
@@ -507,7 +507,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container">
                 <div className="nav__outside-links--icon-container">
-                  <img src={checkpointLogoSvg20} alt=""></img>
+                  <img src={checkpointLogoSvg} alt=""></img>
                 </div>
                 <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
                   Policy
@@ -515,7 +515,7 @@ function Home(props) {
               </div>
               <div className="nav__outside-links--container border-top">
                 <div className="nav__outside-links--icon-container">
-                  <img src={memberId ? logoutSvg20 : signInSvg20} alt=""></img>
+                  <img src={memberId ? logoutSvg : signInSvg} alt=""></img>
                 </div>
                 {memberId ? <p onClick={logoutHandler}>Sign Out</p> : <p onClick={loginHandler}>Sign In</p>}
               </div>
@@ -528,7 +528,7 @@ function Home(props) {
         <div className="background-control__ambient-container">
           <div className="background-control__ambient-volume">
             <p>Ambience</p>
-            <img src={speakerSvg15} alt=""></img>
+            <img src={speakerSvg} alt=""></img>
             <input
               type="range"
               min="0"
@@ -541,7 +541,7 @@ function Home(props) {
           </div>
           {ambientThumbnailArr}
           <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
-            <img src={addSvg20} alt=""></img>
+            <img src={addSvg} alt=""></img>
           </div>
         </div>
       </div>
@@ -553,7 +553,7 @@ function Home(props) {
         ) : (
           <>
             <div className="music-control__title">
-              <img src={heartFullSvg30} alt=""></img>
+              <img src={heartFullSvg} alt=""></img>
               <p>Favorite music</p>
             </div>
             {favouriteMusicIdArr.length === 0 ? (
@@ -573,19 +573,19 @@ function Home(props) {
           <div className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''}`}>
             <div className="mood__section">
               <img
-                src={daySvg36}
+                src={daySvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(1)}
                 className={currentBackground.id.slice(2, 3) !== '1' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
-                src={eveningSvg36}
+                src={eveningSvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(2)}
                 className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
-                src={nightSvg36}
+                src={nightSvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(3)}
                 className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
@@ -593,25 +593,25 @@ function Home(props) {
             </div>
             <div className="mood__section">
               <img
-                src={cloudySvg36}
+                src={cloudySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(1)}
                 className={currentBackground.id.slice(3) !== '1' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
-                src={rainySvg36}
+                src={rainySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(2)}
                 className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
-                src={thunderSvg36}
+                src={thunderSvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(3)}
                 className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
               ></img>
               <img
-                src={snowySvg36}
+                src={snowySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(4)}
                 className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
@@ -621,7 +621,7 @@ function Home(props) {
           <div className="player">
             <div className="player__music-data">
               <img
-                src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg30 : heartSvg30}
+                src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg : heartSvg}
                 alt=""
                 className="player__music-data--favourite-btn"
                 onClick={favouriteBtnClickHandler}
@@ -636,31 +636,31 @@ function Home(props) {
             </div>
             <div className="player__music-control">
               <img
-                src={shuffleSvg25}
+                src={shuffleSvg}
                 onClick={toggleShuffleMusicHandler}
                 alt=""
                 className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
               ></img>
-              <img src={backwardSvg25} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
+              <img src={backwardSvg} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
               <img
-                src={musicPlaying ? pauseSvg50 : playSvg50}
+                src={musicPlaying ? pauseSvg : playSvg}
                 onClick={playPauseMusicHandler}
                 alt=""
                 className="player__music-control--play-pause"
               ></img>
-              <img src={forwardSvg25} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
+              <img src={forwardSvg} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
               <img
-                src={loopSvg25}
+                src={loopSvg}
                 onClick={toggleLoopMusicHandler}
                 alt=""
                 className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
               ></img>
             </div>
             <div className="player__volume-control">
-              <img src={musicLibrarySvg36} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
+              <img src={musicLibrarySvg} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
               <div className="player__volume-control--volume">
                 <div className="player__volume-control--section">
-                  <img src={iTunesSvg30} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
+                  <img src={iTunesSvg} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
                   <input
                     type="range"
                     min="0"
@@ -672,7 +672,7 @@ function Home(props) {
                   ></input>
                 </div>
                 <div className="player__volume-control--section">
-                  <img src={ambientSvg30} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
+                  <img src={ambientSvg} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
                   <input
                     type="range"
                     min="0"
@@ -685,7 +685,7 @@ function Home(props) {
                 </div>
               </div>
               <img
-                src={!isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+                src={!isFullScreen ? fullScreenSvg : minimizeSvg}
                 onClick={fullScreenClickHander}
                 className="player__full-screen"
                 alt=""
@@ -696,7 +696,7 @@ function Home(props) {
       )}
       {isFullScreen && (
         <img
-          src={!isFullScreen ? fullScreenSvg30 : minimizeSvg30}
+          src={!isFullScreen ? fullScreenSvg : minimizeSvg}
           onClick={fullScreenClickHander}
           className="player__full-screen fullscreen"
           alt=""

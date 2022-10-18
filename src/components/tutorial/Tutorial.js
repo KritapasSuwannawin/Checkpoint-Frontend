@@ -4,7 +4,7 @@ import SliderCard from './SliderCard';
 
 import './Tutorial.scss';
 
-import logo50 from '../../svg/50px/Checkpoint with text 50px.svg';
+import logo from '../../svg/Tutorial/Checkpoint with text.svg';
 
 function Tutorial(props) {
   const [page, setPage] = useState(0);
@@ -33,7 +33,7 @@ function Tutorial(props) {
   return (
     <div className="tutorial">
       <div className="tutorial__container">
-        <img className="tutorial__container--logo" src={logo50} alt=""></img>
+        <img className="tutorial__container--logo" src={logo} alt=""></img>
         <SliderCard page={page} changePageHandler={changePageHandler}></SliderCard>
         <p className="tutorial__container--title">{title[page]}</p>
         <p className="tutorial__container--content">{content[page]}</p>

@@ -3,7 +3,7 @@ import crypto from 'crypto-js';
 
 import './LoginPopup.scss';
 
-import spinner from '../../svg/20px/spinner-solid.svg';
+import spinner from '../../svg/ForgetPassword/spinner-solid.svg';
 
 function ForgetPassword(props) {
   const { closeHandler, signUpClickHandler, setForgetPasswordHandler } = props;

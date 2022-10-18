@@ -258,6 +258,10 @@
         white-space: nowrap;
       }
 
+      img {
+        width: 1.5rem;
+      }
+
       &--slider {
         width: 100%;
       }
@@ -386,6 +390,10 @@
       @include flex-row-center;
       column-gap: 2.5rem;
 
+      img {
+        width: 3.6rem;
+      }
+
       &:hover {
         cursor: pointer;
       }
@@ -416,8 +424,12 @@
       column-gap: 1.4rem;
       width: 30rem;
 
-      &--favourite-btn:hover {
-        cursor: pointer;
+      &--favourite-btn {
+        width: 3rem;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       &--thumbnail {
@@ -445,6 +457,17 @@
       @include flex-row-center;
       column-gap: 2.5rem;
       width: 30rem;
+
+      &--play-pause {
+        width: 6rem;
+      }
+
+      &--back,
+      &--next,
+      &--shuffle,
+      &--loop {
+        width: 3.5rem;
+      }
 
       &--play-pause,
       &--back,
@@ -497,8 +520,12 @@
         @include flex-row-center;
       }
 
-      &--mute:hover {
-        cursor: pointer;
+      &--mute {
+        width: 3rem;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
 
       &--volume {

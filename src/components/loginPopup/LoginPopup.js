@@ -12,11 +12,11 @@ import { musicActions } from '../../store/musicSlice';
 import { avatarActions } from '../../store/avatarSlice';
 import { deviceActions } from '../../store/deviceSlice';
 
-import spinner from '../../svg/20px/spinner-solid.svg';
-import googleSigninBtn from './icon/Google Sign in button Web.svg';
-import appleSigninBtn from './icon/Apple Sign in button Web.svg';
-import googleSignupBtn from './icon/Google Sign up button Web.svg';
-import appleSignupBtn from './icon/Apple Sign up button Web.svg';
+import spinner from '../../svg/LoginPopup/spinner-solid.svg';
+import googleSigninBtn from '../../svg/LoginPopup/Google Sign in button Web.svg';
+import appleSigninBtn from '../../svg/LoginPopup/Apple Sign in button Web.svg';
+import googleSignupBtn from '../../svg/LoginPopup/Google Sign up button Web.svg';
+import appleSignupBtn from '../../svg/LoginPopup/Apple Sign up button Web.svg';
 
 function LoginPopup(props) {
   const deviceId = useSelector((store) => store.device.deviceId);

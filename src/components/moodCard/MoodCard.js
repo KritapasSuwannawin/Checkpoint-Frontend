@@ -3,8 +3,8 @@ import './MoodCard.scss';
 
 import { musicActions } from '../../store/musicSlice';
 
-import playSvg30 from '../../svg/30px/Circled Play.svg';
-import pauseSvg30 from '../../svg/30px/Pause Button.svg';
+import playSvg from '../../svg/MoodCard/Circled Play.svg';
+import pauseSvg from '../../svg/MoodCard/Pause Button.svg';
 
 function MoodCard(props) {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function MoodCard(props) {
     <div className="mood-card" onClick={cardClickHandler}>
       <img src={props.url} alt="" className="thumbnail"></img>
       <div className="overlay">
-        <img src={!isMoodPlaying ? playSvg30 : pauseSvg30} alt="" className="play-pause" onClick={playPauseClickHandler}></img>
+        <img src={!isMoodPlaying ? playSvg : pauseSvg} alt="" className="play-pause" onClick={playPauseClickHandler}></img>
         <p className="name">{props.name}</p>
       </div>
     </div>

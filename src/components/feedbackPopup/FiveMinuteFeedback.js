@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import './FeedbackPopup.scss';
 
-import starRegular from '../../svg/30px/star-regular.svg';
-import starSolid from '../../svg/30px/star-solid.svg';
+import starRegular from '../../svg/FeedbackPopup/star-regular.svg';
+import starSolid from '../../svg/FeedbackPopup/star-solid.svg';
 
 function FiveMinuteFeedback(props) {
   const memberId = useSelector((store) => store.member.memberId);

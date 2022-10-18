@@ -4,10 +4,10 @@ import { musicActions } from '../../store/musicSlice';
 import { popupActions } from '../../store/popupSlice';
 import './MusicThumbnailCard.scss';
 
-import playSvg25 from '../../svg/25px/Circled Play.svg';
-import pauseSvg25 from '../../svg/25px/Pause Button.svg';
-import heartFullSvg15 from '../../svg/15px/Heart.svg';
-import heartSvg15 from '../../svg/15px/Hearts.svg';
+import playSvg from '../../svg/MusicThumbnailCard/Circled Play.svg';
+import pauseSvg from '../../svg/MusicThumbnailCard/Pause Button.svg';
+import heartFullSvg from '../../svg/MusicThumbnailCard/Heart.svg';
+import heartSvg from '../../svg/MusicThumbnailCard/Hearts.svg';
 
 function MusicThumbnailCard(props) {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function MusicThumbnailCard(props) {
   return (
     <div className="music-thumbnail-card">
       <img
-        src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg15 : heartSvg15}
+        src={favouriteMusicIdArr.includes(props.id) ? heartFullSvg : heartSvg}
         onClick={clickHandler.bind('fav')}
         alt=""
         className="music-thumbnail-card__favourite-btn"
@@ -62,7 +62,7 @@ function MusicThumbnailCard(props) {
           <p className="music-thumbnail-card__artist-name">{artistName}</p>
         </div>
         <img
-          src={isMusicPlaying ? pauseSvg25 : playSvg25}
+          src={isMusicPlaying ? pauseSvg : playSvg}
           alt=""
           onClick={pauseMusicSpecificHandler}
           className="music-thumbnail-card__play-pause-btn"

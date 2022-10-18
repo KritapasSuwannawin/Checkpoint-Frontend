@@ -8,7 +8,7 @@ import './Music.scss';
 
 import { musicActions } from '../../store/musicSlice';
 
-import backArrowSvg36 from '../../svg/36px/Back Arrow.svg';
+import backArrowSvg36 from '../../svg/Music/Back Arrow.svg';
 
 function Music() {
   const dispatch = useDispatch();

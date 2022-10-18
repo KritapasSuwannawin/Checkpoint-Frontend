@@ -1,11 +1,11 @@
 import './About.scss';
 
-// import appStore from './App Store.svg';
-// import googlePlay from './Google Play.svg';
-import fb from '../../svg/20px/facebook.svg';
-import ig from '../../svg/20px/instagram.svg';
-import yt from '../../svg/20px/youtube.svg';
-import tw from '../../svg/20px/twitter.svg';
+// import appStore from '../../svg/About/App Store.svg';
+// import googlePlay from '../../svg/About/Google Play.svg';
+import fb from '../../svg/About/facebook.svg';
+import ig from '../../svg/About/instagram.svg';
+import yt from '../../svg/About/youtube.svg';
+import tw from '../../svg/About/twitter.svg';
 
 const aboutUsLanding = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/aboutus-landing.png`;
 

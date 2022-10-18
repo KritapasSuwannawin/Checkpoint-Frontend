@@ -4,6 +4,10 @@
   @include flex-row-center;
   justify-content: space-between;
 
+  &__speaker-icon {
+    width: 1.5rem;
+  }
+
   &__volume-slider {
     width: 18rem;
   }

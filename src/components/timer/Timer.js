@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import './Timer.scss';
 
-import resetSvg from '../../svg/20px/Reset.svg';
-import notiSvg from '../../svg/20px/Noti.svg';
+import resetSvg from '../../svg/Timer/Reset.svg';
+import notiSvg from '../../svg/Timer/Noti.svg';
 
 const alarmStudyEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+alarm+ending+study+session.m4a`;
 const alarmBreakEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+alarm+ending+break+session.m4a`;

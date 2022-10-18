@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import './HelpSupportPopup.scss';
 
-import logo from '../../svg/50px/Checkpoint with text 50px.svg';
+import logo from '../../svg/HelpSupportPopup/Checkpoint with text.svg';
 
 function HelpSupportPopup(props) {
   const memberId = useSelector((store) => store.member.memberId);

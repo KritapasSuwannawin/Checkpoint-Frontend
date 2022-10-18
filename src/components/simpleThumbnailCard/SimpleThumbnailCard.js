@@ -8,7 +8,7 @@ import { backgroundActions } from '../../store/backgroundSlice';
 import { avatarActions } from '../../store/avatarSlice';
 import { popupActions } from '../../store/popupSlice';
 
-import lockSvg from '../../svg/15px/Lock.svg';
+import lockSvg from '../../svg/SimpleThumbnailCard/Lock.svg';
 
 function SimpleThumbnailCard(props) {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ function SimpleThumbnailCard(props) {
       {props.isMember && !memberId && (
         <div className="simple-thumbnail-card__premium" title="For premium member" onClick={showLoginPopupHandler}>
           <div className="simple-thumbnail-card__premium-overlay"></div>
-          <img src={lockSvg} alt="" className={`simple-thumbnail-card__lock-svg ${props.ambient ? 'small' : ''}`}></img>
+          <img src={lockSvg} alt="" className="simple-thumbnail-card__lock-svg"></img>
         </div>
       )}
       <img src={thumbnailUrl} onClick={clickHandler} className="simple-thumbnail-card__image" alt=""></img>

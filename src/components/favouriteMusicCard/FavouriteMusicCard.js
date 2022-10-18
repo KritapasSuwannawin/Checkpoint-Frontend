@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { musicActions } from '../../store/musicSlice';
 import './FavouriteMusicCard.scss';
 
-import heartFullSvg25 from '../../svg/25px/Heart.svg';
-import playSvg30 from '../../svg/30px/Circled Play.svg';
-import pauseSvg30 from '../../svg/30px/Pause Button.svg';
+import heartFullSvg from '../../svg/FavouriteMusicCard/Heart.svg';
+import playSvg from '../../svg/FavouriteMusicCard/Circled Play.svg';
+import pauseSvg from '../../svg/FavouriteMusicCard/Pause Button.svg';
 
 function FavouriteMusicCard(props) {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function FavouriteMusicCard(props) {
     <div className="favourite-music-card">
       <div className="favourite-music-card__left">
         <img
-          src={isMusicPlaying ? pauseSvg30 : playSvg30}
+          src={isMusicPlaying ? pauseSvg : playSvg}
           alt=""
           className="favourite-music-card__left--play-pause-btn"
           onClick={playPauseClickHandler}
@@ -50,7 +50,7 @@ function FavouriteMusicCard(props) {
       </div>
       <div className="favourite-music-card__right">
         <p className="favourite-music-card__right--category-name">{music.category}</p>
-        <img src={heartFullSvg25} alt="" className="favourite-music-card__right--favourite-btn" onClick={removeFavouriteMusicHandler}></img>
+        <img src={heartFullSvg} alt="" className="favourite-music-card__right--favourite-btn" onClick={removeFavouriteMusicHandler}></img>
       </div>
     </div>
   );

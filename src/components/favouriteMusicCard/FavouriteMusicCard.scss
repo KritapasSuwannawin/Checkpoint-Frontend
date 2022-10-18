@@ -9,8 +9,12 @@
     @include flex-row-center;
     column-gap: 1rem;
 
-    &--play-pause-btn:hover {
-      cursor: pointer;
+    &--play-pause-btn {
+      width: 3rem;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     &--thumbnail {
@@ -41,7 +45,11 @@
     column-gap: 4rem;
 
     &--favourite-btn {
-      cursor: pointer;
+      width: 2.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     &--category-name {

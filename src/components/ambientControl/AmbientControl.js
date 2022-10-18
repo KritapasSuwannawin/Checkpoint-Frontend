@@ -5,7 +5,7 @@ import './AmbientControl.scss';
 
 import { ambientActions } from '../../store/ambientSlice';
 
-import speakerSvg15 from '../../svg/15px/Speaker-1.svg';
+import speakerSvg from '../../svg/AmbientControl/Speaker.svg';
 
 function AmbientControl(props) {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function AmbientControl(props) {
         volume={props.volume}
         ambient
       ></SimpleThumbnailCard>
-      <img src={speakerSvg15} alt=""></img>
+      <img src={speakerSvg} alt="" className="ambient-control__speaker-icon"></img>
       <input
         type="range"
         min="0"

@@ -6,12 +6,12 @@ import { IoIosMusicalNotes } from 'react-icons/io';
 
 import './Banner.scss';
 
-import Ambience_icon from './icons/Ambience_icon.svg';
-import VirtualSpace from './icons/VirtualSpace.svg';
-import EnvironmentIcon from './icons/Environment_icon.svg';
-import RelaxingMusicIcon from './icons/RelaxingMusic_icon.svg';
-import CheckpointIcon from './icons/checkpoint-icon.svg';
-import checkpoint_logo_white from './icons/Checkpoint logo white.svg';
+import Ambience_icon from '../../svg/Mobile/Ambience_icon.svg';
+import VirtualSpace from '../../svg/Mobile/VirtualSpace.svg';
+import EnvironmentIcon from '../../svg/Mobile/Environment_icon.svg';
+import RelaxingMusicIcon from '../../svg/Mobile/RelaxingMusic_icon.svg';
+import CheckpointIcon from '../../svg/Mobile/checkpoint-icon.svg';
+import checkpoint_logo_white from '../../svg/Mobile/Checkpoint logo white.svg';
 
 const RealPhone = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Realistic_Smartphone.jpg`;
 const BetterSleep = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Better+Sleep.jpg`;
