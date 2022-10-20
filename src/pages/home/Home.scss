@@ -345,26 +345,16 @@
       }
     }
 
-    &__header {
-      margin-top: -1rem;
-      align-self: start;
-      display: flex;
-      align-items: center;
-      column-gap: 1rem;
-      font-weight: 500;
-      color: white;
-
-      img {
-        width: 2rem;
-      }
-    }
-
     &__title {
       display: flex;
       align-items: center;
       column-gap: 1rem;
       align-self: flex-start;
       font-weight: 500;
+
+      img {
+        width: 2rem;
+      }
     }
 
     &__cards {
