@@ -1,31 +1,41 @@
+import { Link, Routes, Route, Navigate } from 'react-router-dom';
+
+import TermCondition from './TermCondition';
+import PrivacyPolicy from './PrivacyPolicy';
+import CookiePolicy from './CookiePolicy';
+import Gdpr from './Gdpr';
 import './Policy.scss';
 
 function Policy(props) {
   return (
-    <div className="policy">
-      <ul>
-        <li>
-          <a href={window.location.href.replace('policy', 'term-condition')} target="_blank" rel="noreferrer">
-            Terms & Conditions (利用規約)
-          </a>
-        </li>
-        <li>
-          <a href={window.location.href.replace('policy', 'privacy-policy')} target="_blank" rel="noreferrer">
-            Privacy Policy (プライバシーポリシー)
-          </a>
-        </li>
-        <li>
-          <a href={window.location.href.replace('policy', 'cookie-policy')} target="_blank" rel="noreferrer">
-            Cookie Policy (クッキーポリシー)
-          </a>
-        </li>
-        <li>
-          <a href={window.location.href.replace('policy', 'gdpr-singapore-japan-statement')} target="_blank" rel="noreferrer">
-            GDPR, Singapore, Japan Statement (GDPR、シンガポール、日本声明)
-          </a>
-        </li>
-      </ul>
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div className="policy">
+            <ul>
+              <li>
+                <Link to="term-condition">Terms & Conditions (利用規約)</Link>
+              </li>
+              <li>
+                <Link to="privacy-policy">Privacy Policy (プライバシーポリシー)</Link>
+              </li>
+              <li>
+                <Link to="cookie-policy">Cookie Policy (クッキーポリシー)</Link>
+              </li>
+              <li>
+                <Link to="gdpr">GDPR, Singapore, Japan Statement (GDPR、シンガポール、日本声明)</Link>
+              </li>
+            </ul>
+          </div>
+        }
+      ></Route>
+      <Route path="term-condition" element={<TermCondition></TermCondition>}></Route>
+      <Route path="privacy-policy" element={<PrivacyPolicy></PrivacyPolicy>}></Route>
+      <Route path="cookie-policy" element={<CookiePolicy></CookiePolicy>}></Route>
+      <Route path="gdpr" element={<Gdpr></Gdpr>}></Route>
+      <Route path="/*" element={<Navigate replace to="/policy"></Navigate>}></Route>
+    </Routes>
   );
 }
 
