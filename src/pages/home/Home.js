@@ -372,7 +372,7 @@ function Home(props) {
     dispatch(musicActions.setFavouriteMusicIdArr([]));
     dispatch(avatarActions.changeAvatarHandler(1));
     dispatch(popupActions.setShowOutsideLinkPopup(false));
-    dispatch(backgroundActions.changeBackgroundHandler('0211'));
+    dispatch(backgroundActions.changeBackgroundHandler('Anime_BG0211'));
     dispatch(memberActions.logout());
   }
 
@@ -576,19 +576,19 @@ function Home(props) {
                 src={daySvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(1)}
-                className={currentBackground.id.slice(2, 3) !== '1' ? 'mood__section--not-current-mood' : ''}
+                className={currentBackground.id.slice(-2, -1) !== '1' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
                 src={eveningSvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(2)}
-                className={currentBackground.id.slice(2, 3) !== '2' ? 'mood__section--not-current-mood' : ''}
+                className={currentBackground.id.slice(-2, -1) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
                 src={nightSvg}
                 alt=""
                 onClick={changeBackgroundTimeHandler.bind(3)}
-                className={`${currentBackground.id.slice(2, 3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                className={`${currentBackground.id.slice(-2, -1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
               ></img>
             </div>
             <div className="mood__section">
@@ -596,25 +596,25 @@ function Home(props) {
                 src={cloudySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(1)}
-                className={currentBackground.id.slice(3) !== '1' ? 'mood__section--not-current-mood' : ''}
+                className={currentBackground.id.slice(-1) !== '1' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
                 src={rainySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(2)}
-                className={currentBackground.id.slice(3) !== '2' ? 'mood__section--not-current-mood' : ''}
+                className={currentBackground.id.slice(-1) !== '2' ? 'mood__section--not-current-mood' : ''}
               ></img>
               <img
                 src={thunderSvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(3)}
-                className={`${currentBackground.id.slice(3) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                className={`${currentBackground.id.slice(-1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
               ></img>
               <img
                 src={snowySvg}
                 alt=""
                 onClick={changeBackgroundWeatherHandler.bind(4)}
-                className={`${currentBackground.id.slice(3) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+                className={`${currentBackground.id.slice(-1) !== '4' ? 'mood__section--not-current-mood' : ''}`}
               ></img>
             </div>
           </div>

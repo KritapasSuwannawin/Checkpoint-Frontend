@@ -16,13 +16,13 @@ function Background() {
     availableBackgroundArr.forEach((temp) => {
       const background = { ...temp };
 
-      if (background.id.slice(2) !== currentBackground.id.slice(2)) {
+      if (background.id.slice(-2) !== currentBackground.id.slice(-2)) {
         return;
       }
 
       setThumbnailArr((thumbnailArr) => {
         const filteredThumbnailArr = thumbnailArr.filter(
-          (thumbnail) => thumbnail.key !== background.id && thumbnail.key.slice(2) === currentBackground.id.slice(2)
+          (thumbnail) => thumbnail.key !== background.id && thumbnail.key.slice(-2) === currentBackground.id.slice(-2)
         );
         return [
           ...filteredThumbnailArr,
@@ -31,7 +31,7 @@ function Background() {
               id={background.id}
               url={background.url}
               thumbnailUrl={background.thumbnailUrl}
-              isMember={background.isPremium}
+              isMember={background.isMember}
               background
             ></SimpleThumbnailCard>
           </div>,

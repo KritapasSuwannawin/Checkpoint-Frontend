@@ -6,7 +6,6 @@ const ambientSlice = createSlice({
     availableAmbientArr: [],
     currentAmbientArr: [],
     ambientVolume: 0.5,
-    count: 0,
   },
   reducers: {
     ambientToggleHandler(state, action) {
@@ -43,7 +42,6 @@ const ambientSlice = createSlice({
     },
     setAvailableAmbient(state, action) {
       state.availableAmbientArr = action.payload;
-      state.count = action.payload.length;
     },
   },
 });

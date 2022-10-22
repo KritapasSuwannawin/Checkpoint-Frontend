@@ -6,7 +6,6 @@ const backgroundSlice = createSlice({
     availableBackgroundArr: [],
     setAvailableBackgroundCategoryArr: [],
     currentBackground: null,
-    count: 0,
   },
   reducers: {
     changeBackgroundHandler(state, action) {
@@ -17,7 +16,7 @@ const backgroundSlice = createSlice({
     },
     changeBackgroundTimeHandler(state, action) {
       let backgroundId = state.currentBackground.id;
-      backgroundId = backgroundId.slice(0, 2) + action.payload + backgroundId.slice(3);
+      backgroundId = backgroundId.slice(0, -2) + action.payload + backgroundId.slice(-1);
       if (backgroundId !== state.currentBackground.id) {
         const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundId);
         state.currentBackground = newBackground;
@@ -25,7 +24,7 @@ const backgroundSlice = createSlice({
     },
     changeBackgroundWeatherHandler(state, action) {
       let backgroundId = state.currentBackground.id;
-      backgroundId = backgroundId.slice(0, 3) + action.payload;
+      backgroundId = backgroundId.slice(0, -1) + action.payload;
       if (backgroundId !== state.currentBackground.id) {
         const newBackground = state.availableBackgroundArr.find((background) => background.id === backgroundId);
         state.currentBackground = newBackground;
@@ -33,8 +32,7 @@ const backgroundSlice = createSlice({
     },
     setAvailableBackground(state, action) {
       state.availableBackgroundArr = action.payload;
-      state.currentBackground = action.payload.find((background) => background.id === '0211');
-      state.count = action.payload.filter((background) => background.id.slice(2) === '11').length;
+      state.currentBackground = action.payload.find((background) => background.id === 'Anime_BG0211');
     },
     setAvailableBackgroundCategory(state, action) {
       state.setAvailableBackgroundCategoryArr = action.payload;
