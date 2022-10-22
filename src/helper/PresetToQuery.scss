@@ -1,0 +1,11 @@
+@import '../scss/main.scss';
+
+.preset-to-query {
+  max-width: 144rem;
+  margin: 5rem auto;
+
+  button {
+    border: 1px solid black;
+    padding: 0.1rem 0.5rem;
+  }
+}

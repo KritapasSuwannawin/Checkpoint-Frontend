@@ -4,6 +4,7 @@ const backgroundSlice = createSlice({
   name: 'background',
   initialState: {
     availableBackgroundArr: [],
+    setAvailableBackgroundCategoryArr: [],
     currentBackground: null,
     count: 0,
   },
@@ -34,6 +35,9 @@ const backgroundSlice = createSlice({
       state.availableBackgroundArr = action.payload;
       state.currentBackground = action.payload.find((background) => background.id === '0211');
       state.count = action.payload.filter((background) => background.id.slice(2) === '11').length;
+    },
+    setAvailableBackgroundCategory(state, action) {
+      state.setAvailableBackgroundCategoryArr = action.payload;
     },
   },
 });

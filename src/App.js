@@ -13,6 +13,7 @@ import Popup from './components/popup/Popup';
 import Policy from './pages/policy/Policy';
 import About from './pages/about/About';
 import Mobile from './pages/mobile/Mobile';
+import PresetToQuery from './helper/PresetToQuery';
 
 import { backgroundActions } from './store/backgroundSlice';
 import { ambientActions } from './store/ambientSlice';
@@ -119,7 +120,7 @@ function App() {
           return;
         }
 
-        const { ambient, background, music, avatar, mood } = data;
+        const { ambient, background, backgroundCategory, music, avatar, mood } = data;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -132,6 +133,7 @@ function App() {
             })
           )
         );
+
         dispatch(
           backgroundActions.setAvailableBackground(
             background.map((background) => {
@@ -143,6 +145,9 @@ function App() {
             })
           )
         );
+
+        dispatch(backgroundActions.setAvailableBackgroundCategory(backgroundCategory));
+
         dispatch(
           musicActions.setAvailableMusicArr(
             music.map((music) => {
@@ -154,6 +159,7 @@ function App() {
             })
           )
         );
+
         dispatch(
           avatarActions.setAvailableAvatar(
             avatar.map((avatar) => {
@@ -164,6 +170,7 @@ function App() {
             })
           )
         );
+
         dispatch(
           musicActions.setAvailableMoodArr(
             mood.map((mood) => {
@@ -334,6 +341,7 @@ function App() {
       ></Route>
       <Route path="policy/*" element={<Policy></Policy>}></Route>
       <Route path="about" element={<About></About>}></Route>
+      <Route path="helper/preset-to-query" element={<PresetToQuery></PresetToQuery>}></Route>
       <Route path="/*" element={<Navigate replace to="/"></Navigate>}></Route>
     </Routes>
   );
