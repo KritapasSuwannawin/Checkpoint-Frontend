@@ -73,17 +73,8 @@ function App() {
       return;
     }
 
-    if (
-      navigator.userAgent.includes('Safari') &&
-      !navigator.userAgent.includes('Chrome') &&
-      !localStorage.getItem('checkpointShowSafariPopup')
-    ) {
-      dispatch(popupActions.setShowSafariGuidePopup(true));
-    }
-
     if (!localStorage.getItem('checkpointShowTutorial')) {
       dispatch(popupActions.setShowTutorialPopup(true));
-      localStorage.setItem('checkpointShowTutorial', '1');
     }
 
     if (!localStorage.getItem('checkpointShowCookie')) {

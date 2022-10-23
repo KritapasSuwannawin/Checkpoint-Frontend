@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isSafari } from 'react-device-detect';
 
 import { pageActions } from '../../store/pageSlice';
 
@@ -22,7 +23,7 @@ function BackgroundVideo(props) {
     setCanPlay(true);
   }
 
-  if (videoRef.current && navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+  if (videoRef.current && isSafari) {
     isFullScreen
       ? videoRef.current.webkitEnterFullScreen && videoRef.current.webkitEnterFullScreen()
       : videoRef.current.webkitExitFullScreen && videoRef.current.webkitExitFullScreen();

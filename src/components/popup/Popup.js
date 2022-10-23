@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useCallback } from 'react';
+import { isSafari } from 'react-device-detect';
 
 import FiveMinuteFeedback from '../feedbackPopup/FiveMinuteFeedback';
 import SafariGuide from '../safariGuide/SafariGuide';
@@ -55,21 +56,22 @@ function Popup(props) {
   }
 
   function closeSafariGuideHandler() {
+    localStorage.setItem('checkpointShowSafariGuidePopup', '1');
     dispatch(popupActions.setShowSafariGuidePopup(false));
   }
 
   function closeTutorialHandler() {
+    localStorage.setItem('checkpointShowTutorial', '1');
     dispatch(popupActions.setShowTutorialPopup(false));
+
+    if (isSafari && !localStorage.getItem('checkpointShowSafariGuidePopup')) {
+      dispatch(popupActions.setShowSafariGuidePopup(true));
+    }
   }
 
   function closeFeedbackPopupHandler() {
     document.addEventListener('keyup', spacebarHandler);
     dispatch(popupActions.setShowFeedbackPopup(false));
-  }
-
-  function showUpgradePopupHandler() {
-    dispatch(popupActions.setShowTutorialPopup(false));
-    dispatch(popupActions.setShowUpgradePopup(true));
   }
 
   const closeLoginPopup = useCallback(() => {
@@ -89,7 +91,7 @@ function Popup(props) {
     <>
       {showFiveMinuteFeedbackPopup && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
       {showSafariGuidePopup && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
-      {showTutorialPopup && <Tutorial closeHandler={closeTutorialHandler} showUpgradePopupHandler={showUpgradePopupHandler}></Tutorial>}
+      {showTutorialPopup && <Tutorial closeHandler={closeTutorialHandler}></Tutorial>}
 
       {showCookiePopup && <CookiePopup closeHandler={closeCookiePopupHandler}></CookiePopup>}
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
