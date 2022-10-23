@@ -4,7 +4,7 @@ const backgroundSlice = createSlice({
   name: 'background',
   initialState: {
     availableBackgroundArr: [],
-    setAvailableBackgroundCategoryArr: [],
+    availableBackgroundCategoryArr: [],
     currentBackground: null,
   },
   reducers: {
@@ -35,7 +35,7 @@ const backgroundSlice = createSlice({
       state.currentBackground = action.payload.find((background) => background.id === 'Anime_BG0211');
     },
     setAvailableBackgroundCategory(state, action) {
-      state.setAvailableBackgroundCategoryArr = action.payload;
+      state.availableBackgroundCategoryArr = action.payload;
     },
   },
 });

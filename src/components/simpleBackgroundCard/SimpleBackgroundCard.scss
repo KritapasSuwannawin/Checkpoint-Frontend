@@ -1,0 +1,85 @@
+@import '../../scss/main.scss';
+
+.simple-background-card {
+  position: relative;
+  border-radius: 2rem;
+  width: 23rem;
+  height: 21.6rem;
+  background-color: #111;
+  padding: 0.5rem 0.5rem 1rem;
+
+  &:hover {
+    cursor: pointer;
+    border: none;
+  }
+
+  &.current-background {
+    background-color: #fff;
+  }
+
+  &__member {
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+
+  &__member-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2.2rem 2.2rem 0 0;
+    width: 100%;
+    height: 14.5rem;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  }
+
+  &__lock-svg {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.625rem;
+    width: 1.275rem;
+  }
+
+  &__image {
+    border-radius: 1.6rem 1.6rem 0 0;
+    object-fit: cover;
+    width: 100%;
+    height: 13.5rem;
+  }
+
+  &__name {
+    font-weight: 500;
+    font-size: 16px;
+    color: #fff;
+    margin: 1rem 0.5rem 0.3rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &.current-background {
+      color: #111;
+    }
+  }
+
+  &__bottom {
+    @include flex-row-center;
+    justify-content: flex-start;
+    column-gap: 0.8rem;
+    margin: 0 0.5rem;
+
+    &--logo {
+      width: 3rem;
+    }
+
+    &--right {
+      font-size: 1.2rem;
+      color: #fff;
+      opacity: 0.5;
+
+      &.current-background {
+        color: #111;
+        font-weight: 500;
+      }
+    }
+  }
+}

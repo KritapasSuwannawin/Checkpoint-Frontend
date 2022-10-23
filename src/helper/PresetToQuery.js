@@ -5,7 +5,7 @@ import './PresetToQuery.scss';
 
 function PresetToQuery(props) {
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
-  const availableBackgroundCategoryArr = useSelector((store) => store.background.setAvailableBackgroundCategoryArr);
+  const availableBackgroundCategoryArr = useSelector((store) => store.background.availableBackgroundCategoryArr);
 
   function submitHandler(e) {
     e.preventDefault();

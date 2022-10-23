@@ -6,6 +6,24 @@
   &.current-page {
     @include display-page;
   }
+
+  &__section {
+    width: 100%;
+
+    &--title {
+      font-weight: 500;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    &--container {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 2rem;
+      row-gap: 2rem;
+    }
+  }
 }
 
 @media (max-width: 1030px) {
