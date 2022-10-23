@@ -54,7 +54,7 @@ const logoutSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Logout.sv
 const speakerSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Speaker.svg`;
 
 function Home(props) {
-  const { fullScreenClickHander } = props;
+  const { fullScreenClickHander, logoutHandler } = props;
 
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
@@ -208,9 +208,7 @@ function Home(props) {
               <AmbientControl
                 id={ambient.id}
                 name={ambient.name}
-                nameJapanese={ambient.nameJapanese}
-                url={ambient.url}
-                thumbnailUrl={ambient.thumbnailUrl}
+                whiteIconUrl={ambient.whiteIconUrl}
                 volume={ambient.volume}
               ></AmbientControl>
             </div>,
@@ -226,13 +224,7 @@ function Home(props) {
     filteredCurrentAmbientArr.forEach((ambient) => {
       ambientThumbnailArr2.push(
         <div key={ambient.id} className="background-control__ambient-control">
-          <AmbientControl
-            id={ambient.id}
-            name={ambient.name}
-            url={ambient.url}
-            thumbnailUrl={ambient.thumbnailUrl}
-            volume={ambient.volume}
-          ></AmbientControl>
+          <AmbientControl id={ambient.id} name={ambient.name} whiteIconUrl={ambient.whiteIconUrl} volume={ambient.volume}></AmbientControl>
         </div>
       );
     });
@@ -359,21 +351,6 @@ function Home(props) {
     }
 
     dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
-  }
-
-  function logoutHandler() {
-    localStorage.removeItem('CheckpointEmail');
-    localStorage.removeItem('CheckpointPassword');
-    localStorage.removeItem('CheckpointLoginMethod');
-
-    dispatch(deviceActions.clearDevice());
-    dispatch(pageActions.closePageHandler());
-    dispatch(musicActions.setMusicPlaying(false));
-    dispatch(musicActions.setFavouriteMusicIdArr([]));
-    dispatch(avatarActions.changeAvatarHandler(1));
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
-    dispatch(backgroundActions.changeBackgroundHandler('Anime_BG0211'));
-    dispatch(memberActions.logout());
   }
 
   function loginHandler() {

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { isMobile, isSafari } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 import Loading from './pages/loading/Loading';
 import Home from './pages/home/Home';
@@ -53,12 +53,31 @@ function App() {
     [dispatch]
   );
 
+  const logoutHandler = useCallback(() => {
+    localStorage.removeItem('CheckpointEmail');
+    localStorage.removeItem('CheckpointPassword');
+    localStorage.removeItem('CheckpointLoginMethod');
+
+    dispatch(deviceActions.clearDevice());
+    dispatch(pageActions.closePageHandler());
+    dispatch(musicActions.setMusicPlaying(false));
+    dispatch(musicActions.setFavouriteMusicIdArr([]));
+    dispatch(avatarActions.changeAvatarHandler(1));
+    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(backgroundActions.changeBackgroundHandler('Anime_BG0211'));
+    dispatch(memberActions.logout());
+  }, [dispatch]);
+
   useEffect(() => {
     if (isMobile) {
       return;
     }
 
-    if (isSafari && !localStorage.getItem('checkpointShowSafariPopup')) {
+    if (
+      navigator.userAgent.includes('Safari') &&
+      !navigator.userAgent.includes('Chrome') &&
+      !localStorage.getItem('checkpointShowSafariPopup')
+    ) {
       dispatch(popupActions.setShowSafariGuidePopup(true));
     }
 
@@ -108,7 +127,8 @@ function App() {
               return {
                 ...ambient,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.filePath.replaceAll(' ', '+')}`,
-                thumbnailUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.thumbnailFilePath.replaceAll(' ', '+')}`,
+                whiteIconUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.whiteIconFilePath.replaceAll(' ', '+')}`,
+                blackIconUrl: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${ambient.blackIconFilePath.replaceAll(' ', '+')}`,
               };
             })
           )
@@ -226,16 +246,7 @@ function App() {
 
           if (statusCode !== 2001) {
             if (statusCode === 3003) {
-              localStorage.removeItem('CheckpointEmail');
-              localStorage.removeItem('CheckpointPassword');
-              localStorage.removeItem('CheckpointLoginMethod');
-
-              dispatch(deviceActions.clearDevice());
-              dispatch(pageActions.closePageHandler());
-              dispatch(musicActions.setMusicPlaying(false));
-              dispatch(musicActions.setFavouriteMusicIdArr([]));
-              dispatch(avatarActions.changeAvatarHandler(1));
-              dispatch(memberActions.logout());
+              logoutHandler();
             }
 
             if (statusCode === 4000) {
@@ -247,7 +258,18 @@ function App() {
         })
         .catch(() => {});
     }
-  }, [memberId, currentBackground, currentMusic, musicCategory, favouriteMusicIdArr, playFromPlaylist, deviceId, startTime, dispatch]);
+  }, [
+    memberId,
+    currentBackground,
+    currentMusic,
+    musicCategory,
+    favouriteMusicIdArr,
+    playFromPlaylist,
+    deviceId,
+    startTime,
+    dispatch,
+    logoutHandler,
+  ]);
 
   useEffect(() => {
     if (deviceId && currentAvatar) {
@@ -309,7 +331,7 @@ function App() {
             {doneInitialize && (
               <div ref={homeRef}>
                 <Popup spacebarHandler={spacebarHandler}></Popup>
-                <Home fullScreenClickHander={fullScreenClickHander}></Home>
+                <Home fullScreenClickHander={fullScreenClickHander} logoutHandler={logoutHandler}></Home>
                 <Background></Background>
                 <Music></Music>
                 <Ambient></Ambient>

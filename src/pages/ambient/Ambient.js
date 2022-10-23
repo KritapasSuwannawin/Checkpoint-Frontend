@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
+import AmbientCard from '../../components/ambientCard/AmbientCard';
 import './Ambient.scss';
 
 function Ambient(props) {
@@ -22,13 +22,12 @@ function Ambient(props) {
         return [
           ...filteredThumbnailArr,
           <div key={ambient.id}>
-            <SimpleThumbnailCard
+            <AmbientCard
               id={ambient.id}
               name={ambient.name}
-              thumbnailUrl={ambient.thumbnailUrl}
-              volume={ambient.volume}
-              ambient
-            ></SimpleThumbnailCard>
+              whiteIconUrl={ambient.whiteIconUrl}
+              blackIconUrl={ambient.blackIconUrl}
+            ></AmbientCard>
           </div>,
         ];
       });

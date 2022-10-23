@@ -9,7 +9,7 @@ const ambientSlice = createSlice({
   },
   reducers: {
     ambientToggleHandler(state, action) {
-      if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload) >= 0) {
+      if (state.currentAmbientArr.findIndex((ambient) => ambient.id === action.payload) !== -1) {
         state.currentAmbientArr = state.currentAmbientArr.filter((ambient) => ambient.id !== action.payload);
       } else {
         const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload);
@@ -28,16 +28,15 @@ const ambientSlice = createSlice({
       state.currentAmbientArr = currentAmbientArr;
     },
     setSpecificAmbientVolume(state, action) {
-      const availableAmbientArr = [...state.availableAmbientArr];
-      const existingAmbientIndex = availableAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
-      availableAmbientArr[existingAmbientIndex].volume = action.payload.volume;
-      state.availableAmbientArr = availableAmbientArr;
-
       const currentAmbientArr = [...state.currentAmbientArr];
       const existingCurrentAmbientIndex = currentAmbientArr.findIndex((ambient) => ambient.id === action.payload.id);
-      if (existingCurrentAmbientIndex >= 0) {
+      if (existingCurrentAmbientIndex !== -1) {
         currentAmbientArr[existingCurrentAmbientIndex].volume = action.payload.volume;
         state.currentAmbientArr = currentAmbientArr;
+      } else {
+        const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
+        newAmbient.volume = action.payload.volume;
+        state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
       }
     },
     setAvailableAmbient(state, action) {

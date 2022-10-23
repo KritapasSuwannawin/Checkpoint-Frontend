@@ -4,11 +4,32 @@
   @include flex-row-center;
   justify-content: space-between;
 
-  &__speaker-icon {
-    width: 1.5rem;
+  &.not-current-ambient {
+    opacity: 0.5;
+  }
+
+  &__ambient-container {
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+    font-size: 1.3rem;
+    color: #fff;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    img {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    p {
+      width: 10rem;
+    }
   }
 
   &__volume-slider {
-    width: 18rem;
+    width: 100%;
   }
 }

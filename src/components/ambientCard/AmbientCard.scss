@@ -1,0 +1,35 @@
+@import '../../scss/main.scss';
+
+.ambient-card {
+  @include flex-column-center;
+  row-gap: 3.4rem;
+  background: #111;
+  border-radius: 2.5rem;
+  padding: 4.8rem 5.9rem 7rem;
+  font-size: 18px;
+  color: #fff;
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.current-ambient {
+    background: #fff;
+    color: #111;
+  }
+
+  &__image {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  &__name {
+    position: absolute;
+    bottom: 1.3rem;
+    left: 0;
+    width: 100%;
+    padding: 0 1rem;
+    text-align: center;
+  }
+}
