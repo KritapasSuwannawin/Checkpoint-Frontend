@@ -2,30 +2,36 @@
 
 .music-thumbnail-card {
   position: relative;
-  border-radius: 0.8rem;
-  width: calc(13rem + 0.4rem);
-  height: 17rem;
-  border: 0.2rem rgba($color: white, $alpha: 0.01) solid;
+  border-radius: 1rem;
+  width: calc(13.4rem);
   display: flex;
   flex-direction: column;
+  background-color: #111;
 
   &:hover {
     cursor: pointer;
-    border: 0.2rem white solid;
+  }
+
+  &.current-music {
+    padding: 2px 2px 0;
+    background-color: #fff;
   }
 
   &__favourite-btn {
     position: absolute;
     top: 0rem;
-    right: 0rem;
+    right: 0.1rem;
     padding: 0.5rem;
     width: 2.5rem;
   }
 
   &__image {
     border-radius: 0.8rem 0.8rem 0 0;
-    width: 13rem;
-    height: 13rem;
+    height: 13.4rem;
+
+    &.current-music {
+      height: 13.2rem;
+    }
   }
 
   &__description {
@@ -33,25 +39,43 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 0.7rem 0 0.9rem;
-    background-color: rgba($color: #000, $alpha: 0.75);
-    width: 13rem;
-    height: 3.5rem;
+    height: 4rem;
     border-radius: 0 0 0.8rem 0.8rem;
     position: relative;
+    background-color: #111;
+
+    &.current-music {
+      background-color: #fff;
+      padding: 0 0.5rem 0 0.8rem;
+    }
   }
 
   &__music-name {
     color: white;
     font-weight: 500;
     margin-bottom: 0.1rem;
+
+    &.current-music {
+      color: #222;
+    }
   }
 
   &__artist-name {
     font-size: 0.9rem;
-    color: #ddd;
+    color: #ccc;
+
+    &.current-music {
+      color: #444;
+      font-weight: 500;
+    }
   }
 
   &__play-pause-btn {
     width: 2.5rem;
+
+    &.current-music {
+      width: 2.65rem;
+      margin-bottom: -0.2rem;
+    }
   }
 }
