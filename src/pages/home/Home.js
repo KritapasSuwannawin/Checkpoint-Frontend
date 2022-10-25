@@ -127,6 +127,7 @@ function Home(props) {
           }
 
           const { memberData } = data;
+          gtmDataLayerAutoLogin(memberData.id)
           dispatch(memberActions.setMember(memberData));
           dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
           dispatch(musicActions.setInitialMusic(memberData.musicId));
@@ -240,6 +241,14 @@ function Home(props) {
 
     return true;
   }
+
+  function gtmDataLayerAutoLogin(userData) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event' : 'auto-login',
+      'userId' : userData
+    })
+}
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());

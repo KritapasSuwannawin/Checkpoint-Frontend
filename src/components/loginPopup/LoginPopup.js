@@ -181,11 +181,12 @@ function LoginPopup(props) {
 
           return;
         }
-
+        gtmDataLayerSignup(data.memberData.id) //doesn't test yet
         dispatch(memberActions.setMember(data.memberData));
         dispatch(backgroundActions.changeBackgroundHandler('0411'));
         dispatch(deviceActions.setNewDevice());
         setLocalStorage(requestData);
+      
       })
       .catch(() => setErrorDuringAuthen(true))
       .finally(() => setLoading(false));
@@ -225,6 +226,7 @@ function LoginPopup(props) {
         }
 
         const { memberData } = data;
+        gtmDataLayerLogin(memberData.id) 
         dispatch(memberActions.setMember(memberData));
         dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
         dispatch(musicActions.setInitialMusic(memberData.musicId));
@@ -238,6 +240,22 @@ function LoginPopup(props) {
       .catch(() => setErrorDuringAuthen(true))
       .finally(() => setLoading(false));
   }
+
+  function gtmDataLayerLogin(userData) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event' : 'login',
+        'userId' : userData
+      })
+  }
+
+  function gtmDataLayerSignup(userData) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event' : 'signup',
+      'userId' : userData
+    })
+}
 
   function signUpSubmitHandler() {
     if (loading || !verificationCodeRef.current) {
