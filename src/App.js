@@ -110,7 +110,7 @@ function App() {
           return;
         }
 
-        const { ambient, background, backgroundCategory, music, avatar, mood } = data;
+        const { ambient, background, backgroundCategory, music, musicCategory, avatar } = data;
 
         dispatch(
           ambientActions.setAvailableAmbient(
@@ -151,23 +151,14 @@ function App() {
           )
         );
 
+        dispatch(musicActions.setAvailableMusicCategory(musicCategory));
+
         dispatch(
           avatarActions.setAvailableAvatar(
             avatar.map((avatar) => {
               return {
                 ...avatar,
                 url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${avatar.filePath.replaceAll(' ', '+')}`,
-              };
-            })
-          )
-        );
-
-        dispatch(
-          musicActions.setAvailableMoodArr(
-            mood.map((mood) => {
-              return {
-                ...mood,
-                url: `${process.env.REACT_APP_CLOUD_STORAGE_URL}/${mood.filePath.replaceAll(' ', '+')}`,
               };
             })
           )
@@ -235,7 +226,7 @@ function App() {
         .then((body) => {
           const { statusCode } = body;
 
-          if (statusCode !== 2001) {
+          if (statusCode !== 2000) {
             if (statusCode === 3003) {
               logoutHandler();
             }

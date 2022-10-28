@@ -4,6 +4,7 @@ const musicSlice = createSlice({
   name: 'music',
   initialState: {
     availableMusicArr: [],
+    availableMusicCategoryArr: [],
     currentMusic: null,
     shuffledMusicArr: [],
     musicPlaying: false,
@@ -14,7 +15,6 @@ const musicSlice = createSlice({
     favouriteMusicIdArr: [],
     playFromPlaylist: false,
     currentMoodId: null,
-    availableMoodArr: [],
   },
   reducers: {
     changeMusicHandler(state, action) {
@@ -23,15 +23,19 @@ const musicSlice = createSlice({
           state.shuffledMusicArr = [];
         }
 
-        const newMusic = state.availableMusicArr.find((music) => music.id === action.payload);
-        state.currentMusic = newMusic;
+        state.currentMusic = state.availableMusicArr.find((music) => music.id === action.payload);
         state.musicPlaying = true;
       } else {
         state.musicPlaying = true;
       }
     },
     setInitialMusic(state, action) {
-      state.currentMusic = state.availableMusicArr.find((music) => music.id === action.payload);
+      const initialMusic = state.availableMusicArr.find((music) => music.id === action.payload);
+      state.currentMusic = initialMusic;
+
+      if (initialMusic.isMood) {
+        state.currentMoodId = initialMusic.id;
+      }
     },
     toggleMusicPlayPause(state, action) {
       state.musicPlaying = !state.musicPlaying;
@@ -43,7 +47,7 @@ const musicSlice = createSlice({
       let availableMusicArr = [...state.availableMusicArr];
 
       if (state.currentMoodId) {
-        availableMusicArr = availableMusicArr.filter((music) => music.moodIdArr.includes(state.currentMoodId));
+        availableMusicArr = availableMusicArr.filter((music) => music.isMood);
       } else {
         if (state.musicCategory) {
           availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
@@ -86,7 +90,7 @@ const musicSlice = createSlice({
       let availableMusicArr = [...state.availableMusicArr];
 
       if (state.currentMoodId) {
-        availableMusicArr = availableMusicArr.filter((music) => music.moodIdArr.includes(state.currentMoodId));
+        availableMusicArr = availableMusicArr.filter((music) => music.isMood);
       } else {
         if (state.musicCategory) {
           availableMusicArr = availableMusicArr.filter((music) => music.category === state.musicCategory);
@@ -151,9 +155,12 @@ const musicSlice = createSlice({
       state.currentMusic = action.payload.find((music) => music.id === 4);
     },
     setMusicCategory(state, action) {
-      state.musicCategory = action.payload;
-      state.playFromPlaylist = false;
-      state.currentMoodId = null;
+      const category = action.payload;
+      if (category) {
+        state.musicCategory = category;
+        state.playFromPlaylist = false;
+        state.currentMoodId = null;
+      }
     },
     favouriteBtnClickHandler(state, action) {
       const favouriteMusicIdArr = state.favouriteMusicIdArr;
@@ -168,28 +175,29 @@ const musicSlice = createSlice({
       state.favouriteMusicIdArr = action.payload;
     },
     setPlayFromPlaylist(state, action) {
-      state.playFromPlaylist = action.payload;
-      state.musicCategory = null;
-      state.currentMoodId = null;
-    },
-    setAvailableMoodArr(state, action) {
-      state.availableMoodArr = action.payload;
+      const playFromPlaylist = action.payload;
+      if (playFromPlaylist) {
+        state.playFromPlaylist = playFromPlaylist;
+        state.musicCategory = null;
+        state.currentMoodId = null;
+      }
     },
     moodSelectHandler(state, action) {
       if (state.currentMoodId !== action.payload) {
-        state.shuffleMusic = true;
         state.loopMusic = false;
-        state.shuffledMusicArr = [];
+        state.shuffleMusic = false;
+        state.playFromPlaylist = false;
+        state.musicCategory = null;
 
-        const availableMusicArr = state.availableMusicArr.filter((music) => music.moodIdArr.includes(action.payload));
-        const randomMusic = availableMusicArr[Math.floor(Math.random() * availableMusicArr.length)];
-        state.currentMusic = randomMusic;
-
+        state.currentMusic = state.availableMusicArr.find((music) => music.id === action.payload);
         state.currentMoodId = action.payload;
         state.musicPlaying = true;
       } else {
         state.musicPlaying = true;
       }
+    },
+    setAvailableMusicCategory(state, action) {
+      state.availableMusicCategoryArr = action.payload;
     },
   },
 });

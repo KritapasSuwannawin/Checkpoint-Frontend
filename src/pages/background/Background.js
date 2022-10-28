@@ -32,6 +32,24 @@ function Background() {
       };
     });
 
+    categoryArr.unshift({
+      id: 0,
+      name: 'Top Hit',
+      thumbnailArr: availableBackgroundArr
+        .filter((bg) => bg.isTopHit && bg.id.slice(-2) === currentBackground.id.slice(-2))
+        .map((bg) => (
+          <div key={bg.id}>
+            <SimpleBackgroundCard
+              id={bg.id}
+              name={bg.name}
+              thumbnailUrl={bg.thumbnailUrl}
+              artistName={bg.artistName}
+              isMember={bg.isMember}
+            ></SimpleBackgroundCard>
+          </div>
+        )),
+    });
+
     setCategoryArr(categoryArr);
   }, [availableBackgroundArr, availableBackgroundCategoryArr, currentBackground]);
 

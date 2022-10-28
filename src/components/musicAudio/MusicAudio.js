@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { musicActions } from '../../store/musicSlice';
@@ -12,49 +12,34 @@ function MusicAudio(props) {
 
   const musicRef = useRef();
 
-  const [musicUrl, setMusicUrl] = useState();
-
-  const playMusicHandler = useCallback(() => {
-    const playPromise = musicRef.current.play();
-    if (playPromise) {
-      playPromise.catch((e) => {
-        if (e.name === 'NotAllowedError') {
-          dispatch(musicActions.setMusicPlaying(false));
-        }
-      });
-    }
+  const playMusic = useCallback(() => {
+    musicRef.current.play().catch((e) => {
+      if (e.name === 'NotAllowedError') {
+        dispatch(musicActions.setMusicPlaying(false));
+      }
+    });
   }, [dispatch]);
 
   useEffect(() => {
-    setMusicUrl(currentMusic.url);
-
     if (musicPlaying) {
-      playMusicHandler();
+      playMusic();
     } else {
       musicRef.current.pause();
     }
-  }, [musicPlaying, currentMusic, playMusicHandler]);
-
-  useEffect(() => {
-    if (musicPlaying) {
-      playMusicHandler();
-    } else {
-      musicRef.current.pause();
-    }
-  }, [musicPlaying, playMusicHandler]);
+  }, [musicPlaying, playMusic]);
 
   useEffect(() => {
     musicRef.current.volume = musicVolume;
   }, [musicVolume]);
 
-  function audioEndedHandler() {
-    dispatch(musicActions.nextMusicHandler());
+  function canPlayHandler() {
+    if (musicPlaying) {
+      playMusic();
+    }
   }
 
-  function canPlayThroughHandler() {
-    if (musicPlaying) {
-      playMusicHandler();
-    }
+  function audioEndedHandler() {
+    dispatch(musicActions.nextMusicHandler());
   }
 
   function errorHandler() {
@@ -63,14 +48,22 @@ function MusicAudio(props) {
     }, 100);
   }
 
+  function timeUpdateHandler(e) {
+    const buffer = 0.44;
+    if (currentMusic.isMood && e.target.currentTime > e.target.duration - buffer) {
+      e.target.currentTime = 0;
+    }
+  }
+
   return (
     <audio
-      src={musicUrl}
+      src={currentMusic.url}
       preload="auto"
       loop={loopMusic}
-      onCanPlayThrough={canPlayThroughHandler}
+      onCanPlayThrough={canPlayHandler}
       onEnded={audioEndedHandler}
       onError={errorHandler}
+      onTimeUpdate={timeUpdateHandler}
       ref={musicRef}
     ></audio>
   );

@@ -127,7 +127,7 @@ function Home(props) {
           }
 
           const { memberData } = data;
-          gtmDataLayerAutoLogin(memberData.id)
+          gtmDataLayerAutoLogin(memberData.id);
           dispatch(memberActions.setMember(memberData));
           dispatch(backgroundActions.changeBackgroundHandler(memberData.backgroundId));
           dispatch(musicActions.setInitialMusic(memberData.musicId));
@@ -245,10 +245,10 @@ function Home(props) {
   function gtmDataLayerAutoLogin(userData) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event' : 'auto-login',
-      'userId' : userData
-    })
-}
+      event: 'auto-login',
+      userId: userData,
+    });
+  }
 
   function playPauseMusicHandler() {
     dispatch(musicActions.toggleMusicPlayPause());
@@ -606,12 +606,14 @@ function Home(props) {
           </div>
           <div className="player">
             <div className="player__music-data">
-              <img
-                src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg : heartSvg}
-                alt=""
-                className="player__music-data--favourite-btn"
-                onClick={favouriteBtnClickHandler}
-              ></img>
+              {!currentMusic.isMood && (
+                <img
+                  src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg : heartSvg}
+                  alt=""
+                  className="player__music-data--favourite-btn"
+                  onClick={favouriteBtnClickHandler}
+                ></img>
+              )}
               <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
               <div>
                 <p className="player__music-data--music-name">{currentMusic.musicName}</p>
@@ -621,12 +623,14 @@ function Home(props) {
               </div>
             </div>
             <div className="player__music-control">
-              <img
-                src={shuffleSvg}
-                onClick={toggleShuffleMusicHandler}
-                alt=""
-                className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
-              ></img>
+              {!currentMusic.isMood && (
+                <img
+                  src={shuffleSvg}
+                  onClick={toggleShuffleMusicHandler}
+                  alt=""
+                  className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
+                ></img>
+              )}
               <img src={backwardSvg} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
               <img
                 src={musicPlaying ? pauseSvg : playSvg}
@@ -635,12 +639,14 @@ function Home(props) {
                 className="player__music-control--play-pause"
               ></img>
               <img src={forwardSvg} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
-              <img
-                src={loopSvg}
-                onClick={toggleLoopMusicHandler}
-                alt=""
-                className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
-              ></img>
+              {!currentMusic.isMood && (
+                <img
+                  src={loopSvg}
+                  onClick={toggleLoopMusicHandler}
+                  alt=""
+                  className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
+                ></img>
+              )}
             </div>
             <div className="player__volume-control">
               <img src={musicLibrarySvg} onClick={musicClickHander} className="player__music-playlist" alt=""></img>

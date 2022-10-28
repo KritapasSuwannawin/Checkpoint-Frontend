@@ -1,57 +1,36 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { ambientActions } from '../../store/ambientSlice';
 
 function AmbientAudio(props) {
+  const { id, url, volume } = props;
+
   const dispatch = useDispatch();
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
 
   const ambientRef = useRef();
 
-  const [ambientUrl, setAmbientUrl] = useState();
-
   useEffect(() => {
-    setAmbientUrl(props.url);
-  }, [props.url]);
+    ambientRef.current.volume = Number((ambientVolume * volume).toFixed(2));
+  }, [ambientVolume, volume]);
 
-  useEffect(() => {
-    ambientRef.current.volume = Number((ambientVolume * props.volume).toFixed(2));
-  }, [ambientVolume, props.volume, props.id]);
-
-  function playAmbient() {
-    ambientRef.current.click();
+  function playAmbientHandler(e) {
+    e.target.play().catch((e) => {
+      if (e.name === 'NotAllowedError') {
+        dispatch(ambientActions.ambientToggleHandler(id));
+      }
+    });
   }
 
-  function clickHandler(e) {
-    const playPromise = e.target.play();
-    if (playPromise) {
-      playPromise.catch((e) => {
-        if (e.name === 'NotAllowedError') {
-          dispatch(ambientActions.ambientToggleHandler(props.id));
-        }
-      });
-    }
-  }
-
-  function loopAmbient() {
+  function timeUpdateHandler(e) {
     const buffer = 0.44;
-    if (ambientRef.current.currentTime > ambientRef.current.duration - buffer) {
-      ambientRef.current.currentTime = 0;
-      playAmbient();
+    if (e.target.currentTime > e.target.duration - buffer) {
+      e.target.currentTime = 0;
     }
   }
 
-  return (
-    <audio
-      src={ambientUrl}
-      onCanPlay={playAmbient}
-      preload="auto"
-      onClick={clickHandler}
-      ref={ambientRef}
-      onTimeUpdate={loopAmbient}
-    ></audio>
-  );
+  return <audio src={url} onCanPlayThrough={playAmbientHandler} preload="auto" ref={ambientRef} onTimeUpdate={timeUpdateHandler}></audio>;
 }
 
 export default AmbientAudio;

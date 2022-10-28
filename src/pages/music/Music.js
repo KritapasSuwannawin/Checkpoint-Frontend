@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import MusicCard from '../../components/musicCard/MusicCard';
@@ -16,7 +16,7 @@ function Music() {
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableMusicArr = useSelector((store) => store.music.availableMusicArr);
-  const availableMoodArr = useSelector((store) => store.music.availableMoodArr);
+  const availableMusicCategoryArr = useSelector((store) => store.music.availableMusicCategoryArr);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const musicCategory = useSelector((store) => store.music.musicCategory);
 
@@ -26,20 +26,19 @@ function Music() {
 
   const [moodCardArr, setMoodCardArr] = useState([]);
 
-  const availableMusicArrRef = useRef();
-  const categoryRef = useRef();
-
   const isCategoryPlaying = musicPlaying && category === musicCategory;
 
   useEffect(() => {
     setMoodCardArr(
-      availableMoodArr.map((mood) => (
-        <div key={mood.id}>
-          <MoodCard id={mood.id} name={mood.name} url={mood.url}></MoodCard>
-        </div>
-      ))
+      availableMusicArr
+        .filter((music) => music.isMood)
+        .map((music) => (
+          <div key={music.id}>
+            <MoodCard id={music.id} musicName={music.musicName} thumbnailUrl={music.thumbnailUrl}></MoodCard>
+          </div>
+        ))
     );
-  }, [availableMoodArr]);
+  }, [availableMusicArr]);
 
   const musicClickHandler = useCallback(
     (id) => {
@@ -50,13 +49,6 @@ function Music() {
   );
 
   useEffect(() => {
-    if (JSON.stringify(availableMusicArrRef.current) === JSON.stringify(availableMusicArr) && categoryRef.current === category) {
-      return;
-    }
-
-    availableMusicArrRef.current = availableMusicArr;
-    categoryRef.current = category;
-
     setThumbnailArr([]);
     setCategoryArr([]);
 
@@ -82,16 +74,8 @@ function Music() {
       return;
     }
 
-    const categoryArr = [];
-    availableMusicArr.forEach((music) => {
-      const category = music.category;
-      if (!categoryArr.includes(category)) {
-        categoryArr.push(category);
-      }
-    });
-
-    categoryArr
-      .map((category) => availableMusicArr.filter((music) => music.category === category))
+    availableMusicCategoryArr
+      .map((category) => availableMusicArr.filter((music) => music.categoryId === category.id))
       .forEach((arr, i) => {
         const category = arr[0].category;
         const dataArr = arr.slice(0, 5);
@@ -103,7 +87,7 @@ function Music() {
           </div>,
         ]);
       });
-  }, [availableMusicArr, musicClickHandler, category]);
+  }, [availableMusicArr, availableMusicCategoryArr, musicClickHandler, category]);
 
   function playPauseCategoryHandler() {
     if (isCategoryPlaying) {
@@ -135,6 +119,7 @@ function Music() {
         </>
       ) : (
         <>
+          <p className="music__title">All Day Mood</p>
           <div className="music__mood-card-container">{moodCardArr}</div>
           <p className="music__title">All Music</p>
         </>
