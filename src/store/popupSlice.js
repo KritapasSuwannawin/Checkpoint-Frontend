@@ -11,7 +11,7 @@ const popupSlice = createSlice({
     showSafariGuidePopup: false,
     showTutorialPopup: false,
     showTimerPopup: false,
-    showOutsideLinkPopup: false,
+    showProfilePopupPopup: false,
   },
   reducers: {
     setShowLoginPopup(state, action) {
@@ -38,14 +38,14 @@ const popupSlice = createSlice({
     setShowTimerPopup(state, action) {
       state.showTimerPopup = action.payload;
     },
-    setShowOutsideLinkPopup(state, action) {
-      state.showOutsideLinkPopup = action.payload;
+    setShowProfilePopupPopup(state, action) {
+      state.showProfilePopupPopup = action.payload;
     },
     toggleShowTimerPopup(state, action) {
       state.showTimerPopup = !state.showTimerPopup;
     },
-    toggleShowOutsideLinkPopup(state, action) {
-      state.showOutsideLinkPopup = !state.showOutsideLinkPopup;
+    toggleShowProfilePopupPopup(state, action) {
+      state.showProfilePopupPopup = !state.showProfilePopupPopup;
     },
   },
 });

@@ -63,7 +63,7 @@ function App() {
     dispatch(musicActions.setMusicPlaying(false));
     dispatch(musicActions.setFavouriteMusicIdArr([]));
     dispatch(avatarActions.changeAvatarHandler(1));
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
     dispatch(backgroundActions.changeBackgroundHandler('Anime_BG0211'));
     dispatch(memberActions.logout());
   }, [dispatch]);
@@ -312,8 +312,8 @@ function App() {
             <Loading></Loading>
             {doneInitialize && (
               <div ref={homeRef}>
-                <Popup spacebarHandler={spacebarHandler}></Popup>
-                <Home fullScreenClickHander={fullScreenClickHander} logoutHandler={logoutHandler}></Home>
+                <Popup spacebarHandler={spacebarHandler} logoutHandler={logoutHandler}></Popup>
+                <Home fullScreenClickHander={fullScreenClickHander}></Home>
                 <Background></Background>
                 <Music></Music>
                 <Ambient></Ambient>

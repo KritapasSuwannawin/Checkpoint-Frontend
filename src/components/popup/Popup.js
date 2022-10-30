@@ -9,12 +9,13 @@ import LoginPopup from '../loginPopup/LoginPopup';
 import HelpSupportPopup from '../helpSupportPopup/HelpSupportPopup';
 import FeedbackPopup from '../feedbackPopup/FeedbackPopup';
 import CookiePopup from '../cookiePopup/CookiePopup';
+import ProfilePopup from '../profilePopup/ProfilePopup';
 
 import { pageActions } from '../../store/pageSlice';
 import { popupActions } from '../../store/popupSlice';
 
 function Popup(props) {
-  const spacebarHandler = props.spacebarHandler;
+  const { spacebarHandler, logoutHandler } = props;
 
   const dispatch = useDispatch();
 
@@ -25,11 +26,12 @@ function Popup(props) {
   const showFeedbackPopup = useSelector((store) => store.popup.showFeedbackPopup);
   const showSafariGuidePopup = useSelector((store) => store.popup.showSafariGuidePopup);
   const showTutorialPopup = useSelector((store) => store.popup.showTutorialPopup);
+  const showProfilePopupPopup = useSelector((store) => store.popup.showProfilePopupPopup);
 
   const closeNavPopupHandler = useCallback(() => {
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowTimerPopup(false));
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,10 +47,10 @@ function Popup(props) {
   }, [dispatch, closeNavPopupHandler, showLoginPopup, showHelpSupportPopup, showFeedbackPopup]);
 
   useEffect(() => {
-    if (showFeedbackPopup) {
+    if (showFeedbackPopup || showHelpSupportPopup) {
       document.removeEventListener('keyup', spacebarHandler);
     }
-  }, [dispatch, spacebarHandler, showFeedbackPopup]);
+  }, [dispatch, spacebarHandler, showFeedbackPopup, showHelpSupportPopup]);
 
   function closeFiveMinuteFeedbackHandler() {
     document.addEventListener('keyup', spacebarHandler);
@@ -79,6 +81,7 @@ function Popup(props) {
   }, [dispatch]);
 
   function closeHelpSupportHandler() {
+    document.addEventListener('keyup', spacebarHandler);
     dispatch(popupActions.setShowHelpSupportPopup(false));
   }
 
@@ -90,13 +93,13 @@ function Popup(props) {
   return (
     <>
       {showFiveMinuteFeedbackPopup && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
+      {showFeedbackPopup && <FeedbackPopup closeHandler={closeFeedbackPopupHandler}></FeedbackPopup>}
       {showSafariGuidePopup && <SafariGuide closeHandler={closeSafariGuideHandler}></SafariGuide>}
       {showTutorialPopup && <Tutorial closeHandler={closeTutorialHandler}></Tutorial>}
-
       {showCookiePopup && <CookiePopup closeHandler={closeCookiePopupHandler}></CookiePopup>}
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
-      {showFeedbackPopup && <FeedbackPopup closeHandler={closeFeedbackPopupHandler}></FeedbackPopup>}
+      {showProfilePopupPopup && <ProfilePopup logoutHandler={logoutHandler}></ProfilePopup>}
     </>
   );
 }

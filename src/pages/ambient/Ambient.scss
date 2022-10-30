@@ -6,14 +6,13 @@
   &.current-page {
     @include display-page;
   }
-}
 
-@media (max-width: 1030px) {
-  .ambient {
-    max-width: 100vw;
-
-    &__overlay {
-      width: 100vw;
-    }
+  &__title {
+    width: 100%;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: white;
+    margin-left: 0.1rem;
+    margin-bottom: -1rem;
   }
 }

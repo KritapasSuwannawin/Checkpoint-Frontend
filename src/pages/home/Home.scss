@@ -1,363 +1,86 @@
 @import '../../scss/main.scss';
 
 .home {
-  &__overlay {
-    @include fixed-whole-screen;
-    display: flex;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-    opacity: 0;
-
-    &--left {
-      height: calc(100vh - 8.6rem);
-      background-color: rgba(17, 17, 17, 0.15);
-      width: calc(100vw - 45rem);
-    }
-
-    &--right {
-      height: calc(100vh - 8.6rem);
-      background-color: rgba(17, 17, 17, 0.6);
-      width: 45rem;
-    }
-
-    &.show-overlay {
-      opacity: 1;
-    }
-  }
-
   .nav {
     display: flex;
     justify-content: space-between;
-    padding: 2rem 2.5rem 9rem 2.5rem;
-    color: white;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(17, 17, 17, 0));
-    position: relative;
+    padding: 1.8rem 2.5rem 5rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(17, 17, 17, 0));
 
     &__logo {
-      @include flex-row-center;
-      justify-content: flex-start;
-      column-gap: 1.8rem;
+      width: 15.6rem;
+      display: block;
 
-      &--img {
-        height: 100%;
-        display: block;
-
-        &:hover {
-          cursor: pointer;
-        }
+      &:hover {
+        cursor: pointer;
       }
     }
 
-    &__links {
+    &__right {
       @include flex-row-center;
-      font-size: 1.8rem;
-      column-gap: 5.5rem;
-      white-space: nowrap;
+      column-gap: 2rem;
 
-      &--timer-container {
-        position: relative;
-      }
-
-      &--link {
-        padding: 0.5rem;
+      &--primary {
         @include flex-row-center;
+        background: #111111;
+        border-radius: 2rem;
+        padding: 1.5rem 4.2rem;
+        column-gap: 5rem;
 
-        &:hover {
-          cursor: pointer;
-        }
-
-        &.margin-right {
-          z-index: 2;
-          margin-right: 2rem;
-        }
-
-        &.current-page {
-          font-weight: bold;
-        }
-
-        &.profile {
-          width: 5rem;
-          height: 5rem;
-          padding: 0;
-          border-radius: 50%;
-          margin-left: 0.5rem;
-
-          &.premium {
-            border: 0.3rem solid #f580eb;
-          }
-        }
-      }
-
-      &--icon {
-        margin-right: 0.5rem;
-        width: 3rem;
-
-        &.small {
-          width: 2.2rem;
-        }
-      }
-
-      &--about-us {
-        margin-left: -4rem;
-        margin-right: -1rem;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-
-    &__outside-links {
-      position: absolute;
-      top: 8rem;
-      right: 2.4rem;
-      backdrop-filter: blur(1rem);
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 1.5rem;
-      padding-bottom: 0;
-      border-radius: 0.8rem;
-      z-index: 1;
-      font-size: 1.6rem;
-      max-height: calc(100vh - 18rem);
-      overflow-y: auto;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-
-      &--btn-container {
-        @include flex-row-center;
-        column-gap: 0.8rem;
-        margin-bottom: 1.5rem;
-      }
-
-      &--profile-container {
-        display: flex;
-        column-gap: 1.5rem;
-        margin-bottom: 1.5rem;
-        align-items: center;
-
-        img {
-          width: 6rem;
-          height: 6rem;
-          border-radius: 50%;
-
-          &.premium {
-            border: 0.3rem solid #f580eb;
-          }
+        .link {
+          @include flex-row-center;
+          column-gap: 1rem;
 
           &:hover {
             cursor: pointer;
           }
+
+          &__icon {
+            height: 2rem;
+
+            &.small {
+              height: 1.9rem;
+            }
+          }
+
+          &__text {
+            font-size: 1.6rem;
+            line-height: 0.5;
+            color: #fff;
+          }
+        }
+
+        .timer-container {
+          position: relative;
         }
       }
 
-      &--username {
-        font-size: 2.4rem;
-        font-weight: 700;
-        margin-top: -0.5rem;
-      }
+      &--secondary {
+        @include flex-row-center;
+        background: #111111;
+        border-radius: 2rem;
+        padding: 1.5rem 3rem;
+        column-gap: 3rem;
 
-      &--member-id {
-        font-size: 1.4rem;
-      }
-
-      &--container {
-        display: flex;
-        column-gap: 1rem;
-
-        &.border-top {
-          border-top: 0.1rem solid white;
-          padding-top: 1.5rem;
-        }
-
-        img {
+        .icon {
           height: 2rem;
 
-          &.small {
-            padding-top: 0.3rem;
-          }
-        }
-
-        a,
-        p {
-          padding: 0.2rem;
-          display: block;
-          text-decoration: none;
-          color: white;
-          margin-bottom: 1.5rem;
-
           &:hover {
             cursor: pointer;
           }
         }
       }
 
-      &--icon-container {
-        width: 3rem;
-        display: flex;
-        justify-content: center;
-      }
+      &--profile {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        object-fit: cover;
 
-      &--small-icon {
-        height: 1.6rem !important;
-      }
-    }
-  }
-
-  .background-control {
-    position: fixed;
-    top: 9rem;
-    right: 0;
-    width: 45rem;
-    padding: 0 4rem;
-    @include flex-column-center;
-    justify-content: flex-start;
-    row-gap: 1.5rem;
-    height: calc(100vh - 17.7rem);
-    overflow-y: auto;
-    opacity: 0;
-    z-index: -2;
-    transition: all 0.3s ease;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &.show-control {
-      opacity: 1;
-      z-index: 0;
-    }
-
-    &__thumbnail {
-      width: 100%;
-      border-radius: 0.8rem;
-      border: 0.2rem white solid;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    &__ambient-volume {
-      margin: 1rem 0;
-      display: flex;
-      color: white;
-      font-size: 1.4rem;
-      font-weight: 500;
-      column-gap: 1rem;
-      width: 100%;
-
-      p {
-        white-space: nowrap;
-      }
-
-      img {
-        width: 1.5rem;
-      }
-
-      &--slider {
-        width: 100%;
-      }
-    }
-
-    &__ambient-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      row-gap: 2rem;
-    }
-
-    &__ambient-control {
-      width: 100%;
-    }
-
-    &__add-ambient {
-      width: 100%;
-      height: 5rem;
-      margin-top: 1rem;
-      border-radius: 0.8rem;
-      border: 0.2rem solid white;
-      background: rgba(255, 255, 255, 0.2);
-      @include flex-row-center;
-
-      img {
-        width: 2rem;
-
-        &.small {
-          width: 1.3rem;
+        &:hover {
+          cursor: pointer;
         }
       }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      &.premium:hover {
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  .music-control {
-    position: fixed;
-    top: 10rem;
-    right: 0;
-    width: 45rem;
-    padding: 0 2.5rem;
-    @include flex-column-center;
-    justify-content: flex-start;
-    row-gap: 1.5rem;
-    color: white;
-    font-size: 1.5rem;
-    opacity: 0;
-    z-index: -2;
-    transition: all 0.3s ease;
-    height: calc(100vh - 17.1rem);
-    overflow-y: auto;
-    margin-top: -1.5rem;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &.show-control {
-      opacity: 1;
-      z-index: 0;
-    }
-
-    &__placeholder {
-      margin-top: 1rem;
-      opacity: 0;
-
-      &.show-control {
-        opacity: 1;
-      }
-    }
-
-    &__title {
-      display: flex;
-      align-items: center;
-      column-gap: 1rem;
-      align-self: flex-start;
-      font-weight: 500;
-
-      img {
-        width: 2rem;
-      }
-    }
-
-    &__cards {
-      width: 100%;
     }
   }
 
@@ -368,19 +91,19 @@
     transform: translateY(-7rem) translateX(calc(50vw - 50%));
     @include flex-row-center;
     column-gap: 2.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     z-index: 2;
 
     &__section {
-      background-color: rgba(17, 17, 17, 0.5);
-      backdrop-filter: blur(0.5rem);
-      padding: 0.8rem 2rem;
-      border-radius: 0.8rem;
+      background: #111;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
       @include flex-row-center;
       column-gap: 2.5rem;
 
       img {
         width: 3.6rem;
+        transition: all 0.3s ease;
       }
 
       &:hover {
@@ -401,9 +124,8 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 8.6rem;
-    background-color: rgba(17, 17, 17, 0.5);
-    backdrop-filter: blur(5rem);
+    height: 8rem;
+    background: #111;
     padding: 0 2.5rem;
 
     &__music-data {
@@ -414,7 +136,7 @@
       width: 30rem;
 
       &--favourite-btn {
-        width: 3rem;
+        width: 2.8rem;
 
         &:hover {
           cursor: pointer;
@@ -433,6 +155,10 @@
         font-size: 1.6rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
+        max-width: 19.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &--artist-name {
@@ -448,7 +174,7 @@
       width: 30rem;
 
       &--play-pause {
-        width: 6rem;
+        width: 5.8rem;
       }
 
       &--back,
@@ -465,27 +191,24 @@
       &--loop {
         padding: 0.5rem;
         border-radius: 30%;
+        transition: all 0.15s ease;
 
         &:hover {
           cursor: pointer;
         }
 
         &.current-song-setting {
-          background-color: rgba($color: white, $alpha: 0.2);
+          background: rgba($color: white, $alpha: 0.25);
         }
       }
     }
 
-    &__music-playlist {
-      width: 3.5rem;
-
-      &:hover {
-        cursor: pointer;
-      }
+    &__music-volume {
+      width: 2.8rem;
     }
 
     &__full-screen {
-      width: 2.5rem;
+      width: 2.3rem;
       margin-left: 0.25rem;
 
       &.fullscreen {
@@ -510,7 +233,7 @@
       }
 
       &--mute {
-        width: 3rem;
+        width: 2.8rem;
 
         &:hover {
           cursor: pointer;
@@ -532,70 +255,19 @@
   }
 }
 
-@media (max-width: 1290px) {
+@media (max-width: 980px) {
   .home {
     .nav {
-      &__links {
-        &--link {
-          &.nav-tutorial {
-            display: none;
-          }
+      &__right {
+        &--secondary {
+          display: none;
         }
       }
     }
   }
 }
 
-@media (max-width: 1180px) {
-  .home {
-    .nav {
-      &__links {
-        &--link {
-          &.nav-timer {
-            display: none;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 1030px) {
-  .home {
-    &__overlay {
-      &--left {
-        width: 100vw;
-      }
-
-      &--right {
-        display: none;
-      }
-    }
-
-    .background-control,
-    .music-control {
-      display: none;
-    }
-
-    .nav {
-      &__links {
-        column-gap: 4rem;
-      }
-    }
-
-    .cookie-popup {
-      font-size: 1.1rem;
-    }
-
-    .player {
-      &__full-screen {
-        display: none;
-      }
-    }
-  }
-}
-
-@media (max-width: 790px) {
+@media (max-width: 950px) {
   .home {
     .player {
       &__music-data {
@@ -608,62 +280,16 @@
         column-gap: 1rem;
       }
 
-      &__music-playlist {
+      &__music-volume {
         display: none;
       }
-
-      &__volume-control {
-        &--volume-slider {
-          width: 9rem;
-        }
-      }
-    }
-
-    .cookie-popup {
-      font-size: 1rem;
     }
   }
 }
 
-@media (max-width: 715px) {
+@media (max-width: 760px) {
   .home {
-    .cookie-popup {
-      font-size: 0.9rem;
-    }
-  }
-}
-
-@media (max-width: 680px) {
-  .home {
-    .nav {
-      &__links {
-        column-gap: 2.5rem;
-
-        &--icon {
-          display: none;
-        }
-      }
-    }
-
-    .nav {
-      &__logo {
-        &--img {
-          width: 20rem;
-        }
-      }
-    }
-
     .player {
-      &__volume-control {
-        &--mute {
-          display: none;
-        }
-
-        &--volume-slider {
-          margin-bottom: 0.8rem;
-        }
-      }
-
       &__music-data {
         &--music-name {
           font-size: 1.2rem;
@@ -672,25 +298,75 @@
         &--artist-name {
           font-size: 1rem;
         }
+
+        &--favourite-btn {
+          display: none;
+        }
+      }
+
+      &__volume-control {
+        &--mute {
+          display: none;
+        }
+      }
+
+      &__full-screen {
+        display: none;
       }
     }
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 725px) {
   .home {
     .nav {
-      &__logo {
-        &--img {
-          width: 15rem;
+      &__right {
+        column-gap: 1rem;
+
+        &--primary {
+          .timer-container {
+            display: none;
+          }
         }
       }
     }
+  }
+}
 
+@media (max-width: 640px) {
+  .home {
     .player {
+      &__music-data {
+        &--music-name,
+        &--artist-name {
+          width: 10rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
       &__music-control {
         &--play-pause {
           width: 4.5rem;
+        }
+      }
+
+      &__volume-control {
+        &--volume-slider {
+          width: 10rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .home {
+    .nav {
+      &__right {
+        &--primary {
+          column-gap: 1rem;
+          padding: 1rem 2rem 1rem 1.75rem;
         }
       }
     }

@@ -10,6 +10,7 @@ function BackgroundVideo(props) {
   const dispatch = useDispatch();
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const isFullScreen = useSelector((store) => store.page.isFullScreen);
+  const currentPage = useSelector((store) => store.page.currentPage);
 
   const [canPlay, setCanPlay] = useState(false);
 
@@ -42,7 +43,7 @@ function BackgroundVideo(props) {
       loop
       muted
       src={props.url}
-      className={`video ${canPlay ? 'can-play' : ''}`}
+      className={`video ${canPlay ? 'can-play' : ''} ${currentPage ? 'darken' : ''}`}
     ></video>
   );
 }

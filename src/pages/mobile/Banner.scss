@@ -31,6 +31,12 @@
     vertical-align: middle;
   }
 
+  .banner-text .mobile-app-icon-right {
+    img {
+      height: 3rem;
+    }
+  }
+
   .sub-banner {
     position: relative;
     text-align: center;
@@ -107,6 +113,12 @@
     color: #f580eb;
     font-size: 14px;
     font-weight: normal;
+  }
+
+  .icon-desc .icon {
+    width: 8rem;
+    border-radius: 2rem;
+    margin-top: 3rem;
   }
 
   .mobile-showcase-image {
@@ -189,7 +201,7 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: rgb(34, 34, 34);
+    background: rgb(34, 34, 34);
     color: white;
     text-align: center;
     display: block;
@@ -277,6 +289,25 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 0;
+  }
+
+  .download-now {
+    &__url {
+      font-weight: 500;
+      font-size: 13px;
+      color: #c4c4c4;
+    }
+
+    &__btn-container {
+      display: flex;
+      justify-content: center;
+      column-gap: 1.5rem;
+      margin-top: 3rem;
+
+      img {
+        height: 3rem;
+      }
+    }
   }
 
   .download-now-desc p {

@@ -34,7 +34,7 @@ const ambientSlice = createSlice({
         currentAmbientArr[existingCurrentAmbientIndex].volume = action.payload.volume;
         state.currentAmbientArr = currentAmbientArr;
       } else {
-        const newAmbient = state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id);
+        const newAmbient = { ...state.availableAmbientArr.find((ambient) => ambient.id === action.payload.id) };
         newAmbient.volume = action.payload.volume;
         state.currentAmbientArr = [...state.currentAmbientArr, newAmbient];
       }

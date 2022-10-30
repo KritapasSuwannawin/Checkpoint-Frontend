@@ -1,12 +1,17 @@
 @import '../../scss/main.scss';
 
 .video {
-  object-fit: cover;
   @include fixed-whole-screen;
+  object-fit: cover;
   z-index: -2;
   opacity: 0;
+  transition: filter 0.3s ease;
 
   &.can-play {
     opacity: 1;
+  }
+
+  &.darken {
+    filter: brightness(90%);
   }
 }

@@ -4,7 +4,7 @@
   position: relative;
   border-radius: 2rem;
   width: 23rem;
-  background-color: #111;
+  background: #111;
   padding: 0.5rem 0.5rem 1rem;
 
   &:hover {
@@ -13,7 +13,7 @@
   }
 
   &.current-background {
-    background-color: #fff;
+    background: #fff;
   }
 
   &__member {

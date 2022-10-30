@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import BackgroundVideo from '../../components/backgroundVideo/BackgroundVideo';
 import AmbientAudio from '../../components/ambientAudio/AmbientAudio';
 import MusicAudio from '../../components/musicAudio/MusicAudio';
-import AmbientControl from '../../components/ambientControl/AmbientControl';
-import FavouriteMusicCard from '../../components/favouriteMusicCard/FavouriteMusicCard';
 import Timer from '../../components/timer/Timer';
+import MusicControl from '../../components/musicControl/MusicControl';
+import BackgroundControl from '../../components/backgroundControl/BackgroundControl';
 import './Home.scss';
 
 import { pageActions } from '../../store/pageSlice';
@@ -29,7 +29,6 @@ const cloudySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Partly+Cl
 const rainySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Moderate+Rain.svg`;
 const thunderSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Storm.svg`;
 const snowySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Winter.svg`;
-const musicLibrarySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Music+Library.svg`;
 const backgroundSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Bg.svg`;
 const musicSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Music.svg`;
 const timerSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Timer.svg`;
@@ -43,18 +42,14 @@ const shuffleSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Shuffle.
 const loopSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Repeat.svg`;
 const backwardSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Rewind.svg`;
 const forwardSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Fast+Forward.svg`;
-const addSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Add.svg`;
-const signInSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/SignIn.svg`;
-const questionMarkSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Question+Mark.svg`;
-const paperPlaneSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Paper Plane.svg`;
-const informationIconSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Information+Icon.svg`;
-const checkpointLogoSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Checkpoint+Logo.svg`;
-const policySvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Policy.svg`;
-const logoutSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Logout.svg`;
+const tutorialSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Tutorial.svg`;
+const downloadSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Download.svg`;
+const shareSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Share.svg`;
+const discordSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Discord.svg`;
 const speakerSvg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/svg/Home/Speaker.svg`;
 
 function Home(props) {
-  const { fullScreenClickHander, logoutHandler } = props;
+  const { fullScreenClickHander } = props;
 
   const dispatch = useDispatch();
   const currentPage = useSelector((store) => store.page.currentPage);
@@ -66,30 +61,22 @@ function Home(props) {
   const loopMusic = useSelector((store) => store.music.loopMusic);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
-  const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
   const memberId = useSelector((store) => store.member.memberId);
-  const username = useSelector((store) => store.member.username);
   const currentAvatar = useSelector((store) => store.avatar.currentAvatar);
-  const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
-  const showOutsideLinkPopup = useSelector((store) => store.popup.showOutsideLinkPopup);
   const showLoginPopup = useSelector((store) => store.popup.showLoginPopup);
   const showSafariGuidePopup = useSelector((store) => store.popup.showSafariGuidePopup);
+  const showTutorialPopup = useSelector((store) => store.popup.showTutorialPopup);
 
   const musicVolumeSliderRef = useRef();
   const ambientVolumeSliderRef = useRef();
 
-  const [musicThumbnailUrl, setMusicThumbnailUrl] = useState();
-  const [backgroundThumbnailUrl, setBackgroundThumbnailUrl] = useState();
   const [backgroundVideoArr, setBackgroundVideoArr] = useState([]);
   const [ambientAudioArr, setAmbientAudioArr] = useState([]);
-  const [ambientThumbnailArr, setAmbientThumbnailArr] = useState([]);
 
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
-
-  const backgroundFilePathRef = useRef();
 
   useEffect(() => {
     if (
@@ -142,6 +129,8 @@ function Home(props) {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(ambientActions.setCurrentAmbientArrByIdArr(currentBackground.ambientIdArr));
+
     setBackgroundVideoArr((backgroundVideoArr) => {
       const filteredBackgroundVideoArr = backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
       return [
@@ -170,11 +159,7 @@ function Home(props) {
         return backgroundVideoArr;
       });
     };
-  }, [currentBackground]);
-
-  useEffect(() => {
-    setBackgroundThumbnailUrl(currentBackground.thumbnailUrl);
-  }, [currentBackground]);
+  }, [currentBackground, dispatch]);
 
   useEffect(() => {
     setAmbientAudioArr(
@@ -187,51 +172,6 @@ function Home(props) {
       })
     );
   }, [currentAmbientArr]);
-
-  useEffect(() => {
-    setMusicThumbnailUrl(currentMusic.thumbnailUrl);
-  }, [currentMusic]);
-
-  useEffect(() => {
-    const currentAmbientIdArr = currentBackground.ambientIdArr;
-
-    if (backgroundFilePathRef.current !== currentBackground.filePath) {
-      backgroundFilePathRef.current = currentBackground.filePath;
-      setAmbientThumbnailArr([]);
-
-      currentAmbientIdArr.forEach((ambientId) => {
-        const ambient = availableAmbientArr.find((ambient) => ambient.id === ambientId);
-
-        setAmbientThumbnailArr((ambientThumbnailArr) => {
-          return [
-            ...ambientThumbnailArr,
-            <div key={ambient.id} className="background-control__ambient-control">
-              <AmbientControl
-                id={ambient.id}
-                name={ambient.name}
-                whiteIconUrl={ambient.whiteIconUrl}
-                volume={ambient.volume}
-              ></AmbientControl>
-            </div>,
-          ];
-        });
-      });
-
-      dispatch(ambientActions.setCurrentAmbientArrByIdArr(currentAmbientIdArr));
-    }
-
-    const ambientThumbnailArr2 = [];
-    const filteredCurrentAmbientArr = currentAmbientArr.filter((ambient) => !currentAmbientIdArr.includes(ambient.id));
-    filteredCurrentAmbientArr.forEach((ambient) => {
-      ambientThumbnailArr2.push(
-        <div key={ambient.id} className="background-control__ambient-control">
-          <AmbientControl id={ambient.id} name={ambient.name} whiteIconUrl={ambient.whiteIconUrl} volume={ambient.volume}></AmbientControl>
-        </div>
-      );
-    });
-
-    setAmbientThumbnailArr((ambientThumbnailArr) => ambientThumbnailArr.slice(0, currentAmbientIdArr.length).concat(ambientThumbnailArr2));
-  }, [availableAmbientArr, currentBackground, currentAmbientArr, dispatch]);
 
   function checkMemberId() {
     if (!memberId) {
@@ -310,7 +250,7 @@ function Home(props) {
       return;
     }
     dispatch(popupActions.setShowTimerPopup(false));
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
     dispatch(pageActions.changePageHandler('background'));
   }
 
@@ -320,23 +260,11 @@ function Home(props) {
       return;
     }
     dispatch(popupActions.setShowTimerPopup(false));
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
     dispatch(pageActions.changePageHandler('music'));
   }
 
-  function openAmbientPageHander() {
-    dispatch(pageActions.changePageHandler('ambient'));
-  }
-
-  function openBackgroundPageHander() {
-    dispatch(pageActions.changePageHandler('background'));
-  }
-
-  function openAvatarPageHander() {
-    dispatch(pageActions.changePageHandler('avatar'));
-  }
-
-  function overlayClickHandler() {
+  function logoClickHandler() {
     dispatch(pageActions.closePageHandler());
   }
 
@@ -348,10 +276,10 @@ function Home(props) {
     dispatch(backgroundActions.changeBackgroundWeatherHandler(this));
   }
 
-  function outsideLinkToggleHandler() {
+  function ProfilePopupToggleHandler() {
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowTimerPopup(false));
-    dispatch(popupActions.toggleShowOutsideLinkPopup());
+    dispatch(popupActions.toggleShowProfilePopupPopup());
   }
 
   function favouriteBtnClickHandler() {
@@ -360,19 +288,6 @@ function Home(props) {
     }
 
     dispatch(musicActions.favouriteBtnClickHandler(currentMusic.id));
-  }
-
-  function loginHandler() {
-    dispatch(popupActions.setShowLoginPopup(true));
-  }
-
-  function openHelpSupportHandler() {
-    dispatch(popupActions.setShowHelpSupportPopup(true));
-    dispatch(popupActions.setShowActivationPopup(false));
-  }
-
-  function openFeedbackHandler() {
-    dispatch(popupActions.setShowFeedbackPopup(true));
   }
 
   function closeTimerHandler() {
@@ -385,7 +300,7 @@ function Home(props) {
     }
 
     dispatch(pageActions.closePageHandler());
-    dispatch(popupActions.setShowOutsideLinkPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
     dispatch(popupActions.toggleShowTimerPopup());
   }
 
@@ -398,212 +313,101 @@ function Home(props) {
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
       {ambientAudioArr}
-      {!isFullScreen && (
-        <>
-          <div className={`home__overlay ${currentPage && currentPage !== 'avatar' ? 'show-overlay' : ''}`}>
-            <div className="home__overlay--left" onClick={overlayClickHandler}></div>
-            <div className="home__overlay--right"></div>
-          </div>
-        </>
-      )}
       <nav className="nav">
-        {!isFullScreen && (
-          <>
-            <div onClick={overlayClickHandler} className="nav__logo">
-              <img src={logo} alt="" className="nav__logo--img"></img>
+        <img onClick={logoClickHandler} src={logo} alt="" className="nav__logo"></img>
+
+        <div className="nav__right">
+          <div className="nav__right--primary">
+            <div onClick={backgroundClickHander} className="link">
+              <img src={backgroundSvg} alt="" className="link__icon"></img>
+              <p className="link__text">Background</p>
             </div>
-          </>
-        )}
-        <div className="nav__links">
-          {!isFullScreen && (
-            <div onClick={showTutorialHandler} className="nav__links--link nav-tutorial">
-              Tutorial
+
+            <div onClick={musicClickHander} className="link">
+              <img src={musicSvg} alt="" className="link__icon"></img>
+              <p className="link__text">Music</p>
             </div>
-          )}
-          <div className="nav__links--timer-container">
-            {!isFullScreen && (
-              <div onClick={timerClickHandler} className="nav__links--link nav-timer">
-                <img src={timerSvg} alt="" className="nav__links--icon small"></img>
-                Timer
+
+            <div className="timer-container">
+              <div className="link" onClick={timerClickHandler}>
+                <img src={timerSvg} alt="" className="link__icon small"></img>
+                <p className="link__text">Timer</p>
               </div>
-            )}
-            <Timer closeHandler={closeTimerHandler} showTimer={showTimerPopup}></Timer>
+              <Timer closeHandler={closeTimerHandler}></Timer>
+            </div>
           </div>
-          {!isFullScreen && (
-            <>
-              <div onClick={musicClickHander} className={`nav__links--link ${currentPage === 'music' ? 'current-page' : ''}`}>
-                <img src={musicSvg} alt="" className="nav__links--icon"></img>
-                Music
-              </div>
-              <div
-                onClick={backgroundClickHander}
-                className={`nav__links--link ${currentPage === 'background' || currentPage === 'ambient' ? 'current-page' : ''}`}
-              >
-                <img src={backgroundSvg} alt="" className="nav__links--icon"></img>
-                Background
-              </div>
-              <img
-                className={`nav__links--link profile ${memberId ? 'premium' : ''}`}
-                src={memberId ? currentAvatar.url : profileSvg}
-                alt=""
-                onClick={outsideLinkToggleHandler}
-              ></img>
-            </>
-          )}
-          {showOutsideLinkPopup && (
-            <div className="nav__outside-links">
-              {memberId && (
-                <>
-                  <div className="nav__outside-links--profile-container">
-                    <img src={currentAvatar.url} className={`${memberId ? 'premium' : ''}`} alt="" onClick={openAvatarPageHander}></img>
-                    <div>
-                      <p className="nav__outside-links--username">{username}</p>
-                      <p className="nav__outside-links--member-id">{`#${memberId}`}</p>
-                    </div>
-                  </div>
-                  <div className="nav__outside-links--container border-top">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={questionMarkSvg} alt=""></img>
-                    </div>
-                    <p onClick={openHelpSupportHandler}>Help & Support</p>
-                  </div>
-                  <div className="nav__outside-links--container">
-                    <div className="nav__outside-links--icon-container">
-                      <img src={paperPlaneSvg} alt=""></img>
-                    </div>
-                    <p onClick={openFeedbackHandler}>Feedback</p>
-                  </div>
-                </>
-              )}
-              <div className="nav__outside-links--container">
-                <div className="nav__outside-links--icon-container">
-                  <img src={informationIconSvg} alt=""></img>
-                </div>
-                <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
-                  About Us
-                </a>
-              </div>
-              <div className="nav__outside-links--container">
-                <div className="nav__outside-links--icon-container">
-                  <img src={policySvg} alt=""></img>
-                </div>
-                <a href={'https://forms.gle/rCnXynzSeH8WhMRC9'} target="_blank" rel="noreferrer">
-                  For Artist
-                </a>
-              </div>
-              <div className="nav__outside-links--container">
-                <div className="nav__outside-links--icon-container">
-                  <img src={checkpointLogoSvg} alt=""></img>
-                </div>
-                <a href={`${window.location.href}policy`} target="_blank" rel="noreferrer">
-                  Policy
-                </a>
-              </div>
-              <div className="nav__outside-links--container border-top">
-                <div className="nav__outside-links--icon-container">
-                  <img src={memberId ? logoutSvg : signInSvg} alt=""></img>
-                </div>
-                {memberId ? <p onClick={logoutHandler}>Sign Out</p> : <p onClick={loginHandler}>Sign In</p>}
-              </div>
-            </div>
-          )}
+
+          <div className="nav__right--secondary">
+            <img src={tutorialSvg} alt="" className="icon" onClick={showTutorialHandler}></img>
+            <img src={downloadSvg} alt="" className="icon"></img>
+            <img src={shareSvg} alt="" className="icon"></img>
+            <img src={discordSvg} alt="" className="icon"></img>
+          </div>
+
+          <img
+            className="nav__right--profile"
+            src={memberId ? currentAvatar.url : profileSvg}
+            alt=""
+            onClick={ProfilePopupToggleHandler}
+          ></img>
         </div>
       </nav>
-      <div className={`background-control ${currentPage === 'background' || currentPage === 'ambient' ? 'show-control' : ''}`}>
-        <img src={backgroundThumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
-        <div className="background-control__ambient-container">
-          <div className="background-control__ambient-volume">
-            <p>Ambience</p>
-            <img src={speakerSvg} alt=""></img>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={ambientVolume * 100}
-              onChange={volumeAmbientChangeHandler}
-              ref={ambientVolumeSliderRef}
-              className="background-control__ambient-volume--slider"
-            ></input>
-          </div>
-          {ambientThumbnailArr}
-          <div onClick={openAmbientPageHander} className={'background-control__add-ambient'}>
-            <img src={addSvg} alt=""></img>
-          </div>
-        </div>
-      </div>
-      <div className={`music-control ${currentPage === 'music' ? 'show-control' : ''}`}>
-        {!memberId ? (
-          <p className={`music-control__placeholder ${currentPage === 'music' ? 'show-control' : ''}`}>
-            Join us to have your own music playlist
-          </p>
-        ) : (
-          <>
-            <div className="music-control__title">
-              <img src={heartFullSvg} alt=""></img>
-              <p>Favorite music</p>
-            </div>
-            {favouriteMusicIdArr.length === 0 ? (
-              <p>Your music playlist is empty.</p>
-            ) : (
-              favouriteMusicIdArr.map((id) => (
-                <div key={id} className="music-control__cards">
-                  <FavouriteMusicCard id={id}></FavouriteMusicCard>
-                </div>
-              ))
-            )}
-          </>
-        )}
-      </div>
+      {(currentPage === 'background' || currentPage === 'ambient') && (
+        <BackgroundControl volumeAmbientChangeHandler={volumeAmbientChangeHandler}></BackgroundControl>
+      )}
+      {currentPage === 'music' && <MusicControl></MusicControl>}
       {!isFullScreen && (
         <>
-          <div className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''}`}>
-            <div className="mood__section">
-              <img
-                src={daySvg}
-                alt=""
-                onClick={changeBackgroundTimeHandler.bind(1)}
-                className={currentBackground.id.slice(-2, -1) !== '1' ? 'mood__section--not-current-mood' : ''}
-              ></img>
-              <img
-                src={eveningSvg}
-                alt=""
-                onClick={changeBackgroundTimeHandler.bind(2)}
-                className={currentBackground.id.slice(-2, -1) !== '2' ? 'mood__section--not-current-mood' : ''}
-              ></img>
-              <img
-                src={nightSvg}
-                alt=""
-                onClick={changeBackgroundTimeHandler.bind(3)}
-                className={`${currentBackground.id.slice(-2, -1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-              ></img>
+          {!showTutorialPopup && (
+            <div className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''}`}>
+              <div className="mood__section">
+                <img
+                  src={daySvg}
+                  alt=""
+                  onClick={changeBackgroundTimeHandler.bind(1)}
+                  className={currentBackground.id.slice(-2, -1) !== '1' ? 'mood__section--not-current-mood' : ''}
+                ></img>
+                <img
+                  src={eveningSvg}
+                  alt=""
+                  onClick={changeBackgroundTimeHandler.bind(2)}
+                  className={currentBackground.id.slice(-2, -1) !== '2' ? 'mood__section--not-current-mood' : ''}
+                ></img>
+                <img
+                  src={nightSvg}
+                  alt=""
+                  onClick={changeBackgroundTimeHandler.bind(3)}
+                  className={`${currentBackground.id.slice(-2, -1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+              </div>
+              <div className="mood__section">
+                <img
+                  src={cloudySvg}
+                  alt=""
+                  onClick={changeBackgroundWeatherHandler.bind(1)}
+                  className={currentBackground.id.slice(-1) !== '1' ? 'mood__section--not-current-mood' : ''}
+                ></img>
+                <img
+                  src={rainySvg}
+                  alt=""
+                  onClick={changeBackgroundWeatherHandler.bind(2)}
+                  className={currentBackground.id.slice(-1) !== '2' ? 'mood__section--not-current-mood' : ''}
+                ></img>
+                <img
+                  src={thunderSvg}
+                  alt=""
+                  onClick={changeBackgroundWeatherHandler.bind(3)}
+                  className={`${currentBackground.id.slice(-1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+                <img
+                  src={snowySvg}
+                  alt=""
+                  onClick={changeBackgroundWeatherHandler.bind(4)}
+                  className={`${currentBackground.id.slice(-1) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+                ></img>
+              </div>
             </div>
-            <div className="mood__section">
-              <img
-                src={cloudySvg}
-                alt=""
-                onClick={changeBackgroundWeatherHandler.bind(1)}
-                className={currentBackground.id.slice(-1) !== '1' ? 'mood__section--not-current-mood' : ''}
-              ></img>
-              <img
-                src={rainySvg}
-                alt=""
-                onClick={changeBackgroundWeatherHandler.bind(2)}
-                className={currentBackground.id.slice(-1) !== '2' ? 'mood__section--not-current-mood' : ''}
-              ></img>
-              <img
-                src={thunderSvg}
-                alt=""
-                onClick={changeBackgroundWeatherHandler.bind(3)}
-                className={`${currentBackground.id.slice(-1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-              ></img>
-              <img
-                src={snowySvg}
-                alt=""
-                onClick={changeBackgroundWeatherHandler.bind(4)}
-                className={`${currentBackground.id.slice(-1) !== '4' ? 'mood__section--not-current-mood' : ''}`}
-              ></img>
-            </div>
-          </div>
+          )}
           <div className="player">
             <div className="player__music-data">
               {!currentMusic.isMood && (
@@ -614,7 +418,7 @@ function Home(props) {
                   onClick={favouriteBtnClickHandler}
                 ></img>
               )}
-              <img src={musicThumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
+              <img src={currentMusic.thumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
               <div>
                 <p className="player__music-data--music-name">{currentMusic.musicName}</p>
                 <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
@@ -649,7 +453,7 @@ function Home(props) {
               )}
             </div>
             <div className="player__volume-control">
-              <img src={musicLibrarySvg} onClick={musicClickHander} className="player__music-playlist" alt=""></img>
+              <img src={speakerSvg} className="player__music-volume" alt=""></img>
               <div className="player__volume-control--volume">
                 <div className="player__volume-control--section">
                   <img src={iTunesSvg} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>

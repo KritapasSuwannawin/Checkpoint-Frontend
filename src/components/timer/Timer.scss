@@ -5,8 +5,7 @@
   top: calc(100% + 3rem);
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5rem);
+  background: #111;
   border-radius: 2rem;
   padding: 2rem 2.5rem;
   color: #fff;
@@ -35,7 +34,7 @@
     left: 1.5rem;
     width: 1.5rem;
     height: 1.5rem;
-    background-color: rgba(196, 196, 196, 0.7);
+    background: rgba(196, 196, 196, 0.7);
     border-radius: 50%;
 
     &:hover {
@@ -61,17 +60,17 @@
 
   .start-btn {
     width: 8.2rem;
-    background-color: #fff;
+    background: #fff;
     border-radius: 0.8rem;
     font-size: 1.8rem;
     line-height: 2.1rem;
     color: #111;
     padding: 0.5rem 0;
     text-align: center;
-    transition: background-color ease 0.5s;
+    transition: all ease 0.3s;
 
     &.pause {
-      background-color: #111;
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
 
@@ -110,7 +109,7 @@
     padding-top: 0.2rem;
     border: 0;
     outline: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 1.8rem;
     line-height: 2.6rem;
@@ -139,11 +138,5 @@
     font-weight: 700;
     font-size: 3.6rem;
     line-height: 4.2rem;
-  }
-}
-
-@media (max-width: 1180px) {
-  .timer {
-    display: none;
   }
 }

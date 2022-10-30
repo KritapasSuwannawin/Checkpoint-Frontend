@@ -85,7 +85,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($color: #000, $alpha: 0.1);
+    background: rgba($color: #000, $alpha: 0.1);
     font-size: 1.4rem;
     font-weight: bold;
     @include flex-row-center;

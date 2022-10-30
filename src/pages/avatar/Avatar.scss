@@ -2,6 +2,7 @@
 
 .avatar {
   @include page-style;
+  max-width: calc(100vw - 33rem);
 
   &.current-page {
     @include display-page;

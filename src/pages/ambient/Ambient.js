@@ -38,7 +38,12 @@ function Ambient(props) {
     }
   }, [availableAmbientArr]);
 
-  return <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>{thumbnailArr}</div>;
+  return (
+    <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>
+      <p className="ambient__title">Ambience Customization </p>
+      {thumbnailArr}
+    </div>
+  );
 }
 
 export default Ambient;

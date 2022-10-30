@@ -4,12 +4,11 @@
   @include fixed-whole-screen;
   @include flex-row-center;
   height: calc(100vh - 17.2rem);
-  padding-top: 8.6rem;
+  padding-top: 8rem;
   z-index: 2;
 
   &__form {
-    background-color: rgba(17, 17, 17, 0.5);
-    backdrop-filter: blur(5rem);
+    background: #111;
     padding: 3.5rem 4rem;
     border-radius: 0.8rem;
     max-height: 100%;
@@ -31,7 +30,7 @@
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 50%;
-      background-color: rgba(196, 196, 196, 0.7);
+      background: rgba(196, 196, 196, 0.7);
 
       &:hover {
         cursor: pointer;
@@ -80,12 +79,6 @@
     textarea {
       width: calc(100% - 3.6rem);
       min-width: 30rem;
-      background-color: rgba(0, 0, 0, 0.5);
-      border: none;
-      padding: 0.5rem;
-      color: white;
-      font-family: 'Roboto', sans-serif;
-      border-radius: 0.5rem;
       margin-bottom: 1rem;
     }
 

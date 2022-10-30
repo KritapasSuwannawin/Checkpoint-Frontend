@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import './Timer.scss';
 
 import resetSvg from '../../svg/Timer/Reset.svg';
@@ -8,6 +9,8 @@ const alarmStudyEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+a
 const alarmBreakEnd = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Clock+alarm+ending+break+session.m4a`;
 
 function Timer(props) {
+  const showTimerPopup = useSelector((store) => store.popup.showTimerPopup);
+
   const [mainTimerRunning, setMainTimerRunning] = useState(false);
   const [secondaryTimerRunning, setSecondaryTimerRunning] = useState(false);
 
@@ -162,7 +165,7 @@ function Timer(props) {
   }
 
   return (
-    <div className={`timer ${!props.showTimer ? 'hide' : ''}`}>
+    <div className={`timer ${!showTimerPopup ? 'hide' : ''}`}>
       <div className="close-btn" onClick={props.closeHandler}></div>
       <audio src={audioUrl} preload="auto" autoPlay={true} muted={isAudioMuted} onEnded={audioEndedHandler} ref={audioRef}></audio>
       <p className="heading">{!isBegun ? 'Pomodoro' : !isShortBreak ? 'Study/Work' : 'Short Break'}</p>

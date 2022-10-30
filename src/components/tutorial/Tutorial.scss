@@ -3,15 +3,15 @@
 .tutorial {
   @include fixed-whole-screen;
   @include flex-row-center;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(1rem);
   z-index: 3;
 
   &__container {
-    max-height: 100vh;
-    padding: 0 2rem;
+    padding: 3rem 3.5rem;
     color: white;
+    max-height: 95%;
     overflow-y: auto;
+    background: #111;
+    border-radius: 2rem;
 
     &::-webkit-scrollbar {
       display: none;
@@ -23,7 +23,7 @@
     &--logo {
       display: block;
       height: 3.4rem;
-      margin: 4rem auto 5.5rem auto;
+      margin: 0 auto 5.5rem auto;
     }
 
     &--title {
@@ -31,20 +31,19 @@
       color: #f580eb;
       font-size: 2.8rem;
       font-weight: 700;
-      max-width: 61.1rem;
-      margin: 4rem 0 2rem 0;
+      max-width: 60rem;
+      margin: 4rem auto 2rem auto;
     }
 
     &--content,
     &--later {
       text-align: center;
       font-size: 1.4rem;
-      max-width: 61.1rem;
+      max-width: 60rem;
+      margin: 0 auto;
     }
 
     &--later {
-      margin-bottom: 4rem;
-
       &:hover {
         cursor: pointer;
       }
@@ -55,20 +54,10 @@
       font-weight: 500;
       color: #111111;
       padding: 0.7rem 2rem;
-      background-color: white;
+      background: white;
       border-radius: 2rem;
       margin: 2rem auto 1.5rem auto;
       width: fit-content;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    &--buy-premium {
-      display: block;
-      height: 3.4rem;
-      margin: 2rem auto 1rem auto;
 
       &:hover {
         cursor: pointer;

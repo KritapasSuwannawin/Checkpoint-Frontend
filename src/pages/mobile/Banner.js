@@ -12,6 +12,8 @@ import EnvironmentIcon from '../../svg/Mobile/Environment_icon.svg';
 import RelaxingMusicIcon from '../../svg/Mobile/RelaxingMusic_icon.svg';
 import CheckpointIcon from '../../svg/Mobile/checkpoint-icon.svg';
 import checkpoint_logo_white from '../../svg/Mobile/Checkpoint logo white.svg';
+import AppStoreIcon from '../../svg/Mobile/appstore icon.svg';
+import GooglePlayIcon from '../../svg/Mobile/googleplay icon.svg';
 
 const RealPhone = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Realistic_Smartphone.jpg`;
 const BetterSleep = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Better+Sleep.jpg`;
@@ -22,6 +24,7 @@ const Mood = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/mood.jpg`;
 const MusicImg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Music.jpg`;
 const VirtualShowcase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Virtual.jpg`;
 const DesktopShowcase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Desktop.jpg`;
+const MobileShowcase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Realistic_Smartphone.jpg`;
 
 const Usecase = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Usecase.png`;
 const FeedbackImg = `${process.env.REACT_APP_CLOUD_STORAGE_URL}/others/Community+Review+For+Mobile.png`;
@@ -50,11 +53,24 @@ function Banner() {
             <h1>{bannerData.title_3} </h1>
             <p>{bannerData.desc}</p>
             <div className="mobile-app-icon-right">
+              {process.env.REACT_APP_APP_STORE_LINK && (
+                <a href={process.env.REACT_APP_APP_STORE_LINK}>
+                  <img src={AppStoreIcon} alt=""></img>
+                </a>
+              )}
+              {process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+                <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
+                  <img src={GooglePlayIcon} alt=""></img>
+                </a>
+              )}
               <img src={CheckpointApp} alt=""></img>
             </div>
             <div className="sub-banner">
               <div className="sub-banner-container-top">
-                <img src={DesktopShowcase} alt=""></img>
+                <img
+                  src={process.env.REACT_APP_APP_STORE_LINK || process.env.REACT_APP_GOOGLE_PLAY_LINK ? MobileShowcase : DesktopShowcase}
+                  alt=""
+                ></img>
               </div>
               <br />
               <div className="sub-banner-container">
@@ -86,7 +102,6 @@ function Banner() {
                   <p>{contentData.desc_2}</p>
                   <div className="icon-desc">
                     <p>
-                      {' '}
                       <AiFillHeart color="#F580EB" /> for more focus
                     </p>
                   </div>
@@ -107,7 +122,6 @@ function Banner() {
                   </p>
                   <div className="icon-desc">
                     <p>
-                      {' '}
                       <AiFillHeart color="#F580EB" /> to feel like you are in that place
                     </p>
                   </div>
@@ -130,7 +144,6 @@ function Banner() {
                   </p>
                   <div className="icon-desc">
                     <p>
-                      {' '}
                       <AiFillHeart color="#F580EB" /> to match your mood
                     </p>
                   </div>
@@ -151,7 +164,6 @@ function Banner() {
                   <p>to Charge Your Energy</p>
                   <div className="icon-desc">
                     <p>
-                      {' '}
                       <IoIosMusicalNotes color="#F580EB" /> for better sleep
                     </p>
                   </div>
@@ -162,25 +174,26 @@ function Banner() {
               </section>
             </div>
 
-            <div className="content">
-              <section>
-                <div className="center-icon"> </div>
-                <div className="text-center">
-                  <h1>Relax while working</h1>
-                  <p>Available on Desktop</p>
-                  <div className="icon-desc">
-                    <p>
-                      {' '}
-                      <img src={CheckpointIcon} alt=""></img> checkpoint.tokyo
-                    </p>
+            {!process.env.REACT_APP_APP_STORE_LINK && !process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+              <div className="content">
+                <section>
+                  <div className="center-icon"> </div>
+                  <div className="text-center">
+                    <h1>Relax while working</h1>
+                    <p>Available on Desktop</p>
+                    <div className="icon-desc">
+                      <p>
+                        <img src={CheckpointIcon} alt=""></img> checkpoint.tokyo
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mobile-showcase-image">
-                  <br />
-                  <img src={Usecase} alt=""></img>
-                </div>
-              </section>
-            </div>
+                  <div className="mobile-showcase-image">
+                    <br />
+                    <img src={Usecase} alt=""></img>
+                  </div>
+                </section>
+              </div>
+            )}
 
             <div className="content">
               <section>
@@ -205,39 +218,76 @@ function Banner() {
               <h1>{bannerData.title_3} </h1>
               <p>{bannerData.desc}</p>
               <div className="mobile-app-icon-right">
+                {process.env.REACT_APP_APP_STORE_LINK && (
+                  <a href={process.env.REACT_APP_APP_STORE_LINK}>
+                    <img src={AppStoreIcon} alt=""></img>
+                  </a>
+                )}
+                {process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+                  <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
+                    <img src={GooglePlayIcon} alt=""></img>
+                  </a>
+                )}
                 <img src={CheckpointApp} alt=""></img>
               </div>
-              <img src={DesktopShowcase} alt=""></img>
+              <img
+                src={process.env.REACT_APP_APP_STORE_LINK || process.env.REACT_APP_GOOGLE_PLAY_LINK ? MobileShowcase : DesktopShowcase}
+                alt=""
+              ></img>
             </div>
           </div>
           <br />
           <br />
+
           <div className="content">
             <section>
-              <div className="center-mobile-app-section"> </div>
-
               <div className="mobile-showcase-image-footer">
                 <div className="download-now">
-                  <p>Join Now</p>
+                  <p>{process.env.REACT_APP_APP_STORE_LINK || process.env.REACT_APP_GOOGLE_PLAY_LINK ? 'Download Now!' : 'Join Now'}</p>
                 </div>
-                <div className="download-now-desc">
-                  <p>Available on Desktop</p>
-                </div>
+                {!process.env.REACT_APP_APP_STORE_LINK && !process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+                  <div className="download-now-desc">
+                    <p>Available on Desktop</p>
+                  </div>
+                )}
                 <div className="center-checkpoint-icon-desc">
                   <div className="icon-desc">
-                    <p>
-                      {' '}
-                      <img src={CheckpointIcon} alt=""></img> checkpoint.tokyo
-                    </p>
+                    {process.env.REACT_APP_APP_STORE_LINK || process.env.REACT_APP_GOOGLE_PLAY_LINK ? (
+                      <img src={CheckpointApp} alt="" className="icon"></img>
+                    ) : (
+                      <p>
+                        <img src={CheckpointIcon} alt=""></img> checkpoint.tokyo
+                      </p>
+                    )}
                   </div>
                   <br />
                   <br />
-                  <div className="mobile-app-coming-soon">
-                    <p>Mobile Application is Coming Soon</p>
-                  </div>
-                  <div className="mobile-showcase-image">
-                    <img src={RealPhone} alt=""></img>
-                  </div>
+                  {process.env.REACT_APP_APP_STORE_LINK || process.env.REACT_APP_GOOGLE_PLAY_LINK ? (
+                    <>
+                      <p className="download-now__url">Checkpoint.tokyo</p>
+                      <div className="download-now__btn-container">
+                        {process.env.REACT_APP_APP_STORE_LINK && (
+                          <a href={process.env.REACT_APP_APP_STORE_LINK}>
+                            <img src={AppStoreIcon} alt=""></img>
+                          </a>
+                        )}
+                        {process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+                          <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
+                            <img src={GooglePlayIcon} alt=""></img>
+                          </a>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="mobile-app-coming-soon">
+                        <p>Mobile Application is Coming Soon</p>
+                      </div>
+                      <div className="mobile-showcase-image">
+                        <img src={RealPhone} alt=""></img>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <br />
@@ -249,10 +299,9 @@ function Banner() {
           </div>
         </div>
       </div>
+
       <div className="content">
         <section className="footer">
-          <div className="center-mobile-app-section"> </div>
-
           <div className="mobile-showcase-image-footer">
             <div className="footer-desc">
               <br />

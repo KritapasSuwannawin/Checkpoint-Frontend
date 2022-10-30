@@ -4,7 +4,7 @@
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: black;
+  background: black;
   z-index: 3;
   opacity: 1;
   @include flex-row-center;

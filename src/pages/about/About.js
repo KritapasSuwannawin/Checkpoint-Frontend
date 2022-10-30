@@ -1,7 +1,7 @@
 import './About.scss';
 
-// import appStore from '../../svg/About/App Store.svg';
-// import googlePlay from '../../svg/About/Google Play.svg';
+import appStore from '../../svg/About/App Store.svg';
+import googlePlay from '../../svg/About/Google Play.svg';
 import fb from '../../svg/About/facebook.svg';
 import ig from '../../svg/About/instagram.svg';
 import yt from '../../svg/About/youtube.svg';
@@ -23,14 +23,18 @@ function About(props) {
             Checkpoint. If so, you have come to the right place!
           </p>
         </div>
-        {/* <div className="mobile-links">
-          <a href={process.env.REACT_APP_APP_STORE_LINK}>
-            <img src={appStore} alt=""></img>
-          </a>
-          <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
-            <img src={googlePlay} alt=""></img>
-          </a>
-        </div> */}
+        <div className="mobile-links">
+          {process.env.REACT_APP_APP_STORE_LINK && (
+            <a href={process.env.REACT_APP_APP_STORE_LINK}>
+              <img src={appStore} alt=""></img>
+            </a>
+          )}
+          {process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+            <a href={process.env.REACT_APP_GOOGLE_PLAY_LINK}>
+              <img src={googlePlay} alt=""></img>
+            </a>
+          )}
+        </div>
         <div className="mobile-text">
           <p>
             <span className="available">Available on PC</span>

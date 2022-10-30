@@ -1,7 +1,7 @@
 @import '../../scss/main.scss';
 
 .about {
-  background-color: #101c2c;
+  background: #101c2c;
 
   .section {
     position: relative;
@@ -12,7 +12,7 @@
       width: 100%;
       @include flex-column-center;
       padding: 0;
-      background-color: unset;
+      background: unset;
     }
 
     &__content {

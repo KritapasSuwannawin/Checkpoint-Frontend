@@ -32,7 +32,7 @@
 
     &--btn {
       padding: 0.5rem;
-      background-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.5);
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.5s ease;
@@ -43,7 +43,7 @@
     }
 
     &--btn.selected {
-      background-color: #f580eb;
+      background: #f580eb;
     }
   }
 }

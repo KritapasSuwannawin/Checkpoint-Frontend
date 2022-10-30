@@ -6,7 +6,7 @@
   width: calc(13.4rem);
   display: flex;
   flex-direction: column;
-  background-color: #111;
+  background: #111;
 
   &:hover {
     cursor: pointer;
@@ -14,7 +14,7 @@
 
   &.current-music {
     padding: 2px 2px 0;
-    background-color: #fff;
+    background: #fff;
   }
 
   &__favourite-btn {
@@ -42,10 +42,10 @@
     height: 4rem;
     border-radius: 0 0 0.8rem 0.8rem;
     position: relative;
-    background-color: #111;
+    background: #111;
 
     &.current-music {
-      background-color: #fff;
+      background: #fff;
       padding: 0 0.5rem 0 0.8rem;
     }
   }

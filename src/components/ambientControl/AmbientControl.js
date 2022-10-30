@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './AmbientControl.scss';
@@ -5,18 +6,34 @@ import './AmbientControl.scss';
 import { ambientActions } from '../../store/ambientSlice';
 
 function AmbientControl(props) {
-  const { id, name, whiteIconUrl, volume } = props;
+  const { id, name, whiteIconUrl } = props;
 
   const dispatch = useDispatch();
+  const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
 
+  const sliderRef = useRef();
+
+  useEffect(() => {
+    let volume = 0;
+    const currentAmbient = currentAmbientArr.find((ambient) => ambient.id === id);
+
+    if (currentAmbient) {
+      volume = currentAmbient.volume;
+    } else {
+      volume = availableAmbientArr.find((ambient) => ambient.id === id).volume;
+    }
+
+    sliderRef.current.value = volume * 100;
+  }, [availableAmbientArr, currentAmbientArr, id]);
+
   function clickHandler() {
-    dispatch(ambientActions.ambientToggleHandler(props.id));
+    dispatch(ambientActions.ambientToggleHandler(id));
   }
 
   function volumeChangeHandler(e) {
     const volume = e.target.value / 100;
-    dispatch(ambientActions.setSpecificAmbientVolume({ volume: volume, id: props.id }));
+    dispatch(ambientActions.setSpecificAmbientVolume({ id, volume }));
   }
 
   const isCurrent = currentAmbientArr.findIndex((ambient) => ambient.id === id) !== -1;
@@ -31,8 +48,8 @@ function AmbientControl(props) {
         type="range"
         min="0"
         max="100"
-        defaultValue={volume * 100}
         onChange={volumeChangeHandler}
+        ref={sliderRef}
         className="ambient-control__volume-slider"
       ></input>
     </div>
