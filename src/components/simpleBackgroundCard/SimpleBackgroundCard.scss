@@ -4,7 +4,7 @@
   position: relative;
   border-radius: 2rem;
   width: 23rem;
-  background: #111;
+  background: $black;
   padding: 0.5rem 0.5rem 1rem;
 
   &:hover {
@@ -48,7 +48,7 @@
 
   &__name {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #fff;
     margin: 1rem 0.5rem 0.3rem;
     white-space: nowrap;
@@ -56,7 +56,7 @@
     overflow: hidden;
 
     &.current-background {
-      color: #111;
+      color: $black;
     }
   }
 
@@ -76,7 +76,7 @@
       opacity: 0.5;
 
       &.current-background {
-        color: #111;
+        color: $black;
         font-weight: 500;
       }
     }

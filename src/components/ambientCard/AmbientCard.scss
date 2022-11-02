@@ -3,7 +3,7 @@
 .ambient-card {
   @include flex-column-center;
   row-gap: 3.4rem;
-  background: #111;
+  background: $black;
   border-radius: 2.5rem;
   padding: 4.4rem 5.5rem 6.6rem;
   font-size: 1.7rem;
@@ -16,7 +16,7 @@
 
   &.current-ambient {
     background: #fff;
-    color: #111;
+    color: $black;
   }
 
   &__image {

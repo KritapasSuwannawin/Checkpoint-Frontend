@@ -1,27 +1,14 @@
 @import '../../scss/main.scss';
 
 .feedback-popup {
-  @include fixed-whole-screen;
-  @include flex-row-center;
-  height: calc(100vh - 17.2rem);
-  padding-top: 8rem;
-  z-index: 2;
+  @include form-container-style;
 
   &__form {
-    background: #111;
-    padding: 3.5rem 4rem;
-    border-radius: 0.8rem;
-    max-height: 100%;
-    overflow-y: auto;
-    color: white;
-    position: relative;
+    @include form-style;
 
-    &::-webkit-scrollbar {
-      display: none;
+    &--close-btn {
+      @include form-close-btn-style;
     }
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 
     &--star-container {
       @include flex-row-center;
@@ -49,20 +36,6 @@
       }
     }
 
-    &--close-btn {
-      position: absolute;
-      top: 1.2rem;
-      left: 1.2rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 50%;
-      background: rgba(196, 196, 196, 0.7);
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
     &--heading {
       text-align: center;
       font-size: 1.8rem;
@@ -78,19 +51,8 @@
     }
 
     &--submit-btn {
-      text-align: center;
-      padding: 0.7rem 2.5rem;
-      background: white;
-      border-radius: 2rem;
-      color: #111111;
-      font-weight: 500;
-      font-size: 1.8rem;
-      width: fit-content;
-      margin: 2rem auto 0 auto;
-
-      &:hover {
-        cursor: pointer;
-      }
+      @include form-submit-btn-style;
+      margin-top: 2rem;
     }
 
     input[type='text'],
@@ -98,10 +60,6 @@
       width: calc(100% - 3.8rem);
       margin-left: 1.9rem;
       margin-top: 1rem;
-    }
-
-    textarea {
-      min-height: 10rem;
     }
   }
 }

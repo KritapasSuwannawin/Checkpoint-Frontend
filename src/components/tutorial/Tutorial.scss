@@ -7,10 +7,10 @@
 
   &__container {
     padding: 3rem 3.5rem;
-    color: white;
+    color: #fff;
     max-height: 95%;
     overflow-y: auto;
-    background: #111;
+    background: $black;
     border-radius: 2rem;
 
     &::-webkit-scrollbar {
@@ -52,9 +52,9 @@
     &--btn {
       font-size: 1.8rem;
       font-weight: 500;
-      color: #111111;
+      color: $black;
       padding: 0.7rem 2rem;
-      background: white;
+      background: #fff;
       border-radius: 2rem;
       margin: 2rem auto 1.5rem auto;
       width: fit-content;

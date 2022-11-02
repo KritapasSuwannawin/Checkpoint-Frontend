@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import SimpleThumbnailCard from '../../components/simpleThumbnailCard/SimpleThumbnailCard';
+import AvatarCard from '../../components/avatarCard/AvatarCard';
 import './Avatar.scss';
 
 function Avatar() {
@@ -22,7 +22,7 @@ function Avatar() {
         return [
           ...filteredThumbnailArr,
           <div key={avatar.id}>
-            <SimpleThumbnailCard id={avatar.id} thumbnailUrl={avatar.url} avatar></SimpleThumbnailCard>
+            <AvatarCard id={avatar.id} thumbnailUrl={avatar.url}></AvatarCard>
           </div>,
         ];
       });

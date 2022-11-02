@@ -35,12 +35,14 @@ function About(props) {
             </a>
           )}
         </div>
-        <div className="mobile-text">
-          <p>
-            <span className="available">Available on PC</span>
-            <br></br>Mobile application is coming soon.
-          </p>
-        </div>
+        {!process.env.REACT_APP_APP_STORE_LINK && !process.env.REACT_APP_GOOGLE_PLAY_LINK && (
+          <div className="mobile-text">
+            <p>
+              <span className="available">Available on PC</span>
+              <br></br>Mobile application is coming soon.
+            </p>
+          </div>
+        )}
         <div className="landing-links">
           <a href="https://twitter.com/CheckpointTokyo" target="_blank" rel="noreferrer">
             <img src={tw} alt=""></img>

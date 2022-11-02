@@ -1,20 +1,18 @@
 @import '../../scss/main.scss';
 
 .login-popup {
-  @include fixed-whole-screen;
-  @include flex-row-center;
-  padding-bottom: 8rem;
-  z-index: 1;
+  @include form-container-style;
+  height: calc(100vh - 9.4rem);
 
   &__form {
+    @include form-style;
     @include flex-column-center;
-    background: #111;
     row-gap: 1rem;
-    padding: 2.5rem 4.5rem;
-    border-radius: 1rem;
     font-size: 1.4rem;
-    color: white;
-    position: relative;
+  }
+
+  &__close-btn {
+    @include form-close-btn-style;
   }
 
   &__title-container {
@@ -62,7 +60,7 @@
 
   &__seperator {
     width: 70%;
-    border-top: 1px white solid;
+    border-top: 0.1rem #fff solid;
     margin: 1rem 0;
   }
 
@@ -97,20 +95,6 @@
     text-align: center;
   }
 
-  &__close-btn {
-    position: absolute;
-    top: 1.2rem;
-    left: 1.2rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: rgba(196, 196, 196, 0.7);
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
   &__privacy-container {
     align-self: flex-start;
     display: flex;
@@ -135,31 +119,22 @@
     }
 
     a {
-      color: white;
+      color: #fff;
     }
   }
 
   &__submit-btn {
-    align-self: center !important;
-    padding: 0.7rem 2rem;
-    background: white;
-    border-radius: 2rem;
-    color: #111111;
-    font-weight: 500;
-    font-size: 1.6rem;
+    @include form-submit-btn-style;
     margin-top: 1rem;
+    font-size: 1.6rem;
 
     &.no-margin {
       margin-top: 0.5rem;
     }
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &__forget-password {
-    color: white;
+    color: #fff;
     text-decoration: underline;
     margin-top: 1rem;
 

@@ -1,3 +1,5 @@
+@import '../../scss/main.scss';
+
 .cookie-popup {
   display: flex;
   align-items: center;
@@ -7,19 +9,19 @@
   left: 0;
   width: 100vw;
   height: 8rem;
-  background: #111;
+  background: $black;
   padding: 0 2.5rem;
-  color: white;
+  color: #fff;
   font-size: 1.4rem;
   z-index: 3;
 
   a {
-    color: white;
+    color: #fff;
   }
 
   div {
     margin-left: 1rem;
-    border: 1px solid white;
+    border: 0.1rem solid #fff;
     padding: 0.7rem 1.5rem;
     border-radius: 1rem;
     white-space: nowrap;

@@ -1,25 +1,25 @@
 .banner-bg {
-  height: 500px;
+  height: 50rem;
   justify-content: space-between;
   font-family: 'Inter', sans-serif;
 
   .container {
-    max-width: 960px;
+    max-width: 96rem;
     margin: 0 auto;
   }
 
   .banner-text h1 {
-    margin: 20px;
-    font-size: 38px;
+    margin: 2rem;
+    font-size: 3.8rem;
     text-align: right;
     align-items: flex-end;
     font-weight: bold;
-    line-height: 23px;
+    line-height: 2.3rem;
   }
 
   .banner-text p {
-    margin: 20px;
-    font-size: 14px;
+    margin: 2rem;
+    font-size: 1.4rem;
     text-align: right;
     align-items: flex-end;
     color: rgb(125, 125, 125);
@@ -43,8 +43,8 @@
   }
 
   .sub-banner-container-top {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     position: relative;
     width: 100%;
   }
@@ -64,9 +64,9 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: #fff;
     margin: 0;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: bold;
   }
 
@@ -74,44 +74,44 @@
     position: absolute;
     text-decoration: none;
     font-weight: bold;
-    color: white;
+    color: #fff;
     text-align: center;
   }
 
   .center-icon {
-    padding-top: 80px;
+    padding-top: 8rem;
     display: flex;
     justify-content: center;
   }
 
   .center-icon-less-padding {
-    padding-top: 40px;
+    padding-top: 4rem;
     display: flex;
     justify-content: center;
   }
 
   .text-center h1 {
     text-align: center;
-    font-size: 26px;
+    font-size: 2.6rem;
   }
 
   .text-center h2 {
-    line-height: 10px;
+    line-height: 1rem;
     text-align: center;
-    font-size: 25px;
+    font-size: 2.5rem;
   }
 
   .text-center p {
-    line-height: 10px;
+    line-height: 1rem;
     font-weight: lighter;
     text-align: center;
     color: black;
-    font-size: 13px;
+    font-size: 1.3rem;
   }
 
   .icon-desc p {
     color: #f580eb;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: normal;
   }
 
@@ -127,15 +127,15 @@
   }
 
   .mobile-showcase-image-virtual-space {
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
     display: flex;
     justify-content: center;
   }
 
   .mobile-showcase-image-feedback {
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
     display: flex;
     justify-content: center;
   }
@@ -143,12 +143,12 @@
   .mobile-showcase-image img {
     max-width: 100%;
     height: auto;
-    padding-top: 30px;
+    padding-top: 3rem;
   }
 
   .promotion-tag p {
     font-weight: normal;
-    font-size: 15px;
+    font-size: 1.5rem;
     color: rgb(125, 125, 125);
   }
 
@@ -163,14 +163,14 @@
     text-align: center;
     align-items: flex-end;
     font-weight: bold;
-    line-height: 23px;
+    line-height: 2.3rem;
   }
 
   .checkpoint-app img {
-    width: 120px;
+    width: 12rem;
     padding-top: 0;
-    border: 2px;
-    border-radius: 25px;
+    border: 0.2rem;
+    border-radius: 2.5rem;
   }
 
   .center-mobile-app-section {
@@ -179,18 +179,18 @@
   }
 
   .checkpoint-app-desc p {
-    font-size: 16px;
+    font-size: 1.6rem;
     text-align: center;
-    letter-spacing: 1px;
+    letter-spacing: 0.1rem;
     color: #c4c4c4;
   }
 
   .all-right-reserved p {
-    font-size: 10px;
+    font-size: 1rem;
     text-align: center;
     font-weight: lighter;
-    letter-spacing: 1px;
-    padding-bottom: 40px;
+    letter-spacing: 0.1rem;
+    padding-bottom: 4rem;
   }
 
   .footer {
@@ -202,29 +202,29 @@
     bottom: 0;
     width: 100%;
     background: rgb(34, 34, 34);
-    color: white;
+    color: #fff;
     text-align: center;
     display: block;
   }
 
   .footer p {
-    color: white;
+    color: #fff;
     text-align: center;
   }
 
   .footer-desc p {
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
   }
 
   .footer-desc {
-    padding-bottom: 10px;
+    padding-bottom: 1rem;
   }
 
   .footer-desc a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
   }
 
@@ -235,10 +235,10 @@
   }
 
   .social-icon {
-    width: 120px;
+    width: 12rem;
     padding-top: 0;
-    border: 2px;
-    border-radius: 25px;
+    border: 0.2rem;
+    border-radius: 2.5rem;
   }
 
   .social.icon {
@@ -270,22 +270,22 @@
   }
 
   .checkpoint-footer-logo img {
-    margin-bottom: 20px;
-    color: white;
+    margin-bottom: 2rem;
+    color: #fff;
     justify-content: center;
     text-align: center;
-    width: 100px;
+    width: 10rem;
   }
 
   .get-premium-header p {
-    margin-bottom: 30px;
+    margin-bottom: 3rem;
     font-weight: bold;
-    font-size: 38px;
+    font-size: 3.8rem;
     text-align: center;
   }
 
   .download-now p {
-    font-size: 32px;
+    font-size: 3.2rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: 0;
@@ -294,7 +294,7 @@
   .download-now {
     &__url {
       font-weight: 500;
-      font-size: 13px;
+      font-size: 1.3rem;
       color: #c4c4c4;
     }
 
@@ -311,11 +311,11 @@
   }
 
   .download-now-desc p {
-    margin-bottom: 10px;
-    font-size: 16px;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
     text-align: center;
     font-weight: lighter;
-    margin-top: 10px;
+    margin-top: 1rem;
   }
 
   .center-checkpoint-icon-desc {
@@ -334,11 +334,11 @@
 
   .mobile-app-icon-right {
     text-align: right;
-    height: 40px;
+    height: 4rem;
   }
 
   .mobile-app-icon-right img {
-    margin-right: 20px;
-    border-radius: 5px;
+    margin-right: 2rem;
+    border-radius: 0.5rem;
   }
 }

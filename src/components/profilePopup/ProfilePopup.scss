@@ -4,7 +4,7 @@
   position: absolute;
   top: 8rem;
   right: 2.4rem;
-  background: #111;
+  background: $black;
   padding: 1.5rem;
   padding-bottom: 0;
   border-radius: 0.8rem;
@@ -12,7 +12,7 @@
   font-size: 1.6rem;
   max-height: calc(100vh - 18rem);
   overflow-y: auto;
-  color: white;
+  color: #fff;
 
   &::-webkit-scrollbar {
     display: none;
@@ -65,7 +65,7 @@
     column-gap: 1rem;
 
     &.border-top {
-      border-top: 0.1rem solid white;
+      border-top: 0.1rem solid #fff;
       padding-top: 1.5rem;
     }
 
@@ -112,7 +112,7 @@
     p {
       font-weight: 700;
       font-size: 1.4rem;
-      color: #ffffff;
+      color: #fff;
     }
   }
 

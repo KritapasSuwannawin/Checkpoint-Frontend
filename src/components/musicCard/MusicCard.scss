@@ -6,14 +6,14 @@
   width: calc(13.4rem);
   display: flex;
   flex-direction: column;
-  background: #111;
+  background: $black;
 
   &:hover {
     cursor: pointer;
   }
 
   &.current-music {
-    padding: 2px 2px 0;
+    padding: 0.2rem 0.2rem 0;
     background: #fff;
   }
 
@@ -42,7 +42,7 @@
     height: 4rem;
     border-radius: 0 0 0.8rem 0.8rem;
     position: relative;
-    background: #111;
+    background: $black;
 
     &.current-music {
       background: #fff;
@@ -51,7 +51,7 @@
   }
 
   &__music-name {
-    color: white;
+    color: #fff;
     font-weight: 500;
     margin-bottom: 0.1rem;
 

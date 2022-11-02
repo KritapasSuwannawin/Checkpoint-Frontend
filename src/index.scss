@@ -40,13 +40,15 @@ textarea {
   padding: 0.75rem 1.25rem;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2rem;
-  color: white;
+  color: #fff;
+  resize: none;
 
   &:focus {
-    outline: 1px solid rgba(255, 255, 255, 0.5);
+    outline: 0.1rem solid rgba(255, 255, 255, 0.5);
   }
 }
 
 textarea {
   padding: 1.25rem;
+  min-height: 10rem;
 }

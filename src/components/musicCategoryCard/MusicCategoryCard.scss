@@ -1,7 +1,7 @@
 @import '../../scss/main.scss';
 
 .music-category-card {
-  background: #111;
+  background: $black;
   border-radius: 1rem;
   padding: 1.5rem;
 
@@ -17,7 +17,7 @@
       align-items: center;
 
       .name {
-        color: white;
+        color: #fff;
         font-size: 1.8rem;
         text-transform: capitalize;
         margin-right: 1.5rem;
@@ -33,7 +33,7 @@
     }
 
     &--see-all-btn {
-      background: white;
+      background: #fff;
       border-radius: 2rem;
       padding: 0.5rem 1.2rem;
 

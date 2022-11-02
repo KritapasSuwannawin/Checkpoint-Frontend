@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     padding: 1.8rem 2.5rem 5rem;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(17, 17, 17, 0));
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(17, 17, 17, 0));
 
     &.hide {
       display: none;
@@ -26,7 +26,7 @@
 
       &--primary {
         @include flex-row-center;
-        background: #111111;
+        background: $black;
         border-radius: 2rem;
         padding: 1.5rem 4.2rem;
         column-gap: 5rem;
@@ -61,7 +61,7 @@
 
       &--secondary {
         @include flex-row-center;
-        background: #111111;
+        background: $black;
         border-radius: 2rem;
         padding: 1.5rem 3rem;
         column-gap: 3rem;
@@ -107,7 +107,7 @@
     }
 
     &__section {
-      background: #111;
+      background: $black;
       padding: 0.7rem 2rem;
       border-radius: 2rem;
       @include flex-row-center;
@@ -137,7 +137,7 @@
     left: 0;
     width: 100vw;
     height: 8rem;
-    background: #111;
+    background: $black;
     padding: 0 2.5rem;
 
     &.hide {
@@ -167,7 +167,7 @@
       }
 
       &--music-name {
-        color: white;
+        color: #fff;
         font-size: 1.6rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
@@ -231,7 +231,7 @@
         position: absolute;
         bottom: 1.7rem;
         right: 1.7rem;
-        background: #111;
+        background: $black;
         border-radius: 1.5rem;
         padding: 1.4rem;
         width: 5rem;

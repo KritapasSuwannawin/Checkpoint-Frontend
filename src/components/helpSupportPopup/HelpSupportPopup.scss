@@ -1,40 +1,13 @@
 @import '../../scss/main.scss';
 
 .help-support-popup {
-  @include fixed-whole-screen;
-  @include flex-row-center;
-  height: calc(100vh - 17.2rem);
-  padding-top: 8rem;
-  z-index: 2;
+  @include form-container-style;
 
   &__form {
-    background: #111;
-    padding: 3.5rem 4rem;
-    border-radius: 0.8rem;
-    max-height: 100%;
-    overflow-y: auto;
-    color: white;
-    position: relative;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    @include form-style;
 
     &--close-btn {
-      position: absolute;
-      top: 1.2rem;
-      left: 1.2rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 50%;
-      background: rgba(196, 196, 196, 0.7);
-
-      &:hover {
-        cursor: pointer;
-      }
+      @include form-close-btn-style;
     }
 
     &--logo {
@@ -59,20 +32,8 @@
     }
 
     &--submit-btn {
-      align-self: center;
-      padding: 0.7rem 2.5rem;
-      background: white;
-      border-radius: 2rem;
-      color: #111111;
-      font-weight: 500;
-      font-size: 1.8rem;
-      margin-top: 1rem;
-      width: fit-content;
-      margin: 0 auto;
-
-      &:hover {
-        cursor: pointer;
-      }
+      @include form-submit-btn-style;
+      margin-top: 2rem;
     }
 
     input[type='text'],
@@ -80,10 +41,6 @@
       width: calc(100% - 3.6rem);
       min-width: 30rem;
       margin-bottom: 1rem;
-    }
-
-    textarea {
-      min-height: 10rem;
     }
 
     &--ps {
