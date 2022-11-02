@@ -19,7 +19,7 @@
 
 @mixin page-style {
   position: fixed;
-  max-height: calc(100vh - 26.5rem);
+  max-height: calc(100vh - 26rem);
   overflow-y: auto;
   top: 10rem;
   left: 0;
@@ -56,7 +56,7 @@
   top: 8.5rem;
   right: 1.5rem;
   width: 46.8rem;
-  height: calc(100vh - 18.5rem);
+  height: calc(100vh - 18rem);
   padding: 4rem 3.5rem;
   background: #111;
   color: white;

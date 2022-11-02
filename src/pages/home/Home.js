@@ -78,6 +78,8 @@ function Home(props) {
   const [previousMusicVolume, setPreviousMusicVolume] = useState(musicVolume);
   const [previousAmbientVolume, setPreviousAmbientVolume] = useState(ambientVolume);
 
+  const [isNotActive, setIsNotActive] = useState(false);
+
   useEffect(() => {
     if (
       localStorage.getItem('CheckpointEmail') &&
@@ -126,6 +128,17 @@ function Home(props) {
         })
         .catch(() => {});
     }
+
+    let timeout;
+
+    document.addEventListener('mousemove', () => {
+      setIsNotActive(false);
+      clearTimeout(timeout);
+
+      timeout = setTimeout(() => {
+        setIsNotActive(true);
+      }, 5000);
+    });
   }, [dispatch]);
 
   useEffect(() => {
@@ -313,7 +326,7 @@ function Home(props) {
       {backgroundVideoArr}
       <MusicAudio></MusicAudio>
       {ambientAudioArr}
-      <nav className="nav">
+      <nav className={`nav ${isFullScreen ? 'hide' : ''}`}>
         <img onClick={logoClickHandler} src={logo} alt="" className="nav__logo"></img>
 
         <div className="nav__right">
@@ -356,145 +369,145 @@ function Home(props) {
         <BackgroundControl volumeAmbientChangeHandler={volumeAmbientChangeHandler}></BackgroundControl>
       )}
       {currentPage === 'music' && <MusicControl></MusicControl>}
-      {!isFullScreen && (
-        <>
-          {!showTutorialPopup && (
-            <div className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''}`}>
-              <div className="mood__section">
-                <img
-                  src={daySvg}
-                  alt=""
-                  onClick={changeBackgroundTimeHandler.bind(1)}
-                  className={currentBackground.id.slice(-2, -1) !== '1' ? 'mood__section--not-current-mood' : ''}
-                ></img>
-                <img
-                  src={eveningSvg}
-                  alt=""
-                  onClick={changeBackgroundTimeHandler.bind(2)}
-                  className={currentBackground.id.slice(-2, -1) !== '2' ? 'mood__section--not-current-mood' : ''}
-                ></img>
-                <img
-                  src={nightSvg}
-                  alt=""
-                  onClick={changeBackgroundTimeHandler.bind(3)}
-                  className={`${currentBackground.id.slice(-2, -1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-              </div>
-              <div className="mood__section">
-                <img
-                  src={cloudySvg}
-                  alt=""
-                  onClick={changeBackgroundWeatherHandler.bind(1)}
-                  className={currentBackground.id.slice(-1) !== '1' ? 'mood__section--not-current-mood' : ''}
-                ></img>
-                <img
-                  src={rainySvg}
-                  alt=""
-                  onClick={changeBackgroundWeatherHandler.bind(2)}
-                  className={currentBackground.id.slice(-1) !== '2' ? 'mood__section--not-current-mood' : ''}
-                ></img>
-                <img
-                  src={thunderSvg}
-                  alt=""
-                  onClick={changeBackgroundWeatherHandler.bind(3)}
-                  className={`${currentBackground.id.slice(-1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-                <img
-                  src={snowySvg}
-                  alt=""
-                  onClick={changeBackgroundWeatherHandler.bind(4)}
-                  className={`${currentBackground.id.slice(-1) !== '4' ? 'mood__section--not-current-mood' : ''}`}
-                ></img>
-              </div>
-            </div>
+      {!showTutorialPopup && (
+        <div
+          className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''} ${isFullScreen ? 'fullscreen' : ''} ${
+            isNotActive ? 'not-active' : ''
+          }`}
+        >
+          <div className="mood__section">
+            <img
+              src={daySvg}
+              alt=""
+              onClick={changeBackgroundTimeHandler.bind(1)}
+              className={currentBackground.id.slice(-2, -1) !== '1' ? 'mood__section--not-current-mood' : ''}
+            ></img>
+            <img
+              src={eveningSvg}
+              alt=""
+              onClick={changeBackgroundTimeHandler.bind(2)}
+              className={currentBackground.id.slice(-2, -1) !== '2' ? 'mood__section--not-current-mood' : ''}
+            ></img>
+            <img
+              src={nightSvg}
+              alt=""
+              onClick={changeBackgroundTimeHandler.bind(3)}
+              className={`${currentBackground.id.slice(-2, -1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+          </div>
+          <div className="mood__section">
+            <img
+              src={cloudySvg}
+              alt=""
+              onClick={changeBackgroundWeatherHandler.bind(1)}
+              className={currentBackground.id.slice(-1) !== '1' ? 'mood__section--not-current-mood' : ''}
+            ></img>
+            <img
+              src={rainySvg}
+              alt=""
+              onClick={changeBackgroundWeatherHandler.bind(2)}
+              className={currentBackground.id.slice(-1) !== '2' ? 'mood__section--not-current-mood' : ''}
+            ></img>
+            <img
+              src={thunderSvg}
+              alt=""
+              onClick={changeBackgroundWeatherHandler.bind(3)}
+              className={`${currentBackground.id.slice(-1) !== '3' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+            <img
+              src={snowySvg}
+              alt=""
+              onClick={changeBackgroundWeatherHandler.bind(4)}
+              className={`${currentBackground.id.slice(-1) !== '4' ? 'mood__section--not-current-mood' : ''}`}
+            ></img>
+          </div>
+        </div>
+      )}
+      <div className={`player ${isFullScreen ? 'hide' : ''}`}>
+        <div className="player__music-data">
+          {!currentMusic.isMood && (
+            <img
+              src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg : heartSvg}
+              alt=""
+              className="player__music-data--favourite-btn"
+              onClick={favouriteBtnClickHandler}
+            ></img>
           )}
-          <div className="player">
-            <div className="player__music-data">
-              {!currentMusic.isMood && (
-                <img
-                  src={favouriteMusicIdArr.includes(currentMusic.id) ? heartFullSvg : heartSvg}
-                  alt=""
-                  className="player__music-data--favourite-btn"
-                  onClick={favouriteBtnClickHandler}
-                ></img>
-              )}
-              <img src={currentMusic.thumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
-              <div>
-                <p className="player__music-data--music-name">{currentMusic.musicName}</p>
-                <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
-                  {currentMusic.artistName}
-                </a>
-              </div>
+          <img src={currentMusic.thumbnailUrl} className="player__music-data--thumbnail" alt=""></img>
+          <div>
+            <p className="player__music-data--music-name">{currentMusic.musicName}</p>
+            <a href={currentMusic.artistLink} target="_blank" rel="noreferrer" className="player__music-data--artist-name">
+              {currentMusic.artistName}
+            </a>
+          </div>
+        </div>
+        <div className="player__music-control">
+          {!currentMusic.isMood && (
+            <img
+              src={shuffleSvg}
+              onClick={toggleShuffleMusicHandler}
+              alt=""
+              className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
+            ></img>
+          )}
+          <img src={backwardSvg} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
+          <img
+            src={musicPlaying ? pauseSvg : playSvg}
+            onClick={playPauseMusicHandler}
+            alt=""
+            className="player__music-control--play-pause"
+          ></img>
+          <img src={forwardSvg} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
+          {!currentMusic.isMood && (
+            <img
+              src={loopSvg}
+              onClick={toggleLoopMusicHandler}
+              alt=""
+              className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
+            ></img>
+          )}
+        </div>
+        <div className="player__volume-control">
+          <img src={speakerSvg} className="player__music-volume" alt=""></img>
+          <div className="player__volume-control--volume">
+            <div className="player__volume-control--section">
+              <img src={iTunesSvg} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={musicVolume * 100}
+                onChange={volumeMusicChangeHandler}
+                ref={musicVolumeSliderRef}
+                className="player__volume-control--volume-slider"
+              ></input>
             </div>
-            <div className="player__music-control">
-              {!currentMusic.isMood && (
-                <img
-                  src={shuffleSvg}
-                  onClick={toggleShuffleMusicHandler}
-                  alt=""
-                  className={`player__music-control--shuffle ${shuffleMusic ? 'current-song-setting' : ''}`}
-                ></img>
-              )}
-              <img src={backwardSvg} onClick={backMusicHandler} alt="" className="player__music-control--back"></img>
-              <img
-                src={musicPlaying ? pauseSvg : playSvg}
-                onClick={playPauseMusicHandler}
-                alt=""
-                className="player__music-control--play-pause"
-              ></img>
-              <img src={forwardSvg} onClick={nextMusicHandler} alt="" className="player__music-control--next"></img>
-              {!currentMusic.isMood && (
-                <img
-                  src={loopSvg}
-                  onClick={toggleLoopMusicHandler}
-                  alt=""
-                  className={`player__music-control--loop ${loopMusic ? 'current-song-setting' : ''}`}
-                ></img>
-              )}
-            </div>
-            <div className="player__volume-control">
-              <img src={speakerSvg} className="player__music-volume" alt=""></img>
-              <div className="player__volume-control--volume">
-                <div className="player__volume-control--section">
-                  <img src={iTunesSvg} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={musicVolume * 100}
-                    onChange={volumeMusicChangeHandler}
-                    ref={musicVolumeSliderRef}
-                    className="player__volume-control--volume-slider"
-                  ></input>
-                </div>
-                <div className="player__volume-control--section">
-                  <img src={ambientSvg} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={ambientVolume * 100}
-                    onChange={volumeAmbientChangeHandler}
-                    ref={ambientVolumeSliderRef}
-                    className="player__volume-control--volume-slider"
-                  ></input>
-                </div>
-              </div>
-              <img
-                src={!isFullScreen ? fullScreenSvg : minimizeSvg}
-                onClick={fullScreenClickHander}
-                className="player__full-screen"
-                alt=""
-              ></img>
+            <div className="player__volume-control--section">
+              <img src={ambientSvg} onClick={toggleMuteAmbientHandler} className="player__volume-control--mute" alt=""></img>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={ambientVolume * 100}
+                onChange={volumeAmbientChangeHandler}
+                ref={ambientVolumeSliderRef}
+                className="player__volume-control--volume-slider"
+              ></input>
             </div>
           </div>
-        </>
-      )}
+          <img
+            src={!isFullScreen ? fullScreenSvg : minimizeSvg}
+            onClick={fullScreenClickHander}
+            className="player__full-screen"
+            alt=""
+          ></img>
+        </div>
+      </div>
       {isFullScreen && (
         <img
           src={!isFullScreen ? fullScreenSvg : minimizeSvg}
           onClick={fullScreenClickHander}
-          className="player__full-screen fullscreen"
+          className={`player__full-screen fullscreen ${isNotActive ? 'not-active' : ''}`}
           alt=""
         ></img>
       )}

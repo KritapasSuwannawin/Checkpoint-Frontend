@@ -47,10 +47,10 @@ function Popup(props) {
   }, [dispatch, closeNavPopupHandler, showLoginPopup, showHelpSupportPopup, showFeedbackPopup]);
 
   useEffect(() => {
-    if (showFeedbackPopup || showHelpSupportPopup) {
+    if (showFeedbackPopup || showFiveMinuteFeedbackPopup || showHelpSupportPopup) {
       document.removeEventListener('keyup', spacebarHandler);
     }
-  }, [dispatch, spacebarHandler, showFeedbackPopup, showHelpSupportPopup]);
+  }, [dispatch, spacebarHandler, showFeedbackPopup, showFiveMinuteFeedbackPopup, showHelpSupportPopup]);
 
   function closeFiveMinuteFeedbackHandler() {
     document.addEventListener('keyup', spacebarHandler);

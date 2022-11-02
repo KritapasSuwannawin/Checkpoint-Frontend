@@ -24,6 +24,10 @@ function BackgroundVideo(props) {
     setCanPlay(true);
   }
 
+  function onContextMenuHandler(e) {
+    e.preventDefault();
+  }
+
   if (videoRef.current && isSafari) {
     isFullScreen
       ? videoRef.current.webkitEnterFullScreen && videoRef.current.webkitEnterFullScreen()
@@ -43,6 +47,7 @@ function BackgroundVideo(props) {
       loop
       muted
       src={props.url}
+      onContextMenu={onContextMenuHandler}
       className={`video ${canPlay ? 'can-play' : ''} ${currentPage ? 'darken' : ''}`}
     ></video>
   );

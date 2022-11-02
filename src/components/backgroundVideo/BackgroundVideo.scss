@@ -6,6 +6,7 @@
   z-index: -2;
   opacity: 0;
   transition: filter 0.3s ease;
+  filter: brightness(100%);
 
   &.can-play {
     opacity: 1;

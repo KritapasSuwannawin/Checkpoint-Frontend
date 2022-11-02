@@ -190,7 +190,6 @@ function App() {
             const { feedbackStatus } = data;
 
             if (feedbackStatus === 'not done') {
-              document.removeEventListener('keyup', spacebarHandler);
               dispatch(popupActions.setShowFiveMinuteFeedbackPopup(true));
             }
           })
