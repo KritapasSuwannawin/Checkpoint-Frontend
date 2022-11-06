@@ -9,7 +9,7 @@ import lockSvg from '../../svg/SimpleBackgroundCard/Lock.svg';
 import logoSvg from '../../svg/SimpleBackgroundCard/Logo.svg';
 
 function SimpleBackgroundCard(props) {
-  const { id, name, thumbnailUrl, artistName, isMember } = props;
+  const { id, name, thumbnailUrl, artistName, isMember, viewCount } = props;
 
   const dispatch = useDispatch();
   const currentBackground = useSelector((store) => store.background.currentBackground);
@@ -22,6 +22,10 @@ function SimpleBackgroundCard(props) {
     }
 
     dispatch(backgroundActions.changeBackgroundHandler(id));
+  }
+
+  function numberCommaFormat(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   const isCurrent = currentBackground.id === id;
@@ -39,7 +43,8 @@ function SimpleBackgroundCard(props) {
       <div className="simple-background-card__bottom">
         <img className="simple-background-card__bottom--logo" src={logoSvg} alt=""></img>
         <div className={`simple-background-card__bottom--right ${`${isCurrent ? 'current-background' : ''}`}`}>
-          <p className="artist-name">{artistName}</p>
+          <p>{artistName}</p>
+          <p>{numberCommaFormat(viewCount + 1000)} Views</p>
         </div>
       </div>
     </div>

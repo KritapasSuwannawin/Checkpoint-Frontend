@@ -26,6 +26,7 @@ function Background() {
                 thumbnailUrl={bg.thumbnailUrl}
                 artistName={bg.artistName}
                 isMember={bg.isMember}
+                viewCount={bg.viewCount}
               ></SimpleBackgroundCard>
             </div>
           )),
@@ -45,6 +46,7 @@ function Background() {
               thumbnailUrl={bg.thumbnailUrl}
               artistName={bg.artistName}
               isMember={bg.isMember}
+              viewCount={bg.viewCount}
             ></SimpleBackgroundCard>
           </div>
         )),
