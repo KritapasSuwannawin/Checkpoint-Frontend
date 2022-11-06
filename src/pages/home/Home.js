@@ -224,6 +224,7 @@ function Home(props) {
       musicVolumeSliderRef.current.value = previousMusicVolume * 100;
       return;
     }
+
     setPreviousMusicVolume(musicVolume);
     dispatch(musicActions.setMusicVolume(0));
     musicVolumeSliderRef.current.value = 0;
@@ -236,8 +237,28 @@ function Home(props) {
       ambientVolumeSliderRef.current.value = previousAmbientVolume * 100;
       return;
     }
+
     setPreviousAmbientVolume(ambientVolume);
     dispatch(ambientActions.setAmbientVolume(0));
+    ambientVolumeSliderRef.current.value = 0;
+  }
+
+  function toggleMuteHandler() {
+    if (Number(musicVolumeSliderRef.current.value) === 0 && Number(ambientVolumeSliderRef.current.value) === 0) {
+      setPreviousMusicVolume(0);
+      setPreviousAmbientVolume(0);
+      dispatch(musicActions.setMusicVolume(previousMusicVolume));
+      dispatch(ambientActions.setAmbientVolume(previousAmbientVolume));
+      musicVolumeSliderRef.current.value = previousMusicVolume * 100;
+      ambientVolumeSliderRef.current.value = previousAmbientVolume * 100;
+      return;
+    }
+
+    setPreviousMusicVolume(musicVolume);
+    setPreviousAmbientVolume(ambientVolume);
+    dispatch(musicActions.setMusicVolume(0));
+    dispatch(ambientActions.setAmbientVolume(0));
+    musicVolumeSliderRef.current.value = 0;
     ambientVolumeSliderRef.current.value = 0;
   }
 
@@ -292,6 +313,7 @@ function Home(props) {
   function ProfilePopupToggleHandler() {
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowTimerPopup(false));
+    dispatch(popupActions.setComingSoon());
     dispatch(popupActions.toggleShowProfilePopupPopup());
   }
 
@@ -314,11 +336,19 @@ function Home(props) {
 
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowProfilePopupPopup(false));
+    dispatch(popupActions.setComingSoon());
     dispatch(popupActions.toggleShowTimerPopup());
   }
 
   function showTutorialHandler() {
     dispatch(popupActions.setShowTutorialPopup(true));
+  }
+
+  function comingSoonClickHandler() {
+    dispatch(pageActions.closePageHandler());
+    dispatch(popupActions.setShowTimerPopup(false));
+    dispatch(popupActions.setShowProfilePopupPopup(false));
+    dispatch(popupActions.setComingSoon(this));
   }
 
   return (
@@ -352,9 +382,9 @@ function Home(props) {
 
           <div className="nav__right--secondary">
             <img src={tutorialSvg} alt="" className="icon" onClick={showTutorialHandler}></img>
-            <img src={downloadSvg} alt="" className="icon"></img>
-            <img src={shareSvg} alt="" className="icon"></img>
-            <img src={discordSvg} alt="" className="icon"></img>
+            <img src={downloadSvg} alt="" className="icon" onClick={comingSoonClickHandler.bind('download')}></img>
+            <img src={shareSvg} alt="" className="icon" onClick={comingSoonClickHandler.bind('share')}></img>
+            <img src={discordSvg} alt="" className="icon" onClick={comingSoonClickHandler.bind('discord')}></img>
           </div>
 
           <img
@@ -468,7 +498,7 @@ function Home(props) {
           )}
         </div>
         <div className="player__volume-control">
-          <img src={speakerSvg} className="player__music-volume" alt=""></img>
+          <img src={speakerSvg} onClick={toggleMuteHandler} className="player__all-volume" alt=""></img>
           <div className="player__volume-control--volume">
             <div className="player__volume-control--section">
               <img src={iTunesSvg} onClick={toggleMuteMusicHandler} className="player__volume-control--mute" alt=""></img>

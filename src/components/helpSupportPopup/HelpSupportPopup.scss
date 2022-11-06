@@ -7,7 +7,7 @@
     @include form-style;
 
     &--close-btn {
-      @include form-close-btn-style;
+      @include close-btn-style;
     }
 
     &--logo {

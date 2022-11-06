@@ -12,6 +12,7 @@ const popupSlice = createSlice({
     showTutorialPopup: false,
     showTimerPopup: false,
     showProfilePopupPopup: false,
+    comingSoon: undefined,
   },
   reducers: {
     setShowLoginPopup(state, action) {
@@ -46,6 +47,14 @@ const popupSlice = createSlice({
     },
     toggleShowProfilePopupPopup(state, action) {
       state.showProfilePopupPopup = !state.showProfilePopupPopup;
+    },
+    setComingSoon(state, action) {
+      if (state.comingSoon === action.payload) {
+        state.comingSoon = undefined;
+        return;
+      }
+
+      state.comingSoon = action.payload;
     },
   },
 });

@@ -1,0 +1,40 @@
+@import '../../scss/main.scss';
+
+.coming-soon-popup {
+  position: absolute;
+  top: 8rem;
+  right: 5rem;
+  background: #111111;
+  border-radius: 2rem;
+  color: rgba(255, 255, 255, 0.2);
+
+  &__body {
+    position: relative;
+    @include flex-column-center;
+    width: 33rem;
+    height: 30rem;
+  }
+
+  &__close-btn {
+    @include close-btn-style;
+  }
+
+  img {
+    height: 13rem;
+    margin-bottom: 3.5rem;
+  }
+
+  &__main-text {
+    font-weight: 900;
+    font-size: 2.4rem;
+  }
+
+  &__coming-soon {
+    font-weight: 500;
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 980px) {
+    display: none;
+  }
+}

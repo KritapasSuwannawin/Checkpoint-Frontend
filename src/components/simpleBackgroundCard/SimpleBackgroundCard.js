@@ -44,7 +44,7 @@ function SimpleBackgroundCard(props) {
         <img className="simple-background-card__bottom--logo" src={logoSvg} alt=""></img>
         <div className={`simple-background-card__bottom--right ${`${isCurrent ? 'current-background' : ''}`}`}>
           <p>{artistName}</p>
-          <p>{numberCommaFormat(viewCount + 1000)} Views</p>
+          <p>{numberCommaFormat(viewCount)} Views</p>
         </div>
       </div>
     </div>

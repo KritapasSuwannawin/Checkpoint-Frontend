@@ -10,6 +10,7 @@ import HelpSupportPopup from '../helpSupportPopup/HelpSupportPopup';
 import FeedbackPopup from '../feedbackPopup/FeedbackPopup';
 import CookiePopup from '../cookiePopup/CookiePopup';
 import ProfilePopup from '../profilePopup/ProfilePopup';
+import ComingSoonPopup from '../comingSoonPopup/ComingSoonPopup';
 
 import { pageActions } from '../../store/pageSlice';
 import { popupActions } from '../../store/popupSlice';
@@ -27,11 +28,13 @@ function Popup(props) {
   const showSafariGuidePopup = useSelector((store) => store.popup.showSafariGuidePopup);
   const showTutorialPopup = useSelector((store) => store.popup.showTutorialPopup);
   const showProfilePopupPopup = useSelector((store) => store.popup.showProfilePopupPopup);
+  const comingSoon = useSelector((store) => store.popup.comingSoon);
 
   const closeNavPopupHandler = useCallback(() => {
     dispatch(pageActions.closePageHandler());
     dispatch(popupActions.setShowTimerPopup(false));
     dispatch(popupActions.setShowProfilePopupPopup(false));
+    dispatch(popupActions.setComingSoon());
   }, [dispatch]);
 
   useEffect(() => {
@@ -90,6 +93,10 @@ function Popup(props) {
     dispatch(popupActions.setShowCookiePopup(false));
   }
 
+  function closeComingSoonPopup() {
+    dispatch(popupActions.setComingSoon());
+  }
+
   return (
     <>
       {showFiveMinuteFeedbackPopup && <FiveMinuteFeedback closeHandler={closeFiveMinuteFeedbackHandler}></FiveMinuteFeedback>}
@@ -100,6 +107,7 @@ function Popup(props) {
       {showLoginPopup && <LoginPopup closeHandler={closeLoginPopup}></LoginPopup>}
       {showHelpSupportPopup && <HelpSupportPopup closeHandler={closeHelpSupportHandler}></HelpSupportPopup>}
       {showProfilePopupPopup && <ProfilePopup logoutHandler={logoutHandler}></ProfilePopup>}
+      {comingSoon && <ComingSoonPopup closeHandler={closeComingSoonPopup}></ComingSoonPopup>}
     </>
   );
 }

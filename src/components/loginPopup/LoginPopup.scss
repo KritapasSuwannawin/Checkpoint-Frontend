@@ -12,7 +12,7 @@
   }
 
   &__close-btn {
-    @include form-close-btn-style;
+    @include close-btn-style;
   }
 
   &__title-container {
