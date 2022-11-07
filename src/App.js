@@ -64,7 +64,7 @@ function App() {
     dispatch(musicActions.setFavouriteMusicIdArr([]));
     dispatch(avatarActions.changeAvatarHandler(1));
     dispatch(popupActions.setShowProfilePopupPopup(false));
-    dispatch(backgroundActions.changeBackgroundHandler('Anime_BG0211'));
+    dispatch(backgroundActions.changeBackgroundHandler('Seasonal_BG0111'));
     dispatch(memberActions.logout());
   }, [dispatch]);
 

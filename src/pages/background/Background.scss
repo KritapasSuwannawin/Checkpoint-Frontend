@@ -3,10 +3,6 @@
 .background {
   @include page-style;
 
-  &.current-page {
-    @include display-page;
-  }
-
   &__section {
     width: 100%;
     margin-bottom: 1rem;

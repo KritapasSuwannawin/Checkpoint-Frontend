@@ -6,6 +6,7 @@ const backgroundSlice = createSlice({
     availableBackgroundArr: [],
     availableBackgroundCategoryArr: [],
     currentBackground: null,
+    backgroundNotCustomizable: false,
   },
   reducers: {
     changeBackgroundHandler(state, action) {
@@ -32,10 +33,13 @@ const backgroundSlice = createSlice({
     },
     setAvailableBackground(state, action) {
       state.availableBackgroundArr = action.payload;
-      state.currentBackground = action.payload.find((background) => background.id === 'Anime_BG0211');
+      state.currentBackground = action.payload.find((background) => background.id === 'Seasonal_BG0111');
     },
     setAvailableBackgroundCategory(state, action) {
       state.availableBackgroundCategoryArr = action.payload;
+    },
+    setBackgroundNotCustomizable(state, action) {
+      state.backgroundNotCustomizable = action.payload;
     },
   },
 });

@@ -50,9 +50,9 @@ function PresetToQuery(props) {
         const filePath = `BG/${initial}/${group}_1080p/${fileName}.mp4`;
         const tnFilePath = `BG/${initial}/${group}_1080p/${category}T${fileName.slice(-6, -2)}/${category}T${fileName.slice(-6)}.jpg`;
         const storyUrl = data[storyUrlIndex] ? `'${data[storyUrlIndex]}'` : null;
-        const isMember = group === 'Anime_BG01' || group === 'Anime_BG02' ? 'FALSE' : 'TRUE';
+        const isMember = group === 'Anime_BG01' || group === 'Anime_BG02' ? 'false' : 'true';
         const categoryId = availableBackgroundCategoryArr.find((cat) => cat.name === fileName.slice(0, -7)).id;
-        const isTopHit = ['Anime_BG08', 'Anime_BG10', 'Anime_BG05', 'Game_BG01', 'Pixel_BG01', 'Pixel_BG03'].includes(group);
+        const isTopHit = ['Anime_BG08', 'Anime_BG10', 'Anime_BG05', 'Game_BG01', 'Seasonal_BG01'].includes(group);
 
         query += `\n  ('${fileName}', '${name}', '${artistName}', '${filePath}', '${tnFilePath}', ${storyUrl}, ARRAY[${ambientIdArr}], ${isMember}, ${categoryId}, ${isTopHit}),`;
       });

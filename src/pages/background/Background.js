@@ -9,6 +9,7 @@ function Background() {
   const currentBackground = useSelector((store) => store.background.currentBackground);
   const availableBackgroundArr = useSelector((store) => store.background.availableBackgroundArr);
   const availableBackgroundCategoryArr = useSelector((store) => store.background.availableBackgroundCategoryArr);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
 
   const [categoryArr, setCategoryArr] = useState([]);
 
@@ -56,7 +57,7 @@ function Background() {
   }, [availableBackgroundArr, availableBackgroundCategoryArr, currentBackground]);
 
   return (
-    <div className={`background ${currentPage === 'background' ? 'current-page' : ''}`}>
+    <div className={`background ${currentPage === 'background' ? 'current-page' : ''} ${backgroundNotCustomizable ? 'full-height' : ''}`}>
       {categoryArr.map((cat) => (
         <div key={cat.id} className="background__section">
           <p className="background__section--title">{cat.name}</p>

@@ -3,10 +3,6 @@
 .ambient {
   @include page-style;
 
-  &.current-page {
-    @include display-page;
-  }
-
   &__title {
     width: 100%;
     font-size: 1.8rem;

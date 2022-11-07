@@ -12,6 +12,7 @@ import speakerSvg from '../../svg/BackgroundControl/Speaker.svg';
 function BackgroundControl(props) {
   const dispatch = useDispatch();
   const currentBackground = useSelector((store) => store.background.currentBackground);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
   const currentAmbientArr = useSelector((store) => store.ambient.currentAmbientArr);
   const ambientVolume = useSelector((store) => store.ambient.ambientVolume);
@@ -53,7 +54,7 @@ function BackgroundControl(props) {
   }
 
   return (
-    <div className="background-control">
+    <div className={`background-control ${backgroundNotCustomizable ? 'full-height' : ''}`}>
       <img src={currentBackground.thumbnailUrl} alt="" onClick={openBackgroundPageHander} className="background-control__thumbnail"></img>
       <div className="background-control__ambient-container">
         <div className="background-control__ambient-volume">

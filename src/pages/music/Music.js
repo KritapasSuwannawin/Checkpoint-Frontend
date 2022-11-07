@@ -19,6 +19,7 @@ function Music() {
   const availableMusicCategoryArr = useSelector((store) => store.music.availableMusicCategoryArr);
   const musicPlaying = useSelector((store) => store.music.musicPlaying);
   const musicCategory = useSelector((store) => store.music.musicCategory);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const [categoryArr, setCategoryArr] = useState([]);
@@ -102,7 +103,7 @@ function Music() {
   }
 
   return (
-    <div className={`music ${currentPage === 'music' ? 'current-page' : ''}`}>
+    <div className={`music ${currentPage === 'music' ? 'current-page' : ''} ${backgroundNotCustomizable ? 'full-height' : ''}`}>
       {category ? (
         <>
           <div className="music__category-title">

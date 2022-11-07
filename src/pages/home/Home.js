@@ -55,6 +55,7 @@ function Home(props) {
   const currentPage = useSelector((store) => store.page.currentPage);
   const isFullScreen = useSelector((store) => store.page.isFullScreen);
   const currentBackground = useSelector((store) => store.background.currentBackground);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
   const currentMusic = useSelector((store) => store.music.currentMusic);
   const musicVolume = useSelector((store) => store.music.musicVolume);
   const shuffleMusic = useSelector((store) => store.music.shuffleMusic);
@@ -143,6 +144,7 @@ function Home(props) {
 
   useEffect(() => {
     dispatch(ambientActions.setCurrentAmbientArrByIdArr(currentBackground.ambientIdArr));
+    dispatch(backgroundActions.setBackgroundNotCustomizable(currentBackground.id.startsWith('Seasonal')));
 
     setBackgroundVideoArr((backgroundVideoArr) => {
       const filteredBackgroundVideoArr = backgroundVideoArr.filter((background) => background.key !== currentBackground.id);
@@ -399,7 +401,7 @@ function Home(props) {
         <BackgroundControl volumeAmbientChangeHandler={volumeAmbientChangeHandler}></BackgroundControl>
       )}
       {currentPage === 'music' && <MusicControl></MusicControl>}
-      {!showTutorialPopup && (
+      {!showTutorialPopup && !backgroundNotCustomizable && (
         <div
           className={`mood ${showLoginPopup || showSafariGuidePopup ? 'not-show' : ''} ${isFullScreen ? 'fullscreen' : ''} ${
             isNotActive ? 'not-active' : ''

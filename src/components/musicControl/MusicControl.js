@@ -9,9 +9,10 @@ import heartFullSvg from '../../svg/MusicControl/Heart.svg';
 function MusicControl(props) {
   const memberId = useSelector((store) => store.member.memberId);
   const favouriteMusicIdArr = useSelector((store) => store.music.favouriteMusicIdArr);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
 
   return (
-    <div className="music-control">
+    <div className={`music-control ${backgroundNotCustomizable ? 'full-height' : ''}`}>
       {!memberId ? (
         <p className="music-control__placeholder">Join us to have your own music playlist</p>
       ) : (

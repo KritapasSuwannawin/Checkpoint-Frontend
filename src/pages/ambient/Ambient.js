@@ -7,6 +7,7 @@ import './Ambient.scss';
 function Ambient(props) {
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableAmbientArr = useSelector((store) => store.ambient.availableAmbientArr);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const doneSetupPage = useRef();
@@ -39,7 +40,7 @@ function Ambient(props) {
   }, [availableAmbientArr]);
 
   return (
-    <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''}`}>
+    <div className={`ambient ${currentPage === 'ambient' ? 'current-page' : ''} ${backgroundNotCustomizable ? 'full-height' : ''}`}>
       <p className="ambient__title">Ambience Customization </p>
       {thumbnailArr}
     </div>

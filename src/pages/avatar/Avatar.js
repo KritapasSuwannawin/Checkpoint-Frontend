@@ -7,6 +7,7 @@ import './Avatar.scss';
 function Avatar() {
   const currentPage = useSelector((store) => store.page.currentPage);
   const availableAvatarArr = useSelector((store) => store.avatar.availableAvatarArr);
+  const backgroundNotCustomizable = useSelector((store) => store.background.backgroundNotCustomizable);
 
   const [thumbnailArr, setThumbnailArr] = useState([]);
   const doneSetupPage = useRef();
@@ -33,7 +34,11 @@ function Avatar() {
     }
   }, [availableAvatarArr]);
 
-  return <div className={`avatar ${currentPage === 'avatar' ? 'current-page' : ''}`}>{thumbnailArr}</div>;
+  return (
+    <div className={`avatar ${currentPage === 'avatar' ? 'current-page' : ''} ${backgroundNotCustomizable ? 'full-height' : ''}`}>
+      {thumbnailArr}
+    </div>
+  );
 }
 
 export default Avatar;
