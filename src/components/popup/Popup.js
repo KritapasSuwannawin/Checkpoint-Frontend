@@ -44,10 +44,10 @@ function Popup(props) {
   }, [closeNavPopupHandler]);
 
   useEffect(() => {
-    if (showLoginPopup || showHelpSupportPopup || showFeedbackPopup) {
+    if (showLoginPopup || showHelpSupportPopup || showFeedbackPopup || showTutorialPopup) {
       closeNavPopupHandler();
     }
-  }, [dispatch, closeNavPopupHandler, showLoginPopup, showHelpSupportPopup, showFeedbackPopup]);
+  }, [dispatch, closeNavPopupHandler, showLoginPopup, showHelpSupportPopup, showFeedbackPopup, showTutorialPopup]);
 
   useEffect(() => {
     if (showFeedbackPopup || showFiveMinuteFeedbackPopup || showHelpSupportPopup) {

@@ -31,10 +31,13 @@ const musicSlice = createSlice({
     },
     setInitialMusic(state, action) {
       const initialMusic = state.availableMusicArr.find((music) => music.id === action.payload);
-      state.currentMusic = initialMusic;
 
-      if (initialMusic.isMood) {
-        state.currentMoodId = initialMusic.id;
+      if (initialMusic) {
+        state.currentMusic = initialMusic;
+
+        if (initialMusic.isMood) {
+          state.currentMoodId = initialMusic.id;
+        }
       }
     },
     toggleMusicPlayPause(state, action) {

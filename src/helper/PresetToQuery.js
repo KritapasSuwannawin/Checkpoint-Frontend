@@ -54,7 +54,7 @@ function PresetToQuery(props) {
         const categoryId = availableBackgroundCategoryArr.find((cat) => cat.name === fileName.slice(0, -7)).id;
         const isTopHit = ['Anime_BG08', 'Anime_BG10', 'Anime_BG05', 'Game_BG01', 'Seasonal_BG01'].includes(group);
 
-        query += `\n  ('${fileName}', '${name}', '${artistName}', '${filePath}', '${tnFilePath}', ${storyUrl}, ARRAY[${ambientIdArr}], ${isMember}, ${categoryId}, ${isTopHit}),`;
+        query += `\n    ('${fileName}', '${name}', '${artistName}', '${filePath}', '${tnFilePath}', ${storyUrl}, ARRAY[${ambientIdArr}], ${isMember}, ${categoryId}, ${isTopHit}),`;
       });
 
       query = query.slice(0, -1) + ';';

@@ -12,7 +12,10 @@ const backgroundSlice = createSlice({
     changeBackgroundHandler(state, action) {
       if (state.currentBackground.id !== action.payload) {
         const newBackground = state.availableBackgroundArr.find((background) => background.id === action.payload);
-        state.currentBackground = newBackground;
+
+        if (newBackground) {
+          state.currentBackground = newBackground;
+        }
       }
     },
     changeBackgroundTimeHandler(state, action) {
