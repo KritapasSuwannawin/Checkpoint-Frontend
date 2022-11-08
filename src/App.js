@@ -12,7 +12,6 @@ import Avatar from './pages/avatar/Avatar';
 import Popup from './components/popup/Popup';
 
 import Policy from './pages/policy/Policy';
-import About from './pages/about/About';
 import Mobile from './pages/mobile/Mobile';
 import PresetToQuery from './helper/PresetToQuery';
 
@@ -323,7 +322,6 @@ function App() {
         }
       ></Route>
       <Route path="policy/*" element={<Policy></Policy>}></Route>
-      <Route path="about" element={<About></About>}></Route>
       <Route path="helper/preset-to-query" element={<PresetToQuery></PresetToQuery>}></Route>
       <Route path="/*" element={<Navigate replace to="/"></Navigate>}></Route>
     </Routes>

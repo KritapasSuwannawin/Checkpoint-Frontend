@@ -78,7 +78,7 @@ function ProfilePopup(props) {
         <div className="profile-popup__icon-container">
           <img src={informationIconSvg} alt=""></img>
         </div>
-        <a href={`${window.location.href}about`} target="_blank" rel="noreferrer">
+        <a href={process.env.REACT_APP_ABOUT_US_LINK} target="_blank" rel="noreferrer">
           About Us
         </a>
       </div>
