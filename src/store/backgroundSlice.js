@@ -36,7 +36,7 @@ const backgroundSlice = createSlice({
     },
     setAvailableBackground(state, action) {
       state.availableBackgroundArr = action.payload;
-      state.currentBackground = action.payload.find((background) => background.id === 'Seasonal_BG0111');
+      state.currentBackground = action.payload.find((background) => background.id === 'Anime_BG0221');
     },
     setAvailableBackgroundCategory(state, action) {
       state.availableBackgroundCategoryArr = action.payload;
